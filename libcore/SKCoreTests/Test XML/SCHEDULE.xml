@@ -1,0 +1,106 @@
+<config>
+    <global>
+        <submit-dcs host="dcs.sammknows.com"/>
+        <tests-alarm-type type="WAKEUP"/>
+        <location-service type="network"/>
+        <onfail-test-action type="retry" delay="60s"/>
+        <communications>
+            <communication id="1" type="popup" content="Text to be shown in the pop up" />
+        </communications>
+        <init>
+            <test type="closestTarget"/>
+        </init>
+        <hosts>
+            <host dnsName="n1-the1.samknows.com" displayName="London, UK"/>
+            <host dnsName="n2-the1.samknows.com" displayName="London, UK"/>
+            <host dnsName="n2-newyork-us.samknows.com" displayName="New York, USA"/>
+            <host dnsName="n1-losangeles-us.samknows.com" displayName="Los Angeles, USA"/>
+            <host dnsName="n1-amsterdam-nl.samknows.com" displayName="Amsterdam, NL"/>
+        </hosts>
+        <data-cap-default value="200"/>
+    </global>
+    <!--
+     time describes time window when location collection will still be going - before test group starts end after test group ends
+     -->
+    <!--
+     listenerDelay describes time delay between two location updates, however it is a hint for android rather than strict requirenment
+     -->
+    <data-collector type="Location" time="10s" listenerDelay="1m" enabled="true"/>
+    <conditions>
+        <condition-group id="1">
+            <!--
+             <condition type="NetworkType" value="mobile" /> mobile or wifi
+             -->
+            <condition type="NetActivity" maxByteIn="10000" maxByteOut="5000" time="20s"/>
+            <condition type="CpuActivity" maxAvg="25" time="20s"/>
+        </condition-group>
+        <condition-group id="2">
+            <!--
+             <condition type="NetworkType" value="mobile" /> mobile or wifi
+             -->
+            <condition type="NetActivity" maxByteIn="10000" maxByteOut="5000" time="20s"/>
+            <condition type="CpuActivity" maxAvg="35" time="20s"/>
+            <condition type="ParamExpired" paramName="closest" expireTime="30d"/>
+        </condition-group>
+    </conditions>
+    <tests>
+        <test type="closestTarget" condition-group-id="2" displayName="Closest Target">
+            <executeAt>
+                <time>15:55</time>
+            </executeAt>
+            <params>
+                <param name="target" value="n1-the1.samknows.com"/>
+                <param name="target" value="n2-the1.samknows.com"/>
+                <param name="target" value="n2-newyork-us.samknows.com"/>
+                <param name="target" value="n1-losangeles-us.samknows.com"/>
+                <param name="target" value="n1-amsterdam-nl.samknows.com"/>
+            </params>
+            <ouput>
+                <field name="closest" position="3"/>
+            </ouput>
+        </test>
+        <test type="latency" condition-group-id="1" displayName="Latency / Loss">
+            <executeAt>
+                <time>15:55</time>
+            </executeAt>
+            <params>
+                <param name="target" value="$closest"/>
+                <param name="port" value="6000"/>
+                <param name="interPacketTime" value="500000"/>
+                <param name="delayTimeout" value="2000000"/>
+                <param name="numberOfPackets" value="10"/>
+                <param name="percentile" value="100"/>
+                <param name="maxTime" value="6000000"/>
+            </params>
+        </test>
+        <test type="downstreamthroughput" condition-group-id="1" displayName="Download MT3">
+            <executeAt>
+                <time>15:55</time>
+            </executeAt>
+            <params>
+                <param name="target" value="$closest"/>
+                <param name="port" value="8080"/>
+                <param name="file" value="100MB.bin"/>
+                <param name="warmupmaxtime" value="1000000"/>
+                <param name="transfermaxtime" value="5000000"/>
+                <param name="buffersize" value="1048576"/>
+                <param name="numberofthreads" value="3"/>
+            </params>
+        </test>
+        <test type="upstreamthroughput" condition-group-id="1" displayName="Upload MT3">
+            <executeAt>
+                <time>15:55</time>
+            </executeAt>
+            <params>
+                <param name="target" value="$closest"/>
+                <param name="port" value="8080"/>
+                <param name="file" value="100MB.bin"/>
+                <param name="warmupmaxtime" value="1000000"/>
+                <param name="transfermaxtime" value="5000000"/>
+                <param name="postdatalength" value="10485760"/>
+                <param name="sendDataChunk" value="512"/>
+                <param name="numberofthreads" value="3"/>
+            </params>
+        </test>
+    </tests>
+</config>

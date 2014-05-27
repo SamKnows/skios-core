@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+   <global>
+      <submit-dcs host="dcs.samknows.com" />
+      <tests-alarm-type type="WAKEUP" />
+      <location-service type="network" />
+      <onfail-test-action type="retry" delay="60s" />
+      <init>
+         <test type="closestTarget" />
+      </init>
+      <hosts>
+         <host dnsName="n1-saopaulo-br.samknows.com" displayName="São Paulo" />
+         <host dnsName="n2-saopaulo-br.samknows.com" displayName="São Paulo" />
+         <host dnsName="n3-saopaulo-br.samknows.com" displayName="São Paulo" />
+         <host dnsName="n1-natal-br.samknows.com" displayName="Natal" />
+         <host dnsName="n1-londrina-br.samknows.com" displayName="Londrina" />
+         <host dnsName="n1-portoalegre-br.samknows.com" displayName="Porto Alegre" />
+         <host dnsName="n1-rio-br.samknows.com" displayName="Rio de Janeiro" />
+         <host dnsName="n1-belohorizonte-br.samknows.com" displayName="Belo Horizonte" />
+         <host dnsName="n1-fortaleza-br.samknows.com" displayName="Fortaleza" />
+         <host dnsName="n1-the1.samknows.com" displayName="London" />
+         <host dnsName="n2-the1.samknows.com" displayName="London" />
+      </hosts>
+      <communications>
+         <communication id="1" type="popup" content="Este teste poderá utilizar até aproximadamente 6 MB de seu plano de conexão de dados. Deseja continuar? " />
+      </communications>
+      <data-cap-default value="200" />
+   </global>
+   <!--
+time describes time window when location collection will still be going - before test group starts end after test group ends
+-->
+   <!--
+listenerDelay describes time delay between two location updates, however it is a hint for android rather than strict requirenment
+-->
+   <data-collector type="Environment" />
+   <data-collector type="Location" time="10s" listenerDelay="1m" enabled="true" />
+   <conditions>
+      <condition-group id="1">
+         <!--
+<condition type="NetworkType" value="mobile" /> mobile or wifi
+-->
+         <condition type="NetActivity" maxByteIn="10000" maxByteOut="5000" time="20s" />
+         <condition type="CpuActivity" maxAvg="25" time="20s" />
+      </condition-group>
+      <condition-group id="2">
+         <!--
+<condition type="NetworkType" value="mobile" /> mobile or wifi
+-->
+         <condition type="NetActivity" maxByteIn="10000" maxByteOut="5000" time="20s" />
+         <condition type="CpuActivity" maxAvg="35" time="20s" />
+         <condition type="ParamExpired" paramName="closest" expireTime="30d" />
+      </condition-group>
+   </conditions>
+   <tests>
+      <test type="closestTarget" condition-group-id="2" displayName="Servidor mais próximo">
+         <params>
+            <param name="target" value="n1-saopaulo-br.samknows.com" />
+            <param name="target" value="n2-saopaulo-br.samknows.com" />
+            <param name="target" value="n3-saopaulo-br.samknows.com" />
+            <param name="target" value="n1-natal-br.samknows.com" />
+            <param name="target" value="n1-londrina-br.samknows.com" />
+            <param name="target" value="n1-portoalegre-br.samknows.com" />
+            <param name="target" value="n1-rio-br.samknows.com" />
+            <param name="target" value="n1-belohorizonte-br.samknows.com" />
+            <param name="target" value="n1-fortaleza-br.samknows.com" />
+            <param name="target" value="n1-the1.samknows.com" />
+            <param name="target" value="n2-the1.samknows.com" />
+         </params>
+         <ouput>
+            <field name="closest" position="3" />
+         </ouput>
+      </test>
+      <test type="downstreamthroughput" condition-group-id="1" displayName="Download">
+         <params>
+            <param name="target" value="$closest" />
+            <param name="port" value="8080" />
+            <param name="file" value="100MB.bin" />
+            <param name="warmupmaxtime" value="1000000" />
+            <param name="transfermaxtime" value="5000000" />
+            <param name="transfermaxbytes" value="3145728" />
+            <param name="buffersize" value="1048576" />
+            <param name="numberofthreads" value="3" />
+         </params>
+      </test>
+      <test type="upstreamthroughput" condition-group-id="1" displayName="Upload">
+         <params>
+            <param name="target" value="$closest" />
+            <param name="port" value="8080" />
+            <param name="file" value="100MB.bin" />
+            <param name="warmupmaxtime" value="1000000" />
+            <param name="transfermaxtime" value="5000000" />
+            <param name="transfermaxbytes" value="3145728" />
+            <param name="postdatalength" value="10485760" />
+            <param name="sendDataChunk" value="512" />
+            <param name="numberofthreads" value="3" />
+         </params>
+      </test>
+      <test type="latency" condition-group-id="1" displayName="Latência/Perda/Jitter">
+         <params>
+            <param name="target" value="$closest" />
+            <param name="port" value="6000" />
+            <param name="interPacketTime" value="500000" />
+            <param name="delayTimeout" value="2000000" />
+            <param name="numberOfPackets" value="100" />
+            <param name="percentile" value="100" />
+            <param name="maxTime" value="60000000" />
+         </params>
+      </test>
+   </tests>
+</config>
