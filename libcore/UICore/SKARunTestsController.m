@@ -213,18 +213,21 @@
 
 - (void)aodLatencyTestUpdateProgress:(float)progress
 {
-  NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
-  SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  
-  if (nil != cell)
-  {
-    SK_ASSERT([NSThread isMainThread]);
-    [cell.latencyProgressView setProgress:progress/100 animated:YES];
-    [cell.lossProgressView setProgress:progress/100 animated:YES];
-    [cell.jitterProgressView setProgress:progress/100 animated:YES];
-  }
-  
-  [self updateResultsArray:[NSNumber numberWithFloat:progress] key:@"PROGRESS" testType:@"latency"];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
+    SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+    
+    if (nil != cell)
+    {
+      SK_ASSERT([NSThread isMainThread]);
+      [cell.latencyProgressView setProgress:progress/100 animated:YES];
+      [cell.lossProgressView setProgress:progress/100 animated:YES];
+      [cell.jitterProgressView setProgress:progress/100 animated:YES];
+    }
+    
+    [self updateResultsArray:[NSNumber numberWithFloat:progress] key:@"PROGRESS" testType:@"latency"];
+  });
 }
 
 // TRANSFER //////////////////////////////////////////////////////
@@ -236,26 +239,27 @@
 
 - (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream
 {
-  SK_ASSERT([NSThread isMainThread]);
-  
-  NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
-  NSIndexPath *ixp = [self getIndexPathForTest:test];
-  SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
+    NSIndexPath *ixp = [self getIndexPathForTest:test];
+    SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+    
 #ifdef DEBUG
-  static int sDebugLastValue = 0;
-  if ( ((int)progress) != sDebugLastValue) {
-    NSLog(@"DEBUG: aodTransferTestDidUpdateProgress, test=%@, progress=%g", test, progress);
-    sDebugLastValue = (int) progress;
-  }
+    static int sDebugLastValue = 0;
+    if ( ((int)progress) != sDebugLastValue) {
+      NSLog(@"DEBUG: aodTransferTestDidUpdateProgress, test=%@, progress=%g", test, progress);
+      sDebugLastValue = (int) progress;
+    }
 #endif // DEBUG
-  
-  if (nil != cell)
-  {
-    [cell.progressView setProgress:(progress/100.0F) animated:YES];
-  }
-  
-  [self updateResultsArray:[NSNumber numberWithFloat:progress] key:@"PROGRESS" testType:test];
+    
+    if (nil != cell)
+    {
+      [cell.progressView setProgress:(progress/100.0F) animated:YES];
+    }
+    
+    [self updateResultsArray:[NSNumber numberWithFloat:progress] key:@"PROGRESS" testType:test];
+  });
 }
 
 - (void)aodTransferTestDidFail:(BOOL)isDownstream
@@ -286,36 +290,39 @@
 
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based
 {
-  BOOL isDownstream = httpTest.isDownstream;
-  
-  NSString *result = [SKGlobalMethods bitrateMbps1024BasedToString:bitrate1024Based];
-  
-  NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
-  
-  NSLog(@"************ DEBUG: aodTransferTestDidCompleteTransfer - test=%@, bitrate=%@", test, result);
-  
-  NSIndexPath *ixp = [self getIndexPathForTest:test];
-  SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  
-  if (cell == nil)
-  {
-    // This will occur if the cell is scrolled out of view (so the cell doesn't currently exist in the UI)
-    // But for now, show a warning in the debugger just in case this is a symptom of something else.
-    SK_ASSERT(false);
-  }
-  else
-  {
-    SK_ASSERT([NSThread isMainThread]);
-    [cell.progressView setProgress:1 animated:YES];
-    cell.lblResult.hidden = NO;
-    cell.progressView.hidden = YES;
-    cell.lblResult.text = result;
-  }
-  
-  [self updateResultsArray:[NSNumber numberWithFloat:100] key:@"PROGRESS" testType:test];
-  [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:test];
-  [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
-  [self updateResultsArray:result key:@"RESULT_1" testType:test];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    BOOL isDownstream = httpTest.isDownstream;
+    
+    NSString *result = [SKGlobalMethods bitrateMbps1024BasedToString:bitrate1024Based];
+    
+    NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
+    
+    NSLog(@"************ DEBUG: aodTransferTestDidCompleteTransfer - test=%@, bitrate=%@", test, result);
+    
+    NSIndexPath *ixp = [self getIndexPathForTest:test];
+    SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+    
+    if (cell == nil)
+    {
+      // This will occur if the cell is scrolled out of view (so the cell doesn't currently exist in the UI)
+      // But for now, show a warning in the debugger just in case this is a symptom of something else.
+      SK_ASSERT(false);
+    }
+    else
+    {
+      SK_ASSERT([NSThread isMainThread]);
+      [cell.progressView setProgress:1 animated:YES];
+      cell.lblResult.hidden = NO;
+      cell.progressView.hidden = YES;
+      cell.lblResult.text = result;
+    }
+    
+    [self updateResultsArray:[NSNumber numberWithFloat:100] key:@"PROGRESS" testType:test];
+    [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:test];
+    [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
+    [self updateResultsArray:result key:@"RESULT_1" testType:test];
+  });
 }
 
 // ALL TESTS COMPLETE

@@ -335,16 +335,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)doSendLodTestDidSendPacket:(NSUInteger)bytes_
 {
-    if (![NSThread isMainThread])
-    {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.latencyOperationDelegate lodTestDidSendPacket:bytes_];
-        });
-    }
-    else
-    {
-        [self.latencyOperationDelegate lodTestDidSendPacket:bytes_];
-    }
+  [self.latencyOperationDelegate lodTestDidSendPacket:bytes_];
 }
 
 - (void)doSendLodTestDidFail:(NSUInteger)threadId_
@@ -353,16 +344,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   NSLog(@"DEBUG: doSendLodTestDidFail");
 #endif // DEBUG
   
-  if (![NSThread isMainThread])
-  {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      [self.latencyOperationDelegate lodTestDidFail:threadId_];
-    });
-  }
-  else
-  {
-    [self.latencyOperationDelegate lodTestDidFail:threadId_];
-  }
+  [self.latencyOperationDelegate lodTestDidFail:threadId_];
 }
 
 - (void)doSendLodTestDidSucceed:(double)latency_
@@ -371,72 +353,31 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
              stdDeviation:(double)stdDeviation_
                  threadId:(NSUInteger)threadId_
 {
-    if (![NSThread isMainThread])
-    {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.latencyOperationDelegate lodTestDidSucceed:latency_
-                                    packetLoss:packetLoss_
-                                        jitter:jitter_
-                                  stdDeviation:stdDeviation_
-                                      threadId:threadId_];
-        });
-    }
-    else
-    {
-        [self.latencyOperationDelegate lodTestDidSucceed:latency_
-                                packetLoss:packetLoss_
-                                    jitter:jitter_
-                              stdDeviation:stdDeviation_
-                                  threadId:threadId_];
-    }
+  [self.latencyOperationDelegate lodTestDidSucceed:latency_
+                                        packetLoss:packetLoss_
+                                            jitter:jitter_
+                                      stdDeviation:stdDeviation_
+                                          threadId:threadId_];
 }
 
 - (void)doSendLodTestWasCancelled:(NSUInteger)threadId_
 {
-    if (![NSThread isMainThread])
-    {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.latencyOperationDelegate lodTestWasCancelled:threadId_];
-        });
-    }
-    else
-    {
-        [self.latencyOperationDelegate lodTestWasCancelled:threadId_];
-    }
+  [self.latencyOperationDelegate lodTestWasCancelled:threadId_];
 }
 
 - (void)doSendLodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId_
 {
   SK_ASSERT(self.latencyOperationDelegate != nil);
   
-  if (![NSThread isMainThread])
-  {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_];
-    });
-  }
-  else
-  {
-    [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_];
-  }
+  [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_];
 }
 
 - (void)doSendLodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId_
 {
   SK_ASSERT(self.latencyOperationDelegate != nil);
   
-  if (![NSThread isMainThread])
-  {
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      SK_ASSERT(self.latencyOperationDelegate != nil);
-      [self.latencyOperationDelegate lodUpdateStatus:status_ threadId:threadId_];
-    });
-  }
-  else
-  {
-    SK_ASSERT(self.latencyOperationDelegate != nil);
-    [self.latencyOperationDelegate lodUpdateStatus:status_ threadId:threadId_];
-  }
+  SK_ASSERT(self.latencyOperationDelegate != nil);
+  [self.latencyOperationDelegate lodUpdateStatus:status_ threadId:threadId_];
 }
 
 #pragma mark - Instance Methods

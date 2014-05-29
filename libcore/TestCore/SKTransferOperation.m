@@ -611,24 +611,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
 
 - (void)doSendUpdateStatus:(TransferStatus)status_ threadId:(NSUInteger)threadId_
 {
-  if (self.mbTestMode) {
-    SK_ASSERT ([NSThread isMainThread]);
-    SK_ASSERT (dispatch_get_current_queue() == dispatch_get_main_queue());
-    // We're in the main thread!
-    // This means that we're in TEST MODE (where the start method is called directly from the main thread...)
-    // This IGNORES the setting of mbAsyncFlag.
-    [self.transferOperationDelegate todUpdateStatus:status_ threadId:threadId_];
-  } else if (mbAsyncFlag) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.transferOperationDelegate todUpdateStatus:status_ threadId:threadId_];
-    });
-  } else {
-    SK_ASSERT (dispatch_get_current_queue() != dispatch_get_main_queue());
-    // If we use dispatch_sync, it can stop working / hang on fast networks!
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.transferOperationDelegate todUpdateStatus:status_ threadId:threadId_];
-    });
-  }
+  [self.transferOperationDelegate todUpdateStatus:status_ threadId:threadId_];
 }
 
 - (void)doSendtodDidTransferData:(NSUInteger)totalBytes_
@@ -636,24 +619,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
                         progress:(float)progress_
                         threadId:(NSUInteger)threadId_
 {
-  if (self.mbTestMode) {
-    SK_ASSERT ([NSThread isMainThread]);
-    SK_ASSERT (dispatch_get_current_queue() == dispatch_get_main_queue());
-    // We're in the main thread!
-    // This means that we're in TEST MODE (where the start method is called directly from the main thread...)
-    // This IGNORES the setting of mbAsyncFlag.
-    [self.transferOperationDelegate todDidTransferData:totalBytes_ bytes:bytes_ progress:progress_ threadId:threadId_];
-  } else if (mbAsyncFlag) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.transferOperationDelegate todDidTransferData:totalBytes_ bytes:bytes_ progress:progress_ threadId:threadId_];
-    });
-  } else {
-    SK_ASSERT (dispatch_get_current_queue() != dispatch_get_main_queue());
-    // If we use dispatch_sync, it can stop working / hang on fast networks!
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.transferOperationDelegate todDidTransferData:totalBytes_ bytes:bytes_ progress:progress_ threadId:threadId_];
-    });
-  }
+  [self.transferOperationDelegate todDidTransferData:totalBytes_ bytes:bytes_ progress:progress_ threadId:threadId_];
 }
 
 - (void)doSendtodDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTime_
@@ -661,33 +627,10 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
                                    totalBytes:(NSUInteger)totalBytes_
                                      threadId:(NSUInteger)threadId_
 {
-  if (self.mbTestMode) {
-    SK_ASSERT ([NSThread isMainThread]);
-    SK_ASSERT (dispatch_get_current_queue() == dispatch_get_main_queue());
-    // We're in the main thread!
-    // This means that we're in TEST MODE (where the start method is called directly from the main thread...)
-    // This IGNORES the setting of mbAsyncFlag.
-    [self.transferOperationDelegate todDidCompleteTransferOperation:transferTime_
-                                                      transferBytes:transferBytes_
-                                                         totalBytes:totalBytes_
-                                                           threadId:threadId_];
-  } else if (mbAsyncFlag) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.transferOperationDelegate todDidCompleteTransferOperation:transferTime_
-                                                        transferBytes:transferBytes_
-                                                           totalBytes:totalBytes_
-                                                             threadId:threadId_];
-    });
-  } else {
-    SK_ASSERT (dispatch_get_current_queue() != dispatch_get_main_queue());
-    // If we use dispatch_sync, it can stop working / hang on fast networks!
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.transferOperationDelegate todDidCompleteTransferOperation:transferTime_
-                                                        transferBytes:transferBytes_
-                                                           totalBytes:totalBytes_
-                                                             threadId:threadId_];
-    });
-  }
+  [self.transferOperationDelegate todDidCompleteTransferOperation:transferTime_
+                                                    transferBytes:transferBytes_
+                                                       totalBytes:totalBytes_
+                                                         threadId:threadId_];
 }
 
 #pragma mark - Overrides
