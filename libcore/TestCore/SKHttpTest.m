@@ -255,19 +255,19 @@ NSString *const UPSTREAMMULTI       = @"JHTTPPOSTMT";
                                              file:file
                                      isDownstream:isDownstream
                                     warmupMaxTime:warmupMaxTime
-                                    warmupMaxBytes:warmupMaxBytes
-                                  TransferMaxTimeMicroseconds:transferMaxTimeMicroseconds
-                                  transferMaxBytes:transferMaxBytes
+                                   warmupMaxBytes:warmupMaxBytes
+                      TransferMaxTimeMicroseconds:transferMaxTimeMicroseconds
+                                 transferMaxBytes:transferMaxBytes
                                          nThreads:nThreads
                                          threadId:i
-                                         TransferOperationDelegate:self
+                        TransferOperationDelegate:self
                                         asyncFlag:[self getTestIsAsyncFlag]];
       
       [operation setSKAutotest:self.skAutotest];
-        
-        [queue addOperation:operation];
+      
+      [queue addOperation:operation];
     }
-    
+  
     isRunning = YES;
 }
 
@@ -325,14 +325,18 @@ NSString *const UPSTREAMMULTI       = @"JHTTPPOSTMT";
 
 - (int)getBytesPerSecond
 {
-    if ([self isSuccessful])
-    {
-        double time = testTransferTimeMicroseconds / 1000000.0;   // convert microseconds -> seconds
-        double bytesPerSecond = testTransferBytes / time;
-        return (int)bytesPerSecond;
+  // if ([self isSuccessful])
+  {
+    double dTime = testTransferTimeMicroseconds / 1000000.0;   // convert microseconds -> seconds
+    if (dTime == 0) {
+      return 0;
     }
     
-    return 0;
+    double bytesPerSecond = ((double)testTransferBytes) / dTime;
+    return (int)bytesPerSecond;
+  }
+  
+  return 0;
 }
 
 - (void)storeOutputResults

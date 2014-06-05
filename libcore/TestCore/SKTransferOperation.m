@@ -782,10 +782,27 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
   }
 }
 
+- (int)getBytesPerSecond:(NSInteger)TotalBytesWritten
+{
+  // if ([self isSuccessful])
+  SKTimeIntervalMicroseconds elapsedTime = [self microTime:[[SKCore getToday] timeIntervalSince1970] - startTransfer];
+  {
+    double dTime = elapsedTime / 1000000.0;   // convert microseconds -> seconds
+    if (dTime == 0) {
+      return 0;
+    }
+    
+    double bytesPerSecond = ((double)TotalBytesWritten) / dTime;
+    return (int)bytesPerSecond;
+  }
+  
+  return 0;
+}
+
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   
 #ifdef DEBUG
-  NSLog(@"DEBUG %@ - didSendBodyData : %d, %d, %d", [self description], (int)bytesWritten, (int)totalBytesWritten, (int)totalBytesExpectedToWrite);
+  NSLog(@"DEBUG %@ - didSendBodyData : %d, %d, %d; bps=%d", [self description], (int)bytesWritten, (int)totalBytesWritten, (int)totalBytesExpectedToWrite, [self getBytesPerSecond:totalBytesWritten]);
 #endif // DEBUG
   
   if ([self isCancelled])

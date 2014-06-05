@@ -1211,7 +1211,8 @@ static NSString *networkTypeSwitchValue = nil;
       }};
     
     //NSLog(@"message=%@", message);
-   
+    
+    
     if (showImage) {
       SK_ASSERT((exportImage != nil) == [[SKAAppDelegate getAppDelegate] isSocialMediaImageExportSupported]);
       if (exportImage != nil) {
@@ -1226,6 +1227,43 @@ static NSString *networkTypeSwitchValue = nil;
       if ([socialNetwork isEqualToString:SLServiceTypeFacebook]) {
         // Otherwise, add image ONLY for Facebook; otherwise, there is not enough room for the text!
         [theSocialMediaController addImage:[UIImage imageNamed:@"Icon.png"]];
+      }
+    }
+    
+    if (showImage) {
+      if ([socialNetwork isEqualToString:SLServiceTypeTwitter]) {
+       
+#ifdef DEBUG
+        NSLog(@"DEBUG: exportString was: %@", exportString);
+#endif // DEBUG
+        // Needs to change to this format...!
+        // Testing my #mobilebroadband speed on @Verizon Down: 829.32 Kbps with FCC Speed Test App by @SamKnows http://bit.ly/1lzG5V6
+        
+        exportString = [exportString
+                        stringByReplacingOccurrencesOfString:
+                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeFromThis1",nil)
+                        withString:
+                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeToThis1",nil)
+                        ];
+        
+        exportString = [exportString
+                        stringByReplacingOccurrencesOfString:
+                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeFromThis2",nil)
+                        withString:
+                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeToThis2",nil)
+                        ];
+        
+        exportString = [exportString
+                        stringByReplacingOccurrencesOfString:
+                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeRegex4From",nil)
+                        withString:
+                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeRegex4To",nil)
+                        options:NSRegularExpressionSearch
+                        range:NSMakeRange(0, exportString.length)
+                        ];
+#ifdef DEBUG
+        NSLog(@"DEBUG: exportString now: %@", exportString);
+#endif // DEBUG
       }
     }
     
@@ -1456,6 +1494,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
     SK_ASSERT(false);
     return nil;
   }
+
   
   BOOL bGotData = NO;
   
