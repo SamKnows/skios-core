@@ -64,13 +64,29 @@
 {
   [super viewDidLoad];
   
+  if ([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported] == NO) {
+    // Hide the toolbar, if social media export not supported!
+    [self.uiToolbar setHidden:YES];
+  }
+
   self.title = NSLocalizedString(@"Storyboard_ArchivedResults_Title",nil);
   self.lblMain.text = NSLocalizedString(@"Storyboard_ArchivedResults_Archived_Result",nil);
+  
+//  self.navigationController.delegate = self;
   
   SK_ASSERT(self.tableView != nil);
   
   [self addSwipeGesture];
 }
+
+// http://stackoverflow.com/questions/8303811/toolbar-in-navigation-controller
+//#pragma mark UINavigationControllerDelegate (begin)
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//  BOOL shouldHide = ([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported] == NO);
+//  [navigationController setToolbarHidden:shouldHide animated:animated];
+//}
+//#pragma mark UINavigationControllerDelegate (end)
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];

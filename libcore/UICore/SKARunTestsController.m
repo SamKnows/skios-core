@@ -727,6 +727,11 @@
 {
   [super viewDidLoad];
   
+  if ([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported] == NO) {
+    // Hide the toolbar, if social media export not supported!
+    [self.navigationController setToolbarHidden:YES];
+  }
+  
   self.networkType = [SKGlobalMethods getNetworkTypeString];
   
   appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
@@ -813,7 +818,7 @@ static BOOL sbViewIsVisible;
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  
+
   [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(udpTestFailedSkipTests:) name:kSKAAutoTest_UDPFailedSkipTests object: nil];
  
   self.networkType = [SKGlobalMethods getNetworkTypeString];

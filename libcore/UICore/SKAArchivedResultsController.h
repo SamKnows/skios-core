@@ -13,7 +13,7 @@
 #import "SKALatencyTestCell.h"
 #import "SKAInformationCell.h"
 
-@interface SKAArchivedResultsController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SKAArchivedResultsController : UIViewController <UITableViewDataSource, UITableViewDelegate> // , UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIControl *viewBG;
 @property (weak, nonatomic) IBOutlet UILabel *lblMain;
@@ -28,5 +28,6 @@
 - (IBAction)showOlderResultsButton:(id)sender;
 
 - (IBAction)actionButton:(id)sender;
+@property (weak, nonatomic) IBOutlet UIToolbar *uiToolbar;
 
 @end
