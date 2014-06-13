@@ -1241,23 +1241,23 @@ static NSString *networkTypeSwitchValue = nil;
         
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
-                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeFromThis1",nil)
+                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis1",nil)
                         withString:
-                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeToThis1",nil)
+                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeToThis1",nil)
                         ];
         
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
-                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeFromThis2",nil)
+                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis2",nil)
                         withString:
-                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeToThis2",nil)
+                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeToThis2",nil)
                         ];
         
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
-                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeRegex4From",nil)
+                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeRegex4From",nil)
                         withString:
-                        NSLocalizedString(@"SocialMedia_IfUsingImage_ChangeRegex4To",nil)
+                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeRegex4To",nil)
                         options:NSRegularExpressionSearch
                         range:NSMakeRange(0, exportString.length)
                         ];
@@ -1498,14 +1498,14 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   
   BOOL bGotData = NO;
   
-  if (upload != nil) {
+  if (download != nil) {
     [bodyString appendString:@" "];
-    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SocialMedia_Upload_Short",nil), upload]];
+    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SocialMedia_Download_Short",nil), download]];
     
     bGotData = YES;
   }
   
-  if (download != nil) {
+  if (upload != nil) {
     if (bGotData == YES)
     {
       [bodyString appendString:separator];
@@ -1517,7 +1517,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
     
     bGotData = YES;
     
-    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SocialMedia_Download_Short",nil),download]];
+    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SocialMedia_Upload_Short",nil),upload]];
   }
   
   // TODO - what should we do if bGotData is NO...?
