@@ -1236,9 +1236,6 @@ static NSString *networkTypeSwitchValue = nil;
 #ifdef DEBUG
         NSLog(@"DEBUG: exportString was: %@", exportString);
 #endif // DEBUG
-        // Needs to change to this format...!
-        // Testing my #mobilebroadband speed on @Verizon Down: 829.32 Kbps with FCC Speed Test App by @SamKnows http://bit.ly/1lzG5V6
-        
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
                         NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis1",nil)
