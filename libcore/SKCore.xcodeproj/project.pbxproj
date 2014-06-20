@@ -220,6 +220,7 @@
 		B22E893117C37C8F005D9094 /* SKUDPDataGram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKUDPDataGram.m; sourceTree = "<group>"; };
 		B22E893817C391D0005D9094 /* SKTransferOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTransferOperation.h; sourceTree = "<group>"; };
 		B22E893917C391D0005D9094 /* SKTransferOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTransferOperation.m; sourceTree = "<group>"; };
+		B232599E1954679500C03C2D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		B24140C417C3C30900ECAE8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B249885A1806E2FE00DB57C1 /* SKGraphForResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKGraphForResults.h; sourceTree = "<group>"; };
@@ -481,6 +482,7 @@
 		B22E889E17C36789005D9094 = {
 			isa = PBXGroup;
 			children = (
+				B232599E1954679500C03C2D /* README.md */,
 				B2DC501818C75D9500E69F36 /* HockeySDK-iOS */,
 				B22E88AC17C36789005D9094 /* SKCore */,
 				B22E88C117C3678A005D9094 /* SKCoreTests */,
