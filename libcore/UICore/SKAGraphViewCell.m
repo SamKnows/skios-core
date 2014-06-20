@@ -48,7 +48,7 @@
 - (NSString*)getSuffix
 {
     NSString *suffix = nil;
-    
+  
     if (self.testType == DOWNLOAD_DATA || self.testType == UPLOAD_DATA)
     {
         suffix = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
@@ -425,16 +425,24 @@
     if (nil != dict)
     {
       NSTimeInterval interval = (NSTimeInterval)[[dict objectForKey:@"DATE"] doubleValue];
-      
-      NSString *bitrateMbps1024BasedAsLocalString = [dict objectForKey:@"RESULT"];
-      NSString *result1 = [SKGlobalMethods bitrateMbps1024BasedLocalNumberStringBasedToString:bitrateMbps1024BasedAsLocalString];
+    
+      NSString *textToShow;
+      if (self.testType == DOWNLOAD_DATA || self.testType == UPLOAD_DATA) {
+        // If this is BITRATE, we need to do something special...
+        NSString *bitrateMbps1024BasedAsLocalString = [dict objectForKey:@"RESULT"];
+        textToShow = [SKGlobalMethods bitrateMbps1024BasedLocalNumberStringBasedToString:bitrateMbps1024BasedAsLocalString];
+      } else {
+        // Not bitrate - it is simply value then suffix.
+        NSString *result1 = (NSString*)[dict objectForKey:@"RESULT"];
+        textToShow = [NSString stringWithFormat:@"%@ %@", result1, [self getSuffix]];
+      }
       
       NSString *target = (NSString*)[dict objectForKey:@"TARGET"];
       
       NSDate *date = [NSDate dateWithTimeIntervalSince1970:interval];
       
       cell.lblDate.text = [SKGlobalMethods formatShorterDate:date];
-      cell.lblResult.text = result1;
+      cell.lblResult.text = textToShow;
       cell.lblLocation.text = target;
       
       NSString *networkType = (NSString*)[dict objectForKey:@"NETWORK_TYPE"];
