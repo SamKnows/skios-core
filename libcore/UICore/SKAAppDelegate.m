@@ -531,27 +531,27 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
 
 #pragma mark - Upload File Creation
 
+//The file is deleted only when the size is different than requested
 - (void)amdDoCreateUploadFile
 {
   NSString *uploadFilePath = [SKAAppDelegate getUploadFilePath];
-
+  
   if ([[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath]) {
     NSError *error = nil;
-    BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:uploadFilePath error:&error];
-    SK_ASSERT(bRes);
+    
+    // To save time, do not delete the file at every application launch.
+    // Do this only when the existing one is different to that needed.
+    if ([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != FILE_SIZE)
+    {
+      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:uploadFilePath error:&error];
+      SK_ASSERT(bRes);
+    }
   }
   
   if (![[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath])
   {
-    NSMutableData *bodyData = [[NSMutableData alloc] init];
-
-    for (int j=0; j<FILE_SIZE; j++)
-    {
-      unsigned char zeroByte = 0;
-      [bodyData appendBytes:&zeroByte length:1];
-    }
-
-    [bodyData writeToFile:uploadFilePath atomically:YES];
+    NSMutableData *bodyData = [[NSMutableData alloc] initWithLength:FILE_SIZE];
+    [bodyData writeToFile:uploadFilePath atomically:NO];
   }
 }
 
