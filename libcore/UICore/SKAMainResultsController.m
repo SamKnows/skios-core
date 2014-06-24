@@ -786,6 +786,13 @@ static TestType GRunTheTestWithThisType;
 
 - (void)runTests:(TestType)type
 {
+  
+  if ([[SKAAppDelegate getAppDelegate] amdGetFileUploadPath] == nil) {
+    // File not yet ready - TODO add an alerts to say "Please wait"...?
+    SK_ASSERT(false);
+    return;
+  }
+  
   GRunTheTestWithThisType = type;
   
   if (sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress == YES) {

@@ -80,6 +80,7 @@ FOUNDATION_EXPORT NSString *const Prefs_LastLocation;
 - (BOOL)isActivated;
 - (BOOL)getIsConnected;
 
++ (NSString*)getUploadFilePathNeverNil;
 + (NSString*)getUploadFilePath;
 + (NSString*)schedulePath;
 

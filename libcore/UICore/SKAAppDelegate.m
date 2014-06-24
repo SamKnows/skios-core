@@ -534,7 +534,7 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
 //The file is deleted only when the size is different than requested
 - (void)amdDoCreateUploadFile
 {
-  NSString *uploadFilePath = [SKAAppDelegate getUploadFilePath];
+  NSString *uploadFilePath = [SKAAppDelegate getUploadFilePathNeverNil];
   
   if ([[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath]) {
     NSError *error = nil;
@@ -550,8 +550,20 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
   
   if (![[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath])
   {
-    NSMutableData *bodyData = [[NSMutableData alloc] initWithLength:FILE_SIZE];
-    [bodyData writeToFile:uploadFilePath atomically:NO];
+    // Perform in background, to prevent hang at app start!
+    NSLog(@"MPC HERE!");
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+      NSLog(@"MPC START!");
+      NSMutableData *bodyData = [[NSMutableData alloc] initWithLength:FILE_SIZE];
+      [bodyData writeToFile:uploadFilePath atomically:NO];
+      SK_ASSERT([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] == FILE_SIZE);
+      
+      NSLog(@"MPC COMPLETE!");
+      
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        //Call back to the main thread, if we want!
+      });
+    });
   }
 }
 
@@ -1052,11 +1064,28 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
   return [docDirectory stringByAppendingPathComponent:@"UPLOAD.dat"];
 }
 
++ (NSString *)getUploadFilePathNeverNil {
+  NSString *uploadFilePath = NSTemporaryDirectory();
+  uploadFilePath = [uploadFilePath stringByAppendingPathComponent:@"UPLOAD.dat"];
+  return uploadFilePath;
+}
 
 + (NSString *)getUploadFilePath
 {
-  NSString *result = NSTemporaryDirectory();
-  return [result stringByAppendingPathComponent:@"UPLOAD.dat"];
+  NSString *uploadFilePath = [self getUploadFilePathNeverNil];
+ 
+  if (![[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath]) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
+  if([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != FILE_SIZE) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
+  return uploadFilePath;
+  
 //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 //    NSString *docDirectory = [paths objectAtIndex:0];
 //    return [docDirectory stringByAppendingPathComponent:@"UPLOAD.dat"];

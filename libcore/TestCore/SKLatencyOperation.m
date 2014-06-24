@@ -1052,24 +1052,32 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   self.keepAwakeSocketOperationQueue = [[NSOperationQueue alloc] init];
   
   self.keepAwakeSocketOperation = [NSBlockOperation blockOperationWithBlock: ^{
-    NSLog(@"Beginning operation.\n");
+#ifdef DEBUG
+    NSLog(@"DEBUG: Beginning operation.\n");
+#endif // DEBUG
     // Do some work.
     while (true) {
       
       //NSLog(@"Tick!");
       
       if ([self.keepAwakeSocketOperation isCancelled]) {
-        NSLog(@"CANCELLED KEEP AWAKE OPERATION!");
+#ifdef DEBUG
+        NSLog(@"DEBUG: CANCELLED KEEP AWAKE OPERATION!");
+#endif // DEBUG
         break;
       }
       
       if (self.shouldKeepRunning == NO) {
-        NSLog(@"CANCELLED KEEP AWAKE OPERATION as shouldKeenRunning is NO...");
+#ifdef DEBUG
+        NSLog(@"DEBUG: CANCELLED KEEP AWAKE OPERATION as shouldKeenRunning is NO...");
+#endif // DEBUG
         break;
       }
       
       if (self.testOK == NO) {
-        NSLog(@"STOPPED as testOK == NO!");
+#ifdef DEBUG
+        NSLog(@"DEBUG: STOPPED as testOK == NO!");
+#endif // DEBUG
         break;
       }
       
