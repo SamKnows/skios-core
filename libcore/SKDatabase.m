@@ -382,6 +382,11 @@
 // bytes = (bitrate * 1024 * 1024) / 8
 + (void)storeDownload:(NSDate*)dateTime BitrateMbps1024Based:(double)bitrateMbps1024Based testId:(NSNumber*)testId testName:(NSString*)testName;
 {
+  if (testId == nil || testName == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -418,6 +423,11 @@
 // bytes = (bitrate * 1024 * 1024) / 8
 + (void)storeUpload:(NSDate*)dateTime BitrateMbps1024Based:(double)bitrateMbps1024Based testId:(NSNumber*)testId testName:(NSString*)testName;
 {
+  if (testId == nil || testName == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -450,6 +460,11 @@
 
 + (void)storeLatency:(NSDate*)dateTime latency:(double)latency testId:(NSNumber*)testId testName:(NSString*)testName;
 {
+  if (testId == nil || testName == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -483,6 +498,11 @@
 
 + (void)storePacketLoss:(NSDate*)dateTime packetLoss:(double)packetLoss testId:(NSNumber*)testId testName:(NSString*)testName;
 {
+  if (testId == nil || testName == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -515,6 +535,11 @@
 
 + (void)storeJitter:(NSDate*)dateTime jitter:(double)jitter testId:(NSNumber*)testId testName:(NSString*)testName;
 {
+  if (testId == nil || testName == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -551,6 +576,11 @@
 // bytes = (bitrate * 1024 * 1024) / 8
 + (NSDictionary*)getDownloadResultsForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -588,6 +618,11 @@
 // bytes = (bitrate * 1024 * 1024) / 8
 + (NSDictionary*)getUploadResultsForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -620,6 +655,11 @@
 
 + (NSDictionary*)getLatencyResultsForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -652,6 +692,11 @@
 
 + (NSDictionary*)getLossResultsForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -685,6 +730,11 @@
 
 + (NSDictionary*)getJitterResultsForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -718,6 +768,11 @@
 // Used only by SKA project, as EAQ project doesn't save metrics!
 + (NSMutableDictionary*)getMetricsForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -860,6 +915,11 @@ public static String convertConnectivityType(int type) {
 
 + (void)removeTestDataForTestId:(NSNumber*)testId
 {
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
