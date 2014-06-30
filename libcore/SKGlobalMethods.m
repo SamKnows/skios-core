@@ -466,7 +466,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 
 +(NSString*)getCarrierName {
   CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
-
+  
   if (netinfo == nil)
   {
     return @"";
@@ -479,7 +479,15 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     return @"";
   }
   
-  return [carrier carrierName];
+  // https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/Reference/Reference.html#//apple_ref/occ/instp/CTCarrier/carrierName
+  // The value for this property is nil if the device was never configured for a carrier.
+  NSString *carrierName = [carrier carrierName];
+  if (carrierName == nil) {
+    SK_ASSERT(false);
+    return @"";
+  }
+  
+  return carrierName;
 }
 
 +(NSString*)getNetworkTypeLocalized:(NSString*)theType {
