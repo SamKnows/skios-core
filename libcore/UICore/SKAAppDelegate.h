@@ -68,6 +68,13 @@ FOUNDATION_EXPORT NSString *const Prefs_LastLocation;
 
 @property (strong, nonatomic) UINavigationController *navigationController;
 
+// Array of Device Id strings associated with the logged-in user.
+// Might be nil, if nothing received for some reason (e.g. if device off-line)
+// TODO - this should be saved/retrieved, for that reason!
+@property (strong, nonatomic) NSArray *unitDeviceIds;
+- (NSString*)getCurrentlySelectedDeviceId;
+- (void)setCurrentlySelectedDeviceId:(NSString*)deviceId;
+
 - (NSString*)getNetworkType:(int)date networkType:(NSString*)networkType;
 - (NSString*)getNetworkState:(int)date;
 - (NSString*)getLocationInformation:(int)date;

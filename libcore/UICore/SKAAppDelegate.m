@@ -1651,4 +1651,14 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+// Device ID querying
+- (NSString*)getCurrentlySelectedDeviceId {
+  NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:@"unitID"];
+  return deviceId;
+}
+
+- (void)setCurrentlySelectedDeviceId:(NSString*)deviceId {
+  [[NSUserDefaults standardUserDefaults] setObject:deviceId forKey:@"unitID"];
+}
+
 @end
