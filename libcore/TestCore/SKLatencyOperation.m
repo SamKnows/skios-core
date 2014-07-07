@@ -872,7 +872,6 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)computeLatency:(long)tag
 {
-#ifdef DEBUG
   NSString *key = [NSString stringWithFormat:@"%ld", tag];
   
   if ([startTimes objectForKey:key] && [endTimes objectForKey:key])
@@ -882,10 +881,11 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
     
     if (!isClosestTargetTest) {
       double rtt = [end timeIntervalSinceDate:start];
+#ifdef DEBUG
       NSLog(@"computeLatency LATENCY: %ld : %.2f", tag, rtt*1000.0f);
+#endif // DEBUG
     }
   }
-#endif // DEBUG
 }
 
 - (void)startBackgroundTask
