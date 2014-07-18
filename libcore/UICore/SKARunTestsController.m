@@ -264,28 +264,31 @@
 
 - (void)aodTransferTestDidFail:(BOOL)isDownstream
 {
-  NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
-  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
+    
 #ifdef DEBUG
-  NSLog(@"%s aodTransferTestDidFail : %@", __FUNCTION__, test);
+    NSLog(@"%s aodTransferTestDidFail : %@", __FUNCTION__, test);
 #endif // DEBUG
-  
-  NSIndexPath *ixp = [self getIndexPathForTest:test];
-  SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  
-  if (nil != cell)
-  {
-    cell.lblResult.hidden = NO;
-    cell.lblResult.text = [SKTransferOperation getStatusFailed];
-    cell.progressView.hidden = YES;
-  }
-  
-  [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:test];
-  [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
-  [self updateResultsArray:[SKTransferOperation getStatusFailed] key:@"RESULT_1" testType:test];
-  
-  [self stopTestFromAlertResponse:NO];
-  testsComplete = YES;
+    
+    NSIndexPath *ixp = [self getIndexPathForTest:test];
+    SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+    
+    if (nil != cell)
+    {
+      cell.lblResult.hidden = NO;
+      cell.lblResult.text = [SKTransferOperation getStatusFailed];
+      cell.progressView.hidden = YES;
+    }
+    
+    [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:test];
+    [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
+    [self updateResultsArray:[SKTransferOperation getStatusFailed] key:@"RESULT_1" testType:test];
+    
+    [self stopTestFromAlertResponse:NO];
+    testsComplete = YES;
+  });
 }
 
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based
@@ -329,20 +332,23 @@
 
 - (void)aodAllTestsComplete
 {
-  testsComplete = YES;
-  
-  [self setEndDataUsage];
-  
-  SK_ASSERT([NSThread isMainThread]);
-  [self.tableView reloadData];
-  
-  [[self delegate] refreshGraphsAndTableData];
-  [self.spinnerMain stopAnimating];
-  
-  if (self.continuousTesting == YES) {
-    // Keep going!
-    [self startToRunTheTests:YES];
-  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    testsComplete = YES;
+    
+    [self setEndDataUsage];
+    
+    SK_ASSERT([NSThread isMainThread]);
+    [self.tableView reloadData];
+    
+    [[self delegate] refreshGraphsAndTableData];
+    [self.spinnerMain stopAnimating];
+    
+    if (self.continuousTesting == YES) {
+      // Keep going!
+      [self startToRunTheTests:YES];
+    }
+  });
 }
 
 #pragma mark - Actions
@@ -946,8 +952,11 @@ static BOOL sbViewIsVisible;
   {
     if (nil != self.resultsArray)
     {
-      // Latency/loss/jitter are ALL ONE RESULT!A
-      NSLog(@"resultsArray = %@", [self.resultsArray description]);
+      // Latency/loss/jitter are ALL ONE RESULT!
+#ifdef DEBUG
+      NSString *theDescription = [self.resultsArray description];
+      NSLog(@"DEBUG: resultsArray = %@", theDescription);
+#endif // DEBUG
       return [self.resultsArray count];
     }
     
