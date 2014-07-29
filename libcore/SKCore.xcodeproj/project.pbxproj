@@ -52,6 +52,7 @@
 		B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E892E17C37A6C005D9094 /* SKIPHelper.m */; };
 		B22E893217C37C90005D9094 /* SKUDPDataGram.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E893117C37C8F005D9094 /* SKUDPDataGram.m */; };
 		B22E893A17C391D0005D9094 /* SKTransferOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E893917C391D0005D9094 /* SKTransferOperation.m */; };
+		B2342C6C1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = B2342C6B1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m */; };
 		B24140C517C3C30900ECAE8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C417C3C30900ECAE8C /* UIKit.framework */; };
 		B24140C717C3C36100ECAE8C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
 		B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */ = {isa = PBXBuildFile; fileRef = B249885B1806E2FE00DB57C1 /* SKGraphForResults.m */; };
@@ -221,6 +222,8 @@
 		B22E893817C391D0005D9094 /* SKTransferOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTransferOperation.h; sourceTree = "<group>"; };
 		B22E893917C391D0005D9094 /* SKTransferOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTransferOperation.m; sourceTree = "<group>"; };
 		B232599E1954679500C03C2D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		B2342C6A1987D82F00F6CC03 /* UIViewController+SKSafeSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SKSafeSegue.h"; sourceTree = "<group>"; };
+		B2342C6B1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SKSafeSegue.m"; sourceTree = "<group>"; };
 		B24140C417C3C30900ECAE8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B249885A1806E2FE00DB57C1 /* SKGraphForResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKGraphForResults.h; sourceTree = "<group>"; };
@@ -773,6 +776,8 @@
 				B297CE7918E0541800964CD3 /* UIView+SKView.m */,
 				B221AEE118FFDFFA00323923 /* UIAlertView+SKExtensions.h */,
 				B221AEE218FFDFFA00323923 /* UIAlertView+SKExtensions.m */,
+				B2342C6A1987D82F00F6CC03 /* UIViewController+SKSafeSegue.h */,
+				B2342C6B1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m */,
 			);
 			path = UICore;
 			sourceTree = "<group>";
@@ -1108,6 +1113,7 @@
 				B221AED918FFC20700323923 /* zip.c in Sources */,
 				B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */,
 				B2B2B4BD18AB7A8500592FEF /* SKOperators.m in Sources */,
+				B2342C6C1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m in Sources */,
 				B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */,
 				B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */,
 				B218A02C17CCD3300048B3E0 /* SKLatencyTest.m in Sources */,

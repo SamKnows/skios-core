@@ -281,7 +281,7 @@
   dest.index = self.index+1;
   
   @try {
-    [self.navigationController pushViewController:dest animated:YES];
+    [self SKSafePushViewController:dest animated:YES];
   } @catch (NSException *ex) {
     if ([ex.name isEqualToString:NSInvalidArgumentException]) {
 #ifdef DEBUG
@@ -297,11 +297,11 @@
 - (void)moveToActivationScreen
 {
   // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-  [self performSegueWithIdentifier:@"segueToActivation" sender:self];
+  [self SKSafePerformSegueWithIdentifier:@"segueToActivation" sender:self];
   //SKAActivationController *cnt = [[SKAActivationController alloc] initWithNibName:@"SKAActivationController" bundle:nil];
   //[cnt setDelegate:self];
   //[cnt setHidesBackButton:YES];
-  //[self.navigationController pushViewController:cnt animated:YES];
+  //[self SKSafePushViewController:cnt animated:YES];
 }
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

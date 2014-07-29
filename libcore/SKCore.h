@@ -58,6 +58,7 @@ typedef enum {
 
 #import "./UICore/SKAAppDelegate.h"
 #import "./UICore/UIAlertView+SKExtensions.h"
+#import "./UICore/UIViewController+SKSafeSegue.h"
 
 #import "./Tests/SKAHttpTest.h"
 #import "./Tests/SKALatencyOperation.h"

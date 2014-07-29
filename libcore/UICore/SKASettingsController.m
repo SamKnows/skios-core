@@ -257,7 +257,7 @@ enum {
     [alert show];
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
     [SKAAppDelegate setIsActivated:NO];
-    [self performSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
+    [self SKSafePerformSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
   }
 }
 

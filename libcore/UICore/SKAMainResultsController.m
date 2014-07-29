@@ -180,7 +180,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 
 -(void) doPerformSegueWithIdentifier:(NSString*)identifier {
   // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-  [self performSegueWithIdentifier:identifier sender:self];
+  [self SKSafePerformSegueWithIdentifier:identifier sender:self];
 }
 
 -(void) setNetworkTypeTo:(NSString*)toNetworkType {
@@ -308,6 +308,12 @@ NSMutableArray *GArrayForResultsController;
 }
 
 - (IBAction)actionBarButtonItem:(id)sender {
+  
+  if (self.navigationController.topViewController != self) {
+    SK_ASSERT(false);
+    return;
+  }
+  
   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Title_SelectOption",nil)
                                                       delegate:self
                                              cancelButtonTitle:nil
@@ -418,7 +424,7 @@ NSMutableArray *GArrayForResultsController;
 - (void)swipeLeft
 {
   if ([self canViewArchivedResults]) {
-    [self performSegueWithIdentifier:@"segueToArchivedResultsController" sender:self];
+    [self SKSafePerformSegueWithIdentifier:@"segueToArchivedResultsController" sender:self];
   }
 }
 
@@ -705,13 +711,13 @@ NSMutableArray *GArrayForResultsController;
     // TODO!
     if ([buttonText isEqualToString:NSLocalizedString(@"Menu_Settings",nil)]) {
       // Settings
-      [self performSegueWithIdentifier:@"segueFromMainToSettingsController" sender:self];
+      [self SKSafePerformSegueWithIdentifier:@"segueFromMainToSettingsController" sender:self];
     } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_About",nil)]) {
         // About
-        [self performSegueWithIdentifier:@"segueFromMainToAbout" sender:self];
+        [self SKSafePerformSegueWithIdentifier:@"segueFromMainToAbout" sender:self];
     } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_TermsOfUse",nil)]) {
       // Terms of Use
-      [self performSegueWithIdentifier:@"segueFromMainToTAndCController" sender:self];
+      [self SKSafePerformSegueWithIdentifier:@"segueFromMainToTAndCController" sender:self];
     } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_Export",nil)]) {
       SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
      
@@ -822,7 +828,7 @@ static TestType GRunTheTestWithThisType;
 
   if ([delegate getIsConnected])
   {
-    [self performSegueWithIdentifier:@"segueToRunTestsController" sender:self];
+    [self SKSafePerformSegueWithIdentifier:@"segueToRunTestsController" sender:self];
   }
   else
   {
@@ -1005,6 +1011,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   if ([[SKAAppDelegate getAppDelegate] alwaysRunAllTests]) {
     // Run all tests!
     [self runTests:ALL_TESTS];
+    return;
+  }
+  
+  if (self.navigationController.topViewController != self) {
+    SK_ASSERT(false);
     return;
   }
   

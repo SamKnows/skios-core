@@ -149,7 +149,7 @@
     SKAArchivedResultsController *dest = [storyboard instantiateViewControllerWithIdentifier:@"SKAArchivedResultsController"];
     dest.testIndex = newIndex;
     dest.testMetaData = self.testMetaData;
-    [self.navigationController pushViewController:dest animated:YES];
+    [self SKSafePushViewController:dest animated:YES];
     
   } else {
     SK_ASSERT(![self isThereOlderDataToShow]);
@@ -158,7 +158,7 @@
 
 - (void)swipeRight
 {
-  [self.navigationController popViewControllerAnimated:YES];
+  [self SKSafePopViewControllerAnimated:YES];
 }
 
 - (void)setLabels
