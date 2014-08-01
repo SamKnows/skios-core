@@ -14,11 +14,11 @@
 void sk_debugbreak(const char *PpFile, int PLine) {
 #ifdef DEBUG
   NSLog(@"DEBUG: ASSERTION IN %s, sk_debugbreak - SET A BREAKPOINT AT (%d)!\n", PpFile, PLine);
-#ifdef TARGET_CPU_ARM
+#if defined(TARGET_CPU_ARM) || defined(TARGET_CPU_ARM64)
   raise(SIGTRAP);
-#else // TARGET_CPU_ARM
+#else // defined(TARGET_CPU_ARM) || defined(TARGET_CPU_ARM64)
    {__asm__("int $3\n" : : );}
-#endif // TARGET_CPU_ARM
+#endif // defined(TARGET_CPU_ARM) || defined(TARGET_CPU_ARM64)
 #endif // DEBUG
 }
 
