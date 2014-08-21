@@ -11,8 +11,6 @@
 @interface SKATermsAndConditionsController ()
 @property BOOL hasFinished;
 
-- (void)setContext;
-- (void)setTitleLabel;
 - (void)displayMessage:(NSString*)msg;
 - (void)moveToNextScreen;
 - (void)moveToActivationScreen;
@@ -30,6 +28,7 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"Storyboard_Terms_Title",nil);
+  
   self.dataLabel.text = NSLocalizedString(@"Storyboard_Terms_DataLabel",nil);
   
   // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
@@ -38,9 +37,8 @@
   
   //[self.navigationItem setHidesBackButton:self.hidesBackButton];
   
-  [self addBackButton];
-  [self setContext];
-  [self setTitleLabel];
+  [self setWebViewContext];
+  [self setWebViewTitleLabel];
 }
 
 
@@ -50,13 +48,16 @@
   
   // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
   
-  NSString *resource = [NSString stringWithFormat:@"notice%d", index+1];
-  NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:@"htm"];
-  NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-  
-  [self.webView.scrollView setBounces:NO];
-  [self.webView setDataDetectorTypes:UIDataDetectorTypeNone];
-  [self.webView loadHTMLString:html baseURL:[[NSBundle mainBundle] bundleURL]];
+  if (self.webView != nil) {
+    
+    NSString *resource = [NSString stringWithFormat:@"notice%d", index+1];
+    NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:@"htm"];
+    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    
+    [self.webView.scrollView setBounces:NO];
+    [self.webView setDataDetectorTypes:UIDataDetectorTypeNone];
+    [self.webView loadHTMLString:html baseURL:[[NSBundle mainBundle] bundleURL]];
+  }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -65,66 +66,55 @@
   
   // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
   
-  if (hasFinished)
-  {
+  if (hasFinished) {
     // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
     //[self.navigationController popToRootViewControllerAnimated:YES];
     [SKAAppDelegate resetUserInterfaceBackToRunTestsScreenFromViewController];
   }
 }
 
-- (void)addBackButton
+- (void)setWebViewContext
 {
-//  NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-//                        [UIColor whiteColor],UITextAttributeTextColor,
-//                        [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
-//                        nil];
-//  
-//  [[UIBarButtonItem appearance] setTitleTextAttributes:dict forState:UIControlStateNormal];
-  
-  // Back button name set in storyboard - see:
-  // http://stackoverflow.com/questions/9871578/how-to-change-the-uinavigationcontroller-back-button-name
-}
-
-
-- (void)setContext
-{
-  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-  
-  self.lblMain.text = (index == 2) ? NSLocalizedString(@"TC_Label_Data", nil) : NSLocalizedString(@"TC_Label", nil);
-  
-  if (index == 2)
-  {
+  if (self.webView != nil) {
     // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
     
-    CGRect frmWeb = self.webView.frame;
-    frmWeb.origin.y = self.viewDataCollector.frame.origin.y + self.viewDataCollector.frame.size.height;
-    frmWeb.size.height = frmWeb.size.height - self.viewDataCollector.frame.size.height;
-    self.webView.frame = frmWeb;
+    self.lblMain.text = (index == 2) ? NSLocalizedString(@"TC_Label_Data", nil) : NSLocalizedString(@"TC_Label", nil);
     
-    int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:Prefs_DataCapValueBytes] longLongValue];
-    SK_ASSERT(mb >= 0);
-    
-    mb = mb / CBytesInAMegabyte;
-    
-    SK_ASSERT(mb >= 0);
-    
-    self.txtData.text = [NSString stringWithFormat:@"%d", (int)mb];
+    if (index == 2)
+    {
+      // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
+      
+      CGRect frmWeb = self.webView.frame;
+      frmWeb.origin.y = self.viewDataCollector.frame.origin.y + self.viewDataCollector.frame.size.height;
+      frmWeb.size.height = frmWeb.size.height - self.viewDataCollector.frame.size.height;
+      self.webView.frame = frmWeb;
+      
+      int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:Prefs_DataCapValueBytes] longLongValue];
+      SK_ASSERT(mb >= 0);
+      
+      mb = mb / CBytesInAMegabyte;
+      
+      SK_ASSERT(mb >= 0);
+      
+      self.txtData.text = [NSString stringWithFormat:@"%d", (int)mb];
+    }
   }
 }
 
-- (void)setTitleLabel
+- (void)setWebViewTitleLabel
 {
-  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-  
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
-  label.textColor = [UIColor blackColor];
-  
-  label.backgroundColor = [UIColor clearColor];
-  label.text = NSLocalizedString(@"TC_Title", nil);
-  [label sizeToFit];
-  self.navigationItem.titleView = label;
+  if (self.webView != nil) {
+    // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
+    label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+    label.textColor = [UIColor blackColor];
+    
+    label.backgroundColor = [UIColor clearColor];
+    label.text = NSLocalizedString(@"TC_Title", nil);
+    [label sizeToFit];
+    self.navigationItem.titleView = label;
+  }
 }
 
 - (void)displayMessage:(NSString*)msg
@@ -296,18 +286,10 @@
 
 - (void)moveToActivationScreen
 {
-  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
   [self SKSafePerformSegueWithIdentifier:@"segueToActivation" sender:self];
-  //SKAActivationController *cnt = [[SKAActivationController alloc] initWithNibName:@"SKAActivationController" bundle:nil];
-  //[cnt setDelegate:self];
-  //[cnt setHidesBackButton:YES];
-  //[self SKSafePushViewController:cnt animated:YES];
 }
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-  
-  // NSLog(@"MPC segue.identifer=%@", segue.identifier);
   
   if ([segue.identifier isEqualToString:@"segueToActivation"]) {
     
