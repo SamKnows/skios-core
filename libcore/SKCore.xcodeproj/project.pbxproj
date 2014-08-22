@@ -1279,20 +1279,18 @@
 					"$(SRCROOT)/../HockeySDK-iOS/HockeySDK.embeddedframework",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"/Users/pcole/samknows/skios/skios-core/OCMock/OSX",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SKCore-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"\"$(SRCROOT)/../../OCMock/iOS\"",
+					"\"$(SRCROOT)/../OCMock/iOS\"",
 				);
 				INFOPLIST_FILE = "SKCoreTests/SKCoreTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../OCMock/iOS\"",
-					"/Users/pcole/samknows/skios/skios-core/OCMock/iOS",
+					"\"$(SRCROOT)/../OCMock/iOS\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1310,20 +1308,18 @@
 					"$(SRCROOT)/../HockeySDK-iOS/HockeySDK.embeddedframework",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"/Users/pcole/samknows/skios/skios-core/OCMock/OSX",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SKCore-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"\"$(SRCROOT)/../../OCMock/iOS\"",
+					"\"$(SRCROOT)/../OCMock/iOS\"",
 				);
 				INFOPLIST_FILE = "SKCoreTests/SKCoreTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../OCMock/iOS\"",
-					"/Users/pcole/samknows/skios/skios-core/OCMock/iOS",
+					"\"$(SRCROOT)/../OCMock/iOS\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
