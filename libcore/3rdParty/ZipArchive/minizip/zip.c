@@ -610,6 +610,7 @@ extern zipFile ZEXPORT zipOpen2 (pathname, append, globalcomment, pzlib_filefunc
         if (err!=ZIP_OK)
         {
             ZCLOSE(ziinit.z_filefunc, ziinit.filestream);
+            TRYFREE(zi);
             return NULL;
         }
 
@@ -1046,19 +1047,25 @@ extern int ZEXPORT zipCloseFileInZipRaw (file, uncompressed_size, crc32)
     zi->ci.stream.avail_in = 0;
 
     if ((zi->ci.method == Z_DEFLATED) && (!zi->ci.raw))
-        while (err==ZIP_OK)
     {
+      while (err==ZIP_OK)
+      {
         uLong uTotalOutBefore;
         if (zi->ci.stream.avail_out == 0)
         {
-            if (zipFlushWriteBuffer(zi) == ZIP_ERRNO)
-                err = ZIP_ERRNO;
-            zi->ci.stream.avail_out = (uInt)Z_BUFSIZE;
-            zi->ci.stream.next_out = zi->ci.buffered_data;
+          if (zipFlushWriteBuffer(zi) == ZIP_ERRNO)
+          {
+            err = ZIP_ERRNO;
+            SK_ASSERT(false);
+            break;
+          }
+          zi->ci.stream.avail_out = (uInt)Z_BUFSIZE;
+          zi->ci.stream.next_out = zi->ci.buffered_data;
         }
         uTotalOutBefore = zi->ci.stream.total_out;
         err=deflate(&zi->ci.stream,  Z_FINISH);
         zi->ci.pos_in_buffered_data += (uInt)(zi->ci.stream.total_out - uTotalOutBefore) ;
+      }
     }
 
     if (err==Z_STREAM_END)

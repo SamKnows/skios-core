@@ -731,6 +731,9 @@ local int unzlocal_GetCurrentFileInfoInternal (file,
     }
     else
         lSeek+=file_info.size_file_comment;
+      
+    // Assertion to remove warning about lSeek not being used!
+    SK_ASSERT(lSeek >= 0);
 
     if ((err==UNZ_OK) && (pfile_info!=NULL))
         *pfile_info=file_info;
@@ -1098,8 +1101,9 @@ extern int ZEXPORT unzOpenCurrentFile3 (file, method, level, raw, password)
 
     if (pfile_in_zip_read_info->read_buffer==NULL)
     {
-        TRYFREE(pfile_in_zip_read_info);
-        return UNZ_INTERNALERROR;
+      SK_ASSERT(false);
+      TRYFREE(pfile_in_zip_read_info);
+      return UNZ_INTERNALERROR;
     }
 
     pfile_in_zip_read_info->stream_initialised=0;
@@ -1120,7 +1124,12 @@ extern int ZEXPORT unzOpenCurrentFile3 (file, method, level, raw, password)
 
     if ((s->cur_file_info.compression_method!=0) &&
         (s->cur_file_info.compression_method!=Z_DEFLATED))
-        err=UNZ_BADZIPFILE;
+    {
+      SK_ASSERT(false);
+      err=UNZ_BADZIPFILE;
+      TRYFREE(pfile_in_zip_read_info);
+      return err;
+    }
 
     pfile_in_zip_read_info->crc32_wait=s->cur_file_info.crc;
     pfile_in_zip_read_info->crc32=0;
@@ -1143,7 +1152,9 @@ extern int ZEXPORT unzOpenCurrentFile3 (file, method, level, raw, password)
 
       err=inflateInit2(&pfile_in_zip_read_info->stream, -MAX_WBITS);
       if (err == Z_OK)
+      {
         pfile_in_zip_read_info->stream_initialised=1;
+      }
       else
       {
         TRYFREE(pfile_in_zip_read_info);
