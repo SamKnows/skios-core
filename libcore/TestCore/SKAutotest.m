@@ -6,6 +6,7 @@
 //
 
 #import "SKAutotest.h"
+#import "../UICore2/Reusable/IPHelper/IPHelper.h"
 
 @interface SKAutotest ()
 
@@ -28,6 +29,8 @@
 
 @synthesize runAllTests;
 @synthesize validTest;
+@synthesize bitMaskForRequestedTests;
+
 @synthesize autotestManagerDelegate;
 @synthesize autotestObserverDelegate;
 
@@ -49,6 +52,67 @@
     }
   
     return self;
+}
+
+-(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting {
+    
+    self = [super init];
+    
+    if (self)
+    {
+        autotestManagerDelegate = inAutotestManagerDelegate;
+        autotestObserverDelegate = inAutotestObserverDelegate;
+        isRunning = NO;
+        isCancelled = NO;
+        bitMaskForRequestedTests = 0;
+    }
+    
+    return self;
+}
+
+-(void)runSetOfTests:(int)bitMaskForRequestedTests_
+{
+    bitMaskForRequestedTests = bitMaskForRequestedTests_;
+    
+    self.btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        if (self.btid != UIBackgroundTaskInvalid) {
+            [[UIApplication sharedApplication] endBackgroundTask:self.btid];
+            self.btid = UIBackgroundTaskInvalid;
+        }
+    }];
+    
+    NSArray *testsTimes = [[self.autotestManagerDelegate amdGetSchedule] getTestsAndTimes];
+    
+    if (testsTimes != nil)
+    {
+        NSArray *testsAvailableList = [testsTimes objectAtIndex:0];
+        
+        self.autoTests = [[NSMutableArray alloc] init];
+        
+        for (int j=0; j<[testsAvailableList count]; j++)
+        {
+            NSDictionary* testFromAvailableList = [testsAvailableList objectAtIndex:j];
+            
+            if (([self translateTestNameToBitMask:((NSString *)[testFromAvailableList objectForKey:@"type"])] & bitMaskForRequestedTests_) != 0)
+                [self.autoTests addObject:testFromAvailableList];
+        }
+        
+        self.isRunning = YES;
+        [self runNextTest:-1];
+    }
+}
+
+
+-(int)translateTestNameToBitMask:(NSString*)testName_
+{
+    if ([testName_ isEqualToString:@"closestTarget"]) return CTTBM_CLOSESTTARGET;
+    if ([testName_ isEqualToString:@"downstreamthroughput"]) return CTTBM_DOWNLOAD;
+    if ([testName_ isEqualToString:@"upstreamthroughput"]) return CTTBM_UPLOAD;
+    if ([testName_ isEqualToString:@"latency"]) return CTTBM_LATENCYLOSSJITTER;
+    
+    //TODO: Loss, jitter ?
+    
+    return 0;
 }
 
 -(void) dealloc {

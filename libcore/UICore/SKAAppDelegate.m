@@ -31,6 +31,7 @@ NSString *const Prefs_DataUsage = @"DATA_USAGE";
 NSString *const Prefs_ClosestTarget = @"CLOSEST_TARGET";
 NSString *const Prefs_DateRange = @"DATE_RANGE";
 NSString *const Prefs_LastLocation = @"LAST_LOCATION";
+NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 @interface SKAAppDelegate ()
 
@@ -215,6 +216,11 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
     [prefs setObject:loc forKey:Prefs_LastLocation];
   }
   
+  if (![prefs objectForKey:Prefs_LastTestSelection])
+  {
+      [prefs setInteger:255 forKey:Prefs_LastTestSelection];
+  }
+
   [prefs synchronize];
 }
 
@@ -551,18 +557,18 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
   if (![[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath])
   {
     // Perform in background, to prevent hang at app start!
-    NSLog(@"MPC HERE!");
+    //NSLog(@"PREPARE!");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-      NSLog(@"MPC START!");
+      //NSLog(@"START!");
       NSMutableData *bodyData = [[NSMutableData alloc] initWithLength:FILE_SIZE];
       [bodyData writeToFile:uploadFilePath atomically:NO];
       SK_ASSERT([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] == FILE_SIZE);
       
-      NSLog(@"MPC COMPLETE!");
+      //NSLog(@"COMPLETE!");
       
-      dispatch_sync(dispatch_get_main_queue(), ^{
-        //Call back to the main thread, if we want!
-      });
+        // Could back to the main thread, if we wanted...
+//      dispatch_sync(dispatch_get_main_queue(), ^{
+//      });
     });
   }
 }
@@ -941,9 +947,7 @@ NSString *const Prefs_LastLocation = @"LAST_LOCATION";
     UIStoryboard *storyboard = [self.class getStoryboard];
     self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsNavigationController"];
   } else if (![self isActivated]) {
-    UIStoryboard *storyboard = [self.class getStoryboard];
-    self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ActivationNavigationController"];
-    
+    [self didFinishAppLaunching_NotActivatedYet];
   }
     
   
@@ -1596,6 +1600,11 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+-(BOOL)enableTestsSelection
+{
+    return YES;
+}
+
 // User interface special behaviours - you can override if you want!
 -(UIFont*) getSpecialFontOfSize:(CGFloat)theSize {
   return [UIFont systemFontOfSize:theSize];
@@ -1649,6 +1658,11 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 
 -(BOOL) isSocialMediaImageExportSupported {
   return NO;
+}
+
+-(void) didFinishAppLaunching_NotActivatedYet {
+  UIStoryboard *storyboard = [self.class getStoryboard];
+  self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ActivationNavigationController"];
 }
 
 // Device ID querying

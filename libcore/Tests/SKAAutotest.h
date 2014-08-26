@@ -13,4 +13,10 @@
 
 -(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType IsContinuousTesting:(BOOL)isContinuousTesting;
 
+
+//API API API **********************************************************
+-(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate tests2execute:(int)tests2execute isContinuousTesting:(BOOL)isContinuousTesting;
+-(void)runSetOfTests:(int)bitMaskForRequestedTests_;
+
+
 @end

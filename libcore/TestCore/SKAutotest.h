@@ -50,6 +50,8 @@ typedef enum
 @property (nonatomic, retain) NSNumber *testId;
 @property (nonatomic, assign) BOOL runAllTests;
 @property (nonatomic, retain) NSString *validTest;
+@property (nonatomic, assign) int bitMaskForRequestedTests;
+
 @property (nonatomic, retain) id<SKAutotestManagerDelegate> autotestManagerDelegate;
 @property (atomic, retain) id <SKAutotestObserverDelegate> autotestObserverDelegate;
 @property (nonatomic, assign) BOOL udpClosestTargetTestSucceeded;
@@ -61,6 +63,10 @@ typedef enum
 //
 
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType  IsContinuousTesting:(BOOL)isContinuousTesting;
+
+//### HG
+-(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting;
+-(void)runSetOfTests:(int)bitMaskForRequestedTests_;
 
 //@public
 -(void)stopTheTests;

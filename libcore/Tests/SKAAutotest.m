@@ -21,6 +21,36 @@
 @synthesize jsonDictionary;
 @synthesize cpuCondition;
 
+//API API API **********************************************************
+-(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate tests2execute:(int)tests2execute isContinuousTesting:(BOOL)isContinuousTesting
+{
+    self = [super initWithAutotestManagerDelegate:inAutotestManagerDelegate autotestObserverDelegate:inAutotestObserverDelegate isContinuousTesting:isContinuousTesting];
+    
+    if (self = [super init])
+    {
+        self.mbIsContinuousTesting = isContinuousTesting;
+        self.accumulatedNetworkTypeLocationMetrics = [NSMutableArray new];
+        jsonDictionary = [[NSMutableDictionary alloc] init];
+        self.requestedTests = [NSMutableArray new];
+        [self writeJSON_TestHeader:[self.autotestManagerDelegate amdGetSchedule]];
+        self.testId = nil;
+        self.bitMaskForRequestedTests = tests2execute | CTTBM_CLOSESTTARGET;
+    }
+    
+    return self;
+}
+
+
+//API API API **********************************************************
+-(void)runSetOfTests:(int)bitMaskForRequestedTests_
+{
+  bitMaskForRequestedTests_ |= CTTBM_CLOSESTTARGET;
+  
+  [self startOfTestRunThrottleQuery];
+  
+  [super runSetOfTests:bitMaskForRequestedTests_];
+}
+
 -(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType  IsContinuousTesting:(BOOL)isContinuousTesting
 {
   self = [super initWithAutotestManagerDelegate:inAutotestManagerDelegate AndAutotestObserverDelegate:inAutotestObserverDelegate AndTestType:testType IsContinuousTesting:isContinuousTesting];
@@ -49,8 +79,8 @@
   
 }
 
-- (void)runTheTests
-{
+
+-(void)startOfTestRunThrottleQuery {
   if ([[SKAAppDelegate getAppDelegate] isThrottleQuerySupported] == false)
   {
     // No throttle query supported...
@@ -102,12 +132,17 @@
         self.mpThrottleResponse = @"error";
       }
     }
-    ];
+                                   ];
     
     if (self.mpThrottledQueryResult.returnCode == SKOperators_Return_NoThrottleQuery) {
       self.mpThrottleResponse = @"no throttling";
     }
   }
+}
+
+- (void)runTheTests
+{
+  [self startOfTestRunThrottleQuery];
 
   [super runTheTests];
 }

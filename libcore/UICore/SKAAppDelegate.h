@@ -29,6 +29,7 @@ FOUNDATION_EXPORT NSString *const Prefs_DataCapValueBytes;
 FOUNDATION_EXPORT NSString *const Prefs_DataDate;
 FOUNDATION_EXPORT NSString *const Prefs_DateRange;
 FOUNDATION_EXPORT NSString *const Prefs_LastLocation;
+FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 
 @class Reachability;
 
@@ -72,6 +73,7 @@ FOUNDATION_EXPORT NSString *const Prefs_LastLocation;
 // Might be nil, if nothing received for some reason (e.g. if device off-line)
 // TODO - this should be saved/retrieved, for that reason!
 @property (strong, nonatomic) NSArray *unitDeviceIds;
+-(void) didFinishAppLaunching_NotActivatedYet;
 - (NSString*)getCurrentlySelectedDeviceId;
 - (void)setCurrentlySelectedDeviceId:(NSString*)deviceId;
 
@@ -130,6 +132,7 @@ FOUNDATION_EXPORT NSString *const Prefs_LastLocation;
 -(BOOL) supportOneDayResultView;
 -(BOOL) supportExportMenuItem;
 -(BOOL) canDisableDataCap;
+-(BOOL) enableTestsSelection;
 // Datacap - enable/disable
 -(void) setIsDataCapEnabled:(BOOL) value;
 -(BOOL) isDataCapEnabled;
