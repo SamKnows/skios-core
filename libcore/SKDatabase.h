@@ -36,7 +36,8 @@
              isoCode:(NSString*)isoCode
          networkCode:(NSString*)networkCode
          networkType:(NSString*)networkType
-           radioType:(NSString*)radioType;
+           radioType:(NSString*)radioType
+              target:(NSString*)target;
 
 // Used only by SKA project, as EAQ project doesn't save metrics!
 + (NSMutableDictionary*)getMetricsForTestId:(NSNumber*)testId;
@@ -55,5 +56,9 @@
 + (NSMutableDictionary*)getDailyAveragedTestDataAsDictionaryKeyByDay:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
 
 + (NSDate*)getLastRunDateWhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
+
+
+//###HG
++ (NSMutableArray*)getTestDataForNetworkType:(NSString*)networkType_ afterDate:(NSDate*)minDate_;
 
 @end

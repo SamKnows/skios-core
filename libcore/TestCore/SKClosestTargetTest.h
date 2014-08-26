@@ -92,7 +92,7 @@
 
 #pragma mark - Delegate
 
-@protocol SKClosestTargetDelegate
+@protocol SKClosestTargetDelegate <NSObject>
 
 - (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency;
 - (void)ctdTestDidFail;

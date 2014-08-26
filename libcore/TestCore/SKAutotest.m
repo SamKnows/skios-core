@@ -135,6 +135,8 @@
 
 - (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency
 {
+  self.selectedTarget = target; //###HG
+    
   NSLog(@"Closest Target Test Did Complete : %@, Latency : %f", target, latency);
   
   [self.autotestManagerDelegate amdSetClosestTarget:target];
@@ -247,7 +249,7 @@
     
     if (nil != targets)
     {
-      if (nil == self.targetTest)
+      if (self.targetTest == nil)
       {
         int numDatagramsFromSchedule = [[config paramObjectForKey:@"numberOfPackets"] intValue];
         [self createClosestTargetTest:targets NumDatagrams:numDatagramsFromSchedule];

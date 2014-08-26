@@ -8,6 +8,7 @@
 
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "SKTestResults.h"
 
 @implementation SKDatabase
 
@@ -307,7 +308,6 @@
     SK_ASSERT(bRes);
   }
 
-
   // We don't want 'NULL' for the new column, as that would affect joins.
   bRes = [db executeUpdate:@"UPDATE metrics SET network_type = 'mobile' WHERE network_type IS NULL"];
   SK_ASSERT(bRes);
@@ -315,7 +315,7 @@
   // We don't want 'NULL' for the new column, as that would affect joins.
   bRes = [db executeUpdate:@"UPDATE metrics SET radio_type = 'Unknown' WHERE radio_type IS NULL"];
   SK_ASSERT(bRes);
-  
+
   bRes = [db close];
   SK_ASSERT(bRes);
   
@@ -863,8 +863,6 @@ public static String convertConnectivityType(int type) {
 }
 */
 
-
-
 + (void)storeMetrics:(NSNumber*)testId
               device:(NSString*)device
                   os:(NSString*)os
@@ -874,6 +872,7 @@ public static String convertConnectivityType(int type) {
          networkCode:(NSString*)networkCode
          networkType:(NSString*)networkType
            radioType:(NSString*)radioType
+              target:(NSString*)target
 {
   if (testId == nil) {
     SK_ASSERT(false);
@@ -904,6 +903,7 @@ public static String convertConnectivityType(int type) {
           networkCode,
           networkType,
           radioType];
+  
   SK_ASSERT(bRes);
   
   bRes = [db commit];
@@ -1044,7 +1044,6 @@ public static String convertConnectivityType(int type) {
     return 0.0;
   }
   
-  
   NSString *sql = nil;
   double result = 0;
   
@@ -1067,7 +1066,6 @@ public static String convertConnectivityType(int type) {
       SK_ASSERT(false);
     }
   }
-  
  
   // TODO - this must be modified, to query ONLY where "success <> 0", where success is defined
   // as a non-zerovalue (failure is zero)!!
@@ -1189,6 +1187,103 @@ public static String convertConnectivityType(int type) {
   return results;
 }
 
+//###HG
+
++ (NSMutableArray*)getTestDataForNetworkType:(NSString*)networkType_ afterDate:(NSDate*)minDate_
+{
+    SKATestResults* testResult;
+    
+    FMDatabase *db = [SKDatabase openDatabase];
+    if (db == NULL) {
+        SK_ASSERT(false);
+        return [NSMutableArray new];
+    }
+    
+    NSString *whereClause = @"";
+    if (networkType_ != nil) {
+        if ([networkType_ isEqualToString:@"network"]) {
+            // WiFi
+            whereClause = @"WHERE mt.network_type = 'network' ";
+            
+        } else if ([networkType_ isEqualToString:@"mobile"]) {
+            // mobile
+            whereClause = @"WHERE mt.network_type = 'mobile' ";
+            
+        } else if ([networkType_ isEqualToString:@"all"]) {
+            whereClause = @"";
+        } else {
+            SK_ASSERT(false);
+        }
+    }
+    
+    if (minDate_ != nil) //Where caluse for date
+    {
+        if (whereClause.length > 0) whereClause = [NSString stringWithFormat:@"%@ AND ", whereClause];
+        else
+            whereClause = [NSString stringWithFormat:@"WHERE "];
+
+        whereClause = [NSString stringWithFormat:@"%@%@", whereClause, @"td.date > ?"];
+    }
+    
+    NSString * sql = [NSString stringWithFormat:@"SELECT td.id, td.date, td.target, dw.bitrate, ul.bitrate, lt.latency, ls.packet_loss, j.jitter, mt.device, mt.os, mt.carrier_name, mt.country_code, mt.iso_country_code, mt.network_code, mt.network_type, mt.radio_type FROM test_data AS td LEFT JOIN metrics AS mt ON td.id = mt.test_id LEFT JOIN download AS dw ON td.id = dw.test_id LEFT JOIN upload AS ul ON td.id = ul.test_id LEFT JOIN latency AS lt ON td.id = lt.test_id LEFT JOIN packetloss as ls ON td.id = ls.test_id LEFT JOIN jitter as j ON td.id = j.test_id %@ ORDER BY td.id DESC", whereClause];
+    
+    NSMutableArray *results = [NSMutableArray array];
+    
+    FMResultSet *rs = [db executeQuery:sql, minDate_];
+    SK_ASSERT(rs != nil);
+    
+    while ([rs next])
+    {
+        testResult = [[SKATestResults alloc] init];
+        testResult.testId = [rs intForColumnIndex:0];
+        testResult.testDateTime = [NSDate dateWithTimeIntervalSince1970:[rs doubleForColumnIndex:1]];
+        testResult.target = [rs stringForColumnIndex:2];
+        
+        if ([rs objectForColumnIndex:3] == [NSNull null])
+            testResult.downloadSpeed = -1;
+        else
+            testResult.downloadSpeed = [rs doubleForColumnIndex:3];
+        
+        if ([rs objectForColumnIndex:4] == [NSNull null])
+            testResult.uploadSpeed = -1;
+        else
+            testResult.uploadSpeed = [rs doubleForColumnIndex:4];
+        
+        if ([rs objectForColumnIndex:5] == [NSNull null])
+            testResult.latency = -1;
+        else
+            testResult.latency = [rs doubleForColumnIndex:5];
+        
+        if ([rs objectForColumnIndex:6] == [NSNull null])
+            testResult.loss = -1;
+        else
+            testResult.loss = [rs doubleForColumnIndex:6];
+        
+        if ([rs objectForColumnIndex:7] == [NSNull null])
+            testResult.jitter = -1;
+        else
+            testResult.jitter = [rs doubleForColumnIndex:7];
+        
+        testResult.device = [rs stringForColumnIndex:8];
+        testResult.os = [rs stringForColumnIndex:9];
+        testResult.carrier_name = [rs stringForColumnIndex:10];
+        testResult.country_code = [rs stringForColumnIndex:11];
+        testResult.iso_country_code = [rs stringForColumnIndex:12];
+        testResult.network_code = [rs stringForColumnIndex:13];
+        testResult.network_type = [rs stringForColumnIndex:14];
+        testResult.radio_type = [rs stringForColumnIndex:15];
+
+        [results addObject:testResult];
+    }
+    
+    BOOL bRes;
+    
+    bRes = [db close];
+    SK_ASSERT(bRes);
+    
+    return results;
+}
+
 //+ (NSMutableArray*)getTestData:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals
 + (NSMutableArray*)getNonAveragedTestData:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals
 {
@@ -1217,8 +1312,6 @@ public static String convertConnectivityType(int type) {
       SK_ASSERT(false);
     }
   }
-  
-
   
   NSString *sql = nil;
   

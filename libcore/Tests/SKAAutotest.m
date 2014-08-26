@@ -547,7 +547,8 @@
                    isoCode:[SKGlobalMethods getCarrierIsoCountryCode]
                networkCode:[SKGlobalMethods getCarrierNetworkCode]
                networkType:[SKGlobalMethods getNetworkTypeString]
-                 radioType:[SKGlobalMethods getNetworkType]];
+                 radioType:[SKGlobalMethods getNetworkType]
+                    target:self.selectedTarget];
   
   NSError *error;
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary

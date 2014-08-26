@@ -21,6 +21,14 @@ typedef enum
   
 } TestType;
 
+#define CTTBM_CLOSESTTARGET  1   //Constant Test Type Bit Mask
+#define CTTBM_DOWNLOAD  2
+#define CTTBM_UPLOAD  4
+#define CTTBM_LATENCYLOSSJITTER  8
+
+#define CTTBM_ALL  31
+
+
 @interface SKAutotest : NSObject <SKClosestTargetDelegate, SKLatencyTestDelegate, SKHttpTestDelegate, SKTestConfigDelegate>
 
 //
@@ -45,6 +53,8 @@ typedef enum
 @property (nonatomic, retain) id<SKAutotestManagerDelegate> autotestManagerDelegate;
 @property (atomic, retain) id <SKAutotestObserverDelegate> autotestObserverDelegate;
 @property (nonatomic, assign) BOOL udpClosestTargetTestSucceeded;
+
+@property (nonatomic, strong) NSString* selectedTarget;
 
 //
 // Methods
