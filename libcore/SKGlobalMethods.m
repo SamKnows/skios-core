@@ -102,12 +102,15 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 
 + (NSString *)formatDate:(NSDate*)date
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:GLongDateFormat];
-    
-    NSString *result = [formatter stringFromDate:date];
-    
-    return result;
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  
+  //[formatter setDateFormat:GLongDateFormat];
+  NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:GLongDateFormat options:0 locale:[NSLocale currentLocale]];
+  [formatter setDateFormat:dateFormatString];
+  
+  NSString *result = [formatter stringFromDate:date];
+  
+  return result;
 }
 
 + (NSString *)formatShorterDate:(NSDate*)date

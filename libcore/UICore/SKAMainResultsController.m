@@ -711,13 +711,19 @@ NSMutableArray *GArrayForResultsController;
     // TODO!
     if ([buttonText isEqualToString:NSLocalizedString(@"Menu_Settings",nil)]) {
       // Settings
-      [self SKSafePerformSegueWithIdentifier:@"segueFromMainToSettingsController" sender:self];
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self SKSafePerformSegueWithIdentifier:@"segueFromMainToSettingsController" sender:self];
+      });
     } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_About",nil)]) {
         // About
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self SKSafePerformSegueWithIdentifier:@"segueFromMainToAbout" sender:self];
+      });
     } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_TermsOfUse",nil)]) {
       // Terms of Use
-      [self SKSafePerformSegueWithIdentifier:@"segueFromMainToTAndCController" sender:self];
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self SKSafePerformSegueWithIdentifier:@"segueFromMainToTAndCController" sender:self];
+      });
     } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_Export",nil)]) {
       SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
      
