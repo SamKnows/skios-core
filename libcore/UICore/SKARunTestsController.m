@@ -7,6 +7,7 @@
 
 #import "SKARunTestsController.h"
 #import "SKAMainResultsController.h"
+#import "SKAArchivedResultsController.h"
 
 @protocol SKARunTestsDelegate;
 
@@ -1147,7 +1148,7 @@ static BOOL sbViewIsVisible;
     else if (row == 5)
     {
       cell.lblTitle.text = NSLocalizedString(@"Phone", nil);
-      cell.lblDetail.text = appDelegate.deviceModel;
+      cell.lblDetail.text = [SKAArchivedResultsController platformString:appDelegate.deviceModel];
     }
     else if (row == 6)
     {

@@ -71,8 +71,12 @@
 
   self.title = NSLocalizedString(@"Storyboard_ArchivedResults_Title",nil);
   self.lblMain.text = NSLocalizedString(@"Storyboard_ArchivedResults_Archived_Result",nil);
+  self.lblMain.text = NSLocalizedString(@"Storyboard_ArchivedResults_Archived_Result",nil);
   
 //  self.navigationController.delegate = self;
+  
+  self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+
   
   SK_ASSERT(self.tableView != nil);
   
@@ -437,6 +441,44 @@
   
 }
 
+// https://gist.github.com/tuoxie007/6723865
+// http://stackoverflow.com/questions/18854244/what-is-platform-string-for-iphone-5s-5c
+
++ (NSString *) platformString:(NSString*)platform{
+  if ([platform isEqualToString:@"iPhone1"])  return @"iPhone 1G";
+  if ([platform hasPrefix:@"iPhone1"])        return @"iPhone 3G";
+  if ([platform hasPrefix:@"iPhone2"])        return @"iPhone 3GS";
+  if ([platform hasPrefix:@"iPhone3"])        return @"iPhone 4";
+  if ([platform hasPrefix:@"iPhone4"])        return @"iPhone 4s";
+  if ([platform hasPrefix:@"iPhone5,1"])      return @"iPhone 5";
+  if ([platform hasPrefix:@"iPhone5,2"])      return @"iPhone 5";
+  if ([platform hasPrefix:@"iPhone5,3"])      return @"iPhone 5c";
+  if ([platform hasPrefix:@"iPhone5,4"])      return @"iPhone 5c";
+  //if ([platform hasPrefix:@"iPhone5,3"])      return @"iPhone 5C (GSM)";
+  //if ([platform hasPrefix:@"iPhone5,4"])      return @"iPhone 5C (Global)";
+  if ([platform hasPrefix:@"iPhone6,1"])      return @"iPhone 5S (GSM)";
+  if ([platform hasPrefix:@"iPhone6,2"])      return @"iPhone 5S (Global)";
+  if ([platform hasPrefix:@"iPhone6"])        return @"iPhone 5c";
+  if ([platform hasPrefix:@"iPod1"])          return @"iPod touch 1G";
+  if ([platform hasPrefix:@"iPod2"])          return @"iPod touch 2G";
+  if ([platform hasPrefix:@"iPod3"])          return @"iPod touch 3G";
+  if ([platform hasPrefix:@"iPod4"])          return @"iPod touch 4G";
+  if ([platform hasPrefix:@"iPod5"])          return @"iPod touch 5G";
+  if ([platform hasPrefix:@"iPad1"])          return @"iPad";
+  if ([platform hasPrefix:@"iPad2,1"])        return @"iPad 2";
+  if ([platform hasPrefix:@"iPad2,2"])        return @"iPad 2";
+  if ([platform hasPrefix:@"iPad2,3"])        return @"iPad 2";
+  if ([platform hasPrefix:@"iPad2,4"])        return @"iPad 2";
+  if ([platform hasPrefix:@"iPad2,5"])        return @"iPad mini";
+  if ([platform hasPrefix:@"iPad2,6"])        return @"iPad mini";
+  if ([platform hasPrefix:@"iPad2,7"])        return @"iPad mini";
+  if ([platform hasPrefix:@"iPad3"])          return @"iPad 3";
+  if ([platform hasPrefix:@"iPad4"])          return @"iPad 4";
+  if ([platform hasPrefix:@"i386"])           return @"Simulator";
+  if ([platform hasPrefix:@"x86_64"])         return @"Simulator";
+  return platform;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   int row = (int)indexPath.row;
@@ -575,7 +617,7 @@
     else if (row == 5)
     {
       cell.lblTitle.text = NSLocalizedString(@"Phone", nil);
-      cell.lblDetail.text = self.device;
+      cell.lblDetail.text = [SKAArchivedResultsController platformString:self.device];
     }
     else if (row == 6)
     {
