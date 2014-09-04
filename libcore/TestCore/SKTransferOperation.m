@@ -994,10 +994,15 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
 #ifdef DEBUG
     NSLog(@"DEBUG: Best result is from the SERVER, bitrateMpbs1024Based=%d", (int)bitrateMpbs1024Based);
 #endif // DEBUG
+    SK_ASSERT(bitrateMpbs1024Based > 0);
     [self doSendtodDidCompleteTransferOperation:0 transferBytes:0 totalBytes:0 ForceThisBitsPerSecondFromServer:bitrateMpbs1024Based threadId:threadId];
   } else {
     // Best result is from the built-in measurement.
-    SK_ASSERT(bitrateMpbs1024Based != -1);
+    if (bitrateMpbs1024Based == -1) {
+      double bytesPerSecondRealTimeUpload = [httpTest getBytesPerSecondRealTimeUpload];
+      bitrateMpbs1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:bytesPerSecondRealTimeUpload];
+    }
+    SK_ASSERT(bitrateMpbs1024Based > 0);
 #ifdef DEBUG
     NSLog(@"DEBUG: Best result is from the BUILT-IN MEASUREMENT, bitrateMpbs1024Based=%d", (int)bitrateMpbs1024Based);
 #endif // DEBUG
