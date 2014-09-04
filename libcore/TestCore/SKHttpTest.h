@@ -19,6 +19,23 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 
 @class SKAutotest;
 
+@interface DebugTiming : NSObject
+
+@property (assign) NSString *description;
+@property int       threadIndex;
+@property NSTimeInterval  time;
+@property double currentSpeed;
+//		public DebugTiming(String description, int threadIndex, Long time, int currentSpeed) {
+//			super();
+//			this.description = description;
+//			this.threadIndex = threadIndex;
+//			this.time = time;
+//			this.currentSpeed = currentSpeed;
+//		}
+//	}
+@end
+
+
 @interface SKHttpTest : NSObject <SKTransferOperationDelegate>
 
 @property (nonatomic, assign) int port;
@@ -40,7 +57,10 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 @property (nonatomic, strong) NSString *displayName;
 
 @property (atomic, assign) BOOL isRunning;
-@property (atomic, strong) NSMutableArray *statusArray;
+
+//###HG This array keeps data for all running
+@property (atomic, strong) NSMutableArray *arrTransferOperations;
+
 @property (atomic, strong) id <SKHttpTestDelegate> httpRequestDelegate;
 
 @property (atomic, readwrite) int warmupDoneCounter;    // make this atomic for thread safety
@@ -51,7 +71,9 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 
 @property (nonatomic, assign) BOOL testOK;
 @property NSUInteger testTransferBytes;
+@property NSUInteger testTransferBytes_New;
 @property SKTimeIntervalMicroseconds testTransferTimeMicroseconds;
+@property (atomic, retain) NSDate *testTransferTimeFirstBytesAt;
 @property NSUInteger testWarmupBytes;
 @property NSTimeInterval testWarmupStartTime;
 @property NSTimeInterval testWarmupEndTime;
@@ -79,6 +101,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 - (void)setDirection:(NSString*)direction;
 - (BOOL)isSuccessful;
 - (int)getBytesPerSecond;
+- (double)getBytesPerSecondRealTimeUpload;
 
 //- (void)incrementCounter;
 //- (void)addWarmupBytes:(NSUInteger)bytes;
@@ -88,6 +111,8 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 
 -(void) setSKAutotest:(SKAutotest*)skAutotest;
 
++(void) sAddDebugTimingWithDescription:(NSString*)inDescription ThreadIndex:(int)inThreadIndex Time:(NSTimeInterval)inTime CurrentSpeed:(double)inCurrentSpeed;
+  
 @end
 
 #pragma mark - Delegate
@@ -102,11 +127,26 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
                progress:(float)progress
                threadId:(NSUInteger)threadId;
 
-- (void)htdDidUpdateTotalProgress:(float)progress;
+- (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate;
 
-- (void)htdDidCompleteHttpTest:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
-              transferBytes:(NSUInteger)transferBytes
-                 totalBytes:(NSUInteger)totalBytes
-                   threadId:(NSUInteger)threadId;
+- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+            ResultIsFromServer:(BOOL)resultIsFromServer;
+//(SKTimeIntervalMicroseconds)transferTimeMicroseconds
+//              transferBytes:(NSUInteger)transferBytes
+//                 totalBytes:(NSUInteger)totalBytes
+//                   threadId:(NSUInteger)threadId;
+
+@end
+
+//###HG
+@interface SKTransferOperationStatus : NSObject
+
+@property (nonatomic) int threadId;
+@property (nonatomic) float progress;
+@property (nonatomic) int status;
+@property (nonatomic) int totalTransferBytes;
+@property (nonatomic) SKTimeIntervalMicroseconds transferTimeMicroseconds;
+
+-(void)resetProperties;
 
 @end

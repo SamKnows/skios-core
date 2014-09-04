@@ -844,15 +844,14 @@
   }
 }
 
-- (void)htdDidCompleteHttpTest:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
-              transferBytes:(NSUInteger)transferBytes
-                 totalBytes:(NSUInteger)totalBytes
-                   threadId:(NSUInteger)threadId
+- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+            ResultIsFromServer:(BOOL)resultIsFromServer
+//              transferBytes:(NSUInteger)transferBytes
+//                 totalBytes:(NSUInteger)totalBytes
+//                   threadId:(NSUInteger)threadId
 {
-  double bitrateMpbs1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
- 
 #ifdef DEBUG
-  NSLog(@"DEBUG: htdDidCompleteHttpTest (%@) : %@", self.httpTest.displayName, [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMpbs1024Based]);
+  NSLog(@"DEBUG: htdDidCompleteHttpTest (%@) : %@ ... result is from=%@", self.httpTest.displayName, [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMpbs1024Based], resultIsFromServer ? @"Server" : @"Client");
 #endif // DEBUG
   
   [self checkTestId];
@@ -868,7 +867,7 @@
       [SKDatabase storeUpload:[SKCore getToday] BitrateMbps1024Based:bitrateMpbs1024Based testId:self.testId testName:self.httpTest.displayName];
     }
   }
-  
+ 
   [self.autotestObserverDelegate aodTransferTestDidCompleteTransfer:self.httpTest Bitrate1024Based:bitrateMpbs1024Based];
   
   [self writeJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary];

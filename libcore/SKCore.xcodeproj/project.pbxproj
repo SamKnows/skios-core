@@ -114,6 +114,25 @@
 		B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2E16BD7181A5D4500B907DE /* SKGraphForResultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */; };
 		B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */; };
+		B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */; };
+		B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */; };
+		B2FB032E19B75D09007AA3C2 /* cAnimatedStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */; };
+		B2FB032F19B75D09007AA3C2 /* cTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030419B75D09007AA3C2 /* cTabController.m */; };
+		B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030719B75D09007AA3C2 /* Graphing.m */; };
+		B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030A19B75D09007AA3C2 /* IPHelper.m */; };
+		B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */; };
+		B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */; };
+		B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */; };
+		B2FB033519B75D09007AA3C2 /* SKAActivationController2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */; };
+		B2FB033619B75D09007AA3C2 /* SKMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031919B75D09007AA3C2 /* SKMainViewController.m */; };
+		B2FB033719B75D09007AA3C2 /* SKASimpleResultCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031C19B75D09007AA3C2 /* SKASimpleResultCell2.m */; };
+		B2FB033819B75D09007AA3C2 /* SKATestOverviewCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */; };
+		B2FB033919B75D09007AA3C2 /* SKATestResultSuperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */; };
+		B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */; };
+		B2FB033B19B75D09007AA3C2 /* SKInfoViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032519B75D09007AA3C2 /* SKInfoViewMgr.m */; };
+		B2FB033C19B75D09007AA3C2 /* SKRunTestViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032719B75D09007AA3C2 /* SKRunTestViewMgr.m */; };
+		B2FB033D19B75D09007AA3C2 /* SKSettingsMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */; };
+		B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */; };
 		B2FB4389192DFFEC00DE371B /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB437E192DFFEC00DE371B /* libOCMock.a */; };
 		B2FB438C192E009400DE371B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEDD18FFC24F00323923 /* libz.dylib */; };
 		B2FB438D192E00AE00DE371B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
@@ -405,6 +424,46 @@
 		B2DC501D18C75DA100E69F36 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResultsTests.m; sourceTree = "<group>"; };
 		B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHttpTest.m; sourceTree = "<group>"; };
+		B2FB02FB19B75D09007AA3C2 /* cActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cActionSheet.h; sourceTree = "<group>"; };
+		B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cActionSheet.m; sourceTree = "<group>"; };
+		B2FB02FE19B75D09007AA3C2 /* CActivityBlinking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActivityBlinking.h; sourceTree = "<group>"; };
+		B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CActivityBlinking.m; sourceTree = "<group>"; };
+		B2FB030019B75D09007AA3C2 /* cAnimatedStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cAnimatedStatusView.h; sourceTree = "<group>"; };
+		B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cAnimatedStatusView.m; sourceTree = "<group>"; };
+		B2FB030319B75D09007AA3C2 /* cTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cTabController.h; sourceTree = "<group>"; };
+		B2FB030419B75D09007AA3C2 /* cTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cTabController.m; sourceTree = "<group>"; };
+		B2FB030619B75D09007AA3C2 /* Graphing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphing.h; sourceTree = "<group>"; };
+		B2FB030719B75D09007AA3C2 /* Graphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Graphing.m; sourceTree = "<group>"; };
+		B2FB030919B75D09007AA3C2 /* IPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPHelper.h; sourceTree = "<group>"; };
+		B2FB030A19B75D09007AA3C2 /* IPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPHelper.m; sourceTree = "<group>"; };
+		B2FB030C19B75D09007AA3C2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		B2FB030D19B75D09007AA3C2 /* TYMActivityIndicatorView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TYMActivityIndicatorView.bundle; sourceTree = "<group>"; };
+		B2FB030E19B75D09007AA3C2 /* TYMActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYMActivityIndicatorView.h; sourceTree = "<group>"; };
+		B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYMActivityIndicatorView.m; sourceTree = "<group>"; };
+		B2FB031119B75D09007AA3C2 /* UIViewWithGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewWithGradient.h; sourceTree = "<group>"; };
+		B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewWithGradient.m; sourceTree = "<group>"; };
+		B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWelcomeView.h; sourceTree = "<group>"; };
+		B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWelcomeView.m; sourceTree = "<group>"; };
+		B2FB031619B75D09007AA3C2 /* SKAActivationController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAActivationController2.h; sourceTree = "<group>"; };
+		B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAActivationController2.m; sourceTree = "<group>"; };
+		B2FB031819B75D09007AA3C2 /* SKMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKMainViewController.h; sourceTree = "<group>"; };
+		B2FB031919B75D09007AA3C2 /* SKMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKMainViewController.m; sourceTree = "<group>"; };
+		B2FB031B19B75D09007AA3C2 /* SKASimpleResultCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKASimpleResultCell2.h; sourceTree = "<group>"; };
+		B2FB031C19B75D09007AA3C2 /* SKASimpleResultCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKASimpleResultCell2.m; sourceTree = "<group>"; };
+		B2FB031D19B75D09007AA3C2 /* SKATestOverviewCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestOverviewCell2.h; sourceTree = "<group>"; };
+		B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestOverviewCell2.m; sourceTree = "<group>"; };
+		B2FB031F19B75D09007AA3C2 /* SKATestResultSuperCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestResultSuperCell.h; sourceTree = "<group>"; };
+		B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestResultSuperCell.m; sourceTree = "<group>"; };
+		B2FB032219B75D09007AA3C2 /* SKHistoryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKHistoryViewMgr.h; sourceTree = "<group>"; };
+		B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHistoryViewMgr.m; sourceTree = "<group>"; };
+		B2FB032419B75D09007AA3C2 /* SKInfoViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKInfoViewMgr.h; sourceTree = "<group>"; };
+		B2FB032519B75D09007AA3C2 /* SKInfoViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKInfoViewMgr.m; sourceTree = "<group>"; };
+		B2FB032619B75D09007AA3C2 /* SKRunTestViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKRunTestViewMgr.h; sourceTree = "<group>"; };
+		B2FB032719B75D09007AA3C2 /* SKRunTestViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKRunTestViewMgr.m; sourceTree = "<group>"; };
+		B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsMgr.h; sourceTree = "<group>"; };
+		B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsMgr.m; sourceTree = "<group>"; };
+		B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSummaryViewMgr.h; sourceTree = "<group>"; };
+		B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSummaryViewMgr.m; sourceTree = "<group>"; };
 		B2FB437E192DFFEC00DE371B /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		B2FB4380192DFFEC00DE371B /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
 		B2FB4381192DFFEC00DE371B /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
@@ -561,6 +620,7 @@
 				B2B2B4BF18AB98F800592FEF /* SKNSURLAsyncQuery.m */,
 				B2AE68311883DE6800D87FAE /* Tests */,
 				B2AE67F21883DA4D00D87FAE /* UICore */,
+				B2FB02F819B75D09007AA3C2 /* UICore2 */,
 				B22E88E217C36875005D9094 /* 3rdParty */,
 			);
 			name = SKCore;
@@ -933,6 +993,141 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		B2FB02F819B75D09007AA3C2 /* UICore2 */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB02F919B75D09007AA3C2 /* Reusable */,
+				B2FB031619B75D09007AA3C2 /* SKAActivationController2.h */,
+				B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */,
+				B2FB031819B75D09007AA3C2 /* SKMainViewController.h */,
+				B2FB031919B75D09007AA3C2 /* SKMainViewController.m */,
+				B2FB031A19B75D09007AA3C2 /* tabCells */,
+				B2FB032119B75D09007AA3C2 /* ViewManagers */,
+			);
+			path = UICore2;
+			sourceTree = "<group>";
+		};
+		B2FB02F919B75D09007AA3C2 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB02FA19B75D09007AA3C2 /* CActionSheet */,
+				B2FB02FD19B75D09007AA3C2 /* CActivityBlinking */,
+				B2FB030019B75D09007AA3C2 /* cAnimatedStatusView.h */,
+				B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */,
+				B2FB030219B75D09007AA3C2 /* CTabController */,
+				B2FB030519B75D09007AA3C2 /* Graphing */,
+				B2FB030819B75D09007AA3C2 /* IPHelper */,
+				B2FB030B19B75D09007AA3C2 /* TYMActivityIndicatorView */,
+				B2FB031019B75D09007AA3C2 /* UIViewWithGradient */,
+				B2FB031319B75D09007AA3C2 /* WelcomeView */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
+		B2FB02FA19B75D09007AA3C2 /* CActionSheet */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB02FB19B75D09007AA3C2 /* cActionSheet.h */,
+				B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */,
+			);
+			path = CActionSheet;
+			sourceTree = "<group>";
+		};
+		B2FB02FD19B75D09007AA3C2 /* CActivityBlinking */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB02FE19B75D09007AA3C2 /* CActivityBlinking.h */,
+				B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */,
+			);
+			path = CActivityBlinking;
+			sourceTree = "<group>";
+		};
+		B2FB030219B75D09007AA3C2 /* CTabController */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB030319B75D09007AA3C2 /* cTabController.h */,
+				B2FB030419B75D09007AA3C2 /* cTabController.m */,
+			);
+			path = CTabController;
+			sourceTree = "<group>";
+		};
+		B2FB030519B75D09007AA3C2 /* Graphing */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB030619B75D09007AA3C2 /* Graphing.h */,
+				B2FB030719B75D09007AA3C2 /* Graphing.m */,
+			);
+			path = Graphing;
+			sourceTree = "<group>";
+		};
+		B2FB030819B75D09007AA3C2 /* IPHelper */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB030919B75D09007AA3C2 /* IPHelper.h */,
+				B2FB030A19B75D09007AA3C2 /* IPHelper.m */,
+			);
+			path = IPHelper;
+			sourceTree = "<group>";
+		};
+		B2FB030B19B75D09007AA3C2 /* TYMActivityIndicatorView */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB030C19B75D09007AA3C2 /* LICENSE */,
+				B2FB030D19B75D09007AA3C2 /* TYMActivityIndicatorView.bundle */,
+				B2FB030E19B75D09007AA3C2 /* TYMActivityIndicatorView.h */,
+				B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */,
+			);
+			path = TYMActivityIndicatorView;
+			sourceTree = "<group>";
+		};
+		B2FB031019B75D09007AA3C2 /* UIViewWithGradient */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB031119B75D09007AA3C2 /* UIViewWithGradient.h */,
+				B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */,
+			);
+			path = UIViewWithGradient;
+			sourceTree = "<group>";
+		};
+		B2FB031319B75D09007AA3C2 /* WelcomeView */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */,
+				B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */,
+			);
+			path = WelcomeView;
+			sourceTree = "<group>";
+		};
+		B2FB031A19B75D09007AA3C2 /* tabCells */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB031B19B75D09007AA3C2 /* SKASimpleResultCell2.h */,
+				B2FB031C19B75D09007AA3C2 /* SKASimpleResultCell2.m */,
+				B2FB031D19B75D09007AA3C2 /* SKATestOverviewCell2.h */,
+				B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */,
+				B2FB031F19B75D09007AA3C2 /* SKATestResultSuperCell.h */,
+				B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */,
+			);
+			path = tabCells;
+			sourceTree = "<group>";
+		};
+		B2FB032119B75D09007AA3C2 /* ViewManagers */ = {
+			isa = PBXGroup;
+			children = (
+				B2FB032219B75D09007AA3C2 /* SKHistoryViewMgr.h */,
+				B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */,
+				B2FB032419B75D09007AA3C2 /* SKInfoViewMgr.h */,
+				B2FB032519B75D09007AA3C2 /* SKInfoViewMgr.m */,
+				B2FB032619B75D09007AA3C2 /* SKRunTestViewMgr.h */,
+				B2FB032719B75D09007AA3C2 /* SKRunTestViewMgr.m */,
+				B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */,
+				B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */,
+				B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */,
+				B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */,
+			);
+			path = ViewManagers;
+			sourceTree = "<group>";
+		};
 		B2FB437C192DFFEC00DE371B /* OCMock */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,6 +1261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B22E88DD17C3682E005D9094 /* SKCore.m in Sources */,
+				B2FB033D19B75D09007AA3C2 /* SKSettingsMgr.m in Sources */,
 				B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */,
 				B23B638419ACB7A8003F381C /* NSString+SKExtensions.m in Sources */,
 				B23B638119ACB3F6003F381C /* SKTestResults.m in Sources */,
@@ -1076,23 +1272,34 @@
 				B2AE68181883DA4D00D87FAE /* SKAGraphResultCell.m in Sources */,
 				B25001D8188FC9D5004287B1 /* GCDAsyncSocket.m in Sources */,
 				B2038F461897D70B005AC0BB /* SKAMainResultTestHeaderCell.m in Sources */,
+				B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */,
 				B22E88E017C3682E005D9094 /* SKGlobalMethods.m in Sources */,
 				B2AE68221883DA4D00D87FAE /* SKATermsAndConditionsController.m in Sources */,
 				B2AE68211883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.m in Sources */,
 				B2AE68201883DA4D00D87FAE /* SKASettingsController.m in Sources */,
+				B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */,
+				B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */,
+				B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */,
+				B2FB033B19B75D09007AA3C2 /* SKInfoViewMgr.m in Sources */,
 				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
+				B2FB032F19B75D09007AA3C2 /* cTabController.m in Sources */,
+				B2FB033519B75D09007AA3C2 /* SKAActivationController2.m in Sources */,
 				B221AEDC18FFC22500323923 /* ioapi.c in Sources */,
+				B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */,
 				B22E88F017C36875005D9094 /* FMDatabase.m in Sources */,
 				B2AE68431883DE6800D87FAE /* SKAScheduler.m in Sources */,
 				B221AEC918FFC12100323923 /* ZipArchive.m in Sources */,
 				B22E88F117C36875005D9094 /* FMDatabaseAdditions.m in Sources */,
 				B2AE68231883DA4D00D87FAE /* SKATransferTestCell.m in Sources */,
+				B2FB033719B75D09007AA3C2 /* SKASimpleResultCell2.m in Sources */,
 				B22E88F217C36875005D9094 /* FMResultSet.m in Sources */,
+				B2FB033919B75D09007AA3C2 /* SKATestResultSuperCell.m in Sources */,
 				B2AE681C1883DA4D00D87FAE /* SKAInformationCell.m in Sources */,
 				B2AE68241883DA4D00D87FAE /* STKSpinnerView.m in Sources */,
 				B2038F431897D4F5005AC0BB /* SKAMainResultControllerSection1Cell.m in Sources */,
 				B22E88F317C36875005D9094 /* KeychainItemWrapper.m in Sources */,
 				B22E88FC17C36B21005D9094 /* NSData+Base64.m in Sources */,
+				B2FB033C19B75D09007AA3C2 /* SKRunTestViewMgr.m in Sources */,
 				B2AE681F1883DA4D00D87FAE /* SKARunTestsController.m in Sources */,
 				B2AE68251883DA4D00D87FAE /* UIColor+Colours.m in Sources */,
 				B22E88FD17C36B21005D9094 /* NSDictionary+AFNetworkAdditions.m in Sources */,
@@ -1101,6 +1308,7 @@
 				B2AE68151883DA4D00D87FAE /* SKAAboutController.m in Sources */,
 				B22E891F17C37189005D9094 /* Reachability.m in Sources */,
 				B2AE681E1883DA4D00D87FAE /* SKAMainResultsController.m in Sources */,
+				B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */,
 				B2AE683F1883DE6800D87FAE /* SKAClosestTargetTest.m in Sources */,
 				B221AEE318FFDFFA00323923 /* UIAlertView+SKExtensions.m in Sources */,
 				B22E892317C371DD005D9094 /* UIDeviceHardware.m in Sources */,
@@ -1108,6 +1316,7 @@
 				B221AEDA18FFC21600323923 /* unzip.c in Sources */,
 				B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */,
 				B22E892C17C37339005D9094 /* AsyncUdpSocket.m in Sources */,
+				B2FB032E19B75D09007AA3C2 /* cAnimatedStatusView.m in Sources */,
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
@@ -1115,16 +1324,21 @@
 				B2AE683E1883DE6800D87FAE /* SKAAutotest.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,
 				B2AE681D1883DA4D00D87FAE /* SKALatencyTestCell.m in Sources */,
+				B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */,
 				B2AE68191883DA4D00D87FAE /* SKAGraphResultFooterCell.m in Sources */,
 				B2AE68411883DE6800D87FAE /* SKALatencyOperation.m in Sources */,
 				B22E893217C37C90005D9094 /* SKUDPDataGram.m in Sources */,
+				B2FB033819B75D09007AA3C2 /* SKATestOverviewCell2.m in Sources */,
 				B22E893A17C391D0005D9094 /* SKTransferOperation.m in Sources */,
 				B221AEDB18FFC21E00323923 /* mztools.c in Sources */,
 				B2BE448917C7610F00C96D58 /* SKTest.m in Sources */,
 				B2AE681A1883DA4D00D87FAE /* SKAGraphViewCell.m in Sources */,
 				B221AED918FFC20700323923 /* zip.c in Sources */,
+				B2FB033619B75D09007AA3C2 /* SKMainViewController.m in Sources */,
 				B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */,
+				B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */,
 				B2B2B4BD18AB7A8500592FEF /* SKOperators.m in Sources */,
+				B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */,
 				B2342C6C1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m in Sources */,
 				B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */,
 				B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */,

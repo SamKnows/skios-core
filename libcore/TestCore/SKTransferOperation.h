@@ -11,6 +11,7 @@
 #import "SKTransferOperation.h"
 
 #define HTTP_DOWNLOAD_TIMEOUT 45
+#define HTTP_UPLOAD_TIMEOUT   45
 
 typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED, FINISHED, IDLE } TransferStatus;
 
@@ -74,6 +75,7 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
     transferMaxBytes:(double)_transferMaxBytes
             nThreads:(int)_nThreads
             threadId:(int)_threadId
+            SESSIONID:(uint32_t)sessionId
             TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
             asyncFlag:(BOOL)_asyncFlag;
 
@@ -110,18 +112,27 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
 - (int)todGetWarmupDoneCounter;
 - (void)todAddWarmupBytes:(NSUInteger)bytes;
 - (void)todAddWarmupTimes:(NSTimeInterval)startTime endTime:(NSTimeInterval)endTime;
+- (void)todAddTransferBytes:(NSUInteger)bytes;
 
 - (void)todUpdateStatus:(TransferStatus)status
             threadId:(NSUInteger)threadId;
 
+//###HG
 - (void)todDidTransferData:(NSUInteger)totalBytes
                   bytes:(NSUInteger)bytes
+               transferBytes:(NSUInteger)transferBytes
                progress:(float)progress
-               threadId:(NSUInteger)threadId;
+               threadId:(NSUInteger)threadId
+               operationTime:(SKTimeIntervalMicroseconds)transferTime;
+
+- (void)todUploadTestCompletedNotAServeResponseYet:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
+              transferBytes:(NSUInteger)transferBytes
+                             totalBytes:(NSUInteger)totalBytes;
 
 - (void)todDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
               transferBytes:(NSUInteger)transferBytes
                  totalBytes:(NSUInteger)totalBytes
+       ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
                    threadId:(NSUInteger)threadId;
 
 @end

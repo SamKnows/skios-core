@@ -412,6 +412,9 @@ const int cQueryCountPerServer = 3;
     [queue addOperation:operation];
   }
   
+  //##HG
+  if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidStartTargetTesting)]) [self.closestTargetDelegate ctdDidStartTargetTesting];
+    
   isRunning = YES;
 }
 
@@ -525,6 +528,10 @@ const int cQueryCountPerServer = 3;
     
     threadCounter = threadCounter + 1;
     
+    //###HG
+      if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidFinishAnotherTarget:withLatency:withBest:)])
+    [self.closestTargetDelegate ctdDidFinishAnotherTarget:(int)threadId_ withLatency:lowestLatency withBest:(int)lowestLatencyThreadId];
+
     [self checkIfDone:threadCounter];
   }
 }

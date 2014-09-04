@@ -260,11 +260,11 @@
   [self.latencyTestDelegate ltdTestWasCancelled];
 }
 
-- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId
+//###HG
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId latency:(float)latency_
 {
   self.progress = progress_;
-  
-  [self.latencyTestDelegate ltdUpdateProgress:progress_];
+  [self.latencyTestDelegate ltdUpdateProgress:progress_ latency:latency_];
 }
 
 - (void)lodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId

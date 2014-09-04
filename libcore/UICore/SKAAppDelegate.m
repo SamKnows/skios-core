@@ -1576,6 +1576,12 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return nil;
 }
 
+// For now, only this app variant supports server-based upload speed measurement testing.
+-(BOOL)       getDoesAppSupportServerBasedUploadSpeedTesting {
+  return NO;
+}
+
+
 -(BOOL) getIsJitterSupported {
   SK_ASSERT(false);
   return NO;

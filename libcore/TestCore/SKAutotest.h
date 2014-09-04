@@ -48,6 +48,7 @@ typedef enum
 @property (nonatomic, assign) BOOL isRunning;
 @property (nonatomic, assign) BOOL isCancelled;
 @property (nonatomic, retain) NSNumber *testId;
+
 @property (nonatomic, assign) BOOL runAllTests;
 @property (nonatomic, retain) NSString *validTest;
 @property (nonatomic, assign) int bitMaskForRequestedTests;
@@ -66,10 +67,10 @@ typedef enum
 
 //### HG
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting;
--(void)runSetOfTests:(int)bitMaskForRequestedTests_;
 
 //@public
 -(void)stopTheTests;
+-(void)runSetOfTests:(int)bitMaskForRequestedTests_;
 
 // @protected
 -(void)runTheTests;
@@ -93,25 +94,33 @@ typedef enum
 
 #pragma mark - Delegates
 
-@protocol SKAutotestObserverDelegate
+@protocol SKAutotestObserverDelegate <NSObject> //###HG
 
 - (void)aodClosestTargetTestDidStart;
 - (void)aodClosestTargetTestDidFail;
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target;
 
+- (void)aodLatencyTestDidStart;
 - (void)aodLatencyTestWasCancelled;
 - (void)aodLatencyTestDidFail:(NSString*)messageIgnore;
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest;
 - (void)aodLatencyTestUpdateStatus:(LatencyStatus)status;
 - (void)aodLatencyTestUpdateProgress:(float)progress;
+- (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency;
 
 - (void)aodTransferTestDidFail:(BOOL)isDownstream;
 - (void)aodTransferTestDidStart:(BOOL)isDownstream;
 - (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream;
+- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based;
+
 //- (void)aodTransferTestDidFinish:(NSString*)message isDownstream:(BOOL)isDownstream;
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based;
 
 - (void)aodAllTestsComplete;
+
+//### HG
+- (void)aodDidStartTargetTesting;
+- (void)aodDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId;
 
 @end
 
@@ -132,7 +141,7 @@ typedef enum
 -(int64_t)      amdGetDataUsageBytes;
 -(void)         amdDoUploadLogFile;
 -(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType;
-  
+ 
 @end
 
 

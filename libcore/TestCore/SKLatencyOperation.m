@@ -369,7 +369,10 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 {
   SK_ASSERT(self.latencyOperationDelegate != nil);
   
-  [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_];
+    if (isClosestTargetTest)
+        [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_];
+    else
+        [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_ latency:lastLatency];
 }
 
 - (void)doSendLodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId_
@@ -884,6 +887,9 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 #ifdef DEBUG
       NSLog(@"computeLatency LATENCY: %ld : %.2f", tag, rtt*1000.0f);
 #endif // DEBUG
+        
+        lastLatency = rtt*1000.0f;
+        
     }
   }
 }

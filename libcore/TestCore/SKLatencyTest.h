@@ -108,7 +108,7 @@
 - (void)ltdTestDidFail;
 - (void)ltdTestDidSucceed;
 - (void)ltdTestWasCancelled;
-- (void)ltdUpdateProgress:(float)progress;
+- (void)ltdUpdateProgress:(float)progress latency:(float)latency;
 - (void)ltdUpdateStatus:(LatencyStatus)status;
 - (void)ltdTestDidSendPacket:(NSUInteger)bytes;
 

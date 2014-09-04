@@ -126,6 +126,8 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 // Configuration - must be overriden by child class!
 -(NSString *) getEnterpriseId;
 -(NSString *) getBaseUrlString;
+-(BOOL)       getDoesAppSupportServerBasedUploadSpeedTesting;
+
 -(BOOL) getIsJitterSupported;
 -(BOOL) alwaysRunAllTests;
 -(BOOL) supportContinuousTesting;

@@ -98,4 +98,8 @@
 - (void)ctdTestDidFail;
 - (void)ctdDidSendPacket:(NSUInteger)bytes;
 
+//### HG
+- (void)ctdDidStartTargetTesting;
+- (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId;
+
 @end

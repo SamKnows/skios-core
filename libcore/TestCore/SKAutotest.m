@@ -189,6 +189,18 @@
   }
 }
 
+- (void)ctdDidStartTargetTesting
+{
+    if ([self.autotestObserverDelegate respondsToSelector:@selector(aodDidStartTargetTesting)])
+        [self.autotestObserverDelegate aodDidStartTargetTesting];
+}
+
+- (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId
+{
+    if ([self.autotestObserverDelegate respondsToSelector:@selector(aodDidFinishAnotherTarget:withLatency:withBest:)])
+    [self.autotestObserverDelegate aodDidFinishAnotherTarget:targetId withLatency:latency withBest:bestId];
+}
+
 - (void)ctdTestDidFail
 {
   NSLog(@"Closest Target Test Did Fail");
@@ -202,11 +214,9 @@
   self.selectedTarget = target; //###HG
     
   NSLog(@"Closest Target Test Did Complete : %@, Latency : %f", target, latency);
-  
+    
   [self.autotestManagerDelegate amdSetClosestTarget:target];
-  
   [self.autotestObserverDelegate aodClosestTargetTestDidSucceed:target];
-  
   [self runNextTest:self.targetTest.testIndex];
 }
 
@@ -289,86 +299,51 @@
   }
 }
 
+//### HG - Modified to simplify
 - (void)runClosestTargetTest:(SKTestConfig*)config testIndex:(int)testIndex;
 {
-  if (![self.autotestManagerDelegate amdGetIsConnected])
-  {
-    // We must always try to call runNextTest; otherwise, the tests will never complete!
-    [self runNextTest:testIndex];
-    return;
-  }
-  
-  if (nil != config)
-  {
-    if ([self shouldCallCheckConditions])
+    if (config == nil) return; //### Is it really necessary. Can it be NILL ?
+    
+    if (![self.autotestManagerDelegate amdGetIsConnected]) //These are always FALSE: ([self shouldCallCheckConditions] && ![config checkTestConditions])
     {
-      if (![config checkTestConditions])
-      {
+        // We must always try to call runNextTest; otherwise, the tests will never complete!
         [self runNextTest:testIndex];
         return;
-      }
     }
     
-    NSArray *targets = [config getTargets];
-    
-    if (nil != targets)
+    if (nil != config)
     {
-      if (self.targetTest == nil)
-      {
-        int numDatagramsFromSchedule = [[config paramObjectForKey:@"numberOfPackets"] intValue];
-        [self createClosestTargetTest:targets NumDatagrams:numDatagramsFromSchedule];
-        [self.targetTest setTestIndex:testIndex];
-        [self.targetTest setNetworkType:[config getNetworkType]];
-        [self.targetTest setDisplayName:[config displayName]];
+        NSArray *targets = [config getTargets];
         
-        if ([self.targetTest isReady])
+        if (targets != nil)
         {
-          if (!self.isCancelled)
-          {
-            if (![NSThread isMainThread])
+            if (self.targetTest == nil)
             {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                [self.autotestObserverDelegate aodClosestTargetTestDidStart];
-              });
+                int numDatagramsFromSchedule = [[config paramObjectForKey:@"numberOfPackets"] intValue];
+                [self createClosestTargetTest:targets NumDatagrams:numDatagramsFromSchedule];
             }
             else
             {
-              [self.autotestObserverDelegate aodClosestTargetTestDidStart];
+                [self.targetTest setTargets:targets];
+                self.targetTest.closestTargetDelegate = self;
             }
             
-            [self.targetTest startTest];
-          }
-        }
-      }
-      else
-      {
-        [self.targetTest setTargets:targets];
-        self.targetTest.closestTargetDelegate = self;
-        [self.targetTest setTestIndex:testIndex];
-        [self.targetTest setNetworkType:[config getNetworkType]];
-        [self.targetTest setDisplayName:[config displayName]];
-        
-        if ([self.targetTest isReady])
-        {
-          if (!self.isCancelled)
-          {
-            if (![NSThread isMainThread])
-            {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                [self.autotestObserverDelegate aodClosestTargetTestDidStart];
-              });
-            }
-            else
-            {
-              [self.autotestObserverDelegate aodClosestTargetTestDidStart];
-            }
+            [self.targetTest setTestIndex:testIndex];
+            [self.targetTest setNetworkType:[config getNetworkType]];
+            [self.targetTest setDisplayName:[config displayName]];
             
-            [self.targetTest startTest];
-          }
+            if ([self.targetTest isReady])
+            {
+                if (!self.isCancelled)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.autotestObserverDelegate aodClosestTargetTestDidStart];
+                    });
+                    [self.targetTest startTest];
+                }
+            }
         }
-      }
     }
-  }
 }
 
 - (void)runTransferTest:(SKTestConfig*)config testIndex:(int)testIndex isDownload:(BOOL)isDownload
@@ -544,9 +519,13 @@
   [self.autotestManagerDelegate amdDoUpdateDataUsage:(int)bytes];
 }
 
-- (void)htdDidUpdateTotalProgress:(float)progress
+//###HG
+- (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate
 {
-  [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream];
+    if ([self.autotestObserverDelegate respondsToSelector:@selector(aodTransferTestDidUpdateProgress:isDownstream:bitrate1024Based:)])
+        [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream bitrate1024Based:currentBitrate];
+    else
+        [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream];
 }
 
 - (void)htdUpdateStatus:(TransferStatus)status
@@ -554,10 +533,12 @@
   
 }
 
-- (void)htdDidCompleteHttpTest:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
-              transferBytes:(NSUInteger)transferBytes
-                 totalBytes:(NSUInteger)totalBytes
-                   threadId:(NSUInteger)threadId {
+- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+            ResultIsFromServer:(BOOL)resultIsFromServer {
+//(SKTimeIntervalMicroseconds)transferTimeMicroseconds
+//              transferBytes:(NSUInteger)transferBytes
+//                 totalBytes:(NSUInteger)totalBytes
+//                   threadId:(NSUInteger)threadId {
   
 }
 
@@ -582,9 +563,9 @@
         return;
       }
     }
-    
+
     NSString *target = [self.autotestManagerDelegate amdGetClosestTarget];
-    
+
     if (nil != target)
     {
       if (nil == self.latencyTest)
@@ -599,7 +580,9 @@
         {
           if (!self.isCancelled)
           {
-            [self.latencyTest startTest];
+              //###HG
+              if ([self.autotestObserverDelegate respondsToSelector:@selector(aodLatencyTestDidStart)]) [self.autotestObserverDelegate aodLatencyTestDidStart];
+              [self.latencyTest startTest];
           }
         }
         else
@@ -630,7 +613,9 @@
         {
           if (!self.isCancelled)
           {
-            [self.latencyTest startTest];
+              //###HG
+              if ([self.autotestObserverDelegate respondsToSelector:@selector(aodLatencyTestDidStart)]) [self.autotestObserverDelegate aodLatencyTestDidStart];
+              [self.latencyTest startTest];
           }
         }
         else
@@ -672,9 +657,13 @@
   NSLog(@"SKAutotest::ltdTestWasCancelled");
 }
 
-- (void)ltdUpdateProgress:(float)progress
+//###HG
+- (void)ltdUpdateProgress:(float)progress latency:(float)latency_
 {
-  [self.autotestObserverDelegate aodLatencyTestUpdateProgress:progress];
+    if ([self.autotestObserverDelegate respondsToSelector:@selector(aodLatencyTestUpdateProgress:latency:)])
+        [self.autotestObserverDelegate aodLatencyTestUpdateProgress:progress latency:latency_];
+    else
+        [self.autotestObserverDelegate aodLatencyTestUpdateProgress:progress];
 }
 
 - (void)ltdUpdateStatus:(LatencyStatus)status

@@ -63,6 +63,8 @@ typedef enum {
   NSTimer *cancelTimer;
   
   NSString *hostIPAddress;
+    
+    float lastLatency;
 }
 
 @property (nonatomic, strong) NSString *target;
@@ -144,6 +146,7 @@ typedef enum {
 - (void)lodTestWasCancelled:(NSUInteger)threadId;
 
 - (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId;
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId latency:(float)latency_; //###HG
 - (void)lodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId;
 
 @end

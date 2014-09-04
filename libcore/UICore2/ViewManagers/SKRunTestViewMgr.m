@@ -104,7 +104,7 @@
 
 -(void)performLayout
 {
-    isRunning = NO;
+    //isRunning = NO;
 
     if (layoutCurrent == 1)
         [self layout1];
@@ -118,7 +118,7 @@
     
     [self.casStatusView setText:@"Ready to run" forever:YES];
     self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController globalInstance].GUI_MULTIPLIER * 12];
-    self.lClosest.text = @"Press the button";
+    self.lClosest.text = @"Press the Start button";
     
     [self updateRadioType];
     
@@ -389,7 +389,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
             [self createDefaultResults];
             
             SK_ASSERT([NSThread isMainThread]);
-            
+          
+            isRunning = YES;
+
             autoTest = [[SKAAutotest alloc] initAndRunWithAutotestManagerDelegate:self.appDelegate autotestObserverDelegate:self tests2execute:self.testTypes2Execute isContinuousTesting:self.continuousTesting];
             [autoTest runSetOfTests:self.testTypes2Execute];
         }
@@ -547,7 +549,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
             return;
         }
         
-        isRunning = YES;
         [self selfRunTestAfterUserApprovedToDataCapChecks];
     }
     
@@ -948,7 +949,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         [UIView animateWithDuration:1.0 animations:^{
             [self resetProgressView];
             [self.casStatusView setText:@"Tests executed" forever:YES];
-            self.lClosest.text = @"Press the button to run again";
+            self.lClosest.text = @"Press the Start button to run again";
             self.btShare.alpha = 1;
         }];
         
@@ -1007,7 +1008,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
     //TODO: If cancelled or error
     [self.casStatusView setText:@"Tests cancelled" forever:YES];
-    self.lClosest.text = @"Press the button to run again";
+    self.lClosest.text = @"Press the Start button to run again";
 
     isRunning = NO;
     [self setEndDataUsage];
