@@ -324,7 +324,7 @@ const int cQueryCountPerServer = 3;
     if (theLowestUdpLatency < DBL_MAX)
     {
       self.skAutotest.udpClosestTargetTestSucceeded = YES;
-      
+
       NSString *target = [targets objectAtIndex:lowestLatencyThreadId];
       
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -336,7 +336,6 @@ const int cQueryCountPerServer = 3;
 #ifdef DEBUG
       NSLog(@"DEBUG: Closest target test... UDP tests failed, so try http test instead!");
 #endif // DEBUG
-      self.skAutotest.udpClosestTargetTestSucceeded = NO;
       [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_UDPFailedSkipTests object:self];
       dispatch_async(dispatch_get_main_queue(), ^{
         [self tryHttpClosestTargetTestIfUdpTestFails];

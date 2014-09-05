@@ -55,7 +55,7 @@ typedef enum
 
 @property (nonatomic, retain) id<SKAutotestManagerDelegate> autotestManagerDelegate;
 @property (atomic, retain) id <SKAutotestObserverDelegate> autotestObserverDelegate;
-@property (nonatomic, assign) BOOL udpClosestTargetTestSucceeded;
+@property (nonatomic, assign) BOOL udpClosestTargetTestSucceeded; // Default is NO, set to YES if it worked
 
 @property (nonatomic, strong) NSString* selectedTarget;
 

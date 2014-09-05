@@ -85,6 +85,13 @@
   testsComplete = YES;
   [self.lblClosest setText:NSLocalizedString(@"TEST_Label_Closest_Failed", nil)];
   
+  NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
+  SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+  NSString *statusString = [SKTransferOperation getStatusFailed];
+  cell.lblLatencyResult.text = statusString;
+  cell.lblLossResult.text = statusString;
+  cell.lblJitterResult.text = statusString;
+  
   // If we're running continuous testing, when the closest target fails... we must actually continue
   // the cycle of tests!
   if (self.continuousTesting == YES) {
@@ -106,12 +113,18 @@
 
 // LATENCY //////////////////////////////////////////////////////
 
-- (void)showStoppedLatencyTest{
+- (void)showFailedLatencyTest{
   NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
   SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
  
-  NSString *statusString = [SKTransferOperation getStatusFailed];
-  if (autoTest.udpClosestTargetTestSucceeded == NO) {
+  NSString *statusString = nil;
+  if (autoTest.udpClosestTargetTestSucceeded == YES) {
+    // At least one UDP closest test was ... so UDP should be working, so if a UDP-based test failed,
+    // we can assume it really failed. Show "Failed"
+    statusString = [SKTransferOperation getStatusFailed];
+  } else {
+    // None of the UDP closest target tests succeed (we rolled-back to HTTP based), so we can assume
+    // that UDP is completely blocked. Show "UDP Blocked"
     statusString = NSLocalizedString(@"UDP blocked",nil);
   }
   
@@ -139,7 +152,7 @@
 
 - (void)aodLatencyTestDidFail:(NSString*)messageIgnore
 {
-  [self showStoppedLatencyTest];
+  [self showFailedLatencyTest];
 }
 
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest
@@ -843,7 +856,7 @@ static BOOL sbViewIsVisible;
 }
 
 - (void)udpTestFailedSkipTests:(NSNotification*)note {
-  [self showStoppedLatencyTest];
+  [self showFailedLatencyTest];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
