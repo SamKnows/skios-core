@@ -7,8 +7,6 @@
 
 #import "SKTransferOperation.h"
 
-// TODO - use this model!
-
 /*
 NOTES: See also https://svn.samknows.com/svn/tests/http_server/trunk/docs/protocol.txt ... where the protocol
 for the new service is defined.
@@ -788,7 +786,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
     // Create a read thread, that starts monitor for a response from the server.
     
     readThread = [[MyHttpReadThread alloc] initWithSKTransferOperation:self SocketFd:sockfd CallOnStopOrCancel:^(NSString*responseString, int responseCode){
-      // TODO - HTTP response fully returned from upload() test - do something with it!
+      // HTTP response fully returned from upload() test - do something with it!
       // And finally, close the socket!
       
       @synchronized(self) {
@@ -868,7 +866,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
         // We can introduce this assertion only when all servers support upload test measurement.
         //SK_ASSERT(bGotValidResponseFromServer == true);
         
-        // bGotValidResponseFromServer = false; // TODO - debug hack for testing!
+        // bGotValidResponseFromServer = false; // debug hack for testing!
         
         if (bGotValidResponseFromServer == true)
         {
@@ -899,7 +897,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
  
   NSMutableData *blockData = [[NSMutableData alloc] initWithLength:cBlockDataLength];
  
-  // TODO - keep running this loop, until the read thread tells us to stop!
+  // Keep running this loop, until the read thread tells us to stop!
   int numberOfCalls = 0;
   for (;;) {
     NSDate *start = [NSDate date];
@@ -948,7 +946,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
     //[asyncSocket writeData:blockData withTimeout:1.0 tag:0];
     totalBytesWritten += bytesWritten; // blockDataLength;
   
-    // This is a DUMMY call...
+    // This is a DUMMY call... 
     [self connection:nil didSendBodyData:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
     if (bytesWritten == 0) {
       // Allow other threads a chance!
@@ -964,7 +962,15 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
     
     // 2) we at least 10 seconds AFTER the detection of "isTransferDone" i.e. COMPLETE - giving server long enough to respond...
     if (self.status == COMPLETE) {
+      if (readThread == nil) {
+        // Old style test - quit immedidately, as otherwise that skews the test results
+        // to be much slower than the required value...
+        break;
+      }
+      
       if (self.timeSetStatusToComplete != nil) {
+        // TODO: This code (for upload-based servers in fall-back mode) can skew the upload speed results
+        // in the fall-back case.... needs to be investigated in that case.
         if ([[NSDate date] timeIntervalSinceDate:self.timeSetStatusToComplete] >= 10.0) {
           NSLog(@"MPC - loop - break 5a");
           break;
