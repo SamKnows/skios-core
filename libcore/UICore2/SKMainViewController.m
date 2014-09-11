@@ -77,6 +77,8 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+  [super viewWillAppear:animated];
+  
     self.vWelcomeView.frame = self.view.bounds;
     [self.vWelcomeView initializeWelcomeText];
     
@@ -90,6 +92,9 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+  [super viewDidAppear:animated];
+  
+
     if (isWelcomePerformed) //Came back from activation
     {
         
@@ -127,7 +132,9 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    self.vWelcomeView.hidden = YES;
+  [super viewDidDisappear:animated];
+  
+  self.vWelcomeView.hidden = YES;
 }
 
 - (IBAction)B_Layout:(id)sender {

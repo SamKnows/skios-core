@@ -85,6 +85,8 @@
     self.lDownloading.clipsToBounds = YES;
     [self.view addSubview:self.lDownloading];
     y += 80;
+  
+  SK_ASSERT(y > 0);
 
 #define C_SPINNER_LEFT_INSET    40
     
@@ -119,8 +121,10 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];
-    ((UIViewWithGradient*)self.view).outerColor = [[cTabController globalInstance] getOuterColor];
+  [super viewWillAppear:animated];
+  
+  ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [[cTabController globalInstance] getOuterColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -133,8 +137,9 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
-    
-    [self finishBackgroundTask];
+  [super viewWillDisappear:animated];
+  
+  [self finishBackgroundTask];
 }
 
 - (void)setTitleLabel
