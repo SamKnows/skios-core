@@ -18,7 +18,7 @@ NSString *const UPSTREAMMULTI       = @"JHTTPPOSTMT";
 {
   self = [super init];
   if (self) {
-    self.description = inDescription;
+    self.mDescription = inDescription;
     self.threadIndex = inThreadIndex;
     self.time = inTime;
     self.currentSpeed = inCurrentSpeed;
@@ -39,6 +39,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     NSUInteger testTotalBytes;
 }
 
+@property NSMutableArray* mDescription;
 @property NSMutableArray* mServerUploadTestBitrates;
 @property (weak) SKAutotest* skAutotest;
 
@@ -558,7 +559,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #ifdef DEBUG
         // Debug - dump timings
         for (DebugTiming *value in smDebugSocketSendTimeMicroseconds) {
-          NSLog(@"HttpTest DUMP - threadIndex:%d description:%@ time:%d microsec speed:%g bitsPerSec:%g", value.threadIndex, value.description, (int) (value.time*1000000), value.currentSpeed, value.currentSpeed*8.0);
+          NSLog(@"HttpTest DUMP - threadIndex:%d description:%@ time:%d microsec speed:%g bitsPerSec:%g", value.threadIndex, value.mDescription, (int) (value.time*1000000), value.currentSpeed, value.currentSpeed*8.0);
         }
 #endif // DEBUG
         [self.class sClearDebugSocketSendTimeMicroseconds];
