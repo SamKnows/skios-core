@@ -50,7 +50,7 @@ typedef enum
 @property (nonatomic, retain) NSNumber *testId;
 
 @property (nonatomic, assign) BOOL runAllTests;
-@property (nonatomic, retain) NSString *validTest;
+@property (nonatomic, copy)   NSString *validTest;
 @property (nonatomic, assign) int bitMaskForRequestedTests;
 
 @property (nonatomic, retain) id<SKAutotestManagerDelegate> autotestManagerDelegate;

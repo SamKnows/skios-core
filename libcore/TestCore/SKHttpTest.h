@@ -21,7 +21,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 
 @interface DebugTiming : NSObject
 
-@property NSString *mDescription;
+@property (copy) NSString *mDescription;
 @property int       threadIndex;
 @property NSTimeInterval  time;
 @property double currentSpeed;

@@ -15,10 +15,10 @@ typedef enum {
 
 @interface SKThrottledQueryResult : NSObject
 @property SKOperators_Return returnCode;
-@property (retain) NSString *timestamp; // Unix time - seconds since 1970
-//@property (retain) NSString *datetimeUTCMilliZ;  // UTC string
-@property (retain) NSString *datetimeUTCSimple;  // UTC string
-@property (retain) NSString *carrier;
+@property (copy) NSString *timestamp; // Unix time - seconds since 1970
+//@property (copy) NSString *datetimeUTCMilliZ;  // UTC string
+@property (copy) NSString *datetimeUTCSimple;  // UTC string
+@property (copy) NSString *carrier;
 @end
 
 
