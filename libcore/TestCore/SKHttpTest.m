@@ -152,7 +152,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   mWarmupBytes = 0;
   mTransferBytes = 0;
   mTotalBytes      = 0;
-  transferMaxTimeMicroseconds = 0;
+  mTransferTimeMicroseconds = 0;
 }
 
 - (void)dealloc
