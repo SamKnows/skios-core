@@ -237,23 +237,13 @@ const int cBlockDataLength = 32768;
 
 @interface SKTransferOperation ()
 {
-  NSTimeInterval startWarmup;
-  NSTimeInterval warmupTime;
-  int warmupBytes;
-  
-  NSTimeInterval startTransfer;
-  int transferBytes;
-  
-  NSUInteger totalBytes;
-  
   BOOL warmupDone;
-  
   NSPort* nsPort;
-  
-  struct timespec sleeptime;
-  
   BOOL testOK;
 }
+
+
+@property (weak) SKHttpTest *mpParentHttpTest;
 
 @property u_int32_t mSESSIONID_ForServerUploadTest;
 
@@ -268,9 +258,7 @@ const int cBlockDataLength = 32768;
 
 @property (weak) SKAutotest* skAutotest;
 
-- (SKTimeIntervalMicroseconds)microTime:(NSTimeInterval)time;
 - (BOOL)isWarmupDone:(int)bytes;
-- (BOOL)isTransferDone:(int)bytes;
 
 - (void)done;
 - (void)cancelled;
@@ -304,24 +292,16 @@ const int cBlockDataLength = 32768;
 
 @implementation SKTransferOperation
 
+
+@synthesize mpParentHttpTest;
 @synthesize shouldKeepRunning;
-
 @synthesize mbTestMode;
-
 @synthesize mbAsyncFlag;
-
 @synthesize target;
 @synthesize port;
-@synthesize warmupMaxTime;
-@synthesize warmupMaxBytes;
-@synthesize transferMaxBytes;
-@synthesize transferMaxTimeMicroseconds;
 @synthesize nThreads;
 @synthesize file;
-@synthesize transferOperationDelegate;
 @synthesize isDownstream;
-@synthesize startTime;
-@synthesize transferTimeMicroseconds;
 @synthesize threadId;
 
 @synthesize skAutotest;
@@ -330,20 +310,19 @@ const int cBlockDataLength = 32768;
                 port:(int)_port
                 file:(NSString*)_file
         isDownstream:(BOOL)_isDownstream
-       warmupMaxTime:(double)_warmupMaxTime
-       warmupMaxBytes:(double)_warmupMaxBytes
-     TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicroseconds
-     transferMaxBytes:(double)_transferMaxBytes
             nThreads:(int)_nThreads
             threadId:(int)_threadId
             SESSIONID:(uint32_t)sessionId
-TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
+       ParentHttpTest:(SKHttpTest*)inParentHttpTest // (id <SKTransferOperationDelegate>)_delegate
            asyncFlag:(BOOL)_asyncFlag
 {
   self = [super init];
   
   if (self)
   {
+    // Weak reference...
+    mpParentHttpTest = inParentHttpTest;
+
     mbTestMode = NO;
     
     self.mSESSIONID_ForServerUploadTest = sessionId;
@@ -352,25 +331,13 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
     port = _port;
     file = [_file copy];
     isDownstream = _isDownstream;
-    warmupMaxTime = _warmupMaxTime;
-    warmupMaxBytes = _warmupMaxBytes;
-    SK_ASSERT(warmupMaxBytes >= 0);
-    SK_ASSERT(warmupMaxBytes != warmupMaxTime);
-    transferMaxTime = _transferMaxTimeMicroseconds;
-    transferMaxBytes = _transferMaxBytes;
-    SK_ASSERT(transferMaxBytes >= 0);
-    SK_ASSERT(transferMaxBytes != transferMaxTime);
     nThreads = _nThreads;
     threadId = _threadId;
-    transferOperationDelegate = _delegate;
     mbAsyncFlag = _asyncFlag;
     
     self.status = INITIALIZING;
     
     [self setCompletionBlock:nil];
-    
-    sleeptime.tv_sec  = 0;
-    sleeptime.tv_nsec = 1;
     
     testOK = YES;
     
@@ -464,8 +431,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
 
 - (void)prepareParams
 {
-  totalBytes      = 0;
-  transferBytes   = 0;
+
   warmupDone      = NO;
 }
 
@@ -637,8 +603,6 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
 #ifdef DEBUG
   NSLog(@"DEBUG startUploadTest: %@ - isUpstream", [self description]);
 #endif // DEBUG
-  
-  SKHttpTest *httpTest = self.skAutotest.httpTest;
   
   struct hostent *server = gethostbyname([target UTF8String]);
   if (server == NULL) {
@@ -919,7 +883,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
         [SKHttpTest sAddDebugTimingWithDescription:@"warmup" ThreadIndex:threadId Time:(NSTimeInterval)[end timeIntervalSinceDate:start] CurrentSpeed:0];
       } else if ((self.status == TRANSFERRING) || (self.status == COMPLETE)) {
         
-        double bytesPerSecondRealTimeUpload = [httpTest getBytesPerSecondRealTimeUpload];
+        double bytesPerSecondRealTimeUpload = [mpParentHttpTest getBytesPerSecondRealTimeUpload];
         [SKHttpTest sAddDebugTimingWithDescription:@"testit" ThreadIndex:threadId Time:(NSTimeInterval)[end timeIntervalSinceDate:start] CurrentSpeed:bytesPerSecondRealTimeUpload];
       }
     }
@@ -1005,14 +969,24 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
   } else {
     // Best result is from the built-in measurement.
     if (bitrateMpbs1024Based == -1) {
-      double bytesPerSecondRealTimeUpload = [httpTest getBytesPerSecondRealTimeUpload];
+      double bytesPerSecondRealTimeUpload = [mpParentHttpTest getBytesPerSecondRealTimeUpload];
       bitrateMpbs1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:bytesPerSecondRealTimeUpload];
     }
-    SK_ASSERT(bitrateMpbs1024Based > 0);
+    SK_ASSERT(bitrateMpbs1024Based >= 0);
 #ifdef DEBUG
     NSLog(@"DEBUG: Best result is from the BUILT-IN MEASUREMENT, bitrateMpbs1024Based=%d", (int)bitrateMpbs1024Based);
 #endif // DEBUG
-    [self doSendtodDidCompleteTransferOperation:transferTimeMicroseconds transferBytes:transferBytes totalBytes:totalBytes ForceThisBitsPerSecondFromServer:-1.0  threadId:threadId];
+   
+    int theTransferBytes;
+    NSUInteger theTotalBytes;
+    SKTimeIntervalMicroseconds theTransferTimeMicroseconds;
+    @synchronized(mpParentHttpTest) {
+      theTransferBytes = mpParentHttpTest.mTransferBytes;
+      theTotalBytes = mpParentHttpTest.mTotalBytes;
+      theTransferTimeMicroseconds = mpParentHttpTest.transferMaxTimeMicroseconds;
+    }
+    
+    [self doSendtodDidCompleteTransferOperation:theTransferTimeMicroseconds transferBytes:theTransferBytes totalBytes:theTotalBytes ForceThisBitsPerSecondFromServer:-1.0  threadId:threadId];
   }
 }
         
@@ -1073,32 +1047,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
   }
 }
 
-- (int)getProgress
-{
-  double result = 0;
-  
-  if(startWarmup == 0)
-  {
-    result = 0;
-  }
-  else if(transferMaxTime != 0)
-  {
-    SKTimeIntervalMicroseconds currTime = [self microTime:[[SKCore getToday] timeIntervalSince1970] - startWarmup];
-    result = currTime/(warmupMaxTime + transferMaxTime);
-  }
-  else
-  {
-    int currBytes = warmupBytes + transferBytes;
-    result = (double)currBytes/(warmupMaxBytes+transferMaxBytes);
-  }
-  
-  result = result < 0 ? 0 : result;
-  result = result > 1 ? 1 : result;
-  
-  return (int) (result*100);
-}
-
-- (SKTimeIntervalMicroseconds)microTime:(NSTimeInterval)time
++ (SKTimeIntervalMicroseconds)sMicroTimeForSeconds:(NSTimeInterval)time
 {
   return time * 1000000.0; // convert to microseconds
 }
@@ -1109,110 +1058,25 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
   {
     return YES;
   }
-  else
-  {
-    @synchronized(self)
-    {
-      warmupBytes += bytes;
-      
-      if (startWarmup == 0)
-      {
-        startWarmup = [[SKCore getToday] timeIntervalSince1970];
-      }
-      
-      NSTimeInterval currentTime = [[SKCore getToday] timeIntervalSince1970];
-      
-      warmupTime = [self microTime:currentTime - startWarmup];
-      
-      if (((warmupMaxTime > 0) && (warmupTime >= warmupMaxTime)) ||
-          ((warmupMaxBytes > 0) && (warmupBytes >= warmupMaxBytes)))
-      {
-        [self.transferOperationDelegate todIncrementWarmupDoneCounter];
-        
-//        while ([self.transferOperationDelegate todGetWarmupDoneCounter] < nThreads)
-//        {
-//          nanosleep (&sleeptime, NULL);
-//        }
-        
-        [self.transferOperationDelegate todAddWarmupBytes:warmupBytes];
-        [self.transferOperationDelegate todAddWarmupTimes:startWarmup endTime:currentTime];
-        
-        warmupDone = YES;
-        
-        if (isDownstream == NO) {
-          // Upstream -  immediately move to transferring!
-          self.status = TRANSFERRING;
-        }
-      }
-      
-      return warmupDone;
-    }
-  }
-}
-
-- (BOOL)isTransferDone:(int)bytes
-{
-  BOOL result = false;
-  
-  @synchronized(self)
-  {
-    transferBytes += bytes;
+ 
+  @synchronized(mpParentHttpTest) {
+    warmupDone = [mpParentHttpTest getIsWarmupDone:bytes];
     
-    if (startTransfer == 0)
-    {
-      startTransfer = [[SKCore getToday] timeIntervalSince1970];
-    }
-    transferTimeMicroseconds = [self microTime:[[SKCore getToday] timeIntervalSince1970] - startTransfer];
-    
-    if (((transferMaxTime > 0) && (transferTimeMicroseconds >= transferMaxTime)) ||
-        ((transferMaxBytes > 0) && (transferBytes >= transferMaxBytes)))
-    {
-      result = true;
+    if (mpParentHttpTest.mbMoveToTransferring == YES) {
+      SK_ASSERT (isDownstream == NO);
+      // Upstream -  immediately move to transferring!
+      self.status = TRANSFERRING;
     }
   }
   
-  return result;
+  return warmupDone;
 }
-
-- (BOOL)isUploadTransferDoneBytesThisTime:(int)bytesThisTime TotalBytes:(int)inTotalBytes TotalBytesToTransfer:(int)inTotalBytesToTransfer
-{
-  BOOL result = false;
-  
-  @synchronized(self)
-  {
-    transferBytes = inTotalBytes;
-    
-    if (startTransfer == 0)
-    {
-      startTransfer = [[SKCore getToday] timeIntervalSince1970];
-    }
-    transferTimeMicroseconds = [self microTime:[[SKCore getToday] timeIntervalSince1970] - startTransfer];
-    
-    if (inTotalBytes >= inTotalBytesToTransfer) {
-      return true;
-    }
-    
-    if ((transferMaxTime > 0) && (transferTimeMicroseconds >= transferMaxTime))
-    {
-      result = true;
-    }
-    if ((transferMaxBytes > 0) && (transferBytes >= transferMaxBytes))
-    {
-      result = true;
-    }
-    
-    [self.transferOperationDelegate todAddTransferBytes:bytesThisTime];
-  }
-  
-  return result;
-}
-
 
 #pragma mark - Private methods
 
 - (void)doSendUpdateStatus:(TransferStatus)status_ threadId:(NSUInteger)threadId_
 {
-  [self.transferOperationDelegate todUpdateStatus:status_ threadId:threadId_];
+  [self.mpParentHttpTest todUpdateStatus:status_ threadId:threadId_];
 }
 
 - (void)doSendtodDidTransferData:(NSUInteger)totalBytes_
@@ -1220,7 +1084,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
                         progress:(float)progress_
                         threadId:(NSUInteger)threadId_
 {
-    [self.transferOperationDelegate todDidTransferData:totalBytes_ bytes:bytes_ transferBytes:transferBytes progress:progress_ threadId:threadId_ operationTime:transferTimeMicroseconds];
+    [self.mpParentHttpTest todDidTransferData:totalBytes_ bytes:bytes_ transferBytes:mpParentHttpTest.mTransferBytes progress:progress_ threadId:threadId_ operationTime:mpParentHttpTest.mTransferTimeMicroseconds];
 }
 
 - (void)doSendtodDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTime_
@@ -1229,7 +1093,7 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
        ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
                                      threadId:(NSUInteger)threadId_
 {
-  [self.transferOperationDelegate todDidCompleteTransferOperation:transferTime_
+  [self.mpParentHttpTest todDidCompleteTransferOperation:transferTime_
                                                     transferBytes:transferBytes_
                                                        totalBytes:totalBytes_
                                  ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
@@ -1351,39 +1215,41 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
   if (nil != data)
   {
     NSUInteger bytesLength = [data length];
-    
-    totalBytes = totalBytes + bytesLength;
-    
-    float progress = (float)[self getProgress];
-    
-    [self doSendtodDidTransferData:totalBytes bytes:bytesLength progress:progress threadId:threadId];
-    
-    if (![self isWarmupDone:(int)bytesLength])
-    {
-      if (!self.status == WARMING)
+   
+    @synchronized(mpParentHttpTest) {
+      mpParentHttpTest.mTotalBytes = mpParentHttpTest.mTotalBytes + bytesLength;
+      
+      float progress = (float)[mpParentHttpTest getProgress];
+      
+      [self doSendtodDidTransferData:mpParentHttpTest.mTotalBytes bytes:bytesLength progress:progress threadId:threadId];
+      
+      if (![self isWarmupDone:(int)bytesLength])
       {
-        self.status = WARMING;
-        [self doSendUpdateStatus:self.status threadId:threadId];
-      }
-    }
-    else
-    {
-      if (![self isTransferDone:(int)bytesLength])
-      {
-        if (!self.status == TRANSFERRING)
+        if (!self.status == WARMING)
         {
-          self.status = TRANSFERRING;
+          self.status = WARMING;
           [self doSendUpdateStatus:self.status threadId:threadId];
         }
       }
       else
       {
-        [self done];
-        
-        [self setStatusToComplete];
-
-        [self doSendUpdateStatus:self.status threadId:threadId];
-        [self doSendtodDidCompleteTransferOperation:transferTimeMicroseconds transferBytes:transferBytes totalBytes:totalBytes ForceThisBitsPerSecondFromServer:-1.0 threadId:threadId];
+        if (![mpParentHttpTest isTransferDone:(int)bytesLength])
+        {
+          if (!self.status == TRANSFERRING)
+          {
+            self.status = TRANSFERRING;
+            [self doSendUpdateStatus:self.status threadId:threadId];
+          }
+        }
+        else
+        {
+          [self done];
+          
+          [self setStatusToComplete];
+          
+          [self doSendUpdateStatus:self.status threadId:threadId];
+          [self doSendtodDidCompleteTransferOperation:mpParentHttpTest.mTransferTimeMicroseconds transferBytes:mpParentHttpTest.mTransferBytes totalBytes:mpParentHttpTest.mTotalBytes ForceThisBitsPerSecondFromServer:-1.0 threadId:threadId];
+        }
       }
     }
   }
@@ -1396,28 +1262,11 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
   }
 }
 
-- (int)getBytesPerSecond:(NSInteger)TotalBytesWritten
-{
-  // if ([self isSuccessful])
-  SKTimeIntervalMicroseconds elapsedTime = [self microTime:[[SKCore getToday] timeIntervalSince1970] - startTransfer];
-  {
-    double dTime = elapsedTime / 1000000.0;   // convert microseconds -> seconds
-    if (dTime == 0) {
-      return 0;
-    }
-    
-    double bytesPerSecond = ((double)TotalBytesWritten) / dTime;
-    return (int)bytesPerSecond;
-  }
-  
-  return 0;
-}
-
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   
 #ifdef DEBUG
   if (bytesWritten > 0) {
-    NSLog(@"DEBUG %@ - didSendBodyData : %d, %d, %d; bps=%d", [self description], (int)bytesWritten, (int)totalBytesWritten, (int)totalBytesExpectedToWrite, [self getBytesPerSecond:totalBytesWritten]);
+    NSLog(@"DEBUG %@ - didSendBodyData : %d, %d, %d; bps=%d", [self description], (int)bytesWritten, (int)totalBytesWritten, (int)totalBytesExpectedToWrite, [mpParentHttpTest getBytesPerSecond:totalBytesWritten]);
   }
 #endif // DEBUG
   
@@ -1426,53 +1275,59 @@ TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
     [self cancelled];
     return;
   }
-  
-  totalBytes = totalBytes + bytesWritten;
-
-  // Must use the getProgress method - as that accounts for the WARMUP PERIOD that always comes first.
-  //float progress = 100.0F * ((float) totalBytesWritten) / ((float)totalBytesExpectedToWrite);
-  float progress = [self getProgress];
-  
+ 
+  @synchronized(mpParentHttpTest)
+  {
+    mpParentHttpTest.mTotalBytes = mpParentHttpTest.mTotalBytes + bytesWritten;
+    
+    // Must use the getProgress method - as that accounts for the WARMUP PERIOD that always comes first.
+    //float progress = 100.0F * ((float) totalBytesWritten) / ((float)totalBytesExpectedToWrite);
+    float progress = [mpParentHttpTest getProgress];
+    
 #ifdef DEBUG
-  if (bytesWritten > 0) {
-    NSLog(@"DEBUG %@ - didSendBodyData, progress=%f, thread=%@", [self description], progress, [[NSThread currentThread] description]);
-  }
+    if (bytesWritten > 0) {
+      NSLog(@"DEBUG %@ - didSendBodyData, progress=%f, thread=%@", [self description], progress, [[NSThread currentThread] description]);
+    }
 #endif // DEBUG
-  
-  if (bytesWritten > 0) {
-    [self doSendtodDidTransferData:totalBytes bytes:bytesWritten progress:progress threadId:threadId];
-  }
-  
-  if (![self isWarmupDone:(int)bytesWritten]){
-    if (!self.status == WARMING) {
-      self.status = WARMING;
-      [self doSendUpdateStatus:self.status threadId:threadId];
-    }
-  }
-  //if (totalBytesWritten >= totalBytesExpectedToWrite) {
-  else if (![self isUploadTransferDoneBytesThisTime:(int)bytesWritten TotalBytes:(int)totalBytesWritten TotalBytesToTransfer:(int)totalBytesExpectedToWrite]) {
-    if (!self.status == TRANSFERRING)
-    {
-      self.status = TRANSFERRING;
-      [self doSendUpdateStatus:self.status threadId:threadId];
-    }
-  } else {
-    [self done];
     
-    [self setStatusToComplete];
+    if (bytesWritten > 0) {
+      [self doSendtodDidTransferData:mpParentHttpTest.mTotalBytes bytes:bytesWritten progress:progress threadId:threadId];
+    }
     
-    [self doSendUpdateStatus:self.status threadId:threadId];
-    transferTimeMicroseconds = [self microTime:[[SKCore getToday] timeIntervalSince1970] - startTransfer];
-    transferBytes = (int)totalBytesWritten;
-    if (isDownstream == NO ) {
-      // Upload: do NOT send this, until we've seen if we have a better reponse from the server query!
-      
-      // But DO increase the number of bytes...
-      [self.transferOperationDelegate todUploadTestCompletedNotAServeResponseYet:transferTimeMicroseconds
-                                                                   transferBytes:transferBytes
-                                                                      totalBytes:totalBytes];
+    if (![self isWarmupDone:(int)bytesWritten]){
+      if (!self.status == WARMING) {
+        self.status = WARMING;
+        [self doSendUpdateStatus:self.status threadId:threadId];
+      }
+    }
+    else if (![self.mpParentHttpTest isUploadTransferDoneBytesThisTime:(int)bytesWritten TotalBytes:(int)totalBytesWritten TotalBytesToTransfer:(int)totalBytesExpectedToWrite]) {
+      if (!self.status == TRANSFERRING)
+      {
+        self.status = TRANSFERRING;
+        [self doSendUpdateStatus:self.status threadId:threadId];
+      }
     } else {
-      [self doSendtodDidCompleteTransferOperation:transferTimeMicroseconds transferBytes:transferBytes totalBytes:totalBytes ForceThisBitsPerSecondFromServer:-1.0 threadId:threadId];
+      [self done];
+      
+      [self setStatusToComplete];
+      
+      [self doSendUpdateStatus:self.status threadId:threadId];
+      mpParentHttpTest.mTransferTimeMicroseconds = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mpParentHttpTest.mStartTransfer];
+      
+      // The transfer bytes is the sum of ALL values, across ALL threads!
+      mpParentHttpTest.mTransferBytes = mpParentHttpTest.mTransferBytes + (int)bytesWritten;
+      
+      if (isDownstream == NO ) {
+        // Upload: do NOT send this, until we've seen if we have a better reponse from the server query!
+        
+        // But DO increase the number of bytes...
+        [self.mpParentHttpTest
+         todUploadTestCompletedNotAServeResponseYet:mpParentHttpTest.mTransferTimeMicroseconds
+         transferBytes:mpParentHttpTest.mTransferBytes
+         totalBytes:mpParentHttpTest.mTotalBytes];
+      } else {
+        [self doSendtodDidCompleteTransferOperation:mpParentHttpTest.mTransferTimeMicroseconds transferBytes:mpParentHttpTest.mTransferBytes totalBytes:mpParentHttpTest.mTotalBytes ForceThisBitsPerSecondFromServer:-1.0 threadId:threadId];
+      }
     }
   }
 }

@@ -36,7 +36,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 @end
 
 
-@interface SKHttpTest : NSObject <SKTransferOperationDelegate>
+@interface SKHttpTest : NSObject
 
 @property (nonatomic, assign) int port;
 @property (nonatomic, strong) NSString *target;
@@ -78,6 +78,17 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 @property NSTimeInterval testWarmupStartTime;
 @property NSTimeInterval testWarmupEndTime;
 
+// The following are shared ACROSS ALL THREADS...
+// ... and therefore are accessed (in a synchronized way) by the SKTransferOperation instances...
+@property BOOL mbMoveToTransferring;
+@property NSTimeInterval mStartWarmup;
+@property NSTimeInterval mWarmupTime;
+@property NSTimeInterval mStartTransfer;
+@property int mWarmupBytes;
+@property int mTransferBytes;
+@property NSUInteger mTotalBytes;
+@property SKTimeIntervalMicroseconds mTransferTimeMicroseconds;
+
 #pragma mark - Init
 
 - (id)initWithTarget:(NSString*)_target
@@ -91,6 +102,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
             nThreads:(int)_nThreads
             HttpTestDelegate:(id <SKHttpTestDelegate>)_delegate
    runAsynchronously:(BOOL)_runAsynchronously;
+-(void) prepareForTest;
 
 #pragma mark - Public Methods
 
@@ -98,7 +110,6 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 - (void)startTest;
 - (void)stopTest;
 - (void)reset;
-- (void)setDirection:(NSString*)direction;
 - (BOOL)isSuccessful;
 - (int)getBytesPerSecond;
 - (double)getBytesPerSecondRealTimeUpload;
@@ -112,7 +123,43 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 -(void) setSKAutotest:(SKAutotest*)skAutotest;
 
 +(void) sAddDebugTimingWithDescription:(NSString*)inDescription ThreadIndex:(int)inThreadIndex Time:(NSTimeInterval)inTime CurrentSpeed:(double)inCurrentSpeed;
-  
+
+-(int)  getProgress;
+-(BOOL) getIsWarmupDone:(int)bytes;
+-(BOOL) isTransferDone:(int)bytes;
+-(int) getBytesPerSecond:(NSInteger)TotalBytesWritten;
+- (BOOL)isUploadTransferDoneBytesThisTime:(int)bytesThisTime TotalBytes:(int)inTotalBytes TotalBytesToTransfer:(int)inTotalBytesToTransfer;
+
+// Was a delegate, some time ago ... SKTransferOperationDelegate
+- (void)todIncrementWarmupDoneCounter;
+- (int)todGetWarmupDoneCounter;
+- (void)todAddWarmupBytes:(NSUInteger)bytes;
+- (void)todAddWarmupTimes:(NSTimeInterval)startTime endTime:(NSTimeInterval)endTime;
+- (void)todAddTransferBytes:(NSUInteger)bytes;
+
+- (void)todUpdateStatus:(TransferStatus)status
+               threadId:(NSUInteger)threadId;
+
+//###HG
+-(void) todDidTransferData:(NSUInteger)totalBytes
+         bytes:(NSUInteger)bytes
+                          transferBytes:(NSUInteger)transferBytes
+                               progress:(float)progress
+                               threadId:(NSUInteger)threadId
+                          operationTime:(SKTimeIntervalMicroseconds)transferTime;
+
+- (void)todUploadTestCompletedNotAServeResponseYet:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
+                                     transferBytes:(NSUInteger)transferBytes
+                                        totalBytes:(NSUInteger)totalBytes;
+
+- (void)todDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
+                          transferBytes:(NSUInteger)transferBytes
+                             totalBytes:(NSUInteger)totalBytes
+       ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
+                               threadId:(NSUInteger)threadId;
+
+// End of what was once a delegate
+
 @end
 
 #pragma mark - Delegate

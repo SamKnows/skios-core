@@ -403,7 +403,6 @@
       {
         NSLog(@"********* creating httpTransfer test, isDownload=%d", (int)isDownload);
         [self createHttpTest:config isDownload:isDownload file:file target:target];
-        
         [self.httpTest setTestIndex:testIndex];
         [self.httpTest setNetworkType:[config getNetworkType]];
         [self.httpTest setDisplayName:[config displayName]];
@@ -453,6 +452,7 @@
         }
         
         NSLog(@"********* preparing the test...");
+        [self.httpTest prepareForTest];
         [self.httpTest setTarget:target];
         [self.httpTest setPort:[[config paramObjectForKey:@"port"] intValue]];
         [self.httpTest setFile:file];

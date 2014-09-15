@@ -17,6 +17,8 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
 
 @protocol SKTransferOperationDelegate;
 @class SKAutotest;
+@class SKHttpTest;
+
 
 @interface SKTransferOperation : NSOperation<NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 {
@@ -33,10 +35,7 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
     NSString *file;
     
     NSTimeInterval warmupMaxTime;
-    NSTimeInterval transferMaxTime;
-    NSTimeInterval startTime;
-    SKTimeIntervalMicroseconds transferTimeMicroseconds;
-    
+  
     int warmupMaxBytes;
     int transferMaxBytes;
     
@@ -51,17 +50,9 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
 @property (nonatomic, strong) NSString *target;
 @property (nonatomic, assign) int port;
 @property (nonatomic, strong) NSString *file;
-@property (nonatomic, assign) NSTimeInterval warmupMaxTime;
-@property (nonatomic, assign) SKTimeIntervalMicroseconds transferMaxTimeMicroseconds;
-@property (nonatomic, assign) NSTimeInterval startTime;
-@property (nonatomic, assign) SKTimeIntervalMicroseconds transferTimeMicroseconds;
-@property (nonatomic, assign) int warmupMaxBytes;
-@property (nonatomic, assign) int transferMaxBytes;
 @property (nonatomic, assign) int nThreads;
 @property (nonatomic, assign) int threadId;
 @property (nonatomic, assign) BOOL isDownstream;
-
-@property (atomic, strong) id <SKTransferOperationDelegate> transferOperationDelegate;
 
 #pragma mark - Init
 
@@ -69,14 +60,10 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
                 port:(int)_port
                 file:(NSString*)_file
         isDownstream:(BOOL)_isDownstream
-       warmupMaxTime:(double)_warmupMaxTime
-      warmupMaxBytes:(double)_warmupMaxBytes
-     TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicroseconds
-    transferMaxBytes:(double)_transferMaxBytes
             nThreads:(int)_nThreads
             threadId:(int)_threadId
             SESSIONID:(uint32_t)sessionId
-            TransferOperationDelegate:(id <SKTransferOperationDelegate>)_delegate
+            ParentHttpTest:(SKHttpTest*)inParentHttpTest
             asyncFlag:(BOOL)_asyncFlag;
 
 #pragma mark - Instance Methods
@@ -101,39 +88,6 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
 
 // Used by the owning SKAutotest, to let the SKTransferOperation know what the owning autotest is...
 -(void) setSKAutotest:(SKAutotest*)inSkAutotest;
-
-@end
-
-#pragma mark - Delegate
-
-@protocol SKTransferOperationDelegate
-
-- (void)todIncrementWarmupDoneCounter;
-- (int)todGetWarmupDoneCounter;
-- (void)todAddWarmupBytes:(NSUInteger)bytes;
-- (void)todAddWarmupTimes:(NSTimeInterval)startTime endTime:(NSTimeInterval)endTime;
-- (void)todAddTransferBytes:(NSUInteger)bytes;
-
-- (void)todUpdateStatus:(TransferStatus)status
-            threadId:(NSUInteger)threadId;
-
-//###HG
-- (void)todDidTransferData:(NSUInteger)totalBytes
-                  bytes:(NSUInteger)bytes
-               transferBytes:(NSUInteger)transferBytes
-               progress:(float)progress
-               threadId:(NSUInteger)threadId
-               operationTime:(SKTimeIntervalMicroseconds)transferTime;
-
-- (void)todUploadTestCompletedNotAServeResponseYet:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
-              transferBytes:(NSUInteger)transferBytes
-                             totalBytes:(NSUInteger)totalBytes;
-
-- (void)todDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
-              transferBytes:(NSUInteger)transferBytes
-                 totalBytes:(NSUInteger)totalBytes
-       ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
-                   threadId:(NSUInteger)threadId;
 
 @end
 

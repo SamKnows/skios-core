@@ -11,14 +11,17 @@
 
 // Alternative to sizeWithFont, which is deprecated!
 
-- (CGSize)skSizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakMode {
+- (CGSize)skSizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakModeIn {
   
-  SK_ASSERT(lineBreakMode == NSLineBreakByWordWrapping);
+  NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+  paragraphStyle.lineBreakMode = lineBreakModeIn;
+  paragraphStyle.alignment = NSTextAlignmentLeft;
   
   UIColor *color = [UIColor blackColor];
   NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                         font, NSFontAttributeName,
                                         color, NSForegroundColorAttributeName,
+                                        paragraphStyle, NSParagraphStyleAttributeName,
                                         nil];
   CGRect labelRect = [self boundingRectWithSize:size  options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionary context:nil];
   return CGSizeMake(labelRect.size.width, labelRect.size.height);

@@ -39,6 +39,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     NSUInteger testTotalBytes;
 }
 
+@property BOOL warmupDone;
+
 @property NSMutableArray* mDescription;
 @property NSMutableArray* mServerUploadTestBitrates;
 @property (weak) SKAutotest* skAutotest;
@@ -53,6 +55,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 @implementation SKHttpTest
 
+@synthesize warmupDone;
 @synthesize isRunning;
 @synthesize target;
 @synthesize port;
@@ -81,6 +84,17 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 @synthesize testWarmupBytes;
 @synthesize testWarmupStartTime;
 @synthesize testWarmupEndTime;
+
+// The following are shared ACROSS ALL THREADS...
+// ... and therefore are accessed (in a synchronized way) by the SKTransferOperation instances...
+@synthesize mbMoveToTransferring;
+@synthesize mStartWarmup;
+@synthesize mWarmupTime;
+@synthesize mStartTransfer;
+@synthesize mWarmupBytes;
+@synthesize mTransferBytes;
+@synthesize mTotalBytes;
+@synthesize mTransferTimeMicroseconds;
 
 @synthesize skAutotest;
 
@@ -121,35 +135,49 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     runAsynchronously = _runAsynchronously;
     
     [self setRunningStatus:IDLE];
+    
+    [self prepareForTest];
   }
   
   return self;
 }
 
+-(void) prepareForTest {
+  
+  warmupDone = NO;
+  mbMoveToTransferring = NO;
+  mStartWarmup = 0;
+  mWarmupTime = 0;
+  mStartTransfer = 0;
+  mWarmupBytes = 0;
+  mTransferBytes = 0;
+  mTotalBytes      = 0;
+  transferMaxTimeMicroseconds = 0;
+}
+
 - (void)dealloc
 {
-    if (nil != queue)
-    {
-        [queue cancelAllOperations];
-        queue = nil;
-    }
-    
+  if (nil != queue)
+  {
+    [queue cancelAllOperations];
+    queue = nil;
+  }
 }
 
 #pragma mark - Instance Methods
 
 - (void)setRunningStatus:(TransferStatus)status
 {
-    // INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED, FINISHED, IDLE
-    
-    if (status == COMPLETE || status == CANCELLED || status == FAILED || status == FINISHED || status == IDLE)
-    {
-        isRunning = NO;
-    }
-    else
-    {
-        isRunning = YES;
-    }
+  // INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED, FINISHED, IDLE
+  
+  if (status == COMPLETE || status == CANCELLED || status == FAILED || status == FINISHED || status == IDLE)
+  {
+    isRunning = NO;
+  }
+  else
+  {
+    isRunning = YES;
+  }
 }
 
 - (BOOL)isMultiThreaded
@@ -265,61 +293,58 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)startTest
 {
-    if (nil != queue)
-    {
-        [queue cancelAllOperations];
-        queue = nil;
-    }
+  if (nil != queue)
+  {
+    [queue cancelAllOperations];
+    queue = nil;
+  }
   
-    queue = [[NSOperationQueue alloc] init];
-    [queue setMaxConcurrentOperationCount:nThreads];
+  queue = [[NSOperationQueue alloc] init];
+  [queue setMaxConcurrentOperationCount:nThreads];
+  
+  [self prepareStatus];
+  [self reset];
+  
+  [self prepareForTest];
+  testOK = NO;
+  multiThreadCount = 0;
+  testTotalBytes = 0;
+  testTransferTimeMicroseconds = 0;
+  testTransferTimeFirstBytesAt = nil;
+  testTransferBytes = 0;
+  testTransferBytes_New = 0;
+  testWarmupBytes = 0;
+  testWarmupStartTime = DBL_MAX;
+  testWarmupEndTime = DBL_MIN;
+  self.warmupDoneCounter = 0;
+  
+  [self setRunningStatus:INITIALIZING];
+  
+  // nThreads = 1; // TODO - this is a HACK!
+  
+  // Generate this value in case we need it.
+  // It is a random value from [0...2^32-1]
+  uint32_t lSESSIONID_ForServerUploadTest = arc4random();
+  
+  for (int i=0; i<nThreads; i++)
+  {
+    SKTransferOperation *operation =
+    [[SKTransferOperation alloc] initWithTarget:target
+                                           port:port
+                                           file:file
+                                   isDownstream:isDownstream
+                                       nThreads:nThreads
+                                       threadId:i
+                                      SESSIONID:lSESSIONID_ForServerUploadTest
+                                 ParentHttpTest:self
+                                      asyncFlag:[self getTestIsAsyncFlag]];
     
-    [self prepareStatus];
-    [self reset];
+    [operation setSKAutotest:self.skAutotest];
     
-    testOK = NO;
-    multiThreadCount = 0;
-    testTotalBytes = 0;
-    testTransferTimeMicroseconds = 0;
-    testTransferTimeFirstBytesAt = nil;
-    testTransferBytes = 0;
-    testTransferBytes_New = 0;
-    testWarmupBytes = 0;
-    testWarmupStartTime = DBL_MAX;
-    testWarmupEndTime = DBL_MIN;
-    self.warmupDoneCounter = 0;
-    
-    [self setRunningStatus:INITIALIZING];
+    [queue addOperation:operation];
+  }
   
-    // nThreads = 1; // TODO - this is a HACK!
-  
-    // Generate this value in case we need it.
-    // It is a random value from [0...2^32-1]
-    uint32_t lSESSIONID_ForServerUploadTest = arc4random();
-  
-    for (int i=0; i<nThreads; i++)
-    {
-      SKTransferOperation *operation =
-      [[SKTransferOperation alloc] initWithTarget:target
-                                             port:port
-                                             file:file
-                                     isDownstream:isDownstream
-                                    warmupMaxTime:warmupMaxTime
-                                   warmupMaxBytes:warmupMaxBytes
-                      TransferMaxTimeMicroseconds:transferMaxTimeMicroseconds
-                                 transferMaxBytes:transferMaxBytes
-                                         nThreads:nThreads
-                                         threadId:i
-                                        SESSIONID:lSESSIONID_ForServerUploadTest
-                        TransferOperationDelegate:self
-                                        asyncFlag:[self getTestIsAsyncFlag]];
-      
-      [operation setSKAutotest:self.skAutotest];
-      
-      [queue addOperation:operation];
-    }
-  
-    isRunning = YES;
+  isRunning = YES;
 }
 
 -(BOOL) getTestIsAsyncFlag {
@@ -328,21 +353,15 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)stopTest
 {
-    if (nil != queue)
-    {
+  if (nil != queue)
+  {
 #ifdef DEBUG
-      NSLog(@"DEBUG: cancelling %d http test operations!", (int)[queue operationCount]);
+    NSLog(@"DEBUG: cancelling %d http test operations!", (int)[queue operationCount]);
 #endif // DEBUG
-      [queue cancelAllOperations];
-    }
-    isRunning = NO;
+    [queue cancelAllOperations];
+  }
+  isRunning = NO;
 }
-
-- (void)setDirection:(NSString*)direction
-{
-    isDownstream = [direction isEqualToString:[SKTransferOperation getDownStream]];
-}
-
 
 - (BOOL)isReady
 {
@@ -478,29 +497,27 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 //###HG
 - (void)todDidTransferData:(NSUInteger)totalBytes
-                  bytes:(NSUInteger)bytes
-               transferBytes:(NSUInteger)transferBytes
-               progress:(float)progress
-               threadId:(NSUInteger)threadId
-               operationTime:(SKTimeIntervalMicroseconds)transferTime
+                     bytes:(NSUInteger)bytes
+             transferBytes:(NSUInteger)transferBytes
+                  progress:(float)progress
+                  threadId:(NSUInteger)threadId
+             operationTime:(SKTimeIntervalMicroseconds)transferTime
 {
- 
-    NSLog(@"DIDTRANSFER THREAD %lu / %lu %lu %lu %lf", (unsigned long)threadId, (unsigned long)totalBytes, (unsigned long)bytes, (unsigned long)transferBytes, transferTime);
-    
-    
-    [[self httpRequestDelegate] htdDidTransferData:totalBytes bytes:bytes progress:progress threadId:threadId];
-    
-    @synchronized(arrTransferOperations)
-    {
-        ((SKTransferOperationStatus*)arrTransferOperations[threadId]).progress = progress; //###HG
-        ((SKTransferOperationStatus*)arrTransferOperations[threadId]).totalTransferBytes = (int)transferBytes; //###HG
-        ((SKTransferOperationStatus*)arrTransferOperations[threadId]).transferTimeMicroseconds = transferTime; //###HG
-    }
-    
-    NSLog(@"Transfer time in Miliseconds: %f", transferTime);
-
-    
-    [self computeMultiThreadProgress];
+  
+  //NSLog(@"DIDTRANSFER THREAD %lu / %lu %lu %lu %lf", (unsigned long)threadId, (unsigned long)totalBytes, (unsigned long)bytes, (unsigned long)transferBytes, transferTime);
+  
+  [[self httpRequestDelegate] htdDidTransferData:totalBytes bytes:bytes progress:progress threadId:threadId];
+  
+  @synchronized(arrTransferOperations)
+  {
+    ((SKTransferOperationStatus*)arrTransferOperations[threadId]).progress = progress; //###HG
+    ((SKTransferOperationStatus*)arrTransferOperations[threadId]).totalTransferBytes = (int)transferBytes; //###HG
+    ((SKTransferOperationStatus*)arrTransferOperations[threadId]).transferTimeMicroseconds = transferTime; //###HG
+  }
+  
+  NSLog(@"Transfer time in Milliseconds: %f, PROGRESS=%g", transferTime/1000.0F, progress);
+  
+  [self computeMultiThreadProgress];
 }
 
 - (void)todUploadTestCompletedNotAServeResponseYet:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
@@ -708,6 +725,156 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   }
 }
 
+
+// Moved from SKTransferOperation.m ...
+
++ (SKTimeIntervalMicroseconds)sMicroTimeForSeconds:(NSTimeInterval)time
+{
+  return time * 1000000.0; // convert to microseconds
+}
+
+- (int)getProgress
+{
+  double result = 0;
+  
+  @synchronized(self) {
+    if(self.mStartWarmup == 0)
+    {
+      result = 0;
+    }
+    else if(transferMaxTimeMicroseconds != 0)
+    {
+      SKTimeIntervalMicroseconds currTime = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mStartWarmup];
+      result = currTime/(warmupMaxTime + transferMaxTimeMicroseconds);
+    }
+    else
+    {
+      int currBytes = mWarmupBytes + mTransferBytes;
+      result = (double)currBytes/(warmupMaxBytes+transferMaxBytes);
+    }
+  }
+  
+  result = result < 0 ? 0 : result;
+  result = result > 1 ? 1 : result;
+  
+  return (int) (result*100);
+}
+
+-(BOOL) getIsWarmupDone:(int)bytes
+{
+  @synchronized(self)
+  {
+    if (warmupDone == YES) {
+      return YES;
+    }
+    
+    mWarmupBytes += bytes;
+    
+    if (mStartWarmup == 0)
+    {
+      mStartWarmup = [[SKCore getToday] timeIntervalSince1970];
+    }
+    
+    NSTimeInterval currentTime = [[SKCore getToday] timeIntervalSince1970];
+    
+    mWarmupTime = [self.class sMicroTimeForSeconds:currentTime - mStartWarmup];
+    
+    if (((warmupMaxTime > 0) && (mWarmupTime >= warmupMaxTime)) ||
+        ((warmupMaxBytes > 0) && (mWarmupBytes >= warmupMaxBytes)))
+    {
+      [self todIncrementWarmupDoneCounter];
+      
+      [self todAddWarmupBytes:mWarmupBytes];
+      [self todAddWarmupTimes:mStartWarmup endTime:currentTime];
+      
+      warmupDone = YES;
+      
+      if (isDownstream == NO) {
+        // Upstream -  immediately move to transferring!
+        self.mbMoveToTransferring = YES;
+      }
+    }
+    
+    return warmupDone;
+  }
+}
+
+
+- (BOOL)isTransferDone:(int)bytes
+{
+  BOOL result = false;
+  
+  @synchronized(self)
+  {
+    mTransferBytes += bytes;
+    
+    if (mStartTransfer == 0)
+    {
+      mStartTransfer = [[SKCore getToday] timeIntervalSince1970];
+    }
+    mTransferTimeMicroseconds = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mStartTransfer];
+    
+    if (((transferMaxTimeMicroseconds > 0) && (mTransferTimeMicroseconds >= transferMaxTimeMicroseconds)) ||
+        ((transferMaxBytes > 0) && (mTransferBytes >= transferMaxBytes)))
+    {
+      result = true;
+    }
+  }
+  
+  return result;
+}
+
+- (int)getBytesPerSecond:(NSInteger)TotalBytesWritten
+{
+  @synchronized(self) {
+    // if ([self isSuccessful])
+    SKTimeIntervalMicroseconds elapsedTime = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mStartTransfer];
+    
+    double dTime = elapsedTime / 1000000.0;   // convert microseconds -> seconds
+    if (dTime == 0) {
+      return 0;
+    }
+    
+    double bytesPerSecond = ((double)TotalBytesWritten) / dTime;
+    return (int)bytesPerSecond;
+  }
+}
+
+- (BOOL)isUploadTransferDoneBytesThisTime:(int)bytesThisTime TotalBytes:(int)inTotalBytes TotalBytesToTransfer:(int)inTotalBytesToTransfer
+{
+  BOOL result = false;
+  
+  @synchronized(self)
+  {
+    // The transfer bytes is the sum of ALL values, across ALL threads!
+    //mTransferBytes = inTotalBytes;
+    mTransferBytes += bytesThisTime;
+  
+    if (mStartTransfer == 0)
+    {
+      mStartTransfer = [[SKCore getToday] timeIntervalSince1970];
+    }
+    mTransferTimeMicroseconds = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mStartTransfer];
+    
+    if (inTotalBytes >= inTotalBytesToTransfer) {
+      return true;
+    }
+    
+    if ((transferMaxTimeMicroseconds > 0) && (mTransferTimeMicroseconds >= transferMaxTimeMicroseconds))
+    {
+      result = true;
+    }
+    if ((transferMaxBytes > 0) && (mTransferBytes >= transferMaxBytes))
+    {
+      result = true;
+    }
+    
+    [self todAddTransferBytes:bytesThisTime];
+  }
+  
+  return result;
+}
+
 @end
 
 //##HG
@@ -720,5 +887,4 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     self.totalTransferBytes = 0;
     self.transferTimeMicroseconds = 0;
 }
-
 @end
