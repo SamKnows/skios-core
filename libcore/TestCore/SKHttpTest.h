@@ -191,7 +191,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 @property (nonatomic) int threadId;
 @property (nonatomic) float progress;
 @property (nonatomic) int status;
-@property (nonatomic) int totalTransferBytes;
+//@property (nonatomic) int totalTransferBytes;
 @property (nonatomic) SKTimeIntervalMicroseconds transferTimeMicroseconds;
 
 -(void)resetProperties;

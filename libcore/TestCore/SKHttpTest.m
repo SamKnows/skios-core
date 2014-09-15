@@ -252,35 +252,37 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)computeMultiThreadProgress
 {
-    float total = 0;
-    SKTimeIntervalMicroseconds transferTime = 0;
-    int totalTransferBytes = 0;
-    
-    @synchronized(arrTransferOperations)
-    {
-        for (SKTransferOperationStatus* opStatus in arrTransferOperations) {
-            total += opStatus.progress;
-            totalTransferBytes += opStatus.totalTransferBytes;
-            
-            if (opStatus.transferTimeMicroseconds > transferTime) transferTime = opStatus.transferTimeMicroseconds;
-        }
-    }
-    
-    double bitrateMbps1024Based = 0;
-    
-    if (transferTime > 0)
-    {
-        bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
-    }
-    
-    if (self.isDownstream == NO)
-    {
-      //Upload test - correct the first huge readings
-      if (transferTime < C_MAX_UPLOAD_FALSE_TIME && bitrateMbps1024Based > C_MAX_UPLOAD_SPEED)
-        bitrateMbps1024Based = transferTime;
-    }
+  float total = 0;
+  SKTimeIntervalMicroseconds transferTime = 0;
+  // Actually, the total transfer bytes are stored at the HttpTest level, now!
+  int totalTransferBytes = self.mTransferBytes;
   
-    [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) currentBitrate:bitrateMbps1024Based];
+  //int totalTransferBytes = 0;
+  @synchronized(arrTransferOperations)
+  {
+    for (SKTransferOperationStatus* opStatus in arrTransferOperations) {
+      total += opStatus.progress;
+      //totalTransferBytes += opStatus.totalTransferBytes;
+      
+      if (opStatus.transferTimeMicroseconds > transferTime) transferTime = opStatus.transferTimeMicroseconds;
+    }
+  }
+  
+  double bitrateMbps1024Based = 0;
+  
+  if (transferTime > 0)
+  {
+    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
+  }
+  
+  if (self.isDownstream == NO)
+  {
+    //Upload test - correct the first huge readings
+    if (transferTime < C_MAX_UPLOAD_FALSE_TIME && bitrateMbps1024Based > C_MAX_UPLOAD_SPEED)
+      bitrateMbps1024Based = transferTime;
+  }
+  
+  [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) currentBitrate:bitrateMbps1024Based];
 }
 
 //##HG
@@ -511,7 +513,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   @synchronized(arrTransferOperations)
   {
     ((SKTransferOperationStatus*)arrTransferOperations[threadId]).progress = progress; //###HG
-    ((SKTransferOperationStatus*)arrTransferOperations[threadId]).totalTransferBytes = (int)transferBytes; //###HG
+    //((SKTransferOperationStatus*)arrTransferOperations[threadId]).totalTransferBytes = (int)transferBytes; //###HG
     ((SKTransferOperationStatus*)arrTransferOperations[threadId]).transferTimeMicroseconds = transferTime; //###HG
   }
   
@@ -665,17 +667,20 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 -(double)getSpeedBitrateMpbs1024Based_ForDownloadOrLocalUpload {
   double total = 0;
   SKTimeIntervalMicroseconds transferTime = 0;
-  int totalTransferBytes = 0;
   
+  // Actually, the total transfer bytes are stored at the HttpTest level, now!
+  int totalTransferBytes = self.mTransferBytes;
+  //int totalTransferBytes = 0;
   @synchronized(arrTransferOperations)
   {
     for (SKTransferOperationStatus* opStatus in arrTransferOperations) {
       total += opStatus.progress;
-      totalTransferBytes += opStatus.totalTransferBytes;
+      //totalTransferBytes += opStatus.totalTransferBytes;
       
       if (opStatus.transferTimeMicroseconds > transferTime) transferTime = opStatus.transferTimeMicroseconds;
     }
   }
+ 
   
   double bitrateMpbs1024Based = 0;
   
@@ -884,7 +889,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 {
     self.progress = 0;
     self.status = IDLE;
-    self.totalTransferBytes = 0;
+    //self.totalTransferBytes = 0;
     self.transferTimeMicroseconds = 0;
 }
 @end
