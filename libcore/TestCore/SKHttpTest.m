@@ -515,7 +515,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     ((SKTransferOperationStatus*)arrTransferOperations[threadId]).transferTimeMicroseconds = transferTime; //###HG
   }
   
-  NSLog(@"Transfer time in Milliseconds: %f, PROGRESS=%g", transferTime/1000.0F, progress);
+  // TODO - ENABLE THIS TO DEBUG TRACK PROGRESS! NSLog(@"Transfer time in Milliseconds: %f, PROGRESS=%g", transferTime/1000.0F, progress);
   
   [self computeMultiThreadProgress];
 }
