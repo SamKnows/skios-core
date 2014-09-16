@@ -64,6 +64,7 @@
 		B2672B0E180BED06004280CB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0D180BED06004280CB /* QuartzCore.framework */; };
 		B279124B18D88AF000E17EBF /* SKOperatorsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B279124A18D88AF000E17EBF /* SKOperatorsTests.m */; };
 		B27B0D88181A7F58008D76D6 /* SKCoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B27B0D87181A7F58008D76D6 /* SKCoreTests.m */; };
+		B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */; };
 		B28437AF18C8728400B3495E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28437AE18C8728400B3495E /* CoreText.framework */; };
 		B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */ = {isa = PBXBuildFile; fileRef = B297CE7918E0541800964CD3 /* UIView+SKView.m */; };
 		B2AE68151883DA4D00D87FAE /* SKAAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE67F41883DA4D00D87FAE /* SKAAboutController.m */; };
@@ -261,6 +262,8 @@
 		B2672B0D180BED06004280CB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B279124A18D88AF000E17EBF /* SKOperatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKOperatorsTests.m; sourceTree = "<group>"; };
 		B27B0D87181A7F58008D76D6 /* SKCoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoreTests.m; sourceTree = "<group>"; };
+		B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSBMainViewTabBarController.h; sourceTree = "<group>"; };
+		B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSBMainViewTabBarController.m; sourceTree = "<group>"; };
 		B28437AE18C8728400B3495E /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		B297CE7818E0541800964CD3 /* UIView+SKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SKView.h"; sourceTree = "<group>"; };
 		B297CE7918E0541800964CD3 /* UIView+SKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SKView.m"; sourceTree = "<group>"; };
@@ -1001,6 +1004,8 @@
 				B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */,
 				B2FB031819B75D09007AA3C2 /* SKMainViewController.h */,
 				B2FB031919B75D09007AA3C2 /* SKMainViewController.m */,
+				B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */,
+				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
 				B2FB031A19B75D09007AA3C2 /* tabCells */,
 				B2FB032119B75D09007AA3C2 /* ViewManagers */,
 			);
@@ -1322,6 +1327,7 @@
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
 				B2AE68421883DE6800D87FAE /* SKALatencyTest.m in Sources */,
 				B2AE683E1883DE6800D87FAE /* SKAAutotest.m in Sources */,
+				B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,
 				B2AE681D1883DA4D00D87FAE /* SKALatencyTestCell.m in Sources */,
 				B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */,
