@@ -621,22 +621,22 @@ NSMutableArray *GArrayForResultsController;
     return;
   }
   
-  NSString *buttonTitle = [actionSheet buttonTitleAtIndex:index];
+  NSString *selectedString = [actionSheet buttonTitleAtIndex:index];
   
   if (actionSheet.tag == ACTION_RUN) {
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Test_Run_Download",nil)]) {
+    if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Download",nil)]) {
         [self runTests:DOWNLOAD_TEST];
     }
-    else if ([buttonTitle isEqualToString:NSLocalizedString(@"Test_Run_Upload",nil)]) {
+    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Upload",nil)]) {
         [self runTests:UPLOAD_TEST];
     }
-    else if ([buttonTitle isEqualToString:NSLocalizedString(@"Test_Run_LatencyLoss",nil)]) {
+    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_LatencyLoss",nil)]) {
         [self runTests:LATENCY_TEST];
     }
-    else if ([buttonTitle isEqualToString:NSLocalizedString(@"Test_Run_Jitter",nil)]) {
+    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Jitter",nil)]) {
       [self runTests:JITTER_TEST];
     }
-    else if ([buttonTitle isEqualToString:NSLocalizedString(@"Test_Run_All",nil)]) {
+    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_All",nil)]) {
       [self runTests:ALL_TESTS];
     } else {
       SK_ASSERT(false);
@@ -645,15 +645,15 @@ NSMutableArray *GArrayForResultsController;
     
     DATERANGE_1w1m3m1y range = DATERANGE_1w1m3m1y_ONE_WEEK;
     
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"RESULTS_Label_Date_1_Week", nil)]) {
+    if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1week", nil)]) {
       range = DATERANGE_1w1m3m1y_ONE_WEEK;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"RESULTS_Label_Date_1_Month", nil)]) {
+    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1month", nil)]) {
       range = DATERANGE_1w1m3m1y_ONE_MONTH;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"RESULTS_Label_Date_3_Months", nil)]) {
+    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_3months", nil)]) {
       range = DATERANGE_1w1m3m1y_THREE_MONTHS;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"RESULTS_Label_Date_1_Year", nil)]) {
+    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1year", nil)]) {
       range = DATERANGE_1w1m3m1y_ONE_YEAR;
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"RESULTS_Label_Date_1_Day", nil)]) {
+    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1day", nil)]) {
       range = DATERANGE_1w1m3m1y_ONE_DAY;
     } else {
       SK_ASSERT(false);
@@ -1076,13 +1076,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   
   // One day results view
   if ([[SKAAppDelegate getAppDelegate] supportOneDayResultView]) {
-    [action addButtonWithTitle:NSLocalizedString(@"RESULTS_Label_Date_1_Day", nil)];
+    [action addButtonWithTitle:NSLocalizedString(@"time_period_1day", nil)];
   }
   
-  [action addButtonWithTitle:NSLocalizedString(@"RESULTS_Label_Date_1_Week", nil)];
-  [action addButtonWithTitle:NSLocalizedString(@"RESULTS_Label_Date_1_Month", nil)];
-  [action addButtonWithTitle:NSLocalizedString(@"RESULTS_Label_Date_3_Months", nil)];
-  [action addButtonWithTitle:NSLocalizedString(@"RESULTS_Label_Date_1_Year", nil)];
+  [action addButtonWithTitle:NSLocalizedString(@"time_period_1week", nil)];
+  [action addButtonWithTitle:NSLocalizedString(@"time_period_1month", nil)];
+  [action addButtonWithTitle:NSLocalizedString(@"time_period_3months", nil)];
+  [action addButtonWithTitle:NSLocalizedString(@"time_period_1year", nil)];
   
   int cancelButtonIndex = (int)[action addButtonWithTitle:NSLocalizedString(@"MenuAlert_Cancel", nil)];
   [action setCancelButtonIndex:cancelButtonIndex];
