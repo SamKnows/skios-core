@@ -15,7 +15,7 @@
 {
     if (self.vBackground != nil) return;
     
-    float GUI_MULTIPLIER = [cTabController globalInstance].GUI_MULTIPLIER;
+    float GUI_MULTIPLIER = [cTabController sGet_GUI_MULTIPLIER];
     
     UIFont* labelFontLight = [UIFont fontWithName:@"Roboto-Light" size:GUI_MULTIPLIER * 12];
     UIFont* labelFontThin = [UIFont fontWithName:@"Roboto-Thin" size:GUI_MULTIPLIER * 12];
@@ -172,13 +172,13 @@
 {
     if (self.lMeasureName != nil) return;
     
-    self.lMeasureName = [[UILabel alloc] initWithFrame:CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, 0, [cTabController globalInstance].GUI_WIDTH, [cTabController globalInstance].GUI_MULTIPLIER * 18)];
-    self.lMeasureName.font= [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController globalInstance].GUI_MULTIPLIER * 14];
+    self.lMeasureName = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 0, [cTabController globalInstance].GUI_WIDTH, [cTabController sGet_GUI_MULTIPLIER] * 18)];
+    self.lMeasureName.font= [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
     self.lMeasureName.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
     [self.contentView addSubview:self.lMeasureName];
 
-    self.lResult = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [cTabController globalInstance].GUI_WIDTH - [cTabController globalInstance].GUI_MULTIPLIER * 10, [cTabController globalInstance].GUI_MULTIPLIER * 18)];
-    self.lResult.font= [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController globalInstance].GUI_MULTIPLIER * 14];
+    self.lResult = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [cTabController globalInstance].GUI_WIDTH - [cTabController sGet_GUI_MULTIPLIER] * 10, [cTabController sGet_GUI_MULTIPLIER] * 18)];
+    self.lResult.font= [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
     self.lResult.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
     self.lResult.textAlignment = UITextAlignmentRight;
     [self.contentView addSubview:self.lResult];

@@ -40,8 +40,8 @@
     return CGPointMake(point_.x + distance_ * directionVector.x, point_.y + distance_ * directionVector.y);
 }
 
-#define C_LABEL_WIDTH   ([cTabController globalInstance].GUI_MULTIPLIER * 60)
-#define C_LABEL_HEIGHT   ([cTabController globalInstance].GUI_MULTIPLIER * 10)
+#define C_LABEL_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 60)
+#define C_LABEL_HEIGHT   ([cTabController sGet_GUI_MULTIPLIER] * 10)
 
 -(void)drawText:(NSString*)labelText_ atAngle:(float)angle_ inContext:(CGContextRef)context_
 {
@@ -56,7 +56,7 @@
     CGContextBeginPath(context_);
     labelCenter = CGPointMake(mainCenter.x + radiusInner * sin(angleTransformed), mainCenter.y + radiusInner * cos(angleTransformed));
     
-    UIFont* labelFont = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController globalInstance].GUI_MULTIPLIER * 12];
+    UIFont* labelFont = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     [style setAlignment:NSTextAlignmentCenter];
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -222,7 +222,7 @@
     self.lCurrentResult = [[UILabel alloc] initWithFrame:self.bounds];
     self.lCurrentResult.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.lCurrentResult.textAlignment = NSTextAlignmentCenter;
-    self.lCurrentResult.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController globalInstance].GUI_MULTIPLIER * 80];
+    self.lCurrentResult.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 80];
     self.lCurrentResult.textColor = [UIColor colorWithWhite:0.9 alpha:1];
     self.lCurrentResult.backgroundColor = [UIColor clearColor];
     self.lCurrentResult.adjustsFontSizeToFitWidth = YES;
@@ -256,7 +256,7 @@
     self.lTopInfo1 = [[UILabel alloc] initWithFrame:self.bounds];
     self.lTopInfo1.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.lTopInfo1.textAlignment = NSTextAlignmentCenter;
-    self.lTopInfo1.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController globalInstance].GUI_MULTIPLIER * 25];
+    self.lTopInfo1.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 25];
     self.lTopInfo1.textColor = [UIColor orangeColor];
     self.lTopInfo1.adjustsFontSizeToFitWidth = YES;
     self.lTopInfo1.minimumFontSize = 12;
@@ -265,14 +265,14 @@
     self.lUnit = [[UILabel alloc] initWithFrame:self.bounds];
     self.lUnit.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.lUnit.textAlignment = NSTextAlignmentCenter;
-    self.lUnit.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController globalInstance].GUI_MULTIPLIER * 25];
+    self.lUnit.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 25];
     self.lUnit.textColor = [UIColor orangeColor];
     [self addSubview:self.lUnit];
 
     self.lMeasurement = [[UILabel alloc] initWithFrame:self.bounds];
     self.lMeasurement.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.lMeasurement.textAlignment = NSTextAlignmentCenter;
-    self.lMeasurement.font = [UIFont fontWithName:@"Roboto-Regular" size:[cTabController globalInstance].GUI_MULTIPLIER * 12];
+    self.lMeasurement.font = [UIFont fontWithName:@"Roboto-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
     self.lMeasurement.textColor = [UIColor orangeColor];
     [self addSubview:self.lMeasurement];
 
@@ -384,10 +384,10 @@
     
     self.lCurrentResult.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * 0.2, self.bounds.origin.y + 0.18 * self.lCurrentResult.font.pointSize, self.bounds.size.width * 0.6, self.bounds.size.height);
 
-    self.lTopInfo1.frame = CGRectMake(self.bounds.origin.x + 0.2 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.6 * self.bounds.size.width, [cTabController globalInstance].GUI_MULTIPLIER * 25);
+    self.lTopInfo1.frame = CGRectMake(self.bounds.origin.x + 0.2 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.6 * self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 25);
     
-    self.lUnit.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.67, self.bounds.size.width, [cTabController globalInstance].GUI_MULTIPLIER * 25);
-    self.lMeasurement.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.77, self.bounds.size.width, [cTabController globalInstance].GUI_MULTIPLIER * 20);
+    self.lUnit.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.67, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 25);
+    self.lMeasurement.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.77, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 20);
     
     self.btButton.frame = self.indicatorImageView.frame;
 }

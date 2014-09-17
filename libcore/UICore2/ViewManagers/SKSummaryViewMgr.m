@@ -54,9 +54,9 @@
 
 -(void)performLayout
 {
-    self.vHeader.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST - 10 - 35, [cTabController globalInstance].GUI_MULTIPLIER * 300, 35);
+    self.vHeader.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST - 10 - 35, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
     self.vHeader.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-    self.vHeader.layer.cornerRadius = [cTabController globalInstance].GUI_MULTIPLIER * 3;
+    self.vHeader.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
     self.vHeader.layer.borderWidth = 0.5;
     self.vHeader.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
 
@@ -70,8 +70,8 @@
     [self placeLabelView:self.vLoss number:3 testTitle:self.lLossName averageValue:self.lLossAvg averageUnit:self.lLossAvgUnit bestValue:self.lLossBst bestUnit:self.lLossBstUnit image:nil chartSymbol:self.ivLossChart];
     [self placeLabelView:self.vJitter number:4 testTitle:self.lJitterName averageValue:self.lJitterAvg averageUnit:self.lJitterAvgUnit bestValue:self.lJitterBst bestUnit:self.lJitterBstUnit image:nil chartSymbol:self.ivJitterChart];
 
-    self.btNetworkType.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, 24, [cTabController globalInstance].GUI_MULTIPLIER * 145, 28);
-    self.btPeriod.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 165, 24, [cTabController globalInstance].GUI_MULTIPLIER * 145, 28);
+    self.btNetworkType.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
+    self.btPeriod.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 165, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
 }
 
 - (IBAction)B_NetworkType:(id)sender {
@@ -363,35 +363,35 @@
               image:(UIImageView*)imageView_
           chartSymbol:(UIImageView*)chartImage_
 {
-    int leftShift = [cTabController globalInstance].GUI_MULTIPLIER * 10;
+    int leftShift = [cTabController sGet_GUI_MULTIPLIER] * 10;
     
-    view_.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST + viewNumber_ * [cTabController globalInstance].GUI_MULTIPLIER * 70, [cTabController globalInstance].GUI_MULTIPLIER * 300, [cTabController globalInstance].GUI_MULTIPLIER * 65);
+    view_.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + viewNumber_ * [cTabController sGet_GUI_MULTIPLIER] * 70, 300.0 * [cTabController sGet_GUI_MULTIPLIER] * 300, [cTabController sGet_GUI_MULTIPLIER] * 65);
     view_.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-    view_.layer.cornerRadius = [cTabController globalInstance].GUI_MULTIPLIER * 3;
+    view_.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
     view_.layer.borderWidth = 0.5;
     view_.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
     
     testTitle_.textColor = [UIColor colorWithWhite:1 alpha:0.8];
-    testTitle_.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController globalInstance].GUI_MULTIPLIER * 12];
-    testTitle_.frame = CGRectMake(leftShift + 0, 0, [cTabController globalInstance].GUI_MULTIPLIER * 80, [cTabController globalInstance].GUI_MULTIPLIER * 22);
+    testTitle_.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
+    testTitle_.frame = CGRectMake(leftShift + 0, 0, [cTabController sGet_GUI_MULTIPLIER] * 80, [cTabController sGet_GUI_MULTIPLIER] * 22);
     testTitle_.textAlignment = UITextAlignmentRight;
     
-    averageValue_.frame = CGRectMake(leftShift + 0, [cTabController globalInstance].GUI_MULTIPLIER * 20, [cTabController globalInstance].GUI_MULTIPLIER * 80, [cTabController globalInstance].GUI_MULTIPLIER * 53);
-    averageValue_.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController globalInstance].GUI_MULTIPLIER * 50];
+    averageValue_.frame = CGRectMake(leftShift + 0, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 80, [cTabController sGet_GUI_MULTIPLIER] * 53);
+    averageValue_.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 50];
     
     
-    averageUnit_.frame = CGRectMake(leftShift + [cTabController globalInstance].GUI_MULTIPLIER * 85, [cTabController globalInstance].GUI_MULTIPLIER * 15, [cTabController globalInstance].GUI_MULTIPLIER * 139, [cTabController globalInstance].GUI_MULTIPLIER * 20);
-    averageUnit_.font = [UIFont fontWithName:@"Roboto-Thin" size:[cTabController globalInstance].GUI_MULTIPLIER * 14];
+    averageUnit_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 85, [cTabController sGet_GUI_MULTIPLIER] * 15, [cTabController sGet_GUI_MULTIPLIER] * 139, [cTabController sGet_GUI_MULTIPLIER] * 20);
+    averageUnit_.font = [UIFont fontWithName:@"Roboto-Thin" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
 
-    bestValue_.frame = CGRectMake(leftShift + [cTabController globalInstance].GUI_MULTIPLIER * 160, [cTabController globalInstance].GUI_MULTIPLIER * 20, [cTabController globalInstance].GUI_MULTIPLIER * 80, [cTabController globalInstance].GUI_MULTIPLIER * 53);
+    bestValue_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 160, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 80, [cTabController sGet_GUI_MULTIPLIER] * 53);
     bestValue_.textColor = [UIColor colorWithWhite:1 alpha:0.8];
-    bestValue_.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController globalInstance].GUI_MULTIPLIER * 50];
+    bestValue_.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 50];
     
-    bestUnit_.frame = CGRectMake(leftShift + [cTabController globalInstance].GUI_MULTIPLIER * 243, [cTabController globalInstance].GUI_MULTIPLIER * 15, [cTabController globalInstance].GUI_MULTIPLIER * 139, [cTabController globalInstance].GUI_MULTIPLIER * 20);
-    bestUnit_.font = [UIFont fontWithName:@"Roboto-Thin" size:[cTabController globalInstance].GUI_MULTIPLIER * 14];
+    bestUnit_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 243, [cTabController sGet_GUI_MULTIPLIER] * 15, [cTabController sGet_GUI_MULTIPLIER] * 139, [cTabController sGet_GUI_MULTIPLIER] * 20);
+    bestUnit_.font = [UIFont fontWithName:@"Roboto-Thin" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
     
-    if (imageView_ != nil) imageView_.frame = CGRectMake(leftShift + [cTabController globalInstance].GUI_MULTIPLIER * 8, [cTabController globalInstance].GUI_MULTIPLIER * 4, [cTabController globalInstance].GUI_MULTIPLIER * 17, [cTabController globalInstance].GUI_MULTIPLIER * 17);
-    chartImage_.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 130, [cTabController globalInstance].GUI_MULTIPLIER * 28, [cTabController globalInstance].GUI_MULTIPLIER * 35, [cTabController globalInstance].GUI_MULTIPLIER * 35);
+    if (imageView_ != nil) imageView_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 8, [cTabController sGet_GUI_MULTIPLIER] * 4, [cTabController sGet_GUI_MULTIPLIER] * 17, [cTabController sGet_GUI_MULTIPLIER] * 17);
+    chartImage_.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 130, [cTabController sGet_GUI_MULTIPLIER] * 28, [cTabController sGet_GUI_MULTIPLIER] * 35, [cTabController sGet_GUI_MULTIPLIER] * 35);
     
     UIButton* btSelect = [[UIButton alloc] initWithFrame:view_.bounds];
     btSelect.tag = viewNumber_;
@@ -413,13 +413,13 @@
         [UIView animateWithDuration:0.3 animations:^{
             
             self.vChart.alpha = 0;
-            self.vChart.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.bounds.size.height, [cTabController globalInstance].GUI_MULTIPLIER * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController globalInstance].GUI_MULTIPLIER * 70) - [cTabController globalInstance].GUI_MULTIPLIER * 10); //TODO: Jitter
+            self.vChart.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
             
-            if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController globalInstance].GUI_MULTIPLIER * 70, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
-            if (button_.tag == 1) self.vUpload.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController globalInstance].GUI_MULTIPLIER * 70, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
-            if (button_.tag == 2) self.vLatency.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController globalInstance].GUI_MULTIPLIER * 70, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
-            if (button_.tag == 3) self.vLoss.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController globalInstance].GUI_MULTIPLIER * 70, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
-            if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController globalInstance].GUI_MULTIPLIER * 70, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
+            if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
+            if (button_.tag == 1) self.vUpload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
+            if (button_.tag == 2) self.vLatency.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
+            if (button_.tag == 3) self.vLoss.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
+            if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
 
         } completion:^(BOOL finished) {
             
@@ -432,27 +432,27 @@
                 
                 if (button_.tag != 0)
                 {
-                    self.vDownload.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.vDownload.frame.origin.y, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
+                    self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vDownload.frame.origin.y, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
                     self.vDownload.alpha = 1;
                 }
                 if (button_.tag != 1)
                 {
-                    self.vUpload.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.vUpload.frame.origin.y, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
+                    self.vUpload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vUpload.frame.origin.y, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
                     self.vUpload.alpha = 1;
                 }
                 if (button_.tag != 2)
                 {
-                    self.vLatency.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.vLatency.frame.origin.y, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
+                    self.vLatency.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vLatency.frame.origin.y, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
                     self.vLatency.alpha = 1;
                 }
                 if (button_.tag != 3)
                 {
-                    self.vLoss.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.vLoss.frame.origin.y, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
+                    self.vLoss.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vLoss.frame.origin.y, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
                     self.vLoss.alpha = 1;
                 }
                  if (button_.tag != 4)
                  {
-                     self.vJitter.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.vJitter.frame.origin.y, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
+                     self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vJitter.frame.origin.y, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
                      self.vJitter.alpha = 1;
                  }
                 
@@ -475,7 +475,7 @@
         if (button_.tag == 4 && jitterCNT <=0) return;
         
         self.vChart.alpha = 0;
-        self.vChart.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.bounds.size.height, [cTabController globalInstance].GUI_MULTIPLIER * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController globalInstance].GUI_MULTIPLIER * 70) - [cTabController globalInstance].GUI_MULTIPLIER * 10); //TODO: Jitter
+        self.vChart.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
         [self prepareDataForChart];
         [self.vChart setNeedsDisplay];
         
@@ -515,13 +515,13 @@
 //                    options:UIViewAnimationOptionCurveEaseIn
                  animations:^{
 
-                    if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
-                    if (button_.tag == 1) self.vUpload.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
-                    if (button_.tag == 2) self.vLatency.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
-                    if (button_.tag == 3) self.vLoss.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
-                     if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, C_VIEWS_Y_FIRST, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
+                    if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
+                    if (button_.tag == 1) self.vUpload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
+                    if (button_.tag == 2) self.vLatency.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
+                    if (button_.tag == 3) self.vLoss.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
+                     if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
 
-                    self.vChart.frame = CGRectMake(10, C_VIEWS_Y_FIRST + 1 * [cTabController globalInstance].GUI_MULTIPLIER * 70, [cTabController globalInstance].GUI_MULTIPLIER * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController globalInstance].GUI_MULTIPLIER * 80) - [cTabController globalInstance].GUI_MULTIPLIER * 10); //TODO: Jitter
+                    self.vChart.frame = CGRectMake(10, C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 80) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
                     self.vChart.alpha = 1;
                     
                 } completion:^(BOOL finished) {

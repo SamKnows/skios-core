@@ -17,28 +17,4 @@
 #import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"
 
 @interface SKSBMainViewTabBarController : UITabBarController
-{
-    BOOL tmpActivated;
-    BOOL isWelcomePerformed;
-}
-
-@property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
-
-@property (nonatomic, weak) cTabController* tabController;
-
-@property (weak, nonatomic) IBOutlet UIView *vTab;
-@property (weak, nonatomic) IBOutlet UIScrollView *svContent;
-
-@property (weak, nonatomic) IBOutlet SKRunTestViewMgr *vRun;
-@property (weak, nonatomic) IBOutlet SKHistoryViewMgr *vHistory;
-@property (weak, nonatomic) IBOutlet SKSummaryViewMgr *vSummary;
-@property (weak, nonatomic) IBOutlet SKSettingsMgr *vSettings;
-@property (weak, nonatomic) IBOutlet SKInfoViewMgr *vInfo;
-
-@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC1;
-@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC2;
-@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC3;
-@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC4;
-@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC5;
-
 @end

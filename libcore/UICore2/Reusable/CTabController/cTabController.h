@@ -52,6 +52,11 @@
 -(UIColor*)getOuterColor;
 -(UIColor*)getInnerColor;
 
+// Added for the storyboard rework...
++(UIColor*)sGetInnerColor;
++(UIColor*)sGetOuterColor;
++(float) sGet_GUI_MULTIPLIER;
+
 @end
 
 @interface cTabOption : NSObject

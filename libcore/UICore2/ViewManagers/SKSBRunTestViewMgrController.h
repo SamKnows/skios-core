@@ -1,5 +1,5 @@
 //
-//  SKRunTestViewMgr.h
+//  SKSBRunTestViewMgrController.h
 //  SKCore
 //
 
@@ -15,11 +15,10 @@
 #import "SKHistoryViewMgr.h"
 #import "SKTestResults.h"
 
-
-
 @class SKATestOverviewMetrics;
+@class UIWelcomeView;
 
-@interface SKRunTestViewMgr : UIView <pTYMAOwner, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SKSBRunTestViewMgrController : UIViewController <pTYMAOwner, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     bool isRunning;
     int testCells2Show;
@@ -50,8 +49,6 @@
     NSInteger connectionStatus;
     SKATestResults* selectedTest;
 }
-
-@property (nonatomic, weak) UIView* masterView;
 
 @property (nonatomic, strong) cActionSheet* casTestTypes;
 @property (weak, nonatomic) IBOutlet cAnimatedStatusView *casStatusView;
@@ -90,8 +87,17 @@
 @property BOOL isConnected;
 
 -(IBAction)B_SelectTests:(id)sender;
--(void)intialiseViewOnMasterView:(UIView*)masterView_;
--(void)performLayout;
+-(void)intialiseViewOnMasterView;
+
+//
+// Added for storyboard rework...
+//
+@property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
+@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC1;
+//@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC2;
+//@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC3;
+//@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC4;
+//@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC5;
 
 @end
 

@@ -1,19 +1,37 @@
 //
-//  SKRunTestViewMgr.m
+//  SKSBRunTestViewMgrController.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKRunTestViewMgr.h"
+#import "SKSBRunTestViewMgrController.h"
+#import "UIWelcomeView.h"
 
 #define C_SHARE_BUTTON_HEIGHT   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 #define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 
-@implementation SKRunTestViewMgr
+@interface SKSBRunTestViewMgrController()
+@property BOOL tmpActivated;
+@property BOOL isWelcomePerformed;
+@end
+
+@implementation SKSBRunTestViewMgrController
 
 #pragma mark ProgressView
+
+-(void) viewDidLoad {
+  [super viewDidLoad];
+  
+  [self intialiseViewOnMasterView];
+ 
+  SK_ASSERT(self.vC1 != nil);
+  self.vC1.innerColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+  self.vC1.outerColor = [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
+  
+  [self View_OnLoadOrRotate_CreateAndPositionControls];
+}
 
 -(void) setIsRunning:(BOOL)value {
   isRunning = value;
@@ -21,7 +39,7 @@
 
 -(void)resetProgressView
 {
-  self.vProgressView.frame = CGRectMake(0, self.masterView.bounds.size.height, self.masterView.bounds.size.width, 0);
+  self.vProgressView.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 0);
   self.vProgressView.backgroundColor = [UIColor blackColor];
   self.vProgressView.hidden = NO;
   self.vProgressView.alpha = 0.3;
@@ -44,15 +62,61 @@
     totalProgress = 0;
   
   [UIView animateWithDuration:C_GUI_UPDATE_INTERVAL animations:^{
-    self.vProgressView.frame = CGRectMake(0, self.masterView.bounds.size.height * (1 - totalProgress), self.masterView.bounds.size.width, self.masterView.bounds.size.height * totalProgress);
+    self.vProgressView.frame = CGRectMake(0, self.view.bounds.size.height * (1 - totalProgress), self.view.bounds.size.width, self.view.bounds.size.height * totalProgress);
   }];
 }
 
 #pragma mark ViewController
 
-- (void)intialiseViewOnMasterView:(UIView*)masterView_
+-(void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+ 
+  self.vWelcomeView.frame = self.view.bounds;
+  [self.vWelcomeView initializeWelcomeText];
+  
+  if (self.isWelcomePerformed) self.vWelcomeView.hidden = YES;
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  
+  if (self.isWelcomePerformed) //Came back from activation
+  {
+    
+  }
+  else
+  {
+    self.isWelcomePerformed = YES;
+    [self.vWelcomeView startAnimationOnCompletion:^{
+      
+      if (!self.tmpActivated)
+      {
+        self.tmpActivated = YES;
+        [self SKSafePerformSegueWithIdentifier:@"segueActivate" sender:self];
+        return;
+      }
+      if (![[SKAAppDelegate getAppDelegate] isActivated])
+      {
+        NSLog(@"Not");
+        [self performSegueWithIdentifier:@"segueActivate" sender:self];
+        return;
+      }
+      
+      [UIView animateWithDuration:0.3 animations:^{
+        
+        self.vWelcomeView.alpha = 0;
+        
+      } completion:^(BOOL finished) {
+        
+        self.vWelcomeView.hidden = YES;
+        
+      }];
+    }];
+  }
+}
+
+- (void)intialiseViewOnMasterView
 {
-  self.masterView = masterView_;
   self.tvCurrentResults.delegate = self;
   self.tvCurrentResults.dataSource = self;
   
@@ -67,11 +131,12 @@
   self.networkType = [SKGlobalMethods getNetworkTypeString];
   self.appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
   
+  // TODO - this should be in the STORYBOARD!
   self.btShare = [[UIButton alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 12, 20, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT)];
   [self.btShare addTarget:self action:@selector(B_Share:) forControlEvents:UIControlEventTouchUpInside];
   [self.btShare setImage:[UIImage imageNamed:@"share-button"] forState:UIControlStateNormal];
   self.btShare.alpha = 0;
-  [self addSubview:self.btShare];
+  [self.view addSubview:self.btShare];
   
   dataStart = 0;
   dataEnd = 0;
@@ -106,7 +171,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
--(void)performLayout
+-(void)View_OnLoadOrRotate_CreateAndPositionControls
 {
   //[self setIsRunning:NO];
   
@@ -128,7 +193,7 @@
   
   if (!self.casTestTypes)
   {
-    self.casTestTypes = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:@"OK"];
+    self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:@"OK"];
     [self.casTestTypes addOption:@"Download" withImage:nil andTag:C_DOWNLOAD_TEST andState:(self.testTypes2Execute & CTTBM_DOWNLOAD)];
     [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:(self.testTypes2Execute & CTTBM_UPLOAD)];
     [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:(self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER)];
@@ -141,13 +206,13 @@
 {
   self.btSelectTests.hidden = ![self.appDelegate enableTestsSelection];
   
-  if (self.masterView.frame.size.height / self.masterView.frame.size.width > 480.0 / 320.0) //iPhone5
+  if (self.view.frame.size.height / self.view.frame.size.width > 480.0 / 320.0) //iPhone5
   {
     self.tmActivityIndicator.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 120, [cTabController sGet_GUI_MULTIPLIER] * 240, [cTabController sGet_GUI_MULTIPLIER] * 240);
     self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 135, [cTabController sGet_GUI_MULTIPLIER] * 50, [cTabController sGet_GUI_MULTIPLIER] * 50, [cTabController sGet_GUI_MULTIPLIER] * 50);
     self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 367, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
     self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 386, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 416, self.bounds.size.width, self.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 416);
+    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 416, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 416);
   }
   else
   {
@@ -155,19 +220,19 @@
     self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 135, [cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 50, [cTabController sGet_GUI_MULTIPLIER] * 50);
     self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 310, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
     self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 330, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 360, self.bounds.size.width, self.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 360);
+    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 360, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 360);
   }
 }
 
 -(void)layout2
 {
-  if (self.masterView.frame.size.height / self.masterView.frame.size.width > 480.0 / 320.0) //iPhone5
+  if (self.view.frame.size.height / self.view.frame.size.width > 480.0 / 320.0) //iPhone5
   {
     self.tmActivityIndicator.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 240, [cTabController sGet_GUI_MULTIPLIER] * 240);
     self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 265, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 40);
     self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 240, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
     self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 260, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 290, self.bounds.size.width, self.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 290);
+    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 290, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 290);
   }
   else
   {
@@ -175,12 +240,12 @@
     self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 265, 20, [cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 40);
     self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 197, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
     self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 212, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 240, self.bounds.size.width, self.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 240);
+    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 240, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 240);
   }
 }
 
 
-extern BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1;
+BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(BOOL) checkIfTestWillExceedDataCapForTestType:(TestType)type {
   
@@ -1344,3 +1409,5 @@ extern BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1;
 }
 
 @end
+
+

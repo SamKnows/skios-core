@@ -25,16 +25,16 @@
 
 -(void)performLayout
 {
-    self.vSmallBackground.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, 30, [cTabController globalInstance].GUI_MULTIPLIER * 300, 150);
+    self.vSmallBackground.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 30, [cTabController sGet_GUI_MULTIPLIER] * 300, 150);
     self.vSmallBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
-    self.vSmallBackground.layer.cornerRadius = [cTabController globalInstance].GUI_MULTIPLIER * 3;
+    self.vSmallBackground.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
     self.vSmallBackground.layer.borderWidth = 0.5;
     self.vSmallBackground.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
     
-    self.btClearDB.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, 200, [cTabController globalInstance].GUI_MULTIPLIER * 300, 35);
+    self.btClearDB.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 200, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
     [cActionSheet formatView:self.btClearDB];
 
-    self.btExport.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, 245, [cTabController globalInstance].GUI_MULTIPLIER * 300, 35);
+    self.btExport.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 245, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
     [cActionSheet formatView:self.btExport];
 
     [cActionSheet formatView:self.tDataCapValue];

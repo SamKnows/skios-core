@@ -9,8 +9,8 @@
 #import "SKHistoryViewMgr.h"
 #import "SKTestResults.h"
 
-#define C_SHARE_BUTTON_HEIGHT   ([cTabController globalInstance].GUI_MULTIPLIER * 40)
-#define C_SHARE_BUTTON_WIDTH   ([cTabController globalInstance].GUI_MULTIPLIER * 40)
+#define C_SHARE_BUTTON_HEIGHT   ([cTabController sGet_GUI_MULTIPLIER] * 40)
+#define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 
 @implementation SKHistoryViewMgr
 
@@ -86,7 +86,7 @@
     if (indexPath.row == expandedRow)
         return testHeight;
     
-    return [cTabController globalInstance].GUI_MULTIPLIER * 100;
+    return [cTabController sGet_GUI_MULTIPLIER] * 100;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,7 +136,7 @@
              
                              animations:^{
                                  view2putBack.frame = CGRectMake(0, 20, view2putBack.frame.size.width, view2putBack.frame.size.height);
-                                 self.btShare.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, y + [cTabController globalInstance].GUI_MULTIPLIER * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+                                 self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + [cTabController sGet_GUI_MULTIPLIER] * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
                                  [self showMetrics];
                              } completion:^(BOOL finished) {
                                  self.btBack.frame = CGRectMake(0, 0, view2putBack.frame.size.width, y);
@@ -343,7 +343,7 @@
             view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
             
             [self hideMetrics];
-            self.btShare.frame = CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+            self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
             
             
         } completion:^(BOOL finished) {
@@ -376,9 +376,9 @@
 -(void)printPassiveMetrics:(SKATestResults*)testResult_
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        y = [cTabController globalInstance].GUI_MULTIPLIER * 110;
+        y = [cTabController sGet_GUI_MULTIPLIER] * 110;
     else
-        y = [cTabController globalInstance].GUI_MULTIPLIER * 120;
+        y = [cTabController sGet_GUI_MULTIPLIER] * 120;
     
     arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:[testResult_ numberOfOptionalMetrics]];
     
@@ -417,20 +417,20 @@
     UILabel* label;
     if (text_.length > 0)
     {
-        label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 10, y + self.bounds.size.height, [cTabController globalInstance].GUI_MULTIPLIER * 155, [cTabController globalInstance].GUI_MULTIPLIER * 18)];
-        label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController globalInstance].GUI_MULTIPLIER * 14];
+        label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 155, [cTabController sGet_GUI_MULTIPLIER] * 18)];
+        label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
         label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
         label.text = NSLocalizedString(labelTextID_, nil);
         [self addSubview:label];
         [arrPassiveLabelsAndValues addObject:label];
         
-        label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController globalInstance].GUI_MULTIPLIER * 155, y + self.bounds.size.height, [cTabController globalInstance].GUI_MULTIPLIER * 210, [cTabController globalInstance].GUI_MULTIPLIER * 18)];
-        label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController globalInstance].GUI_MULTIPLIER * 14];
+        label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 155, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 210, [cTabController sGet_GUI_MULTIPLIER] * 18)];
+        label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
         label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
         label.text = text_;
         [self addSubview:label];
         [arrPassiveLabelsAndValues addObject:label];
-        y += [cTabController globalInstance].GUI_MULTIPLIER * 15;
+        y += [cTabController sGet_GUI_MULTIPLIER] * 15;
     }
 }
 

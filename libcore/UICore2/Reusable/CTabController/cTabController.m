@@ -215,16 +215,26 @@
     }];
 }
 
++(UIColor*)sGetInnerColor {
+  return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+}
+
 -(UIColor*)getInnerColor
 {
-    if (self.arrOptions.count == 0) return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
-    return ((cTabOption*)self.arrOptions[self.selectedTab]).colorView.innerColor;
+  if (self.arrOptions.count == 0) return [self.class sGetInnerColor];
+  
+  return ((cTabOption*)self.arrOptions[self.selectedTab]).colorView.innerColor;
+}
+
++(UIColor*)sGetOuterColor {
+  return [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
 }
 
 -(UIColor*)getOuterColor
 {
-    if (self.arrOptions.count == 0) return [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
-    return ((cTabOption*)self.arrOptions[self.selectedTab]).colorView.outerColor;
+  if (self.arrOptions.count == 0) return [self.class sGetOuterColor];
+  
+  return ((cTabOption*)self.arrOptions[self.selectedTab]).colorView.outerColor;
 }
 
 +(cTabController*)globalInstance
@@ -242,6 +252,16 @@
     }
 
     return globalTabController;
+}
+
++(float) sGet_GUI_MULTIPLIER {
+  // TODO - this should be removed, to work in LANDSCAPE mode and with different layouts!
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    return 768.0 / 320.0;
+  }
+  else {
+    return 1.0;
+  }
 }
 
 @end

@@ -17,10 +17,6 @@
 #import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"
 
 @interface SKMainViewController : UIViewController
-{
-    BOOL tmpActivated;
-    BOOL isWelcomePerformed;
-}
 
 @property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
 
