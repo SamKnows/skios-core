@@ -73,7 +73,7 @@
 
 - (void)aodClosestTargetTestDidStart
 {
-  [self.lblClosest setText:NSLocalizedString(@"TEST_Label_Closest", nil)];
+  [self.lblClosest setText:NSLocalizedString(@"TEST_Label_Finding_Best_Target", nil)];
 }
 
 - (void)aodClosestTargetTestDidFail

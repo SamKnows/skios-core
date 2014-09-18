@@ -635,7 +635,7 @@ extern BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1;
 
 - (void)aodClosestTargetTestDidStart
 {
-  [self.lClosest setText:NSLocalizedString(@"TEST_Label_Closest", nil)];
+  [self.lClosest setText:NSLocalizedString(@"TEST_Label_Finding_Best_Target", nil)];
   [self showTargets];
 }
 
