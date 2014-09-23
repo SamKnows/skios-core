@@ -599,6 +599,7 @@
     double result = [rs doubleForColumnIndex:0];
     NSString *testName = [rs stringForColumnIndex:1];
   
+    // result = 0.00499; // TODO - this is for debugging/testing ONLY!
     [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
     [dict setObject:testName forKey:@"DISPLAY_NAME"];
   }
@@ -641,6 +642,7 @@
     double result = [rs doubleForColumnIndex:0];
     NSString *testName = [rs stringForColumnIndex:1];
     
+    // result = 0.00499; // TODO - this is for debugging/testing ONLY!
     [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
     [dict setObject:testName forKey:@"DISPLAY_NAME"];
   }
@@ -678,6 +680,7 @@
     double result = [rs doubleForColumnIndex:0];
     NSString *testName = [rs stringForColumnIndex:1];
     
+    // result = 0.00499; // TODO - this is for debugging/testing ONLY!
     [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
     [dict setObject:testName forKey:@"DISPLAY_NAME"];
   }
@@ -715,6 +718,7 @@
     double result = [rs doubleForColumnIndex:0];
     NSString *testName = [rs stringForColumnIndex:1];
     
+    // result = 0.00499; // TODO - this is for debugging/testing ONLY!
     [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
     [dict setObject:testName forKey:@"DISPLAY_NAME"];
   }
@@ -753,6 +757,7 @@
     double result = [rs doubleForColumnIndex:0];
     NSString *testName = [rs stringForColumnIndex:1];
     
+    // result = 0.00499; // TODO - this is for debugging/testing ONLY!
     [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
     [dict setObject:testName forKey:@"DISPLAY_NAME"];
   }
@@ -1368,6 +1373,7 @@ public static String convertConnectivityType(int type) {
     NSString *trg = [rs stringForColumnIndex:3];
     NSString *networkType = [rs stringForColumnIndex:4];
     
+    // val = 0.00499; // TODO - this is for debugging/testing ONLY!
     [dict setObject:nsNumberDate forKey:@"DATE"];
     [dict setObject:[SKGlobalMethods format2DecimalPlaces:val] forKey:@"RESULT"];
     [dict setObject:[NSNumber numberWithInt:testId] forKey:@"TEST_ID"];

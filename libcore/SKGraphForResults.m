@@ -123,7 +123,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   // To leave space for the axes AND for plot markers - you MUST set these values big enough!
   graph.plotAreaFrame.paddingTop    = 25.0;
   graph.plotAreaFrame.paddingBottom = 20.0;
-  graph.plotAreaFrame.paddingLeft   = 40.0;
+  graph.plotAreaFrame.paddingLeft   = 50.0;
   graph.plotAreaFrame.paddingRight  = 15.0;
   graph.plotAreaFrame.cornerRadius  = 3.0;
   
@@ -640,12 +640,13 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       
       // 692.06 kbps ...?
       
-      // If the value is 0.00 or less, then treat as 0.0!
-//      if (theResult.doubleValue <= 0.00) {
-//        if (theResult.doubleValue > 0) {
-//          theResult = @0.00;
-//        }
-//      }
+      //theResult = @0.00999; // TODO - this is for debug ONLY!
+      // If the value is 0.00999 or less, then treat as 0.0!
+      if (theResult.doubleValue < 0.01) {
+        if (theResult.doubleValue > 0) {
+          theResult = @0.00;
+        }
+      }
       
       if (bMaxFound == false) {
         self.corePlotMaxValue = [theResult doubleValue];
@@ -849,14 +850,15 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     
     if ([theObject isKindOfClass:[NSNumber class]]) {
       NSNumber *theNumber = (NSNumber*)theObject;
-      
-//      // If the values are 0.00 or less, then treat as 0.0!
-//      if (theNumber.doubleValue <= 0.00) {
-//        if (theNumber.doubleValue > 0) {
-//          theNumber = @0.00;
-//        }
-//      }
 #endif // BACK_AND_FORWARD_FILL
+     
+      //theNumber = @0.00999; // TODO - this is for debug ONLY!
+      // If the value is 0.00999 or less, then treat as 0.0!
+      if (theNumber.doubleValue < 0.01) {
+        if (theNumber.doubleValue > 0) {
+          theNumber = @0.00;
+        }
+      }
 
       double theDouble = [theNumber doubleValue];
       //      if (bMinFound == false) {
