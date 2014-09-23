@@ -558,7 +558,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       testTransferBytes = testTransferBytes + transferBytes;
       
       // TODO - we're now using the best value FROM THE DYNAMIC MEASURING!
-      //NSLog(@"**** DEBUG - SKHttpTesttodDidCompleteTransferOperation - multiThreadCount = %d (%d)", (int)(int)multiThreadCount, (int)(int)nThreads);
+      //NSLog(@"DEBUG **** - SKHttpTesttodDidCompleteTransferOperation - multiThreadCount = %d (%d)", (int)(int)multiThreadCount, (int)(int)nThreads);
       // Override with the values from the new algorithm!
       
       if (multiThreadCount == nThreads)
@@ -578,7 +578,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #ifdef DEBUG
         // Debug - dump timings
         for (DebugTiming *value in smDebugSocketSendTimeMicroseconds) {
-          NSLog(@"HttpTest DUMP - threadIndex:%d description:%@ time:%d microsec speed:%g bitsPerSec:%g", value.threadIndex, value.mDescription, (int) (value.time*1000000), value.currentSpeed, value.currentSpeed*8.0);
+          NSLog(@"DEBUG: HttpTest DUMP - threadIndex:%d description:%@ time:%d microsec speed:%g bitsPerSec:%g", value.threadIndex, value.mDescription, (int) (value.time*1000000), value.currentSpeed, value.currentSpeed*8.0);
         }
 #endif // DEBUG
         [self.class sClearDebugSocketSendTimeMicroseconds];
@@ -586,11 +586,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         testOK = YES;
         
 #ifdef DEBUG
-        NSLog(@"**** DEBUG - SKHttpTest:todDidCompleteTransferOperation - hit the thread threshold - calling htdDidCompleteHttpTest!");
+        NSLog(@"DEBUG **** - SKHttpTest:todDidCompleteTransferOperation - hit the thread threshold - calling htdDidCompleteHttpTest!");
+        
+        NSLog(@"DEBUG: ::::: BYTES: %lu TIME %f", (unsigned long)testTotalBytes, testTransferTimeMicroseconds);
 #endif // DEBUG
-        
-        
-        NSLog(@"::::: BYTES: %lu TIME %f", (unsigned long)testTotalBytes, testTransferTimeMicroseconds);
         
         
         [self setRunningStatus:COMPLETE];

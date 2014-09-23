@@ -837,11 +837,15 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
            // file upload successful.. blast out the file
            if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])
            {
-             NSLog(@"Unable to remove JSON file");
+#ifdef DEBUG
+             NSLog(@"DEBUG: Unable to remove JSON file");
+#endif // DEBUG
            }
            else
            {
-             NSLog(@"Uploaded JSON File");
+#ifdef DEBUG
+             NSLog(@"DEBUG: Uploaded JSON File");
+#endif // DEBUG
            }
          }
          else
@@ -851,7 +855,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
              NSString* newStr = [[NSString alloc] initWithData:data
                                                       encoding:NSUTF8StringEncoding];
              
-             NSLog(@"submitJSON Error Response : %@", newStr);
+#ifdef DEBUG
+             NSLog(@"DEBUG: submitJSON Error Response : %@", newStr);
+#endif // DEBUG
            }
          }
        }

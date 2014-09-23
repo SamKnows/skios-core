@@ -7,6 +7,49 @@
 
 #import "SKGraphForResults.h"
 
+@interface MyCPTTimeFormatterHideRight : CPTTimeFormatter
+@property (weak) CPTAxis *mOwningAxis;
+@end
+
+@implementation MyCPTTimeFormatterHideRight
+
+-(id)initWithDateFormatter:(NSDateFormatter *)aDateFormatter OwningXAxis:(CPTAxis*)inOwningXAxis {
+  self = [super initWithDateFormatter:aDateFormatter];
+  if (self) {
+    self.mOwningAxis = inOwningXAxis;
+  }
+  return self;
+}
+
+-(NSString *)stringForObjectValue:(id)coordinateValue {
+  NSObject *theObject =(NSObject*)coordinateValue;
+  
+  // Last location?
+  NSDecimalNumber *theMax = nil;
+  for (NSDecimalNumber *theValue in self.mOwningAxis.majorTickLocations) {
+    if (theMax == nil) {
+      theMax = theValue;
+      continue;
+    }
+    
+    if (theValue.doubleValue > theMax.doubleValue) {
+      theMax = theValue;
+    }
+  }
+  
+  if (theObject.class == NSDecimalNumber.class) {
+    NSDecimalNumber *theValue = (NSDecimalNumber*)coordinateValue;
+    //if (theValue.doubleValue == [self.mTheEndDate timeIntervalSince1970]) {
+    if (theValue == theMax) {
+      return @"";
+    }
+  }
+  
+  return [super stringForObjectValue:coordinateValue];
+}
+
+@end
+
 @interface SKGraphForResults()
 @property CPTGraphHostingView *mpHostView;
 @property CPTPlot *mpCorePlot;
@@ -48,6 +91,9 @@
 //
 //
 //
+//#define FILL_EMPTY_HOURS_WITH_ZERO 1
+//#define BACK_AND_FORWARD_FILL 1
+#define SHOW_POINTS 1
 
 //
 // CorePlot experiment!
@@ -89,15 +135,23 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   
   // Set up plot space - this is an area that is automatically scaled to fit the viewport.
   CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
-  double timeInterval = [self.mpCorePlotDates[self.mpCorePlotDates.count-1] timeIntervalSinceDate:self.mpCorePlotDates[0]];
-  if (inDateFilter == DATERANGE_1w1m3m1y_ONE_DAY) {
-    timeInterval = oneDay;
-  }
+
+  // Always start from NOW...
+  NSDate *theEndDate;
+//  if (self.mpCorePlotDates.count == 0) {
+    theEndDate = [NSDate date];
+//  } else {
+//    theEndDate = self.mpCorePlotDates[self.mpCorePlotDates.count-1];
+//  }
+  double timeInterval = [[self getTimeIntervalForDate:theEndDate] doubleValue];
   plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(timeInterval)];
   plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(self.corePlotMinValue) length:CPTDecimalFromFloat(self.corePlotMaxValue + 0.01)];
-  // Experiment with a bit more space, to allow the point markers to draw!
-  // plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(timeInterval * 1.05)];
-  //plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(self.corePlotMinValue) length:CPTDecimalFromFloat(self.corePlotMaxValue * 1.05 + 0.01)];
+  
+#ifdef SHOW_POINTS
+  // Allow more space, to allow the point markers to draw without being clipped!
+  plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0) length:CPTDecimalFromFloat(timeInterval * 1.01 + 0.01)];
+  plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(self.corePlotMinValue) length:CPTDecimalFromFloat(self.corePlotMaxValue * 1.06 + 0.01)];
+#endif // SHOW_POINTS
   
  
   //
@@ -210,17 +264,6 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     case DATERANGE_1w1m3m1y_ONE_DAY:
       // Using 24, is just too much - though might be OK on landscape!
       daysPerBar = 1.0/24.0;
-//    {
-//      Experiment with plotting a symbole at each data point
-//      CPTPlotSymbol *googSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-//      CPTColor *googColor =  lineColor; // [CPTColor blueColor];
-//      googSymbol.fill = [CPTFill fillWithColor:googColor];
-//      CPTMutableLineStyle *googSymbolLineStyle = [CPTMutableLineStyle lineStyle];
-//      googSymbolLineStyle.lineColor = googColor;
-//      googSymbol.lineStyle = googSymbolLineStyle;
-//      googSymbol.size = CGSizeMake(4.0f, 4.0f);
-//      aaplPlot.plotSymbol = googSymbol;
-//    }
       break;
       
     default:
@@ -230,6 +273,24 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     }
       break;
   }
+  
+#ifdef SHOW_POINTS
+  {
+    const float cPointSizePixels = 6.0F;
+    
+    // Plot a symbol at each data point
+    CPTPlotSymbol *googSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+    //googSymbol = [CPTPlotSymbol rectanglePlotSymbol];
+    CPTColor *googColor =  lineColor; // [CPTColor blueColor];
+    googSymbol.fill = [CPTFill fillWithColor:googColor];
+    CPTMutableLineStyle *googSymbolLineStyle = [CPTMutableLineStyle lineStyle];
+    googSymbolLineStyle.lineColor = googColor;
+    googSymbol.lineStyle = googSymbolLineStyle;
+    googSymbol.size = CGSizeMake(cPointSizePixels, cPointSizePixels);
+    aaplPlot.plotSymbol = googSymbol;
+  }
+#endif // SHOW_POINTS
+
   
   // Alter the numeric resolution on the Y axis, depending on the data type.
   // http://stackoverflow.com/questions/9317690/how-change-precision-of-axis-labels-in-coreplot
@@ -314,10 +375,21 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   {
     [dateFormatter setDateFormat:[SKGlobalMethods getGraphDateFormat]];
   }
-  CPTTimeFormatter *timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
-  timeFormatter.referenceDate = self.mpCorePlotDates[0];
+  CPTTimeFormatter *timeFormatter = nil;
+  if (inDateFilter == DATERANGE_1w1m3m1y_ONE_WEEK) {
+    // One week view - hide the right-most date entry!
+    timeFormatter = [[MyCPTTimeFormatterHideRight alloc] initWithDateFormatter:dateFormatter OwningXAxis:x];
+  } else {
+    timeFormatter = [[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter];
+  }
+  
   if (inDateFilter == DATERANGE_1w1m3m1y_ONE_DAY) {
     timeFormatter.referenceDate = [NSDate dateWithTimeIntervalSinceNow:-oneDay*1.0];
+  } else if (inDateFilter == DATERANGE_1w1m3m1y_ONE_WEEK) {
+    // Start 6 days back, to include todays' date!
+    timeFormatter.referenceDate = [NSDate dateWithTimeIntervalSinceNow:-oneDay*6.0];
+  } else {
+    timeFormatter.referenceDate = [theEndDate dateByAddingTimeInterval:-timeInterval];
   }
   x.labelFormatter = timeFormatter;
   
@@ -502,7 +574,11 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     for (hourIndex = 0; hourIndex < 24; hourIndex++) {
       [datesByHour addObject:[NSDate dateWithTimeInterval:((double)hourIndex) * timeIntervalForOneHour sinceDate:yesterday]];
       [itemsByHour  addObject:[NSNumber numberWithInt:0]];
+#ifdef FILL_EMPTY_HOURS_WITH_ZERO
       [valuesByHour addObject:[NSNumber numberWithDouble:0.0]];
+#else // FILL_EMPTY_HOURS_WITH_ZERO
+      [valuesByHour addObject:[NSNull null]];
+#endif // FILL_EMPTY_HOURS_WITH_ZERO
     }
   }
   
@@ -525,7 +601,12 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     }
     
     itemsByHour[hourIndex] = [NSNumber numberWithInt:([itemsByHour[hourIndex] intValue] + 1)];
-    valuesByHour[hourIndex] = [NSNumber numberWithDouble:([valuesByHour[hourIndex] doubleValue] + [theResult doubleValue])];
+   
+    if ([valuesByHour[hourIndex] isKindOfClass:NSNull.class]) {
+      valuesByHour[hourIndex] = theResult;
+    } else {
+      valuesByHour[hourIndex] = [NSNumber numberWithDouble:([valuesByHour[hourIndex] doubleValue] + [theResult doubleValue])];
+    }
   }
   
   // Now run through, and calculate the averages.
@@ -549,7 +630,22 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     int hourIndex;
     for (hourIndex = 0; hourIndex < 24; hourIndex++) {
       NSDate *theDate = datesByHour[hourIndex];
+      if ([valuesByHour[hourIndex] isKindOfClass:NSNull.class]) {
+        //[theDateArray addObject:theDate];
+        //[theNewArray addObject:[NSNull null]];
+        continue;
+      }
+      
       NSNumber *theResult = valuesByHour[hourIndex];
+      
+      // 692.06 kbps ...?
+      
+      // If the value is 0.00 or less, then treat as 0.0!
+//      if (theResult.doubleValue <= 0.00) {
+//        if (theResult.doubleValue > 0) {
+//          theResult = @0.00;
+//        }
+//      }
       
       if (bMaxFound == false) {
         self.corePlotMaxValue = [theResult doubleValue];
@@ -624,7 +720,8 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       SK_ASSERT(false);
       return;
     }
-    
+	
+#ifdef BACK_AND_FORWARD_FILL
     [theDateArray addObject:theTargetDate];
     
     NSString *theNumber = [theDateValues objectForKey:theTargetDateString];
@@ -642,6 +739,19 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       [theNewArray addObject:newItem];
       continue;
     }
+#else // BACK_AND_FORWARD_FILL
+    NSString *theNumber = [theDateValues objectForKey:theTargetDateString];
+    if ( (theNumber == nil) ||
+        ([theNumber isKindOfClass:[NSNull class]])
+        )
+    {
+      // Nothing found!
+     //[theNewArray addObject:[NSNull null]];
+      continue;
+    }
+    
+    [theDateArray addObject:theTargetDate];
+#endif // BACK_AND_FORWARD_FILL
     
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -664,6 +774,8 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   }
   
   // To reach here, we have an array of items...
+  
+#ifdef BACK_AND_FORWARD_FILL
   // We must now interpolate!
   
   int theLastNonNilNumberAtIndex = -1;
@@ -715,7 +827,8 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     }
     
   }
-  
+#endif // BACK_AND_FORWARD_FILL
+ 
   // Finally, find the minimum and maximum values, for scaling the plot!
   self.corePlotMinValue = 0.0;
   //  bool bMinFound = false;
@@ -723,8 +836,28 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   bool bMaxFound = false;
   
   for (NSObject *theObject in theNewArray) {
+#ifdef BACK_AND_FORWARD_FILL
     if ([theObject isKindOfClass:[NSNumber class]]) {
       NSNumber *theNumber = (NSNumber*)theObject;
+#else // BACK_AND_FORWARD_FILL
+    if ( (theObject == nil) ||
+         ([theObject isKindOfClass:[NSNull class]])
+        )
+    {
+      continue;
+    }
+    
+    if ([theObject isKindOfClass:[NSNumber class]]) {
+      NSNumber *theNumber = (NSNumber*)theObject;
+      
+//      // If the values are 0.00 or less, then treat as 0.0!
+//      if (theNumber.doubleValue <= 0.00) {
+//        if (theNumber.doubleValue > 0) {
+//          theNumber = @0.00;
+//        }
+//      }
+#endif // BACK_AND_FORWARD_FILL
+
       double theDouble = [theNumber doubleValue];
       //      if (bMinFound == false) {
       //        self.corePlotMinValue = theDouble;
@@ -871,6 +1004,51 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   return self.mpCorePlotDataPoints.count;
 }
 
+-(NSNumber*)getTimeIntervalForDate:(NSDate*)theDate {
+  switch (self.mDateFilter)
+  {
+    case DATERANGE_1w1m3m1y_ONE_DAY: {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
+      return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+      break;
+    case DATERANGE_1w1m3m1y_ONE_WEEK: {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-7*oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
+      return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+    case DATERANGE_1w1m3m1y_ONE_MONTH: {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-1*30*oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
+      return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+    case DATERANGE_1w1m3m1y_THREE_MONTHS: {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-3*30*oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
+      return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+    case DATERANGE_1w1m3m1y_SIX_MONTHS: {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-6*30*oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
+      return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+    case DATERANGE_1w1m3m1y_ONE_YEAR:
+    default:
+    {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-365*oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
+      return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+  }
+}
+
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
   switch (fieldEnum)
   {
@@ -881,7 +1059,8 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       
       // We're using a CPTTimeFormatter.
       // So, return INTERVAL since the system reference date.
-      
+
+#ifdef BACK_AND_FORWARD_FILL
       if (self.mpCorePlotDates.count <= 1) {
         debugString = [NSString stringWithFormat:@"%s:%d, no core plot dates", __FUNCTION__, __LINE__];
         [SKCore sAppendLogString:debugString IsError:YES];
@@ -900,6 +1079,10 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
 
       double timeInterval = [theDate timeIntervalSinceDate:self.mpCorePlotDates[0]];
       return [NSDecimalNumber numberWithDouble:timeInterval];
+#else // BACK_AND_FORWARD_FILL
+      NSDate *theDate = self.mpCorePlotDates[idx];
+      return [self getTimeIntervalForDate:theDate];
+#endif // BACK_AND_FORWARD_FILL
     }
       
     case CPTScatterPlotFieldY:

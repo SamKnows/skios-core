@@ -885,7 +885,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
     if (!isClosestTargetTest) {
       double rtt = [end timeIntervalSinceDate:start];
 #ifdef DEBUG
-      NSLog(@"computeLatency LATENCY: %ld : %.2f", tag, rtt*1000.0f);
+      //NSLog(@"DEBUG: computeLatency LATENCY: %ld : %.2f", tag, rtt*1000.0f);
 #endif // DEBUG
         
         lastLatency = rtt*1000.0f;

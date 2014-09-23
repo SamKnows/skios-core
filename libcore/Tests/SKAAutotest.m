@@ -604,13 +604,13 @@
   int nextTestIndex = testIndex + 1;
  
 #ifdef DEBUG
-  NSLog(@"**** DEBUG - SKAAutoTest:runNextTest< testIndex=%d, nextTestIndex=%d", testIndex, nextTestIndex);
+  NSLog(@"DEBUG **** - SKAAutoTest:runNextTest< testIndex=%d, nextTestIndex=%d", testIndex, nextTestIndex);
 #endif // DEBUG
   
   if ([self.autoTests count] > 0)
   {
 #ifdef DEBUG
-    NSLog(@"**** DEBUG - SKAAutoTest: self.autoTests.count=%d", (int)[self.autoTests count]);
+    NSLog(@"DEBUG **** - SKAAutoTest: self.autoTests.count=%d", (int)[self.autoTests count]);
 #endif // DEBUG
     
     int testsCount = (int)[self.autoTests count];
@@ -618,7 +618,7 @@
     if (nextTestIndex < testsCount)
     {
 #ifdef DEBUG
-      NSLog(@"**** DEBUG - SKAAutoTest: nextTestIndex < testsCount (%d)", testsCount);
+      NSLog(@"DEBUG **** - SKAAutoTest: nextTestIndex < testsCount (%d)", testsCount);
 #endif // DEBUG
       
       NSDictionary *dict = [self.autoTests objectAtIndex:nextTestIndex];
@@ -635,7 +635,7 @@
           
           NSString *tstType = config.type;
 #ifdef DEBUG
-          NSLog(@"**** DEBUG - SKAAutoTest: about to run next test - tstType=%@", tstType);
+          NSLog(@"DEBUG **** - SKAAutoTest: about to run next test - tstType=%@", tstType);
 #endif // DEBUG
           
           if ([tstType isEqualToString:@"closestTarget"])
@@ -686,7 +686,7 @@
     {
       // Complete
 #ifdef DEBUG
-      NSLog(@"**** DEBUG - SKAAutoTest: COMPLETE!");
+      NSLog(@"DEBUG **** - SKAAutoTest: COMPLETE!");
 #endif // DEBUG
       
       self.isRunning = NO;

@@ -167,7 +167,9 @@
   
   NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
   SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  NSLog(@"[cell description]=%@", [cell description]);
+#ifdef DEBUG
+  NSLog(@"DEBUG: [cell description]=%@", [cell description]);
+#endif // DEBUG
   SK_ASSERT([cell class] == [SKALatencyTestCell class]);
   
   if (nil != cell)
