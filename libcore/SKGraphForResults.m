@@ -640,7 +640,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       
       // 692.06 kbps ...?
       
-      //theResult = @0.00999; // TODO - this is for debug ONLY!
+      //theResult = @0.00499; // TODO - this is for debug ONLY!
       // If the value is 0.00999 or less, then treat as 0.0!
       if (theResult.doubleValue < 0.01) {
         if (theResult.doubleValue > 0) {
@@ -852,7 +852,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       NSNumber *theNumber = (NSNumber*)theObject;
 #endif // BACK_AND_FORWARD_FILL
      
-      //theNumber = @0.00999; // TODO - this is for debug ONLY!
+      //theNumber = @0.00499; // TODO - this is for debug ONLY!
       // If the value is 0.00999 or less, then treat as 0.0!
       if (theNumber.doubleValue < 0.01) {
         if (theNumber.doubleValue > 0) {
