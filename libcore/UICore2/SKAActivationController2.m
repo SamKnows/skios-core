@@ -43,80 +43,45 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
-    int y = 30;
-    
-    self.lTitle = [[UILabel alloc] initWithFrame:CGRectMake(20, y, self.view.bounds.size.width - 40, 60)];
-    self.lTitle.textColor = [UIColor orangeColor];
-    self.lTitle.textAlignment = UITextAlignmentCenter;
-    self.lTitle.font = [UIFont fontWithName:@"Roboto-Regular" size:22];
-    self.lTitle.text = NSLocalizedString(@"Storyboard_Activation_Title",nil);
-    self.lTitle.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
-    self.lTitle.layer.cornerRadius = 3;
-    self.lTitle.layer.borderWidth = 0.5;
-    self.lTitle.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
-    self.lTitle.clipsToBounds = YES;
-    [self.view addSubview:self.lTitle];
-    y += 80;
-    
-    self.lActivating = [[UILabel alloc] initWithFrame:CGRectMake(20, y, self.view.bounds.size.width - 40, 40)];
-    self.lActivating.textColor = [UIColor whiteColor];
-    self.lActivating.textAlignment = UITextAlignmentCenter;
-    self.lActivating.font = [UIFont fontWithName:@"Roboto-Light" size:15];
-    self.lActivating.text = NSLocalizedString(@"ACTV_Label_Activating", nil);
-    self.lActivating.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
-    self.lActivating.layer.cornerRadius = 3;
-    self.lActivating.layer.borderWidth = 0.5;
-    self.lActivating.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
-    self.lActivating.clipsToBounds = YES;
-    [self.view addSubview:self.lActivating];
-    y += 50;
-
-    self.lDownloading = [[UILabel alloc] initWithFrame:CGRectMake(20, y, self.view.bounds.size.width - 40, 40)];
-    self.lDownloading.textColor = [UIColor whiteColor];
-    self.lDownloading.textAlignment = UITextAlignmentCenter;
-    self.lDownloading.font = [UIFont fontWithName:@"Roboto-Light" size:15];
-    self.lDownloading.text = NSLocalizedString(@"ACTV_Label_Downloading", nil);
-    self.lDownloading.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
-    self.lDownloading.layer.cornerRadius = 3;
-    self.lDownloading.layer.borderWidth = 0.5;
-    self.lDownloading.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
-    self.lDownloading.clipsToBounds = YES;
-    [self.view addSubview:self.lDownloading];
-    y += 80;
+  [super viewDidLoad];
   
-  SK_ASSERT(y > 0);
-
-#define C_SPINNER_LEFT_INSET    40
-    
-    self.spinnerMain = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.lTitle.frame.origin.x + self.lTitle.frame.size.width - C_SPINNER_LEFT_INSET, self.lTitle.frame.origin.y, C_SPINNER_LEFT_INSET, self.lTitle.frame.size.height)];
-    self.spinnerMain.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    self.spinnerMain.hidesWhenStopped = YES;
-    self.spinnerMain.hidden = YES;
-    [self.view addSubview:self.spinnerMain];
-
-    self.spinnerActivating = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.lActivating.frame.origin.x + self.lActivating.frame.size.width - C_SPINNER_LEFT_INSET, self.lActivating.frame.origin.y, C_SPINNER_LEFT_INSET, self.lActivating.frame.size.height)];
-    self.spinnerActivating.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    self.spinnerActivating.hidesWhenStopped = YES;
-    self.spinnerActivating.hidden = YES;
-    [self.view addSubview:self.spinnerActivating];
-
-    self.spinnerDownloading = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.lDownloading.frame.origin.x + self.lDownloading.frame.size.width - C_SPINNER_LEFT_INSET, self.lDownloading.frame.origin.y, C_SPINNER_LEFT_INSET, self.lDownloading.frame.size.height)];
-    self.spinnerDownloading.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    self.spinnerDownloading.hidesWhenStopped = YES;
-    self.spinnerDownloading.hidden = YES;
-    [self.view addSubview:self.spinnerDownloading];
-    
-    isRunning = YES;
-    
-    appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
-
-//    [self.spinnerMain startAnimating];
-//    [self.spinnerActivating startAnimating];
-//    [self.spinnerDownloading startAnimating];
-    
-//    self.lblMain.text = NSLocalizedString(@"ACTV_Label", nil);
+  self.lTitle.text = NSLocalizedString(@"Storyboard_Activation_Title",nil);
+  self.lTitle.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.lTitle.layer.cornerRadius = 3;
+  self.lTitle.layer.borderWidth = 0.5;
+  self.lTitle.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
+  self.lTitle.clipsToBounds = YES;
+  [self.view addSubview:self.lTitle];
+  
+  self.lActivating.text = NSLocalizedString(@"ACTV_Label_Activating", nil);
+  self.lActivating.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.lActivating.layer.cornerRadius = 3;
+  self.lActivating.layer.borderWidth = 0.5;
+  self.lActivating.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
+  self.lActivating.clipsToBounds = YES;
+  
+  self.lDownloading.text = NSLocalizedString(@"ACTV_Label_Downloading", nil);
+  self.lDownloading.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.lDownloading.layer.cornerRadius = 3;
+  self.lDownloading.layer.borderWidth = 0.5;
+  self.lDownloading.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
+  self.lDownloading.clipsToBounds = YES;
+  
+  self.spinnerMain.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+  self.spinnerMain.hidesWhenStopped = YES;
+  self.spinnerMain.hidden = YES;
+  
+  self.spinnerActivating.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+  self.spinnerActivating.hidesWhenStopped = YES;
+  self.spinnerActivating.hidden = YES;
+  
+  self.spinnerDownloading.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+  self.spinnerDownloading.hidesWhenStopped = YES;
+  self.spinnerDownloading.hidden = YES;
+  
+  isRunning = YES;
+  
+  appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -411,7 +376,7 @@
                 
                 [[self delegate] hasCompleted];
                 
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
             }
         }
     }

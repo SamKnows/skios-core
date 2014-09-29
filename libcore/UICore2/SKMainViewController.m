@@ -9,7 +9,6 @@
 #import "SKMainViewController.h"
 
 @interface SKMainViewController ()
-@property BOOL tmpActivated;
 @property BOOL isWelcomePerformed;
 
 @end
@@ -67,8 +66,6 @@
     
     self.svContent.hidden = YES;
     self.vTab.hidden = YES;
-    
-    self.tmpActivated = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,9 +80,6 @@
   
     self.vWelcomeView.frame = self.view.bounds;
     [self.vWelcomeView initializeWelcomeText];
-    
-//    if (!tmpActivated) return;
-//    if (![[SKAAppDelegate getAppDelegate] isActivated]) return;
     
     self.svContent.hidden = NO;
     self.vTab.hidden = NO;
@@ -105,20 +99,13 @@
     {
         self.isWelcomePerformed = YES;
         [self.vWelcomeView startAnimationOnCompletion:^{
-            
-            if (!self.tmpActivated)
+          
+            if ([[SKAAppDelegate getAppDelegate] isActivated] == NO)
             {
-                self.tmpActivated = YES;
                 [self SKSafePerformSegueWithIdentifier:@"segueActivate" sender:self];
                 return;
             }
-            if (![[SKAAppDelegate getAppDelegate] isActivated])
-            {
-                NSLog(@"Not");
-                [self performSegueWithIdentifier:@"segueActivate" sender:self];
-                return;
-            }
-            
+          
             [UIView animateWithDuration:0.3 animations:^{
                 
                 self.vWelcomeView.alpha = 0;

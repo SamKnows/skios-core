@@ -13,20 +13,13 @@
 
 @interface SKAActivationController2 : UIViewController
 
-@property (strong, nonatomic) UILabel *lTitle;
-@property (strong, nonatomic) UILabel *lActivating;
-@property (strong, nonatomic) UILabel *lDownloading;
+@property (weak, nonatomic) IBOutlet UILabel *lTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lActivating;
+@property (weak, nonatomic) IBOutlet UILabel *lDownloading;
 
-@property (strong, nonatomic) UIActivityIndicatorView *spinnerActivating;
-@property (strong, nonatomic) UIActivityIndicatorView *spinnerDownloading;
-@property (strong, nonatomic) UIActivityIndicatorView *spinnerMain;
-
-//@property (weak, nonatomic) IBOutlet UILabel *lblMain;
-//@property (weak, nonatomic) IBOutlet UIView *viewBG;
-//@property (weak, nonatomic) IBOutlet UILabel *lblActivating;
-//@property (weak, nonatomic) IBOutlet UIImageView *imgviewActivate;
-//@property (weak, nonatomic) IBOutlet UILabel *lblDownloading;
-//@property (weak, nonatomic) IBOutlet UIImageView *imgviewDownload;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinnerActivating;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinnerDownloading;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinnerMain;
 
 @property (atomic, strong) id <SKAActivationDelegate> delegate;
 @property (nonatomic, assign) BOOL hidesBackButton;

@@ -13,7 +13,6 @@
 #define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 
 @interface SKSBRunTestViewMgrController()
-@property BOOL tmpActivated;
 @property BOOL isWelcomePerformed;
 @end
 
@@ -89,16 +88,9 @@
     self.isWelcomePerformed = YES;
     [self.vWelcomeView startAnimationOnCompletion:^{
       
-      if (!self.tmpActivated)
+      if ([[SKAAppDelegate getAppDelegate] isActivated] == NO)
       {
-        self.tmpActivated = YES;
         [self SKSafePerformSegueWithIdentifier:@"segueActivate" sender:self];
-        return;
-      }
-      if (![[SKAAppDelegate getAppDelegate] isActivated])
-      {
-        NSLog(@"Not");
-        [self performSegueWithIdentifier:@"segueActivate" sender:self];
         return;
       }
       
