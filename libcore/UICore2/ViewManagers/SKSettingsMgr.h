@@ -44,6 +44,7 @@ enum {
 - (IBAction)B_ExportResults:(id)sender;
 
 -(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)setColoursAndShowHideElements;
 -(void)performLayout;
 
 @end

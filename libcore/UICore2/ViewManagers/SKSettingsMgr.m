@@ -13,69 +13,82 @@
 
 - (void)intialiseViewOnMasterView:(UIView*)masterView_
 {
-    self.backgroundColor = [UIColor clearColor];
-    
-    self.masterView = masterView_;
+  self.backgroundColor = [UIColor clearColor];
+  
+  self.masterView = masterView_;
+  
+  [self.tDataCapValue setDelegate:self];
+  [self.tDataCapValue addTarget:self action:@selector(textChanged:) forControlEvents:UIControlEventEditingChanged];
+  
+  self.btExport.hidden = ! [[SKAAppDelegate getAppDelegate] supportExportMenuItem];
+}
 
-    [self.tDataCapValue setDelegate:self];
-    [self.tDataCapValue addTarget:self action:@selector(textChanged:) forControlEvents:UIControlEventEditingChanged];
-    
-    self.btExport.hidden = ! [[SKAAppDelegate getAppDelegate] supportExportMenuItem];
+-(void)setColoursAndShowHideElements
+{
+  self.backgroundColor = [UIColor clearColor];
+  
+  self.vSmallBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.vSmallBackground.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
+  self.vSmallBackground.layer.borderWidth = 0.5;
+  self.vSmallBackground.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
+  
+  [cActionSheet formatView:self.btClearDB];
+  
+  [cActionSheet formatView:self.btExport];
+  
+  [cActionSheet formatView:self.tDataCapValue];
+  self.tDataCapValue.layer.borderWidth = 1;
+  self.tDataCapValue.layer.borderColor = [UIColor colorWithRed:26.0/255.0 green:160.0/255.0 blue:225.0/255.0 alpha:0.5].CGColor;
+  self.tDataCapValue.textColor = [UIColor colorWithWhite:0.9 alpha:1];
+  self.tDataCapValue.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+  self.tDataCapValue.text = @"";
+  
+  //    [self setTitle:NSLocalizedString(@"SETTINGS_Title", nil)];
+  [self.lMonthlyDataCap setText:NSLocalizedString(@"SETTINGS_Data_Cap", nil)];
+  [self.lCapUsed setText:NSLocalizedString(@"SETTINGS_Data_Usage", nil)];
+  self.lMonthlyDataCap.font = [UIFont fontWithName:@"Roboto-Light" size:15];
+  self.lCapUsed.font = [UIFont fontWithName:@"Roboto-Light" size:15];
+  
+  self.lDataUsageValue.font = [UIFont fontWithName:@"Roboto-Regular" size:15];
+  self.tDataCapValue.font = [UIFont fontWithName:@"Roboto-Regular" size:15];
+  
+  [self setDataCapFromUserSettings];
+  
+  if (self.lClearAllData != nil) {
+    self.lClearAllData.text = NSLocalizedString(@"Settings_ClearAllResults",nil);
+  }
+  
+  BOOL canDisableDataCap = [[SKAAppDelegate getAppDelegate] canDisableDataCap];
+  BOOL datacapEnabled = [[SKAAppDelegate getAppDelegate] isDataCapEnabled];
+  
+  self.swDataCapOnOff.hidden = !canDisableDataCap;
+  self.swDataCapOnOff.on = datacapEnabled;
+  self.tDataCapValue.enabled = datacapEnabled;
+  
+  if (datacapEnabled == YES) {
+    self.tDataCapValue.alpha = 1.0;
+  } else {
+    self.tDataCapValue.alpha = 0.3;
+  }
+
+  self.tDataCapValue.delegate = self;
+  self.btOK1.alpha = 0;
+
 }
 
 -(void)performLayout
 {
-    self.vSmallBackground.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 30, [cTabController sGet_GUI_MULTIPLIER] * 300, 150);
-    self.vSmallBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
-    self.vSmallBackground.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
-    self.vSmallBackground.layer.borderWidth = 0.5;
-    self.vSmallBackground.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
-    
-    self.btClearDB.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 200, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
-    [cActionSheet formatView:self.btClearDB];
-
-    self.btExport.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 245, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
-    [cActionSheet formatView:self.btExport];
-
-    [cActionSheet formatView:self.tDataCapValue];
-    self.tDataCapValue.layer.borderWidth = 1;
-    self.tDataCapValue.layer.borderColor = [UIColor colorWithRed:26.0/255.0 green:160.0/255.0 blue:225.0/255.0 alpha:0.5].CGColor;
-    self.tDataCapValue.textColor = [UIColor colorWithWhite:0.9 alpha:1];
-    self.tDataCapValue.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
-    self.tDataCapValue.text = @"";
-    
-    //    [self setTitle:NSLocalizedString(@"SETTINGS_Title", nil)];
-    [self.lMonthlyDataCap setText:NSLocalizedString(@"SETTINGS_Data_Cap", nil)];
-    [self.lCapUsed setText:NSLocalizedString(@"SETTINGS_Data_Usage", nil)];
-    self.lMonthlyDataCap.font = [UIFont fontWithName:@"Roboto-Light" size:15];
-    self.lCapUsed.font = [UIFont fontWithName:@"Roboto-Light" size:15];
-    
-    self.lDataUsageValue.font = [UIFont fontWithName:@"Roboto-Regular" size:15];
-    self.tDataCapValue.font = [UIFont fontWithName:@"Roboto-Regular" size:15];
-
-    [self setDataCapFromUserSettings];
-    
-    if (self.lClearAllData != nil) {
-        self.lClearAllData.text = NSLocalizedString(@"Settings_ClearAllResults",nil);
-    }
-
-    BOOL canDisableDataCap = [[SKAAppDelegate getAppDelegate] canDisableDataCap];
-    BOOL datacapEnabled = [[SKAAppDelegate getAppDelegate] isDataCapEnabled];
-    
-    self.swDataCapOnOff.hidden = !canDisableDataCap;
-    self.swDataCapOnOff.on = datacapEnabled;
-    self.tDataCapValue.enabled = datacapEnabled;
-    self.tDataCapValue.frame = CGRectMake(187, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
-    
-    if (datacapEnabled == YES) {
-        self.tDataCapValue.alpha = 1.0;
-    } else {
-        self.tDataCapValue.alpha = 0.3;
-    }
-    
-    self.btOK1.frame = CGRectMake(257, self.tDataCapValue.frame.origin.y, self.tDataCapValue.frame.size.height, self.tDataCapValue.frame.size.height);
-    
-    self.btOK1.alpha = 0;
+  self.vSmallBackground.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 30, [cTabController sGet_GUI_MULTIPLIER] * 300, 150);
+  
+  self.btClearDB.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 200, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
+  
+  self.btExport.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 245, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
+  
+  self.tDataCapValue.frame = CGRectMake(187, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
+  
+  self.btOK1.frame = CGRectMake(257, self.tDataCapValue.frame.origin.y, self.tDataCapValue.frame.size.height, self.tDataCapValue.frame.size.height);
+  
+  [self setColoursAndShowHideElements];
 }
 
 //return NSLocalizedString(@"Storyboard_Settings_Configuration",nil);
@@ -95,7 +108,7 @@
 {
     [UIView animateWithDuration:0.3 animations:^{
         self.btOK1.alpha = 1;
-        self.tDataCapValue.frame = CGRectMake(160, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
+        //self.tDataCapValue.frame = CGRectMake(160, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
     }];
 }
 
@@ -131,7 +144,7 @@
 {
     [self.tDataCapValue resignFirstResponder];
     self.btOK1.alpha = 0;
-    self.tDataCapValue.frame = CGRectMake(187, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
+    //self.tDataCapValue.frame = CGRectMake(187, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
 }
 
 -(void)deactivate
@@ -196,8 +209,15 @@
     if (textField == self.tDataCapValue)
     {
         if (self.tDataCapValue.text.length > 7) //TODO: Constant
+        {
             self.tDataCapValue.text = [self.tDataCapValue.text substringWithRange:NSMakeRange(0, 7)];
+        }
     }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+  
+  return YES; // return NO to disallow editing.
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField

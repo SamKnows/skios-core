@@ -52,26 +52,33 @@
         [self loadData];
 }
 
+-(void)setColoursAndShowHideElements {
+  self.backgroundColor = [UIColor clearColor];
+  
+  self.vHeader.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+  self.vHeader.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
+  self.vHeader.layer.borderWidth = 0.5;
+  self.vHeader.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
+  
+  self.vChart.alpha = 0;
+  self.vChart.backgroundColor = [UIColor clearColor];
+ 
+  // TODO - should we REALLY do this here?!
+  [self placeLabelView:self.vDownload number:0 testTitle:self.lDownloadName averageValue:self.lDownloadAvg averageUnit:self.lDownloadAvgUnit bestValue:self.lDownloadBst bestUnit:self.lDownloadBstUnit image:self.ivDownloadSymbol chartSymbol:self.ivDownloadChart];
+  [self placeLabelView:self.vUpload number:1 testTitle:self.lUploadName averageValue:self.lUploadAvg averageUnit:self.lUploadAvgUnit bestValue:self.lUploadBst bestUnit:self.lUploadBstUnit image:self.ivUploadSymbol chartSymbol:self.ivUploadChart];
+  
+  [self placeLabelView:self.vLatency number:2 testTitle:self.lLatencyName averageValue:self.lLatencyAvg averageUnit:self.lLatencyAvgUnit bestValue:self.lLatencyBst bestUnit:self.lLatencyBstUnit image:nil chartSymbol:self.ivLatencyChart];
+  [self placeLabelView:self.vLoss number:3 testTitle:self.lLossName averageValue:self.lLossAvg averageUnit:self.lLossAvgUnit bestValue:self.lLossBst bestUnit:self.lLossBstUnit image:nil chartSymbol:self.ivLossChart];
+  [self placeLabelView:self.vJitter number:4 testTitle:self.lJitterName averageValue:self.lJitterAvg averageUnit:self.lJitterAvgUnit bestValue:self.lJitterBst bestUnit:self.lJitterBstUnit image:nil chartSymbol:self.ivJitterChart];
+}
+
 -(void)performLayout
 {
-    self.vHeader.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST - 10 - 35, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
-    self.vHeader.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-    self.vHeader.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
-    self.vHeader.layer.borderWidth = 0.5;
-    self.vHeader.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
-
-    self.vChart.alpha = 0;
-    self.vChart.backgroundColor = [UIColor clearColor];
-    
-    [self placeLabelView:self.vDownload number:0 testTitle:self.lDownloadName averageValue:self.lDownloadAvg averageUnit:self.lDownloadAvgUnit bestValue:self.lDownloadBst bestUnit:self.lDownloadBstUnit image:self.ivDownloadSymbol chartSymbol:self.ivDownloadChart];
-    [self placeLabelView:self.vUpload number:1 testTitle:self.lUploadName averageValue:self.lUploadAvg averageUnit:self.lUploadAvgUnit bestValue:self.lUploadBst bestUnit:self.lUploadBstUnit image:self.ivUploadSymbol chartSymbol:self.ivUploadChart];
-
-    [self placeLabelView:self.vLatency number:2 testTitle:self.lLatencyName averageValue:self.lLatencyAvg averageUnit:self.lLatencyAvgUnit bestValue:self.lLatencyBst bestUnit:self.lLatencyBstUnit image:nil chartSymbol:self.ivLatencyChart];
-    [self placeLabelView:self.vLoss number:3 testTitle:self.lLossName averageValue:self.lLossAvg averageUnit:self.lLossAvgUnit bestValue:self.lLossBst bestUnit:self.lLossBstUnit image:nil chartSymbol:self.ivLossChart];
-    [self placeLabelView:self.vJitter number:4 testTitle:self.lJitterName averageValue:self.lJitterAvg averageUnit:self.lJitterAvgUnit bestValue:self.lJitterBst bestUnit:self.lJitterBstUnit image:nil chartSymbol:self.ivJitterChart];
-
-    self.btNetworkType.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
-    self.btPeriod.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 165, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
+  self.vHeader.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST - 10 - 35, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
+  self.btNetworkType.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
+  self.btPeriod.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 165, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
+  
+  [self setColoursAndShowHideElements];
 }
 
 - (IBAction)B_NetworkType:(id)sender {

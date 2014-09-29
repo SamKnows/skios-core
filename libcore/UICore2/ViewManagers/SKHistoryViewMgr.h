@@ -68,6 +68,7 @@
 - (IBAction)B_Share:(id)sender;
 
 -(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)setColoursAndShowHideElements;
 -(void)performLayout;
 
 @property (weak, nonatomic) IBOutlet UIButton *btNetworkType;

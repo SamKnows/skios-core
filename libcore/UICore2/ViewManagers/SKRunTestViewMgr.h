@@ -91,6 +91,7 @@
 
 -(IBAction)B_SelectTests:(id)sender;
 -(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)setColoursAndShowHideElements;
 -(void)performLayout;
 
 @end

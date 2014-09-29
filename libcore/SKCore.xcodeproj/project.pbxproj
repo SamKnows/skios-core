@@ -22,6 +22,8 @@
 		B221AEE318FFDFFA00323923 /* UIAlertView+SKExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B221AEE218FFDFFA00323923 /* UIAlertView+SKExtensions.m */; };
 		B221AEE518FFE24800323923 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
 		B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2246C7917CF691700E1DC79 /* SKAutotest.m */; };
+		B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */; };
+		B22E5EDA19D9715B00666F16 /* SKBInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */; };
 		B22E88AB17C36789005D9094 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B22E88AA17C36789005D9094 /* Foundation.framework */; };
 		B22E88BD17C3678A005D9094 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B22E88AA17C36789005D9094 /* Foundation.framework */; };
 		B22E88C017C3678A005D9094 /* libSKCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B22E88A717C36789005D9094 /* libSKCore.a */; };
@@ -193,6 +195,10 @@
 		B221AEE218FFDFFA00323923 /* UIAlertView+SKExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+SKExtensions.m"; sourceTree = "<group>"; };
 		B221AEE418FFE24800323923 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		B2246C7917CF691700E1DC79 /* SKAutotest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAutotest.m; sourceTree = "<group>"; };
+		B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSettingsViewController.h; sourceTree = "<group>"; };
+		B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsViewController.m; sourceTree = "<group>"; };
+		B22E5ED819D9715B00666F16 /* SKBInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBInfoViewController.h; sourceTree = "<group>"; };
+		B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBInfoViewController.m; sourceTree = "<group>"; };
 		B22E88A717C36789005D9094 /* libSKCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSKCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B22E88AA17C36789005D9094 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B22E88B817C3678A005D9094 /* SKCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SKCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -554,6 +560,17 @@
 			);
 			name = minizip;
 			path = ZipArchive/minizip;
+			sourceTree = "<group>";
+		};
+		B22E5ED719D9713800666F16 /* NewViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
+				B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */,
+				B22E5ED819D9715B00666F16 /* SKBInfoViewController.h */,
+				B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */,
+			);
+			name = NewViewControllers;
 			sourceTree = "<group>";
 		};
 		B22E889E17C36789005D9094 = {
@@ -1139,6 +1156,7 @@
 				B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */,
 				B28006E119C9776D0008DF5F /* SKATestOverviewMetrics.h */,
 				B28006E219C9776D0008DF5F /* SKATestOverviewMetrics.m */,
+				B22E5ED719D9713800666F16 /* NewViewControllers */,
 			);
 			path = ViewManagers;
 			sourceTree = "<group>";
@@ -1365,7 +1383,9 @@
 				B28006E019C970300008DF5F /* SKSBRunTestViewMgrController.m in Sources */,
 				B218A04417CCF1550048B3E0 /* SKClosestTargetTest.m in Sources */,
 				B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */,
+				B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */,
 				B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */,
+				B22E5EDA19D9715B00666F16 /* SKBInfoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

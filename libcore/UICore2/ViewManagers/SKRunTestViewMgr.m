@@ -106,18 +106,9 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
--(void)performLayout
-{
-  //[self setIsRunning:NO];
+-(void)setColoursAndShowHideElements {
+  self.backgroundColor = [UIColor clearColor];
   
-  if (layoutCurrent == 1)
-    [self layout1];
-  else
-    [self layout2];
-  
-  [self.casStatusView initialize];
-  
-  [self.tmActivityIndicator layoutSubviews];
   [self.tmActivityIndicator displayReset:@"Start"];
   
   [self.casStatusView setText:@"Ready to run" forever:YES];
@@ -133,8 +124,24 @@
     [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:(self.testTypes2Execute & CTTBM_UPLOAD)];
     [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:(self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER)];
   }
+}
+
+-(void)performLayout
+{
+  //[self setIsRunning:NO];
+  
+  if (layoutCurrent == 1)
+    [self layout1];
+  else
+    [self layout2];
+  
+  [self.casStatusView initialize];
+  
+  [self.tmActivityIndicator layoutSubviews];
   
   historyViewMgr = (SKHistoryViewMgr*)((cTabOption*)[cTabController globalInstance].arrOptions[1]).view;
+  
+  [self setColoursAndShowHideElements];
 }
 
 -(void)layout1

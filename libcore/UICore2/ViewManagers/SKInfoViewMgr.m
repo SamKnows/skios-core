@@ -10,21 +10,53 @@
 
 @implementation SKInfoViewMgr
 
+//- (id)initWithCoder:(NSCoder *)aDecoder {
+//  if ((self = [super initWithCoder:aDecoder])) {
+//    [self baseClassInit];
+//  }
+//  return self;
+//}
+//
+//-(id)initWithFrame:(CGRect)frame {
+//  if ((self = [super initWithFrame:frame])) {
+//    [self baseClassInit];
+//  }
+//  return self;
+//}
+
+- (void)baseClassInit {
+  
+  self.backgroundColor = [UIColor clearColor];
+  self.wvWebView.delegate = self;
+  
+  self.wvWebView.backgroundColor = [UIColor clearColor];
+  self.wvWebView.opaque = NO;
+  
+  [self loadHtml];
+}
+
 - (void)intialiseViewOnMasterView:(UIView*)masterView_
 {
-    self.backgroundColor = [UIColor clearColor];
-    self.wvWebView.delegate = self;
-    
-    self.masterView = masterView_;
-    self.wvWebView.backgroundColor = [UIColor clearColor];
-    self.wvWebView.opaque = NO;
-    
-    [self loadHtml];
+  self.masterView = masterView_;
+}
+
+-(void)setColoursAndShowHideElements {
+  self.backgroundColor = [UIColor clearColor];
+  
+  self.backgroundColor = [UIColor clearColor];
+  self.wvWebView.delegate = self;
+  
+  self.wvWebView.backgroundColor = [UIColor clearColor];
+  self.wvWebView.opaque = NO;
+  
+  [self loadHtml];
 }
 
 -(void)performLayout
 {
-    self.wvWebView.frame = CGRectMake(10, 25, self.bounds.size.width - 20, self.bounds.size.height - 25 - 10);
+  self.wvWebView.frame = CGRectMake(10, 25, self.bounds.size.width - 20, self.bounds.size.height - 25 - 10);
+  
+  [self setColoursAndShowHideElements];
 }
 
 -(void)loadHtml

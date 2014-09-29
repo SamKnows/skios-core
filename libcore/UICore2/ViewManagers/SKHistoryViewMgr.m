@@ -49,10 +49,16 @@
     }
 }
 
+-(void)setColoursAndShowHideElements {
+  self.backgroundColor = [UIColor clearColor];
+  self.btShare.hidden = YES;
+}
+
 -(void)performLayout
 {
-    self.tvTests.frame = CGRectMake(0, 20, self.bounds.size.width, self.bounds.size.height - 20);
-    self.btShare.hidden = YES;
+  self.tvTests.frame = CGRectMake(0, 20, self.bounds.size.width, self.bounds.size.height - 20);
+  
+  [self setColoursAndShowHideElements];
 }
 
 -(BOOL) canViewArchivedResults {

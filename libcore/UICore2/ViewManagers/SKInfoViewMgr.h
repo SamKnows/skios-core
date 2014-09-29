@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIWebView *wvWebView;
 
 -(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)setColoursAndShowHideElements;
 -(void)performLayout;
 
 @end

@@ -110,6 +110,7 @@
 - (IBAction)B_Period:(id)sender;
 
 -(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)setColoursAndShowHideElements;
 -(void)performLayout;
 
 @end
