@@ -270,8 +270,8 @@
 		B2672B0D180BED06004280CB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B279124A18D88AF000E17EBF /* SKOperatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKOperatorsTests.m; sourceTree = "<group>"; };
 		B27B0D87181A7F58008D76D6 /* SKCoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoreTests.m; sourceTree = "<group>"; };
-		B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSBMainViewTabBarController.h; sourceTree = "<group>"; };
-		B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSBMainViewTabBarController.m; sourceTree = "<group>"; };
+		B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSBMainViewTabBarController.h; path = ../SKSBMainViewTabBarController.h; sourceTree = "<group>"; };
+		B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSBMainViewTabBarController.m; path = ../SKSBMainViewTabBarController.m; sourceTree = "<group>"; };
 		B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSBRunTestViewMgrController.h; sourceTree = "<group>"; };
 		B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSBRunTestViewMgrController.m; sourceTree = "<group>"; };
 		B28006E119C9776D0008DF5F /* SKATestOverviewMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestOverviewMetrics.h; sourceTree = "<group>"; };
@@ -565,10 +565,14 @@
 		B22E5ED719D9713800666F16 /* NewViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */,
+				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
 				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
 				B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */,
 				B22E5ED819D9715B00666F16 /* SKBInfoViewController.h */,
 				B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */,
+				B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */,
+				B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */,
 			);
 			name = NewViewControllers;
 			sourceTree = "<group>";
@@ -1027,8 +1031,6 @@
 				B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */,
 				B2FB031819B75D09007AA3C2 /* SKMainViewController.h */,
 				B2FB031919B75D09007AA3C2 /* SKMainViewController.m */,
-				B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */,
-				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
 				B2FB031A19B75D09007AA3C2 /* tabCells */,
 				B2FB032119B75D09007AA3C2 /* ViewManagers */,
 			);
@@ -1152,8 +1154,6 @@
 				B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */,
 				B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */,
 				B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */,
-				B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */,
-				B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */,
 				B28006E119C9776D0008DF5F /* SKATestOverviewMetrics.h */,
 				B28006E219C9776D0008DF5F /* SKATestOverviewMetrics.m */,
 				B22E5ED719D9713800666F16 /* NewViewControllers */,

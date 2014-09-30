@@ -9,6 +9,8 @@
 #import "SKSBRunTestViewMgrController.h"
 #import "UIWelcomeView.h"
 
+#include <math.h>
+
 #define C_SHARE_BUTTON_HEIGHT   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 #define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 
@@ -24,12 +26,20 @@
   [super viewDidLoad];
   
   [self intialiseViewOnMasterView];
- 
-  SK_ASSERT(self.vC1 != nil);
-  self.vC1.innerColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
-  self.vC1.outerColor = [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
   
-  [self View_OnLoadOrRotate_CreateAndPositionControls];
+  // The main background view...
+  //self.view.backgroundColor = [UIColor clearColor];
+  ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [[cTabController globalInstance] getOuterColor];
+  
+  // The progress/splash background view...
+  //SK_ASSERT(self.vC1 != nil);
+  //SK_ASSERT(self.vC1 != self.view);
+  //self.vC1.backgroundColor = [UIColor clearColor];
+//  self.vC1.innerColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+  //self.vC1.outerColor = [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
+ 
+  [self View_OnLoadTweakControls];
 }
 
 -(void) setIsRunning:(BOOL)value {
@@ -117,18 +127,17 @@
   [self.tmActivityIndicator setActivityIndicatorViewStyle:TYMActivityIndicatorViewStyleLarge];
   self.tmActivityIndicator.hidesWhenStopped = NO;
   
-  [self.tmActivityIndicator sizeToFit];
+  //[self.tmActivityIndicator sizeToFit];
   self.tmActivityIndicator.activityOwner = self;
   
   self.networkType = [SKGlobalMethods getNetworkTypeString];
   self.appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
   
-  // TODO - this should be in the STORYBOARD!
-  self.btShare = [[UIButton alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 12, 20, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT)];
-  [self.btShare addTarget:self action:@selector(B_Share:) forControlEvents:UIControlEventTouchUpInside];
-  [self.btShare setImage:[UIImage imageNamed:@"share-button"] forState:UIControlStateNormal];
+  //self.btShare = [[UIButton alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 12, 20, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT)];
+  //[self.btShare addTarget:self action:@selector(B_Share:) forControlEvents:UIControlEventTouchUpInside];
+  //[self.btShare setImage:[UIImage imageNamed:@"share-button"] forState:UIControlStateNormal];
   self.btShare.alpha = 0;
-  [self.view addSubview:self.btShare];
+  //[self.view addSubview:self.btShare];
   
   dataStart = 0;
   dataEnd = 0;
@@ -163,23 +172,64 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
--(void)View_OnLoadOrRotate_CreateAndPositionControls
+-(void) adjustViewSizesOnStartOrOnDidRotate {
+ 
+  // We MUST ensure that the main "dial" preserves a square aspect ratio, or it doesn't look good!
+  // Ensure the central element is given a square aspect ratio!
+  CGRect theFrame = self.tmActivityIndicator.frame;
+  if (theFrame.size.width != theFrame.size.height) {
+    CGFloat wh = fmin(theFrame.size.width, theFrame.size.height);
+    theFrame.size.height = wh;
+    theFrame.size.width = wh;
+   
+    // Keep it centered!
+    theFrame.origin.x = (self.view.frame.size.width / 2.0) - (wh / 2.0);
+    
+    self.tmActivityIndicator.frame = theFrame;
+  }
+ 
+  // Tweak to ensure the table view isn't too high, as this doesn't work too well when auto-scaling to iPad!
+  theFrame = self.tvCurrentResults.frame;
+  theFrame.origin.y = self.casStatusView.frame.origin.y + self.casStatusView.frame.size.height + 10;
+  theFrame.size.height = self.view.frame.size.height - theFrame.origin.y;
+  self.tvCurrentResults.frame = theFrame;
+}
+
+// The following is called AFTER viewWillAppear!
+-(void) viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+ 
+  // We MUST ensure that the main "dial" preserves a square aspect ratio, or it doesn't look good!
+  [self adjustViewSizesOnStartOrOnDidRotate];
+}
+
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+  [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+  
+  // At this point, the views will have been AUTO-SCALED by the storyboard post rotation.
+  
+  // We MUST ensure that the main "dial" preserves a square aspect ratio, or it doesn't look good!
+  [self adjustViewSizesOnStartOrOnDidRotate];
+}
+
+-(void)View_OnLoadTweakControls
 {
   //[self setIsRunning:NO];
   
-  if (layoutCurrent == 1)
-    [self layout1];
-  else
-    [self layout2];
+  self.btSelectTests.hidden = ![self.appDelegate enableTestsSelection];
   
   [self.casStatusView initialize];
   
-  [self.tmActivityIndicator layoutSubviews];
+  //[self.tmActivityIndicator layoutSubviews];
   [self.tmActivityIndicator displayReset:@"Start"];
+  //[self.tmActivityIndicator setNeedsLayout];
   
   [self.casStatusView setText:@"Ready to run" forever:YES];
   self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
   self.lClosest.text = @"Press the Start button";
+  self.tvCurrentResults.hidden = YES;
   
   [self updateRadioType];
   
@@ -193,49 +243,6 @@
   
   historyViewMgr = (SKHistoryViewMgr*)((cTabOption*)[cTabController globalInstance].arrOptions[1]).view;
 }
-
--(void)layout1
-{
-  self.btSelectTests.hidden = ![self.appDelegate enableTestsSelection];
-  
-  if (self.view.frame.size.height / self.view.frame.size.width > 480.0 / 320.0) //iPhone5
-  {
-    self.tmActivityIndicator.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 120, [cTabController sGet_GUI_MULTIPLIER] * 240, [cTabController sGet_GUI_MULTIPLIER] * 240);
-    self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 135, [cTabController sGet_GUI_MULTIPLIER] * 50, [cTabController sGet_GUI_MULTIPLIER] * 50, [cTabController sGet_GUI_MULTIPLIER] * 50);
-    self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 367, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
-    self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 386, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 416, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 416);
-  }
-  else
-  {
-    self.tmActivityIndicator.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 60, [cTabController sGet_GUI_MULTIPLIER] * 100, [cTabController sGet_GUI_MULTIPLIER] * 200, [cTabController sGet_GUI_MULTIPLIER] * 200);
-    self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 135, [cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 50, [cTabController sGet_GUI_MULTIPLIER] * 50);
-    self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 310, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
-    self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 330, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 360, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 360);
-  }
-}
-
--(void)layout2
-{
-  if (self.view.frame.size.height / self.view.frame.size.width > 480.0 / 320.0) //iPhone5
-  {
-    self.tmActivityIndicator.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 240, [cTabController sGet_GUI_MULTIPLIER] * 240);
-    self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 265, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 40);
-    self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 240, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
-    self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 260, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 290, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 290);
-  }
-  else
-  {
-    self.tmActivityIndicator.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 60, 20, [cTabController sGet_GUI_MULTIPLIER] * 200, [cTabController sGet_GUI_MULTIPLIER] * 200);
-    self.btSelectTests.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 265, 20, [cTabController sGet_GUI_MULTIPLIER] * 40, [cTabController sGet_GUI_MULTIPLIER] * 40);
-    self.lClosest.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 197, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 18);
-    self.casStatusView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 212, [cTabController sGet_GUI_MULTIPLIER] * 320, [cTabController sGet_GUI_MULTIPLIER] * 25);
-    self.tvCurrentResults.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 0, [cTabController sGet_GUI_MULTIPLIER] * 240, self.view.bounds.size.width, self.view.bounds.size.height - [cTabController sGet_GUI_MULTIPLIER] * 240);
-  }
-}
-
 
 BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
@@ -487,16 +494,21 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)updateRadioType
 {
-  if (!self.isConnected)
+  if (!self.isConnected) {
     [self.tmActivityIndicator setTopInfo:@"No connection"];
-  else
-    if (connectionStatus == WIFI) [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
-    else
+  } else {
+    if (connectionStatus == WIFI) {
+      [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
+    } else {
       [self.tmActivityIndicator setTopInfo:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
+    }
+  }
 }
 
 -(void)buttonPressed
 {
+  self.tvCurrentResults.hidden = NO;
+  
   if (isRunning)
   {
     UIAlertView *alert = [[UIAlertView alloc]
@@ -562,12 +574,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       return;
     }
     
-    if (layoutCurrent == 1)
-    {
-      [UIView animateWithDuration:0.3 animations:^{
-        [self layout2];
-      }];
-    }
+//    if (layoutCurrent == 1)
+//    {
+//      [UIView animateWithDuration:0.3 animations:^{
+//        [self layout2];
+//      }];
+//    }
     
     [self showTargets];
     
@@ -1211,8 +1223,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if (tableView == self.tvCurrentResults)
+  if (tableView == self.tvCurrentResults) {
     return C_NUMBER_OF_PASSIVE_METRICS + 1; //1 for the test results cell
+  }
   
   return 0;
 }
@@ -1249,34 +1262,55 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 {
   if (tableView == self.tvCurrentResults)
   {
-    SKASimpleResultCell2 *cell;
-    static NSString *CellIdentifier = @"SKASimpleResultCell2";
-    
-    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-      
-      cell = [[SKASimpleResultCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    [cell initCell];
-    
     if (indexPath.row == 0)
     {
+      SKATestOverviewCell2 *cell;
+      static NSString *CellIdentifier = @"SKATestOverviewCell2";
+      
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+      if (cell == nil) {
+        
+        cell = [[SKATestOverviewCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+      }
+      
+      [cell initCell];
+      
       [cell setResultDownload:[testResultsArray objectAtIndex:indexPath.row + C_DOWNLOAD_TEST] upload:[testResultsArray objectAtIndex:indexPath.row + C_UPLOAD_TEST] latency:[testResultsArray objectAtIndex:indexPath.row + C_LATENCY_TEST] loss:[testResultsArray objectAtIndex:indexPath.row + C_LOSS_TEST] jitter:[testResultsArray objectAtIndex:indexPath.row + C_JITTER_TEST]];
       
       if (!self.isConnected)
       {
         cell.ivNetworkType = nil;
       }
-      else
-        if (connectionStatus == WIFI) cell.ivNetworkType.image = [UIImage imageNamed:@"swifi"];
-        else
+      else {
+        if (connectionStatus == WIFI) {
+          cell.ivNetworkType.image = [UIImage imageNamed:@"swifi"];
+        }
+        else {
           cell.ivNetworkType.image = [UIImage imageNamed:@"sgsm"];
+        }
+      }
+      
+      return cell;
     }
     else
+    {
+      SKASimpleResultCell2 *cell;
+      static NSString *CellIdentifier = @"SKASimpleResultCell2";
+      
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+      if (cell == nil) {
+        
+        cell = [[SKASimpleResultCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+      }
+      
+      [cell initCell];
+      
       [cell setMetrics:[testResultsArray objectAtIndex:indexPath.row + C_NUMBER_OF_TESTS - 1 ]];
-    
-    return cell;
+      
+      return cell;
+    }
+  } else {
+    SK_ASSERT(false);
   }
   //    else if (tableView == self.tvTargets)
   //    {

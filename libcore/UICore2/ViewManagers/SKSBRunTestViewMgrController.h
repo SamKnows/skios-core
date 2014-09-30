@@ -62,7 +62,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tvCurrentResults;
 @property (weak, nonatomic) IBOutlet UIView *vProgressView;
 @property (weak, nonatomic) IBOutlet UIButton *btSelectTests;
-@property (strong, nonatomic) UIButton *btShare;
+@property (weak, nonatomic) IBOutlet UIButton *btShare;
 
 @property (nonatomic) int testTypes2Execute;
 @property (nonatomic) int numberOfTests2Execute;
@@ -93,7 +93,7 @@
 // Added for storyboard rework...
 //
 @property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
-@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC1;
+//@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC1;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC2;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC3;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC4;

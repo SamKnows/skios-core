@@ -1,5 +1,5 @@
 //
-//  SKMainViewController.m
+//  SKSBMainViewTabBarController.m
 //  SKCore
 //
 
@@ -17,6 +17,11 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  //[self.infoManagerView setColoursAndShowHideElements];
+  
+//  ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];
+//  ((UIViewWithGradient*)self.view).outerColor = [[cTabController globalInstance] getOuterColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated

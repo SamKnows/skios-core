@@ -1199,34 +1199,50 @@ extern BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1;
 {
   if (tableView == self.tvCurrentResults)
   {
-    SKASimpleResultCell2 *cell;
-    static NSString *CellIdentifier = @"SKASimpleResultCell2";
-    
-    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-      
-      cell = [[SKASimpleResultCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    [cell initCell];
-    
     if (indexPath.row == 0)
     {
+      SKATestOverviewCell2 *cell;
+      static NSString *CellIdentifier = @"SKATestOverviewCell2";
+      
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+      if (cell == nil) {
+        
+        cell = [[SKATestOverviewCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+      }
+      
+      [cell initCell];
+      
       [cell setResultDownload:[testResultsArray objectAtIndex:indexPath.row + C_DOWNLOAD_TEST] upload:[testResultsArray objectAtIndex:indexPath.row + C_UPLOAD_TEST] latency:[testResultsArray objectAtIndex:indexPath.row + C_LATENCY_TEST] loss:[testResultsArray objectAtIndex:indexPath.row + C_LOSS_TEST] jitter:[testResultsArray objectAtIndex:indexPath.row + C_JITTER_TEST]];
       
-      if (!self.isConnected)
-      {
+      if (!self.isConnected) {
         cell.ivNetworkType = nil;
       }
-      else
-        if (connectionStatus == WIFI) cell.ivNetworkType.image = [UIImage imageNamed:@"swifi"];
-        else
+      else {
+        if (connectionStatus == WIFI) {
+          cell.ivNetworkType.image = [UIImage imageNamed:@"swifi"];
+        } else {
           cell.ivNetworkType.image = [UIImage imageNamed:@"sgsm"];
+        }
+      }
+      return cell;
     }
     else
+    {
+      SKASimpleResultCell2 *cell;
+      static NSString *CellIdentifier = @"SKASimpleResultCell2";
+      
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+      if (cell == nil) {
+        
+        cell = [[SKASimpleResultCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+      }
+      
+      [cell initCell];
+      
       [cell setMetrics:[testResultsArray objectAtIndex:indexPath.row + C_NUMBER_OF_TESTS - 1 ]];
+      return cell;
+    }
     
-    return cell;
   }
   //    else if (tableView == self.tvTargets)
   //    {
