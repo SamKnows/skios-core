@@ -16,36 +16,41 @@
 
 - (void)intialiseViewOnMasterView:(UIView*)masterView_
 {
-    self.masterView = masterView_;
-    self.backgroundColor = [UIColor clearColor];
-
-    self.tvTests.delegate = self;
-    self.tvTests.dataSource = self;
-    
-//    [cActionSheet formatButton:self.btNetworkType];
-//    [cActionSheet formatButton:self.btPeriod];
-//    [cActionSheet formatButton:self.btGraph];
-    
-    testHeight = 100;
-    expandedRow = -1;
-    
-    currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
-    currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
-    
-    [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateTestList:)
-                                                 name:@"TestListNeedsUpdate"
-                                               object:nil];
+  self.masterView = masterView_;
+  self.backgroundColor = [UIColor clearColor];
+  
+  self.tvTests.delegate = self;
+  self.tvTests.dataSource = self;
+  
+  //    [cActionSheet formatButton:self.btNetworkType];
+  //    [cActionSheet formatButton:self.btPeriod];
+  //    [cActionSheet formatButton:self.btGraph];
+  
+  testHeight = 100;
+  expandedRow = -1;
+  
+  currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
+  currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
+  
+  [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType];
+  
+  [self loadData];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(updateTestList:)
+                                               name:@"TestListNeedsUpdate"
+                                             object:nil];
 }
 
 -(void)updateTestList:(NSNotification *) notification
 {
     if ([[notification name] isEqualToString:@"TestListNeedsUpdate"])
     {
-        [self loadData];
-        if (self.btBack.userInteractionEnabled) [self B_Back:self.btBack];
+      [self loadData];
+      
+      if (self.btBack.userInteractionEnabled) {
+        [self B_Back:self.btBack];
+      }
     }
 }
 
@@ -56,7 +61,7 @@
 
 -(void)performLayout
 {
-  self.tvTests.frame = CGRectMake(0, 20, self.bounds.size.width, self.bounds.size.height - 20);
+  //self.tvTests.frame = CGRectMake(0, 20, self.bounds.size.width, self.bounds.size.height - 20);
   
   [self setColoursAndShowHideElements];
 }

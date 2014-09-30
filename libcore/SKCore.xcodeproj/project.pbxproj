@@ -24,6 +24,8 @@
 		B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2246C7917CF691700E1DC79 /* SKAutotest.m */; };
 		B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */; };
 		B22E5EDA19D9715B00666F16 /* SKBInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */; };
+		B22E5EDF19DAC40000666F16 /* SKBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */; };
+		B22E5EE019DAC40000666F16 /* SKBSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */; };
 		B22E88AB17C36789005D9094 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B22E88AA17C36789005D9094 /* Foundation.framework */; };
 		B22E88BD17C3678A005D9094 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B22E88AA17C36789005D9094 /* Foundation.framework */; };
 		B22E88C017C3678A005D9094 /* libSKCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B22E88A717C36789005D9094 /* libSKCore.a */; };
@@ -199,6 +201,10 @@
 		B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsViewController.m; sourceTree = "<group>"; };
 		B22E5ED819D9715B00666F16 /* SKBInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBInfoViewController.h; sourceTree = "<group>"; };
 		B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBInfoViewController.m; sourceTree = "<group>"; };
+		B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBHistoryViewController.h; sourceTree = "<group>"; };
+		B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBHistoryViewController.m; sourceTree = "<group>"; };
+		B22E5EDD19DAC40000666F16 /* SKBSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSummaryViewController.h; sourceTree = "<group>"; };
+		B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSummaryViewController.m; sourceTree = "<group>"; };
 		B22E88A717C36789005D9094 /* libSKCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSKCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B22E88AA17C36789005D9094 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B22E88B817C3678A005D9094 /* SKCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SKCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -573,6 +579,10 @@
 				B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */,
 				B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */,
 				B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */,
+				B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */,
+				B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */,
+				B22E5EDD19DAC40000666F16 /* SKBSummaryViewController.h */,
+				B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */,
 			);
 			name = NewViewControllers;
 			sourceTree = "<group>";
@@ -1308,6 +1318,7 @@
 				B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */,
 				B22E88E017C3682E005D9094 /* SKGlobalMethods.m in Sources */,
 				B2AE68221883DA4D00D87FAE /* SKATermsAndConditionsController.m in Sources */,
+				B22E5EE019DAC40000666F16 /* SKBSummaryViewController.m in Sources */,
 				B2AE68211883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.m in Sources */,
 				B2AE68201883DA4D00D87FAE /* SKASettingsController.m in Sources */,
 				B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */,
@@ -1375,6 +1386,7 @@
 				B2B2B4BD18AB7A8500592FEF /* SKOperators.m in Sources */,
 				B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */,
 				B2342C6C1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m in Sources */,
+				B22E5EDF19DAC40000666F16 /* SKBHistoryViewController.m in Sources */,
 				B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */,
 				B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */,
 				B218A02C17CCD3300048B3E0 /* SKLatencyTest.m in Sources */,

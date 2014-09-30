@@ -7,7 +7,8 @@
 //
 
 #import "SKASimpleResultCell2.h"
-#import "../ViewManagers/SKRunTestViewMgr.h"
+#import "SKATestOverviewMetrics.h"
+//#import "../ViewManagers/SKRunTestViewMgr.h"
 
 @implementation SKASimpleResultCell2
 

@@ -54,7 +54,7 @@
 
 -(void)performLayout
 {
-  self.wvWebView.frame = CGRectMake(10, 25, self.bounds.size.width - 20, self.bounds.size.height - 25 - 10);
+  //self.wvWebView.frame = CGRectMake(10, 25, self.bounds.size.width - 20, self.bounds.size.height - 25 - 10);
   
   [self setColoursAndShowHideElements];
 }

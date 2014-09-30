@@ -21,6 +21,7 @@
 
 -(void)resetProgressView
 {
+  // NOTE: The following use of frame is a SPECIAL CASE!
   self.vProgressView.frame = CGRectMake(0, self.masterView.bounds.size.height, self.masterView.bounds.size.width, 0);
   self.vProgressView.backgroundColor = [UIColor blackColor];
   self.vProgressView.hidden = NO;

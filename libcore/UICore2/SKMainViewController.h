@@ -16,6 +16,8 @@
 #import "SKInfoViewMgr.h"
 #import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"
 
+// THIS FILE IS DEPRECATED!
+
 @interface SKMainViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
