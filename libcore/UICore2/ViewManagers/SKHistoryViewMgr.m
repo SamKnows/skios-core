@@ -125,7 +125,7 @@
     originalCellFrame = cell2putBack.frame;
     
     [view2putBack removeFromSuperview];
-    view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
+    view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
     [self addSubview:view2putBack];
     [self bringSubviewToFront:self.btBack];
     self.btBack.frame = CGRectMake(0, 0, 0, 0);

@@ -13,7 +13,7 @@
 #import "../Reusable/Graphing/Graphing.h"
 #import "SKTestResults.h"
 
-@interface SKSummaryViewMgr : UIView <pActionSheetDelegate>
+@interface SKSummaryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate>
 {
     NSMutableArray *arrTestsList;
     NSDate* previousDate;
@@ -50,35 +50,35 @@
 @property (nonatomic, strong) cActionSheet* casPeriod;
 @property (nonatomic, strong) cActionSheet* casShare;
 
-@property (weak, nonatomic) IBOutlet UILabel *lDownloadName;
-@property (weak, nonatomic) IBOutlet UILabel *lDownloadAvgUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lDownloadBstUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lDownloadAvg;
-@property (weak, nonatomic) IBOutlet UILabel *lDownloadBst;
+@property NSString *lDownloadName;
+@property NSString *lDownloadAvgUnit;
+@property NSString *lDownloadBstUnit;
+@property NSString *lDownloadAvg;
+@property NSString *lDownloadBst;
 
-@property (weak, nonatomic) IBOutlet UILabel *lUploadName;
-@property (weak, nonatomic) IBOutlet UILabel *lUploadAvgUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lUploadBstUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lUploadAvg;
-@property (weak, nonatomic) IBOutlet UILabel *lUploadBst;
+@property NSString *lUploadName;
+@property NSString *lUploadAvgUnit;
+@property NSString *lUploadBstUnit;
+@property NSString *lUploadAvg;
+@property NSString *lUploadBst;
 
-@property (weak, nonatomic) IBOutlet UILabel *lLatencyAvgUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lLatencyBstUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lLatencyName;
-@property (weak, nonatomic) IBOutlet UILabel *lLatencyAvg;
-@property (weak, nonatomic) IBOutlet UILabel *lLatencyBst;
+@property NSString *lLatencyAvgUnit;
+@property NSString *lLatencyBstUnit;
+@property NSString *lLatencyName;
+@property NSString *lLatencyAvg;
+@property NSString *lLatencyBst;
 
-@property (weak, nonatomic) IBOutlet UILabel *lLossAvgUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lLossBstUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lLossName;
-@property (weak, nonatomic) IBOutlet UILabel *lLossAvg;
-@property (weak, nonatomic) IBOutlet UILabel *lLossBst;
+@property NSString *lLossAvgUnit;
+@property NSString *lLossBstUnit;
+@property NSString *lLossName;
+@property NSString *lLossAvg;
+@property NSString *lLossBst;
 
-@property (weak, nonatomic) IBOutlet UILabel *lJitterAvgUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lJitterBstUnit;
-@property (weak, nonatomic) IBOutlet UILabel *lJitterName;
-@property (weak, nonatomic) IBOutlet UILabel *lJitterAvg;
-@property (weak, nonatomic) IBOutlet UILabel *lJitterBst;
+@property NSString *lJitterAvgUnit;
+@property NSString *lJitterBstUnit;
+@property NSString *lJitterName;
+@property NSString *lJitterAvg;
+@property NSString *lJitterBst;
 
 @property (weak, nonatomic) IBOutlet UILabel *lNumberOfRecords;
 
@@ -105,6 +105,10 @@
 
 @property (strong, nonatomic) IBOutlet Graphing *vChart;
 
+// New stuff!
+@property (weak, nonatomic) IBOutlet UITableView *tvTests;
+@property (weak, nonatomic) IBOutlet UIButton *btBack;
+- (IBAction)B_Back:(id)sender;
 
 - (IBAction)B_NetworkType:(id)sender;
 - (IBAction)B_Period:(id)sender;

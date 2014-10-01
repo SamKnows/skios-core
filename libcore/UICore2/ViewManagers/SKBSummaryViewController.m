@@ -20,6 +20,7 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   
+  [self.summaryManagerView intialiseViewOnMasterView:self.view];
   [self.summaryManagerView setColoursAndShowHideElements];
   
   ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];

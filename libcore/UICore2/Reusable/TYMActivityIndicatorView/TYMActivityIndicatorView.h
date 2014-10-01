@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 
 #define C_ANGLE_STEP (360.0/80.0)
 
+//IB_DESIGNABLE
 @interface TYMActivityIndicatorView : UIView
 {
     int mode;
