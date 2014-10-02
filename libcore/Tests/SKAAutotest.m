@@ -460,9 +460,13 @@
   // Last Known Location /////////////////////////////////////////////////////////////////////////////////////
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  double latitude = 0.0;
+  double longitude = 0.0;
   NSDictionary *loc = [prefs objectForKey:Prefs_LastLocation];
-  double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
-  double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
+  if (loc != nil) {
+    latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
+    longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
+  }
   
   NSMutableDictionary *lastLocation = [NSMutableDictionary dictionary];
   
@@ -689,8 +693,8 @@
       NSLog(@"DEBUG **** - SKAAutoTest: COMPLETE!");
 #endif // DEBUG
       
-      [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
       self.isRunning = NO;
+      [super markTestAsStopped]; // Only called by child class!
       
       SK_ASSERT(self.autotestManagerDelegate != nil);
       
@@ -711,8 +715,8 @@
   }
   else
   {
-   [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
     self.isRunning = NO;
+    [super markTestAsStopped]; // Only called by child class!
     
     if (![NSThread isMainThread])
     {

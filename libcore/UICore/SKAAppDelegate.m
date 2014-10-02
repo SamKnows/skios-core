@@ -161,14 +161,10 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 //
 - (void)startLocationMonitoring
 {
-    self.latitude = 0;
-    self.longitude = 0;
-    //self.locationTimeStamp = [SKCore getToday];
-    
-    locationManager = [[CLLocationManager alloc] init];
-    [locationManager setDelegate:self];
-    [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    [locationManager startUpdatingLocation];
+  locationManager = [[CLLocationManager alloc] init];
+  [locationManager setDelegate:self];
+  [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+  [locationManager startUpdatingLocation];
 }
 
 -(void)stopLocationMonitoring {
@@ -227,14 +223,14 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
     [prefs setObject:[NSNumber numberWithInt:DATERANGE_1w1m3m1y_ONE_WEEK] forKey:Prefs_DateRange];
   }
   
-  if (![prefs objectForKey:Prefs_LastLocation])
-  {
-    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
-    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LATITUDE"];
-    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LONGITUDE"];
-    
-    [prefs setObject:loc forKey:Prefs_LastLocation];
-  }
+//  if (![prefs objectForKey:Prefs_LastLocation])
+//  {
+//    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
+//    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LATITUDE"];
+//    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LONGITUDE"];
+//
+//    [prefs setObject:loc forKey:Prefs_LastLocation];
+//  }
   
   if (![prefs objectForKey:Prefs_LastTestSelection])
   {
@@ -984,18 +980,21 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-  // STOP monitoring location data, as we background!
-  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    
+  // STOP monitoring location data, as we background!
+  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    
+  // STOP monitoring location data, as we background!
+  if ([SKAutotest sGetIsTestRunning] == YES) {
+    // Resume monitoring!
+    [[SKAAppDelegate getAppDelegate] startLocationMonitoring];
+  }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

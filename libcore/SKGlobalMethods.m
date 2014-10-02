@@ -160,32 +160,29 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 	return [NSString stringWithFormat:@"%@ ms", [formatter stringFromNumber:[NSNumber numberWithDouble:number]]];
 }
 
+
++ (NSString *)formatDouble:(double)number DecimalPlaces:(int)decimalPlaces
+{
+  NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+  [formatter setMaximumFractionDigits:decimalPlaces];
+  [formatter setMinimumFractionDigits:decimalPlaces];
+  [formatter setGeneratesDecimalNumbers:YES];
+  [formatter setAlwaysShowsDecimalSeparator:YES];
+  [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
+  [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
+  
+  NSString *result = [formatter stringFromNumber:[NSNumber numberWithDouble:number]];
+  return result;
+}
+
 + (NSString *)format2DecimalPlaces:(double)number
 {
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setMaximumFractionDigits:2];
-    [formatter setMinimumFractionDigits:2];
-    [formatter setGeneratesDecimalNumbers:YES];
-    [formatter setAlwaysShowsDecimalSeparator:YES];
-    [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
-	
-	NSString *result = [formatter stringFromNumber:[NSNumber numberWithDouble:number]];
-  return result;
+  return [SKGlobalMethods formatDouble:number DecimalPlaces:2];
 }
 
 + (NSString *)format3DecimalPlaces:(double)number
 {
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setMaximumFractionDigits:3];
-    [formatter setMinimumFractionDigits:3];
-    [formatter setGeneratesDecimalNumbers:YES];
-    [formatter setAlwaysShowsDecimalSeparator:YES];
-    [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
-	
-	return [formatter stringFromNumber:[NSNumber numberWithDouble:number]];
+  return [SKGlobalMethods formatDouble:number DecimalPlaces:3];
 }
 
 // The 'bitrate' value return is calculated like this:

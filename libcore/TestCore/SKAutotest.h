@@ -69,6 +69,7 @@ typedef enum
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting;
 
 //@public
+-(void)markTestAsStopped; // Only called by child class!
 -(void)stopTheTests;
 -(void)runSetOfTests:(int)bitMaskForRequestedTests_;
 
@@ -89,6 +90,8 @@ typedef enum
 
 //@protected
 - (void)runClosestTargetTest:(SKTestConfig*)config testIndex:(int)testIndex;
+
++(BOOL) sGetIsTestRunning;
 
 @end
 

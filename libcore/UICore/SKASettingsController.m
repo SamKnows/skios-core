@@ -31,7 +31,14 @@
   if (self.lblActivate != nil) {
     self.lblActivate.text = NSLocalizedString(@"Settings_Activate",nil);
   }
-
+ 
+  if (self.latitudeLabel != nil) {
+    self.latitudeLabel.text = NSLocalizedString(@"latitude",nil);
+  }
+  
+  if (self.longitudeLabel != nil) {
+    self.longitudeLabel.text = NSLocalizedString(@"longitude",nil);
+  }
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -52,6 +59,24 @@
   } else {
     self.txtDataCap.alpha = 0.3;
   }
+  
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSDictionary *loc = [prefs objectForKey:Prefs_LastLocation];
+  
+  if (loc != nil) {
+    double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
+    double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
+    if (self.latitudeValue != nil) {
+      self.latitudeValue.text = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
+    }
+    
+    if (self.longitudeValue != nil) {
+      self.longitudeValue.text = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
+    }
+  } else {
+    self.latitudeValue.text = @"?";
+    self.longitudeValue.text = @"?";
+  }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -63,6 +88,9 @@
     
     case 1:
     return NSLocalizedString(@"Storyboard_Settings_MonthlyData",nil);
+      
+    case 2:
+    return NSLocalizedString(@"last_known_location_info",nil);
   }
  
   SK_ASSERT(false);

@@ -29,4 +29,9 @@
 - (IBAction)datacapSwitch:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *uniqueIdLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *longitudeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *longitudeValue;
+@property (weak, nonatomic) IBOutlet UILabel *latitudeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *latitudeValue;
 @end

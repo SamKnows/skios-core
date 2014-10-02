@@ -12,6 +12,8 @@
 
 @end
 
+static BOOL sbTestIsRunning = NO;
+
 @implementation SKAutotest
 
 @synthesize conditionBreaches;
@@ -38,36 +40,38 @@
 
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)inTestType  IsContinuousTesting:(BOOL)isContinuousTesting {
   
-    self = [super init];
-    
-    if (self)
-    {
-      autotestManagerDelegate = inAutotestManagerDelegate;
-      autotestObserverDelegate = inAutotestObserverDelegate;
-      isRunning = NO;
-      isCancelled = NO;
-      runAllTests = (inTestType == ALL_TESTS);
-      validTest = [self getValidTestType:inTestType];
-      udpClosestTargetTestSucceeded = NO;
-    }
+  self = [super init];
   
-    return self;
+  if (self)
+  {
+    autotestManagerDelegate = inAutotestManagerDelegate;
+    autotestObserverDelegate = inAutotestObserverDelegate;
+    isRunning = NO;
+    sbTestIsRunning = NO;
+    isCancelled = NO;
+    runAllTests = (inTestType == ALL_TESTS);
+    validTest = [self getValidTestType:inTestType];
+    udpClosestTargetTestSucceeded = NO;
+  }
+  
+  return self;
 }
 
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting {
-    
-    self = [super init];
-    
-    if (self)
-    {
-        autotestManagerDelegate = inAutotestManagerDelegate;
-        autotestObserverDelegate = inAutotestObserverDelegate;
-        isRunning = NO;
-        isCancelled = NO;
-        bitMaskForRequestedTests = 0;
-    }
-    
-    return self;
+  
+  self = [super init];
+  
+  if (self)
+  {
+    autotestManagerDelegate = inAutotestManagerDelegate;
+    autotestObserverDelegate = inAutotestObserverDelegate;
+    isRunning = NO;
+    sbTestIsRunning = NO;
+    isCancelled = NO;
+    bitMaskForRequestedTests = 0;
+  }
+  
+  return self;
 }
 
 -(void)runSetOfTests:(int)bitMaskForRequestedTests_
@@ -123,6 +127,7 @@
 - (void)runTheTests
 {
   // START monitoring location data!
+  sbTestIsRunning = YES;
   [[SKAAppDelegate getAppDelegate] startLocationMonitoring];
   
   self.btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -189,6 +194,8 @@
         [self runNextTest:-1];
       }
     }
+  } else {
+    [self markTestAsStopped];
   }
 }
 
@@ -679,14 +686,19 @@
   [self.autotestManagerDelegate amdDoUpdateDataUsage:(int)bytes];
 }
 
+-(void)markTestAsStopped {
+  self.isRunning = NO;
+  sbTestIsRunning = NO;
+  // STOP monitoring location data!
+  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
+}
+
 - (void)stopTheTests
 {
   NSLog(@"STOP AUTO TEST");
 
-  // STOP monitoring location data!
-  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
+  [self markTestAsStopped];
   
-  self.isRunning = NO;
   self.isCancelled = YES;
   
   if (self.httpTest)
@@ -727,6 +739,10 @@
   {
     return @"latency";
   }
+}
+
++(BOOL) sGetIsTestRunning {
+  return sbTestIsRunning;
 }
 
 @end

@@ -25,8 +25,8 @@ typedef double SKTimeIntervalMicroseconds;
 
 + (NSString *)formatShorterDate:(NSDate*)date;
 
++ (NSString *)formatDouble:(double)number DecimalPlaces:(int)decimalPlaces;
 + (NSString *)format3DecimalPlaces:(double)number;
-
 + (NSString *)format2DecimalPlaces:(double)number;
 
 + (NSString *)formatMilliseconds:(double)number;
