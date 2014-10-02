@@ -2,13 +2,11 @@
 //  SKSummaryViewMgr.m
 //  SKCore
 //
-
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
 #import "SKSummaryViewMgr.h"
 #import "SKBSummaryTableViewCell.h"
-
 
 @implementation SKSummaryViewMgr
 {
@@ -20,7 +18,6 @@
 
 #define C_BUTTON_BASE_ALPHA 0.1
 #define C_VIEWS_Y_FIRST 110
-
 
 - (void)intialiseViewOnMasterView:(UIView*)masterView_
 {
@@ -44,6 +41,7 @@
   
   //TODO: Adjust button texts to these default values
   [self loadData];
+  [self.tvTests reloadData];
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(updateTestList:)
@@ -53,8 +51,9 @@
 
 -(void)updateTestList:(NSNotification *) notification
 {
-    if ([[notification name] isEqualToString:@"TestListNeedsUpdate"])
-        [self loadData];
+  if ([[notification name] isEqualToString:@"TestListNeedsUpdate"]) {
+    [self loadData];
+  }
 }
 
 -(void)setColoursAndShowHideElements {
@@ -69,15 +68,6 @@
   self.vChart.backgroundColor = [UIColor clearColor];
   // DEBUG!
   //self.vChart.backgroundColor = [UIColor greenColor];
-}
-
--(void)performLayout
-{
-  self.vHeader.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST - 10 - 35, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
-  self.btNetworkType.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
-  self.btPeriod.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 165, 24, [cTabController sGet_GUI_MULTIPLIER] * 145, 28);
-  
-  [self setColoursAndShowHideElements];
 }
 
 - (IBAction)B_NetworkType:(id)sender {
@@ -305,19 +295,17 @@
   }
   
   self.lNumberOfRecords.text = [NSString stringWithFormat:@"%lu", (unsigned long)arrTestsList.count];
+ 
+  // Do NOT reload the table view, as that might screw-up the current post-animation state!
+  //[self.tvTests reloadData];
+  NSInteger rows = [self.tvTests numberOfRowsInSection:0];
+  for (NSInteger i = 0; i < rows; i++) {
+    [self refreshCellAtIndex:i];
+  }
   
-  [self.tvTests reloadData];
-  
-  [UIView animateWithDuration:0.5 animations:^{
-    if (currentChartType >= 0)
-    {
-      [self prepareDataForChart];
-      [self.vChart setNeedsDisplay];
-      self.vChart.alpha = 1;
-    }
-    
-    self.lNumberOfRecords.alpha = 1;
-  }];
+  [self prepareDataForChart];
+  [self.vChart setNeedsDisplay];
+  self.lNumberOfRecords.alpha = 1;
 }
 
 -(void)clearFields
@@ -344,62 +332,13 @@
   self.lJitterBst = nil;
   self.lJitterBstUnit = @"ms";
   
-  [UIView animateWithDuration:0.5 animations:^{
-    self.lNumberOfRecords.alpha = 0;
-    
-    if (currentChartType >= 0) {
-      self.vChart.alpha = 0;
-    }
-  }];
-}
-
--(void)placeLabelView:(UIView*)view_
-              number:(int)viewNumber_
-              testTitle:(UILabel*)testTitle_
-              averageValue:(UILabel*)averageValue_
-              averageUnit:(UILabel*)averageUnit_
-              bestValue:(UILabel*)bestValue_
-              bestUnit:(UILabel*)bestUnit_
-              image:(UIImageView*)imageView_
-          chartSymbol:(UIImageView*)chartImage_
-{
-  int leftShift = [cTabController sGet_GUI_MULTIPLIER] * 10;
-  
-  view_.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + viewNumber_ * [cTabController sGet_GUI_MULTIPLIER] * 70, 300.0 * [cTabController sGet_GUI_MULTIPLIER] * 300, [cTabController sGet_GUI_MULTIPLIER] * 65);
-  view_.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-  view_.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
-  view_.layer.borderWidth = 0.5;
-  view_.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
-  
-  testTitle_.textColor = [UIColor colorWithWhite:1 alpha:0.8];
-  testTitle_.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
-  testTitle_.frame = CGRectMake(leftShift + 0, 0, [cTabController sGet_GUI_MULTIPLIER] * 80, [cTabController sGet_GUI_MULTIPLIER] * 22);
-  testTitle_.textAlignment = UITextAlignmentRight;
-  
-  averageValue_.frame = CGRectMake(leftShift + 0, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 80, [cTabController sGet_GUI_MULTIPLIER] * 53);
-  averageValue_.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 50];
-  
-  
-  averageUnit_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 85, [cTabController sGet_GUI_MULTIPLIER] * 15, [cTabController sGet_GUI_MULTIPLIER] * 139, [cTabController sGet_GUI_MULTIPLIER] * 20);
-  averageUnit_.font = [UIFont fontWithName:@"Roboto-Thin" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
-  
-  bestValue_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 160, [cTabController sGet_GUI_MULTIPLIER] * 20, [cTabController sGet_GUI_MULTIPLIER] * 80, [cTabController sGet_GUI_MULTIPLIER] * 53);
-  bestValue_.textColor = [UIColor colorWithWhite:1 alpha:0.8];
-  bestValue_.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[cTabController sGet_GUI_MULTIPLIER] * 50];
-  
-  bestUnit_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 243, [cTabController sGet_GUI_MULTIPLIER] * 15, [cTabController sGet_GUI_MULTIPLIER] * 139, [cTabController sGet_GUI_MULTIPLIER] * 20);
-  bestUnit_.font = [UIFont fontWithName:@"Roboto-Thin" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
-  
-  if (imageView_ != nil) imageView_.frame = CGRectMake(leftShift + [cTabController sGet_GUI_MULTIPLIER] * 8, [cTabController sGet_GUI_MULTIPLIER] * 4, [cTabController sGet_GUI_MULTIPLIER] * 17, [cTabController sGet_GUI_MULTIPLIER] * 17);
-  chartImage_.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 130, [cTabController sGet_GUI_MULTIPLIER] * 28, [cTabController sGet_GUI_MULTIPLIER] * 35, [cTabController sGet_GUI_MULTIPLIER] * 35);
-  
-  UIButton* btSelect = [[UIButton alloc] initWithFrame:view_.bounds];
-  btSelect.tag = viewNumber_;
-  [view_ addSubview:btSelect];
-  [btSelect addTarget:self action:@selector(viewSelected:) forControlEvents:UIControlEventTouchUpInside];
-  [btSelect addTarget:self action:@selector(viewTouched:) forControlEvents:UIControlEventTouchDown];
-  [btSelect addTarget:self action:@selector(viewUntouched:) forControlEvents:UIControlEventTouchUpOutside];
-  [btSelect addTarget:self action:@selector(viewUntouched:) forControlEvents:UIControlEventTouchUpInside];
+//  [UIView animateWithDuration:0.5 animations:^{
+//    self.lNumberOfRecords.alpha = 0;
+//
+//    if (currentChartType >= 0) {
+//      self.vChart.alpha = 0;
+//    }
+//  }];
 }
 
 -(void)viewSelected:(UIButton*)button_
@@ -412,7 +351,7 @@
     
     [UIView animateWithDuration:0.3 animations:^{
       
-      self.vChart.alpha = 0;
+      //self.vChart.alpha = 0;
       self.vChart.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
       
       if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
@@ -474,7 +413,7 @@
     if (button_.tag == 3 && lossCNT <=0) return;
     if (button_.tag == 4 && jitterCNT <=0) return;
     
-    self.vChart.alpha = 0;
+    //self.vChart.alpha = 0;
     self.vChart.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
     [self prepareDataForChart];
     [self.vChart setNeedsDisplay];
@@ -522,7 +461,7 @@
                          if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
                          
                          self.vChart.frame = CGRectMake(10, C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 80) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
-                         self.vChart.alpha = 1;
+                         //self.vChart.alpha = 1;
                          
                        } completion:^(BOOL finished) {
                          
@@ -613,6 +552,11 @@
 
 - (void)prepareDataForChart
 {
+  if (currentChartType == -1)
+  {
+    currentChartType = 0;
+  }
+  
   int numberOfPoints;
   float pixelLength;
   int intervals;
@@ -819,19 +763,11 @@
   return [UIView new];
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-  SKBSummaryTableViewCell *cell;
-  static NSString *CellIdentifier = @"SKBSummaryTableViewCell";
+-(void) refreshCellAtIndex:(NSInteger)row {
   
-  cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-  if (cell == nil) {
-    
-    cell = [[SKBSummaryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  }
+  SKBSummaryTableViewCell *cell = (SKBSummaryTableViewCell*)[self.tvTests cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
   
-  switch (indexPath.row) {
+  switch (row) {
     case 0:
       [cell prepareWithTopLeftImage:[UIImage imageNamed:@"ga.png"]
                        TopLeftTitle:@"Download"
@@ -879,7 +815,21 @@
        ];
       break;
   }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  SKBSummaryTableViewCell *cell;
+  static NSString *CellIdentifier = @"SKBSummaryTableViewCell";
   
+  cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+  if (cell == nil) {
+    
+    cell = [[SKBSummaryTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+  }
+  
+  [self refreshCellAtIndex:indexPath.row];
+
   return cell;
 }
 
@@ -887,19 +837,19 @@
 {
   switch (indexPath.row) {
     case 0:
-      currentChartType = downloadCNT;
+      currentChartType = 0;
       break;
     case 1:
-      currentChartType = uploadCNT;
+      currentChartType = 1;
       break;
     case 2:
-      currentChartType = latencyCNT;
+      currentChartType = 2;
       break;
     case 3:
-      currentChartType = lossCNT;
+      currentChartType = 3;
       break;
     case 4:
-      currentChartType = jitterCNT;
+      currentChartType = 4;
       break;
     default:
       SK_ASSERT(false);
@@ -987,12 +937,8 @@
             
             self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
             
-            float tableAnimationTime;
-            if ([cTabController globalInstance].selectedTab == C_TABINDX_HISTORY)
-                tableAnimationTime = 0.3;
-            else
-                tableAnimationTime = 0;
-            
+            float tableAnimationTime = 0.3;
+        
             [UIView animateWithDuration:tableAnimationTime animations:^{
                 self.tvTests.alpha = 1;
                 self.tvTests.frame = CGRectMake(0, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);

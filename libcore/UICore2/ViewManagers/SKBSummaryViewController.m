@@ -23,8 +23,8 @@
   [self.summaryManagerView intialiseViewOnMasterView:self.view];
   [self.summaryManagerView setColoursAndShowHideElements];
   
-  ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [[cTabController globalInstance] getOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
 }
 
 -(void) viewDidAppear:(BOOL)animated {

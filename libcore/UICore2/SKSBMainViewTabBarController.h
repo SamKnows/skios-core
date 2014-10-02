@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "UIViewWithGradient.h"
 #import "cTabController.h"
-#import "SKRunTestViewMgr.h"
 #import "SKHistoryViewMgr.h"
 #import "SKSummaryViewMgr.h"
 #import "SKSettingsMgr.h"

@@ -28,6 +28,7 @@
   
   testHeight = 100;
   expandedRow = -1;
+  self.btShare.alpha = 0;
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
   currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
@@ -130,7 +131,7 @@
     [self bringSubviewToFront:self.btBack];
     self.btBack.frame = CGRectMake(0, 0, 0, 0);
     self.btShare.frame = CGRectMake(10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
-    self.btShare.hidden = NO;
+    self.btShare.alpha = 0;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.3 animations:^{
@@ -148,6 +149,7 @@
                              animations:^{
                                  view2putBack.frame = CGRectMake(0, 20, view2putBack.frame.size.width, view2putBack.frame.size.height);
                                  self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + [cTabController sGet_GUI_MULTIPLIER] * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+                                 self.btShare.alpha = 1;
                                  [self showMetrics];
                              } completion:^(BOOL finished) {
                                  self.btBack.frame = CGRectMake(0, 0, view2putBack.frame.size.width, y);
@@ -332,6 +334,19 @@
     return;
 }
 
+static SKATestResults* testToShareExternal = nil;
++(SKATestResults *) sCreateNewTstToShareExternal {
+  testToShareExternal = [[SKATestResults alloc] init];
+  return testToShareExternal;
+}
+
++(SKATestResults *) sGetTstToShareExternal {
+  if (testToShareExternal == nil) {
+      testToShareExternal = [[SKATestResults alloc] init];
+  }
+  return testToShareExternal;
+}
+
 -(void)shareTest:(SKATestResults*)testResult
 {
     selectedTest = testResult;
@@ -355,18 +370,15 @@
             
             [self hideMetrics];
             self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
-            
+            self.btShare.alpha = 0;
+          
             
         } completion:^(BOOL finished) {
             
             self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
             
-            float tableAnimationTime;
-            if ([cTabController globalInstance].selectedTab == C_TABINDX_HISTORY)
-                tableAnimationTime = 0.3;
-            else
-                tableAnimationTime = 0;
-            
+            float tableAnimationTime = 0.3;
+          
             [UIView animateWithDuration:tableAnimationTime animations:^{
                 self.tvTests.alpha = 1;
                 self.tvTests.frame = CGRectMake(0, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
@@ -471,10 +483,10 @@
 
 - (IBAction)B_Share:(id)sender
 {
-    if ([cTabController globalInstance].selectedTab != C_TABINDX_HISTORY) //Call from another tab
-        [self shareTest:self.testToShareExternal];
-    else
-        [self shareTest:selectedTest];
+    //if ([cTabController globalInstance].selectedTab != C_TABINDX_HISTORY) //Call from another tab
+    //[self shareTest:self.testToShareExternal];
+    //else
+    [self shareTest:selectedTest];
 }
 
 -(void)activate

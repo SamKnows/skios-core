@@ -23,32 +23,8 @@
 
 @end
 
-@interface cTabController : NSObject <UIScrollViewDelegate>
-{
-    UIView* vOptionSelector;
-    float optionWidth;
-    bool shouldNOTAnimateColorsOnScroll;
-}
+@interface cTabController : NSObject
 
-@property (nonatomic) float GUI_MULTIPLIER;
-@property (nonatomic) float GUI_WIDTH;
-
-@property (nonatomic, weak) UIView* masterView;
-@property (nonatomic, weak) UIScrollView* contentScrollView;
-@property (nonatomic, weak) UIView* tabView;
-@property (nonatomic) int numberOfOptions;
-@property (nonatomic, strong) NSMutableArray* arrOptions;
-
-@property (nonatomic) int selectedTab;
-
-+(cTabController*)globalInstance;
-
--(void)initOnMasterView:(UIView*)masterView_
-        withContentsView:(UIScrollView*)contentsScrollView_
-        andTabView:(UIView*)tabView_
-     andNumberOfOptions:(int)numberOfOptions_;
--(void)addView:(UIView*)view_ withTitle:(NSString*)title_ andImage:(UIImage*)image_ andColorView:(UIView*)colorView_;
--(void)performLayout;
 -(UIColor*)getOuterColor;
 -(UIColor*)getInnerColor;
 

@@ -60,8 +60,8 @@
 @property (nonatomic, strong) cActionSheet* casPeriod;
 @property (nonatomic, strong) cActionSheet* casShare;
 
-@property (nonatomic, strong) SKATestResults* testToShareExternal;
-
++(SKATestResults *) sCreateNewTstToShareExternal;
++(SKATestResults *) sGetTstToShareExternal;
 
 -(void)shareTest:(SKATestResults*)testResult;
 - (IBAction)B_Back:(id)sender;

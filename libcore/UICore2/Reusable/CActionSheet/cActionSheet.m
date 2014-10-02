@@ -34,8 +34,8 @@
         
         self.backgroundGradientView = [[UIViewWithGradient alloc] initWithFrame:self.backgroundView.bounds];
         
-        self.backgroundGradientView.innerColor = [[cTabController globalInstance] getInnerColor];
-        self.backgroundGradientView.outerColor = [[cTabController globalInstance] getOuterColor];
+        self.backgroundGradientView.innerColor = [cTabController sGetInnerColor];
+        self.backgroundGradientView.outerColor = [cTabController sGetOuterColor];
         
         [self.backgroundView addSubview:self.backgroundGradientView];
 

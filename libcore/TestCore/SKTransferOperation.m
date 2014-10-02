@@ -1175,6 +1175,7 @@ const int cBlockDataLength = 32768;
 {
 #ifdef DEBUG
   if (error != nil) {
+    SK_ASSERT(false);
     NSLog(@"DEBUG: %s, Error Description : %@", __FUNCTION__, [error localizedDescription]);
     
     // Note that the following tests is locale specific - once we trap the error code in the debugger, we can use the code rather than the string in future.

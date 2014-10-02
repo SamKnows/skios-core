@@ -29,8 +29,8 @@
   
   // The main background view...
   //self.view.backgroundColor = [UIColor clearColor];
-  ((UIViewWithGradient*)self.view).innerColor = [[cTabController globalInstance] getInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [[cTabController globalInstance] getOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
   
   // The progress/splash background view...
   //SK_ASSERT(self.vC1 != nil);
@@ -240,8 +240,9 @@
     [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:(self.testTypes2Execute & CTTBM_UPLOAD)];
     [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:(self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER)];
   }
-  
-  historyViewMgr = (SKHistoryViewMgr*)((cTabOption*)[cTabController globalInstance].arrOptions[1]).view;
+ 
+  // TODO - does this even make sense?!
+  //historyViewMgr = (SKHistoryViewMgr*)((cTabOption*)[cTabController globalInstance].arrOptions[1]).view;
 }
 
 BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
@@ -755,9 +756,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_LOSS_TEST]).value = [NSString stringWithFormat:@"%.0f %%", packetLoss];
   ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_JITTER_TEST]).value = [NSString stringWithFormat:@"%.0f ms", jitter];
   
-  historyViewMgr.testToShareExternal.latency = latency;
-  historyViewMgr.testToShareExternal.loss = packetLoss;
-  historyViewMgr.testToShareExternal.jitter = jitter;
+  [SKHistoryViewMgr sGetTstToShareExternal].latency = latency;
+  [SKHistoryViewMgr sGetTstToShareExternal].loss = packetLoss;
+  [SKHistoryViewMgr sGetTstToShareExternal].jitter = jitter;
   
   [self updateTableAnimated];
 }
@@ -963,6 +964,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodTransferTestDidFail:(BOOL)isDownstream
 {
+  SK_ASSERT(false);
+  
   dispatch_async(dispatch_get_main_queue(), ^{
     
     [self stopTestFromAlertResponse:NO];
@@ -996,13 +999,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    if (isDownstream) //Download test
                    {
                      ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_DOWNLOAD_TEST]).value = [SKATestOverviewCell2 get3digitsNumber: bitrate1024Based];
-                     historyViewMgr.testToShareExternal.downloadSpeed = bitrate1024Based;
+                     [SKHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
                      progressDownload = 1;
                    }
                    else
                    {
                      ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_UPLOAD_TEST]).value = [SKATestOverviewCell2 get3digitsNumber: bitrate1024Based];
-                     historyViewMgr.testToShareExternal.uploadSpeed = bitrate1024Based;
+                     [SKHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
                      progressUpload = 1;
                    }
                    
@@ -1355,34 +1358,34 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     self.btShare.alpha = 0;
   }];
   
-  historyViewMgr.testToShareExternal = [[SKATestResults alloc] init];
-  historyViewMgr.testToShareExternal.testDateTime = [NSDate date];
-  historyViewMgr.testToShareExternal.downloadSpeed = -1;
-  historyViewMgr.testToShareExternal.uploadSpeed = -1;
-  historyViewMgr.testToShareExternal.latency = -1;
-  historyViewMgr.testToShareExternal.loss = -1;
-  historyViewMgr.testToShareExternal.jitter = -1;
+  SKATestResults *testResults = [SKHistoryViewMgr sCreateNewTstToShareExternal];
+  testResults.testDateTime = [NSDate date];
+  testResults.downloadSpeed = -1;
+  testResults.uploadSpeed = -1;
+  testResults.latency = -1;
+  testResults.loss = -1;
+  testResults.jitter = -1;
   
-  historyViewMgr.testToShareExternal.device = self.appDelegate.deviceModel;
-  historyViewMgr.testToShareExternal.os = [[UIDevice currentDevice] systemVersion];
-  historyViewMgr.testToShareExternal.carrier_name = self.appDelegate.carrierName;
-  historyViewMgr.testToShareExternal.country_code = self.appDelegate.countryCode;
-  //    historyViewMgr.testToShareExternal.iso_country_code;
-  historyViewMgr.testToShareExternal.network_code = self.appDelegate.networkCode;
+  testResults.device = self.appDelegate.deviceModel;
+  testResults.os = [[UIDevice currentDevice] systemVersion];
+  testResults.carrier_name = self.appDelegate.carrierName;
+  testResults.country_code = self.appDelegate.countryCode;
+  //    [SKHistoryViewMgr sGetTstToShareExternal].iso_country_code;
+  [SKHistoryViewMgr sGetTstToShareExternal].network_code = self.appDelegate.networkCode;
   
   if (!self.isConnected)
-    historyViewMgr.testToShareExternal.network_type = @"";
+    [SKHistoryViewMgr sGetTstToShareExternal].network_type = @"";
   else
   {
     if (connectionStatus == WIFI)
     {
-      historyViewMgr.testToShareExternal.network_type = @"wi-fi'";
-      historyViewMgr.testToShareExternal.radio_type = @"";
+      [SKHistoryViewMgr sGetTstToShareExternal].network_type = @"wi-fi'";
+      [SKHistoryViewMgr sGetTstToShareExternal].radio_type = @"";
     }
     else
     {
-      historyViewMgr.testToShareExternal.network_type = @"mobile";
-      historyViewMgr.testToShareExternal.radio_type = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
+      [SKHistoryViewMgr sGetTstToShareExternal].network_type = @"mobile";
+      [SKHistoryViewMgr sGetTstToShareExternal].radio_type = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
     }
   }
   
