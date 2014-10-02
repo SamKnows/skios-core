@@ -122,6 +122,9 @@
 
 - (void)runTheTests
 {
+  // START monitoring location data!
+  [[SKAAppDelegate getAppDelegate] startLocationMonitoring];
+  
   self.btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     if (self.btid != UIBackgroundTaskInvalid) {
       [[UIApplication sharedApplication] endBackgroundTask:self.btid];
@@ -679,6 +682,9 @@
 - (void)stopTheTests
 {
   NSLog(@"STOP AUTO TEST");
+
+  // STOP monitoring location data!
+  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
   
   self.isRunning = NO;
   self.isCancelled = YES;

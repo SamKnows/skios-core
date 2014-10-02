@@ -39,7 +39,6 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)initSettings;
 - (void)setupReachability;
-- (void)setupLocationServices;
 - (void)populateSchedule;
 
 - (void)setDeviceInformation;
@@ -134,23 +133,33 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 	didUpdateToLocation:(CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 {
-    self.hasLocation = YES;
-    
-    //self.locationTimeStamp = newLocation.timestamp;
-    self.latitude = newLocation.coordinate.latitude;
-    self.longitude = newLocation.coordinate.longitude;
-    
-    // Update the last known location. If the device restarts, with Location Services turned off,
-    // we can use this location for the 'last_location' field in the Submitted JSON.
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
-    [loc setObject:[NSNumber numberWithDouble:self.latitude] forKey:@"LATITUDE"];
-    [loc setObject:[NSNumber numberWithDouble:self.longitude] forKey:@"LONGITUDE"];
-    [prefs setObject:loc forKey:Prefs_LastLocation];
-    [prefs synchronize];
+  SK_ASSERT(locationManager != nil);
+
+  self.hasLocation = YES;
+  //self.locationTimeStamp = newLocation.timestamp;
+  
+  if (self.latitude == newLocation.coordinate.latitude) {
+    if (self.longitude == newLocation.coordinate.longitude) {
+      return;
+    }
+  }
+  self.latitude = newLocation.coordinate.latitude;
+  self.longitude = newLocation.coordinate.longitude;
+  
+  // Update the last known location. If the device restarts, with Location Services turned off,
+  // we can use this location for the 'last_location' field in the Submitted JSON.
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSMutableDictionary *loc = [NSMutableDictionary dictionary];
+  [loc setObject:[NSNumber numberWithDouble:self.latitude] forKey:@"LATITUDE"];
+  [loc setObject:[NSNumber numberWithDouble:self.longitude] forKey:@"LONGITUDE"];
+  [prefs setObject:loc forKey:Prefs_LastLocation];
+  [prefs synchronize];
 }
 
-- (void)setupLocationServices
+//
+// Location monitoring!
+//
+- (void)startLocationMonitoring
 {
     self.latitude = 0;
     self.longitude = 0;
@@ -161,6 +170,17 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
     [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
     [locationManager startUpdatingLocation];
 }
+
+-(void)stopLocationMonitoring {
+  if (locationManager != nil) {
+    [locationManager stopUpdatingLocation];
+    locationManager = nil;
+  }
+}
+
+//
+// Location monitoring (end)
+//
 
 - (void)addReachabilityStatus:(NSString*)route {
   // TODO - not required in SKA
@@ -915,7 +935,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   [self createJSONDirectories];
   [self amdDoCreateUploadFile];
   [self setupReachability];
-  [self setupLocationServices];
+  //[self startLocationMonitoring];
   [self setDeviceInformation];
   [self setCarrierInformation];
   
@@ -964,7 +984,8 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    
+  // STOP monitoring location data, as we background!
+  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

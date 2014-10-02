@@ -164,4 +164,9 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 +(BOOL) exportArchivedJSONFilesToZip:(int*)RpFiles;
 +(void) deleteAllArchivedJSONFiles;
 
+// Start/stop location monitoring!
+// Only a test should invoke these methods.
+- (void)startLocationMonitoring;
+- (void)stopLocationMonitoring;
+
 @end

@@ -689,6 +689,7 @@
       NSLog(@"DEBUG **** - SKAAutoTest: COMPLETE!");
 #endif // DEBUG
       
+      [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
       self.isRunning = NO;
       
       SK_ASSERT(self.autotestManagerDelegate != nil);
@@ -710,6 +711,7 @@
   }
   else
   {
+   [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
     self.isRunning = NO;
     
     if (![NSThread isMainThread])
