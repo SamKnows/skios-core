@@ -25,6 +25,11 @@
   
   ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
   ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+ 
+  // http://stackoverflow.com/questions/18775874/ios-7-status-bar-overlaps-the-view
+  self.edgesForExtendedLayout = UIRectEdgeNone;
+  self.extendedLayoutIncludesOpaqueBars = NO;
+  self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 -(void) viewDidAppear:(BOOL)animated {

@@ -32,6 +32,15 @@
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
   currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
+
+  // Ensure that the back button is properly coloured!
+  self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
+  
+  // Remove constraints to allow dynamic positioning, if we required.
+//  [self.btBack setTranslatesAutoresizingMaskIntoConstraints:YES];
+//  [self.btBack removeConstraints:self.btShare.constraints];
+//  [self.btShare setTranslatesAutoresizingMaskIntoConstraints:YES];
+//  [self.btShare removeConstraints:self.btShare.constraints];
   
   [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType];
   
@@ -120,44 +129,59 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    selectedTest = arrTestsList[indexPath.row];
-    cell2putBack = (SKATestOverviewCell2*)[tableView cellForRowAtIndexPath:indexPath];
-    view2putBack = [cell2putBack getView];
-    originalCellFrame = cell2putBack.frame;
-    
-    [view2putBack removeFromSuperview];
-    view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
-    [self addSubview:view2putBack];
-    [self bringSubviewToFront:self.btBack];
-    self.btBack.frame = CGRectMake(0, 0, 0, 0);
-    self.btShare.frame = CGRectMake(10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
-    self.btShare.alpha = 0;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.3 animations:^{
-            self.tvTests.alpha = 0;
-            self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
-        } completion:^(BOOL finished) {
-            [self printPassiveMetrics:(arrTestsList[indexPath.row])];
-            
-            [UIView animateWithDuration:1.0
-                                  delay:0.0
-                 usingSpringWithDamping:1
-                  initialSpringVelocity:13
-                                options:UIViewAnimationOptionCurveEaseIn
-             
-                             animations:^{
-                                 view2putBack.frame = CGRectMake(0, 20, view2putBack.frame.size.width, view2putBack.frame.size.height);
-                                 self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + [cTabController sGet_GUI_MULTIPLIER] * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
-                                 self.btShare.alpha = 1;
-                                 [self showMetrics];
-                             } completion:^(BOOL finished) {
-                                 self.btBack.frame = CGRectMake(0, 0, view2putBack.frame.size.width, y);
-                             }];
-        }];
-    });
-    
-    return;
+  selectedTest = arrTestsList[indexPath.row];
+  cell2putBack = (SKATestOverviewCell2*)[tableView cellForRowAtIndexPath:indexPath];
+  view2putBack = [cell2putBack getView];
+  originalCellFrame = cell2putBack.frame;
+  
+  [view2putBack removeFromSuperview];
+  view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
+  [self addSubview:view2putBack];
+  [self bringSubviewToFront:self.btBack];
+  
+  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+  [self layoutIfNeeded];
+  self.shareButtonTopOffsetConstraint.constant = self.masterView.frame.size.height + 1;
+  //self.btBack.frame = CGRectMake(0, 0, 0, 0);
+  //self.btShare.frame = CGRectMake(10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+  [self layoutIfNeeded];
+  
+  self.btShare.alpha = 0;
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [UIView animateWithDuration:0.3 animations:^{
+      self.tvTests.alpha = 0;
+      self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
+    } completion:^(BOOL finished) {
+      [self printPassiveMetrics:(arrTestsList[indexPath.row])];
+     
+      // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+      [self layoutIfNeeded];
+      
+      [UIView animateWithDuration:1.0
+                            delay:0.0
+           usingSpringWithDamping:1
+            initialSpringVelocity:13
+                          options:UIViewAnimationOptionCurveEaseIn
+       
+                       animations:^{
+                         view2putBack.frame = CGRectMake(0, 20, view2putBack.frame.size.width, view2putBack.frame.size.height);
+                         self.shareButtonTopOffsetConstraint.constant = y + [cTabController sGet_GUI_MULTIPLIER] * 10;
+                         //self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + [cTabController sGet_GUI_MULTIPLIER] * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+                         
+                         self.btShare.alpha = 1;
+                         [self showMetrics];
+                         
+                         // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+                         [self layoutIfNeeded];
+                         
+                       } completion:^(BOOL finished) {
+                       }];
+    }];
+  });
+  
+  return;
 }
 
 - (IBAction)B_NetworkType:(id)sender {
