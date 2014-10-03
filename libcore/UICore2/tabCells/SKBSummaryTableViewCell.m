@@ -32,6 +32,7 @@
  
   //http://stackoverflow.com/questions/18878258/uitableviewcell-show-white-background-and-cannot-be-modified-on-ios7
   self.backgroundColor = [UIColor clearColor];
+  self.contentView.backgroundColor = [UIColor clearColor];
 }
 
 @end

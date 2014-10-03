@@ -33,7 +33,7 @@
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
   currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
 
-  // Ensure that the back button is properly coloured!
+  // Ensure that the back button is properly sized!
   self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
   
   // Remove constraints to allow dynamic positioning, if we required.

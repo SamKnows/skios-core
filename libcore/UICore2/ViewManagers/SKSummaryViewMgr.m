@@ -34,6 +34,8 @@
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
   currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
   
+  self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
+  
   // Set table to clear background colour!
   // http://stackoverflow.com/questions/18878258/uitableviewcell-show-white-background-and-cannot-be-modified-on-ios7
   [self.tvTests setBackgroundView:nil];
