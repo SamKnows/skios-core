@@ -24,6 +24,8 @@
   currentChartType= -1;
   
   self.backgroundColor = [UIColor clearColor];
+  
+  // Remove the GREEN that we have there for debugging!
   self.btBack.backgroundColor = [UIColor clearColor];
   
   self.masterView = masterView_;
@@ -341,137 +343,6 @@
 //      self.vChart.alpha = 0;
 //    }
 //  }];
-}
-
--(void)viewSelected:(UIButton*)button_
-{
-  button_.userInteractionEnabled = NO;
-  
-  if (currentChartType >= 0)
-  {
-    currentChartType = -1;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-      
-      //self.vChart.alpha = 0;
-      self.vChart.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
-      
-      if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
-      if (button_.tag == 1) self.vUpload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
-      if (button_.tag == 2) self.vLatency.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
-      if (button_.tag == 3) self.vLoss.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
-      if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST + button_.tag * [cTabController sGet_GUI_MULTIPLIER] * 70, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
-      
-    } completion:^(BOOL finished) {
-      
-      [UIView animateWithDuration:0.3
-       //                                  delay:0.0
-       //                 usingSpringWithDamping:1
-       //                  initialSpringVelocity:13
-       //                                options:UIViewAnimationOptionCurveEaseIn
-                       animations:^{
-                         
-                         if (button_.tag != 0)
-                         {
-                           self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vDownload.frame.origin.y, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
-                           self.vDownload.alpha = 1;
-                         }
-                         if (button_.tag != 1)
-                         {
-                           self.vUpload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vUpload.frame.origin.y, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
-                           self.vUpload.alpha = 1;
-                         }
-                         if (button_.tag != 2)
-                         {
-                           self.vLatency.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vLatency.frame.origin.y, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
-                           self.vLatency.alpha = 1;
-                         }
-                         if (button_.tag != 3)
-                         {
-                           self.vLoss.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vLoss.frame.origin.y, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
-                           self.vLoss.alpha = 1;
-                         }
-                         if (button_.tag != 4)
-                         {
-                           self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.vJitter.frame.origin.y, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
-                           self.vJitter.alpha = 1;
-                         }
-                         
-                       } completion:^(BOOL finished) {
-                         
-                         button_.userInteractionEnabled = YES;
-                         
-                       }];
-      
-    }];
-  }
-  else
-  {
-    currentChartType = (int)button_.tag;
-    
-    if (button_.tag == 0 && downloadCNT <= 0) return;
-    if (button_.tag == 1 && uploadCNT <= 0) return;
-    if (button_.tag == 2 && latencyCNT <= 0) return;
-    if (button_.tag == 3 && lossCNT <=0) return;
-    if (button_.tag == 4 && jitterCNT <=0) return;
-    
-    //self.vChart.alpha = 0;
-    self.vChart.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
-    [self prepareDataForChart];
-    [self.vChart setNeedsDisplay];
-    
-    [UIView animateWithDuration:0.3 animations:^{
-      
-      if (button_.tag != 0)
-      {
-        self.vDownload.frame = CGRectMake(-self.vDownload.frame.size.width, self.vDownload.frame.origin.y, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
-        self.vDownload.alpha = 0;
-      }
-      if (button_.tag != 1)
-      {
-        self.vUpload.frame = CGRectMake(-self.vUpload.frame.size.width, self.vUpload.frame.origin.y, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
-        self.vUpload.alpha = 0;
-      }
-      if (button_.tag != 2)
-      {
-        self.vLatency.frame = CGRectMake(-self.vLatency.frame.size.width, self.vLatency.frame.origin.y, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
-        self.vLatency.alpha = 0;
-      }
-      if (button_.tag != 3)
-      {
-        self.vLoss.frame = CGRectMake(-self.vLoss.frame.size.width, self.vLoss.frame.origin.y, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
-        self.vLoss.alpha = 0;
-      }
-      if (button_.tag != 4)
-      {
-        self.vJitter.frame = CGRectMake(-self.vJitter.frame.size.width, self.vJitter.frame.origin.y, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
-        self.vJitter.alpha = 0;
-      }
-    } completion:^(BOOL finished) {
-      
-      [UIView animateWithDuration:0.3
-       //                                  delay:0.0
-       //                 usingSpringWithDamping:1
-       //                  initialSpringVelocity:13
-       //                    options:UIViewAnimationOptionCurveEaseIn
-                       animations:^{
-                         
-                         if (button_.tag == 0) self.vDownload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vDownload.frame.size.width, self.vDownload.frame.size.height);
-                         if (button_.tag == 1) self.vUpload.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vUpload.frame.size.width, self.vUpload.frame.size.height);
-                         if (button_.tag == 2) self.vLatency.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vLatency.frame.size.width, self.vLatency.frame.size.height);
-                         if (button_.tag == 3) self.vLoss.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vLoss.frame.size.width, self.vLoss.frame.size.height);
-                         if (button_.tag == 4) self.vJitter.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, C_VIEWS_Y_FIRST, self.vJitter.frame.size.width, self.vJitter.frame.size.height);
-                         
-                         self.vChart.frame = CGRectMake(10, C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 70, [cTabController sGet_GUI_MULTIPLIER] * 300, self.bounds.size.height - (C_VIEWS_Y_FIRST + 1 * [cTabController sGet_GUI_MULTIPLIER] * 80) - [cTabController sGet_GUI_MULTIPLIER] * 10); //TODO: Jitter
-                         //self.vChart.alpha = 1;
-                         
-                       } completion:^(BOOL finished) {
-                         
-                         button_.userInteractionEnabled = YES;
-                         
-                       }];
-    }];
-  }
 }
 
 -(void)viewTouched:(UIButton*)button_
@@ -876,14 +747,20 @@
   [cellContentView2putBack removeFromSuperview];
   
   // Immediately position at the top of the table.
-  cellContentView2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
+  cellContentView2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, mRestoreToY, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
   [self addSubview:cellContentView2putBack];
   [self bringSubviewToFront:self.btBack];
-  self.btBack.frame = CGRectMake(0, 0, 0, 0);
+  
+  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+  [self layoutIfNeeded];
+  self.backButtonTopOffsetConstraint.constant = self.masterView.frame.size.height + 1;
+  //self.btBack.frame = CGRectMake(0, 0, 0, 0);
+  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+  [self layoutIfNeeded];
   
   // Move chart to off bottom of screen...
   self.vChart.alpha = 0.0;
-  self.vChart.frame = CGRectMake(0, 0, chartWidth, self.frame.size.height);
+  self.chartHeightConstraint.constant = 0.0F;
   [self.vChart setNeedsDisplay];
   
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -902,13 +779,18 @@
                        animations:^{
                          // Animation, to move the detached cell content view UP!
                          cellContentView2putBack.frame = CGRectMake(0, mRestoreToY, cellFrame.size.width, cellFrame.size.height);
-                         self.vChart.frame = CGRectMake(0, chartMoveUpToY, chartWidth, chartHeight);
+                         //self.vChart.frame = CGRectMake(0, chartMoveUpToY, chartWidth, chartHeight);
+                         self.chartHeightConstraint.constant = chartHeight;
                          self.vChart.alpha = 1.0;
                          [self.vChart setNeedsDisplay];
                          
                        } completion:^(BOOL finished) {
                          // Animation, to put the button in the same place.
-                         self.btBack.frame = cellContentView2putBack.frame;
+                         //self.btBack.frame = cellContentView2putBack.frame;
+                         self.backButtonTopOffsetConstraint.constant = 0; // Align to the top of the table view!
+                         // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+                         [self layoutIfNeeded];
+                         
                          //[self.vChart setNeedsDisplay];
                          [self bringSubviewToFront:self.btBack];
                          self.btBack.userInteractionEnabled = YES;
@@ -923,35 +805,41 @@
 }
 
 - (IBAction)B_Back:(id)sender {
+  
+  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+  [self layoutIfNeeded];
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-      [UIView animateWithDuration:0.3 animations:^{
-        
-        cellContentView2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
-        
-        self.btBack.userInteractionEnabled = NO;
-        
-        self.vChart.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 0);
-        self.vChart.alpha = 0;
-        
+    [UIView animateWithDuration:0.3 animations:^{
+      
+      cellContentView2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
+      
+      self.btBack.userInteractionEnabled = NO;
+      
+      //self.vChart.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 0);
+      self.chartHeightConstraint.constant = 0.0;
+      self.vChart.alpha = 0;
+      
+    } completion:^(BOOL finished) {
+      // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+      [self layoutIfNeeded];
+      
+      self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
+      
+      float tableAnimationTime = 0.3;
+      
+      [UIView animateWithDuration:tableAnimationTime animations:^{
+        self.tvTests.alpha = 1;
+        self.tvTests.frame = CGRectMake(0, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
       } completion:^(BOOL finished) {
-            
-            self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
-            
-            float tableAnimationTime = 0.3;
         
-            [UIView animateWithDuration:tableAnimationTime animations:^{
-                self.tvTests.alpha = 1;
-                self.tvTests.frame = CGRectMake(0, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
-            } completion:^(BOOL finished) {
-                
-                [cellContentView2putBack removeFromSuperview];
-                [cell2putBack addSubview:cellContentView2putBack];
-                
-                cellContentView2putBack.frame = cell2putBack.bounds;
-            }];
-        }];
-    });
+        [cellContentView2putBack removeFromSuperview];
+        [cell2putBack addSubview:cellContentView2putBack];
+        
+        cellContentView2putBack.frame = cell2putBack.bounds;
+      }];
+    }];
+  });
 }
 @end
