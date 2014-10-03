@@ -38,6 +38,8 @@
   //self.vC1.backgroundColor = [UIColor clearColor];
 //  self.vC1.innerColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
   //self.vC1.outerColor = [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
+
+  [self.view  bringSubviewToFront:self.vWelcomeView];
  
   [self View_OnLoadTweakControls];
 }
