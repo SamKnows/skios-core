@@ -401,7 +401,7 @@
   [location setObject:[SKGlobalMethods getNetworkOrGps]
                forKey:@"location_type"];
   
-  [location setObject:[SKGlobalMethods getTimeStamp]
+  [location setObject:[SKGlobalMethods getTimeStampForTimeInteralSince1970:[self.autotestManagerDelegate amdGetDateAsTimeIntervalSince1970]]
                forKey:@"timestamp"];
   return location;
 }
@@ -462,11 +462,17 @@
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   double latitude = 0.0;
   double longitude = 0.0;
+  //NSTimeInterval locationdate = 0;
   NSDictionary *loc = [prefs objectForKey:Prefs_LastLocation];
   if (loc != nil) {
     latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
     longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
+    //locationdate = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
   }
+  
+//  if (locationdate == 0) {
+//    locationdate = [[SKCore getToday] timeIntervalSince1970];
+//  }
   
   NSMutableDictionary *lastLocation = [NSMutableDictionary dictionary];
   

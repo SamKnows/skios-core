@@ -579,7 +579,7 @@
     
     if (row == 0) {
       cell.lblTitle.text = NSLocalizedString(@"Network_Type", nil);
-      cell.lblDetail.text = NSLocalizedString(@"NetworkType_Unknown",nil);
+      cell.lblDetail.text = NSLocalizedString(@"Unknown",nil);
       if ([self.networkType isEqualToString:@"network"]) {
         cell.lblDetail.text = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
       } else if ([self.networkType isEqualToString:@"mobile"]) {

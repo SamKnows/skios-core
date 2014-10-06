@@ -34,4 +34,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *longitudeValue;
 @property (weak, nonatomic) IBOutlet UILabel *latitudeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *latitudeValue;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateValue;
 @end

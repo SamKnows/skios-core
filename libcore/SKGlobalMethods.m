@@ -250,9 +250,18 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 }
 
 #pragma mark - Miscellaneous
++ (NSString *)getTimeStampForTimeInteralSince1970:(NSTimeInterval)timeIntervalSince1970
+{
+    return [NSString stringWithFormat:@"%d", (int)timeIntervalSince1970] ;
+}
+
++ (NSTimeInterval)getTimeNowAsTimeIntervalSince1970 {
+  return [[SKCore getToday] timeIntervalSince1970];
+}
+
 + (NSString *)getTimeStamp
 {
-    return [NSString stringWithFormat:@"%d", (int)([[SKCore getToday] timeIntervalSince1970])] ;
+  return [self getTimeStampForTimeInteralSince1970:[self getTimeNowAsTimeIntervalSince1970]];
 }
 
 + (BOOL)deviceIsCurrentUnitId

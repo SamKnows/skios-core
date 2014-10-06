@@ -131,6 +131,8 @@ typedef enum
 
 -(double)       amdGetLatitude;
 -(double)       amdGetLongitude;
+-(NSTimeInterval)       amdGetDateAsTimeIntervalSince1970;
+  
 -(SKScheduler*) amdGetSchedule;
 -(NSString*)    amdGetClosestTarget;
 -(void)         amdSetClosestTarget:(NSString*)inClosestTarget;

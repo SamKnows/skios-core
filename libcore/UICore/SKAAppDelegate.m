@@ -52,9 +52,12 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 @implementation SKAAppDelegate
 
-@synthesize latitude;
-@synthesize longitude;
+// Location...
+@synthesize locationLatitude;
+@synthesize locationLongitude;
+@synthesize locationDateAsTimeIntervalSince1970;
 @synthesize hasLocation;
+
 @synthesize schedule;
 @synthesize connectionStatus;
 @synthesize dataCapExceeded;
@@ -138,20 +141,22 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   self.hasLocation = YES;
   //self.locationTimeStamp = newLocation.timestamp;
   
-  if (self.latitude == newLocation.coordinate.latitude) {
-    if (self.longitude == newLocation.coordinate.longitude) {
+  if (self.locationLatitude == newLocation.coordinate.latitude) {
+    if (self.locationLongitude == newLocation.coordinate.longitude) {
       return;
     }
   }
-  self.latitude = newLocation.coordinate.latitude;
-  self.longitude = newLocation.coordinate.longitude;
+  self.locationLatitude = newLocation.coordinate.latitude;
+  self.locationLongitude = newLocation.coordinate.longitude;
+  self.locationDateAsTimeIntervalSince1970 = [SKGlobalMethods getTimeNowAsTimeIntervalSince1970];
   
   // Update the last known location. If the device restarts, with Location Services turned off,
   // we can use this location for the 'last_location' field in the Submitted JSON.
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSMutableDictionary *loc = [NSMutableDictionary dictionary];
-  [loc setObject:[NSNumber numberWithDouble:self.latitude] forKey:@"LATITUDE"];
-  [loc setObject:[NSNumber numberWithDouble:self.longitude] forKey:@"LONGITUDE"];
+  [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
+  [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
+  [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
   [prefs setObject:loc forKey:Prefs_LastLocation];
   [prefs synchronize];
 }
@@ -287,7 +292,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 }
 - (NSString*)getLocationInformation:(int)date
 {
-  NSString *str = [NSString stringWithFormat:@"LOCATION;%d;%@;%f;%f;NA;", date, [SKGlobalMethods getNetworkOrGps], self.latitude, self.longitude];
+  NSString *str = [NSString stringWithFormat:@"LOCATION;%d;%@;%f;%f;NA;", self.locationDateAsTimeIntervalSince1970, [SKGlobalMethods getNetworkOrGps], self.locationLatitude, self.locationLongitude];
 #ifdef DEBUG
   NSLog(@"getLocationInformation=%@", str);
 #endif // DEBUG
@@ -1124,11 +1129,15 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 #pragma mark SKAutotestManagerDelegate
 
 -(double)       amdGetLatitude {
-  return self.latitude;
+  return self.locationLatitude;
 }
 -(double)       amdGetLongitude {
-  return self.longitude;
+  return self.locationLongitude;
 }
+-(NSTimeInterval)       amdGetDateAsTimeIntervalSince1970{
+  return self.locationDateAsTimeIntervalSince1970;
+}
+
 -(SKScheduler *)amdGetSchedule {
   return self.schedule;
 }

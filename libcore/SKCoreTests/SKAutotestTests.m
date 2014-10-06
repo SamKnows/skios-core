@@ -113,6 +113,10 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   NSLog(@"SKAutotestManagerDelegate::amdGetLongitude");
   return 2.0;
 }
+-(double)       amdGetDateAsTimeIntervalSince1970 {
+  NSLog(@"SKAutotestManagerDelegate::amdGetDateAsTimeIntervalSince1970");
+  return 1.0;
+}
 -(SKScheduler*) amdGetSchedule {
   NSLog(@"SKAutotestManagerDelegate::amdGetSchedule");
   GGetAutotestScheduleCalls++;

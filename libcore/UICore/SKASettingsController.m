@@ -20,25 +20,18 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  //SK_ASSERT(self.dateLabel != nil);
+  //SK_ASSERT(self.dateValue != nil);
+  
   [self addBackButton];
   [self setLabels];
   [self setDataAllowance];
   
-  if (self.lblClearAllData != nil) {
-    self.lblClearAllData.text = NSLocalizedString(@"Settings_ClearAllResults",nil);
-  }
-  
-  if (self.lblActivate != nil) {
-    self.lblActivate.text = NSLocalizedString(@"Settings_Activate",nil);
-  }
- 
-  if (self.latitudeLabel != nil) {
-    self.latitudeLabel.text = NSLocalizedString(@"latitude",nil);
-  }
-  
-  if (self.longitudeLabel != nil) {
-    self.longitudeLabel.text = NSLocalizedString(@"longitude",nil);
-  }
+  self.lblClearAllData.text = NSLocalizedString(@"Settings_ClearAllResults",nil);
+  self.lblActivate.text = NSLocalizedString(@"Settings_Activate",nil);
+  self.latitudeLabel.text = NSLocalizedString(@"latitude",nil);
+  self.longitudeLabel.text = NSLocalizedString(@"longitude",nil);
+  self.dateLabel.text = NSLocalizedString(@"date",nil);
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -66,16 +59,20 @@
   if (loc != nil) {
     double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
     double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
-    if (self.latitudeValue != nil) {
-      self.latitudeValue.text = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
-    }
+    double dateAsTimeIntervalSince1970 = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
     
-    if (self.longitudeValue != nil) {
-      self.longitudeValue.text = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
+    self.latitudeValue.text = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
+    self.longitudeValue.text = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
+    
+    if (dateAsTimeIntervalSince1970 == 0) {
+      self.dateValue.text = NSLocalizedString(@"Unknown",nil);
+    } else {
+    self.dateValue.text = [SKGlobalMethods formatDate:[NSDate dateWithTimeIntervalSince1970:dateAsTimeIntervalSince1970]];
     }
   } else {
-    self.latitudeValue.text = @"?";
-    self.longitudeValue.text = @"?";
+    self.latitudeValue.text = NSLocalizedString(@"Unknown",nil);
+    self.longitudeValue.text = NSLocalizedString(@"Unknown",nil);
+    self.dateValue.text = NSLocalizedString(@"Unknown",nil);
   }
 }
 
@@ -84,15 +81,15 @@
   switch (section)
   {
     case 0:
-    return NSLocalizedString(@"Storyboard_Settings_Configuration",nil);
-    
+      return NSLocalizedString(@"Storyboard_Settings_Configuration",nil);
+      
     case 1:
-    return NSLocalizedString(@"Storyboard_Settings_MonthlyData",nil);
+      return NSLocalizedString(@"Storyboard_Settings_MonthlyData",nil);
       
     case 2:
-    return NSLocalizedString(@"last_known_location_info",nil);
+      return NSLocalizedString(@"last_known_location_info",nil);
   }
- 
+  
   SK_ASSERT(false);
   return nil;
 }

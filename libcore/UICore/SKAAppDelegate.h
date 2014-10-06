@@ -56,8 +56,9 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 @property (nonatomic, strong) NSString *networkCode;
 @property (nonatomic, strong) NSString *isoCode;
 
-@property (assign, nonatomic) double latitude;
-@property (assign, nonatomic) double longitude;
+@property (assign, nonatomic) double locationLatitude;
+@property (assign, nonatomic) double locationLongitude;
+@property (assign, nonatomic) NSTimeInterval locationDateAsTimeIntervalSince1970;
 @property (assign, nonatomic) BOOL hasLocation;
 
 @property (strong, nonatomic) SKScheduler *schedule;
@@ -79,7 +80,8 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 
 - (NSString*)getNetworkType:(int)date networkType:(NSString*)networkType;
 - (NSString*)getNetworkState:(int)date;
-- (NSString*)getLocationInformation:(int)date;
+//- (NSString*)getLocationInformation:(int)date;
+- (NSString*)getLocationInformation;
 - (NSString*)getPhoneIdentity:(int)date;
 - (NSString*)getSimOperator:(int)date;
 -(void)   amdSetClosestTarget:(NSString*)inClosestTarget;

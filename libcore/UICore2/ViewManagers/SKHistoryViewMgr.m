@@ -439,7 +439,7 @@ static SKATestResults* testToShareExternal = nil;
     if (testResult_.radio_type.length > 0)
     {
         NSString* networkType;
-        networkType = NSLocalizedString(@"NetworkType_Unknown",nil);
+        networkType = NSLocalizedString(@"Unknown",nil);
         if ([testResult_.network_type isEqualToString:@"network"]) {
             networkType = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
         } else if ([testResult_.network_type isEqualToString:@"mobile"]) {

@@ -35,6 +35,8 @@ typedef double SKTimeIntervalMicroseconds;
 
 + (NSString *)bytesToString:(double)value;
 
++ (NSString *)getTimeStampForTimeInteralSince1970:(NSTimeInterval)timeIntervalSince1970;
++ (NSTimeInterval)getTimeNowAsTimeIntervalSince1970;
 + (NSString *)getTimeStamp;
 
 #pragma mark - Miscellaneous
