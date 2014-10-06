@@ -384,7 +384,7 @@
     
     self.lCurrentResult.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * 0.2, self.bounds.origin.y + 0.18 * self.lCurrentResult.font.pointSize, self.bounds.size.width * 0.6, self.bounds.size.height);
 
-    self.lTopInfo1.frame = CGRectMake(self.bounds.origin.x + 0.2 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.6 * self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 25);
+    self.lTopInfo1.frame = CGRectMake(self.bounds.origin.x + 0.25 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.5 * self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 25);
     
     self.lUnit.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.67, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 25);
     self.lMeasurement.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.77, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 20);

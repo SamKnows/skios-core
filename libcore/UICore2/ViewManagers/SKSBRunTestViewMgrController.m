@@ -229,20 +229,12 @@
   //[self.tmActivityIndicator setNeedsLayout];
   
   [self.casStatusView setText:@"Ready to run" forever:YES];
-  self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
+  //self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
   self.lClosest.text = @"Press the Start button";
   self.tvCurrentResults.hidden = YES;
   
   [self updateRadioType];
-  
-  if (!self.casTestTypes)
-  {
-    self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:@"OK"];
-    [self.casTestTypes addOption:@"Download" withImage:nil andTag:C_DOWNLOAD_TEST andState:(self.testTypes2Execute & CTTBM_DOWNLOAD)];
-    [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:(self.testTypes2Execute & CTTBM_UPLOAD)];
-    [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:(self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER)];
-  }
- 
+
   // TODO - does this even make sense?!
   //historyViewMgr = (SKHistoryViewMgr*)((cTabOption*)[cTabController globalInstance].arrOptions[1]).view;
 }
@@ -508,8 +500,24 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }
 }
 
+#if TARGET_IPHONE_SIMULATOR
+int sbSimulatorFakeConnectionToggle = 0;
+#endif // TARGET_IPHONE_SIMULATOR
+
 -(void)buttonPressed
 {
+#if TARGET_IPHONE_SIMULATOR
+  // Force UI to update!
+  if (sbSimulatorFakeConnectionToggle == 1) {
+    [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
+    sbSimulatorFakeConnectionToggle = 0;
+  }
+  else {
+    [self.tmActivityIndicator setTopInfo:@"No connection"];
+    sbSimulatorFakeConnectionToggle = 1;
+  }
+#endif // TARGET_IPHONE_SIMULATOR
+  
   self.tvCurrentResults.hidden = NO;
   
   if (isRunning)
@@ -1427,6 +1435,15 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 }
 
 - (IBAction)B_SelectTests:(id)sender {
+  
+  if (!self.casTestTypes)
+  {
+    self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:@"OK"];
+    [self.casTestTypes addOption:@"Download" withImage:nil andTag:C_DOWNLOAD_TEST andState:(self.testTypes2Execute & CTTBM_DOWNLOAD)];
+    [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:(self.testTypes2Execute & CTTBM_UPLOAD)];
+    [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:(self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER)];
+  }
+  
   [self.casTestTypes expand];
 }
 
