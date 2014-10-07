@@ -108,57 +108,57 @@
     
 }
 
--(void)selectedOption:(int)optionTag from:(cActionSheet *)sender
+-(void)selectedOption:(int)optionTag from:(cActionSheet *)sender WithState:(int)state
 {
-    if (sender == self.casNetworkType)
-    {
-        currentFilterNetworkType = optionTag;
-        
-        switch (optionTag) {
-            case C_FILTER_NETWORKTYPE_WIFI:
-                [self.btNetworkType setTitle:@"Wi-Fi" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_NETWORKTYPE_GSM:
-                [self.btNetworkType setTitle:@"Mobile" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_NETWORKTYPE_ALL:
-                [self.btNetworkType setTitle:@"All" forState:UIControlStateNormal];
-                break;
-            default:
-                break;
-        }
-        [self loadData];
+  if (sender == self.casNetworkType)
+  {
+    currentFilterNetworkType = optionTag;
+    
+    switch (optionTag) {
+      case C_FILTER_NETWORKTYPE_WIFI:
+        [self.btNetworkType setTitle:@"Wi-Fi" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_NETWORKTYPE_GSM:
+        [self.btNetworkType setTitle:@"Mobile" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_NETWORKTYPE_ALL:
+        [self.btNetworkType setTitle:@"All" forState:UIControlStateNormal];
+        break;
+      default:
+        break;
     }
-    else if (sender == self.casPeriod)
-    {
-        currentFilterPeriod = optionTag;
-        
-        switch (optionTag) {
-            case C_FILTER_PERIOD_1DAY:
-                [self.btPeriod setTitle:@"1 day" forState:UIControlStateNormal];
-                currentFilterPeriod = C_FILTER_PERIOD_1DAY;
-                break;
-            case C_FILTER_PERIOD_1WEEK:
-                [self.btPeriod setTitle:@"1 week" forState:UIControlStateNormal];
-                currentFilterPeriod = C_FILTER_PERIOD_1WEEK;
-                break;
-            case C_FILTER_PERIOD_1MONTH:
-                [self.btPeriod setTitle:@"1 month" forState:UIControlStateNormal];
-                currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
-                break;
-            case C_FILTER_PERIOD_3MONTHS:
-                [self.btPeriod setTitle:@"3 months" forState:UIControlStateNormal];
-                currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
-                break;
-            case C_FILTER_PERIOD_1YEAR:
-                [self.btPeriod setTitle:@"1 year" forState:UIControlStateNormal];
-                currentFilterPeriod = C_FILTER_PERIOD_1YEAR;
-                break;
-            default:
-                break;
-        }
-        [self loadData];
+    [self loadData];
+  }
+  else if (sender == self.casPeriod)
+  {
+    currentFilterPeriod = optionTag;
+    
+    switch (optionTag) {
+      case C_FILTER_PERIOD_1DAY:
+        [self.btPeriod setTitle:@"1 day" forState:UIControlStateNormal];
+        currentFilterPeriod = C_FILTER_PERIOD_1DAY;
+        break;
+      case C_FILTER_PERIOD_1WEEK:
+        [self.btPeriod setTitle:@"1 week" forState:UIControlStateNormal];
+        currentFilterPeriod = C_FILTER_PERIOD_1WEEK;
+        break;
+      case C_FILTER_PERIOD_1MONTH:
+        [self.btPeriod setTitle:@"1 month" forState:UIControlStateNormal];
+        currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
+        break;
+      case C_FILTER_PERIOD_3MONTHS:
+        [self.btPeriod setTitle:@"3 months" forState:UIControlStateNormal];
+        currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
+        break;
+      case C_FILTER_PERIOD_1YEAR:
+        [self.btPeriod setTitle:@"1 year" forState:UIControlStateNormal];
+        currentFilterPeriod = C_FILTER_PERIOD_1YEAR;
+        break;
+      default:
+        break;
     }
+    [self loadData];
+  }
 }
 
 -(void)loadData

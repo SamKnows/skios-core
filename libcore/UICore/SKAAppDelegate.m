@@ -236,11 +236,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 //
 //    [prefs setObject:loc forKey:Prefs_LastLocation];
 //  }
-  
-  if (![prefs objectForKey:Prefs_LastTestSelection])
-  {
-      [prefs setInteger:255 forKey:Prefs_LastTestSelection];
-  }
+
 
   [prefs synchronize];
 }

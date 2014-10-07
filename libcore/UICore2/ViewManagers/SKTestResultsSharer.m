@@ -42,7 +42,7 @@
   [self.casShare expand];
 }
 
--(void)selectedOption:(int)optionTag from:(cActionSheet*)sender {
+-(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state {
   
   if (sender == self.casShare)
   {
@@ -84,7 +84,6 @@
 }
 
 -(void)selectedMainButtonFrom:(cActionSheet*)sender {
-  SK_ASSERT(false);
 }
 
 

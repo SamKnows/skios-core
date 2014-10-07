@@ -7,6 +7,10 @@
 
 #import "cActionSheet.h"
 
+@interface cOptionDefinition()
+@property (nonatomic)  int mDisplayState; //<0 - not relevant, 0 - off, 1 - on
+@end
+
 @implementation cOptionDefinition
 
 @end
@@ -156,20 +160,21 @@
 {
     cOptionDefinition* option = [self optionForButton:sender];
 
-    if (option.state < 0)
+    if (option.mDisplayState < 0)
     {
         [UIView animateWithDuration:0.2 animations:^{
             self.masterView.alpha = 0;
         } completion:^(BOOL finished) {
             self.masterView.hidden = YES;
-            [self.delegate selectedOption:(int)sender.tag from:self];
+            [self.delegate selectedOption:(int)sender.tag from:self WithState:option.mDisplayState];
             [self formatButton:option];
         }];
     }
     else
     {
-        option.state = 1 - option.state;
+        option.mDisplayState = 1 - option.mDisplayState;
         [self formatButton:option];
+        [self.delegate selectedOption:(int)sender.tag from:self WithState:(int)option.mDisplayState];
     }
 }
 
@@ -190,57 +195,57 @@
 
 -(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag andState:(int)state_
 {
-    cOptionDefinition* option;
-    
-    if (state_ > 1) state_ = 1;
-    if (state_ < -1) state_ = -1;
-    
-    option = [[cOptionDefinition alloc] init];
-    option.title = optionTitle;
-    option.image = optionImage;
-    option.tag = optionTag;
-    option.label = [[UILabel alloc] init];
-    option.label.text = optionTitle;
-    option.label.textAlignment = NSTextAlignmentCenter;
-    option.label.textColor = [UIColor whiteColor];
-    option.label.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
-    
-    option.button = [[UIButton alloc] init];
-    [option.button addTarget:self action:@selector(optionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [option.button addTarget:self action:@selector(optionTouched:) forControlEvents:UIControlEventTouchDown];
-    [option.button addTarget:self action:@selector(optionReleased:) forControlEvents:UIControlEventTouchUpOutside];
-    [option.button addTarget:self action:@selector(optionReleased:) forControlEvents:UIControlEventTouchDragExit];
-    
-    option.button.tag = optionTag;
-    
-    option.state = state_;
-    [self formatButton:option];
-    
-    [cActionSheet formatView:option.button];
-    
-    option.imageView = [[UIImageView alloc] init];
-    option.imageView.image = optionImage;
-    
-    [self.backgroundView addSubview:option.button];
-    [self.backgroundView addSubview:option.label];
-    [self.backgroundView addSubview:option.imageView];
-    
-    [self.arrOptions addObject:option];
+  SK_ASSERT(state_ == -1 || state_ == 0 || state_ == 1);
+  cOptionDefinition* option;
+  
+  option = [[cOptionDefinition alloc] init];
+  option.title = optionTitle;
+  option.image = optionImage;
+  option.tag = optionTag;
+  option.label = [[UILabel alloc] init];
+  option.label.text = optionTitle;
+  option.label.textAlignment = NSTextAlignmentCenter;
+  option.label.textColor = [UIColor whiteColor];
+  option.label.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+  option.mDisplayState = state_;
+  
+  option.button = [[UIButton alloc] init];
+  [option.button addTarget:self action:@selector(optionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  [option.button addTarget:self action:@selector(optionTouched:) forControlEvents:UIControlEventTouchDown];
+  [option.button addTarget:self action:@selector(optionReleased:) forControlEvents:UIControlEventTouchUpOutside];
+  [option.button addTarget:self action:@selector(optionReleased:) forControlEvents:UIControlEventTouchDragExit];
+  
+  option.button.tag = optionTag;
+  
+  option.mDisplayState = state_;
+  [self formatButton:option];
+  
+  [cActionSheet formatView:option.button];
+  
+  option.imageView = [[UIImageView alloc] init];
+  option.imageView.image = optionImage;
+  
+  [self.backgroundView addSubview:option.button];
+  [self.backgroundView addSubview:option.label];
+  [self.backgroundView addSubview:option.imageView];
+  
+  [self.arrOptions addObject:option];
 }
 
 -(void)formatButton:(cOptionDefinition*)optionDefinition_
 {
-    switch (optionDefinition_.state) {
-        case -1:
-        case 0:
-            optionDefinition_.button.backgroundColor = [UIColor clearColor];
-            optionDefinition_.label.textColor = [UIColor whiteColor];
-            break;
-        default:
-            optionDefinition_.button.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-            optionDefinition_.label.textColor = [UIColor colorWithRed:44.0/255.0 green:66.0/255.0 blue:149.0/255.0 alpha:1];
-            break;
-    }
+  switch (optionDefinition_.mDisplayState) {
+    case -1:
+    case 0:
+      optionDefinition_.button.backgroundColor = [UIColor clearColor];
+      optionDefinition_.label.textColor = [UIColor whiteColor];
+      break;
+    case 1:
+    default:
+      optionDefinition_.button.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+      optionDefinition_.label.textColor = [UIColor colorWithRed:44.0/255.0 green:66.0/255.0 blue:149.0/255.0 alpha:1];
+      break;
+  }
 }
 
 @end

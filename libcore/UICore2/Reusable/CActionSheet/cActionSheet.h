@@ -13,8 +13,7 @@
 
 @protocol pActionSheetDelegate <NSObject>
 
-@optional
--(void)selectedOption:(int)optionTag from:(cActionSheet*)sender;
+-(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state;
 -(void)selectedMainButtonFrom:(cActionSheet*)sender;
 
 @end
@@ -47,6 +46,6 @@
 @property (nonatomic, strong) UILabel* label;
 @property (nonatomic, strong) UIButton* button;
 @property (nonatomic, strong) UIImageView* imageView;
-@property (nonatomic)   int state; //<0 - not relevant, 0 - off, 1 - on
+//@property (nonatomic)   int state; //<0 - not relevant, 0 - off, 1 - on
 
 @end

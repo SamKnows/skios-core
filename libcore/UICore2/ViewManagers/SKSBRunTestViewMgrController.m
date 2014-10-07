@@ -32,6 +32,14 @@
 -(void) viewDidLoad {
   [super viewDidLoad];
   
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if (![prefs objectForKey:Prefs_LastTestSelection])
+  {
+    self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
+    [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
+  }
+  self.testTypes2Execute = (int)[prefs integerForKey:Prefs_LastTestSelection];
+  
   [self intialiseViewOnMasterView];
   
   // The main background view...
@@ -171,9 +179,7 @@
   
   self.wifiReachability = [Reachability reachabilityForLocalWiFi];
   //    [self.wifiReachability startNotifier];
-  
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  self.testTypes2Execute = (int)[prefs integerForKey:Prefs_LastTestSelection];
+
 }
 
 - (void)dealloc
@@ -471,6 +477,53 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 //#if TARGET_IPHONE_SIMULATOR
 //int sbSimulatorFakeConnectionToggle = 0;
 //#endif // TARGET_IPHONE_SIMULATOR
+-(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state {
+  
+  if ([self.appDelegate enableTestsSelection] == NO)
+  {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  switch (optionTag) {
+    case C_DOWNLOAD_TEST:
+      if (state == 1) {
+        self.testTypes2Execute |= CTTBM_DOWNLOAD;
+      } else {
+        self.testTypes2Execute &= ~CTTBM_DOWNLOAD;
+      }
+    case C_UPLOAD_TEST:
+      if (state == 1) {
+        self.testTypes2Execute |= CTTBM_UPLOAD;
+      } else {
+        self.testTypes2Execute &= ~CTTBM_UPLOAD;
+      }
+      break;
+    case C_LATENCY_TEST:
+      if (state == 1) {
+        self.testTypes2Execute |= CTTBM_LATENCYLOSSJITTER;
+      } else {
+        self.testTypes2Execute &= ~CTTBM_LATENCYLOSSJITTER;
+      }
+      break;
+    case C_JITTER_TEST:
+      SK_ASSERT(false);
+      //       if (state == 1) {
+      //         self.testTypes2Execute |= CTTBM_LATENCYLOSSJITTER;
+      //       } else {
+      //         self.testTypes2Execute &= ~CTTBM_LATENCYLOSSJITTER;
+      //       }
+      break;
+    default:
+      SK_ASSERT(false);
+      break;
+  }
+ 
+  // And save the updated preferences!
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
+  [prefs synchronize];
+}
 
 -(void)buttonPressed
 {
@@ -512,35 +565,26 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       ((SKATestOverviewMetrics*)testResultsArray[i]).value = nil;
     }
     
-    self.testTypes2Execute = 0;
     self.numberOfTests2Execute = 0;
-    
-    if (![self.appDelegate enableTestsSelection] || ((cOptionDefinition*)self.casTestTypes.arrOptions[C_DOWNLOAD_TEST]).state >= 1)
-    {
+    if (self.testTypes2Execute & CTTBM_DOWNLOAD) {
       progressDownload = 0;
-      self.numberOfTests2Execute++;
-      self.testTypes2Execute |= CTTBM_DOWNLOAD;
-    }
-    else
+      self.numberOfTests2Execute ++;
+    } else {
       progressDownload = -1;
+    }
     
-    if (![self.appDelegate enableTestsSelection] || ((cOptionDefinition*)self.casTestTypes.arrOptions[C_UPLOAD_TEST]).state >= 1)
-    {
+    if (self.testTypes2Execute & CTTBM_UPLOAD) {
+      self.numberOfTests2Execute ++;
       progressUpload = 0;
-      self.numberOfTests2Execute++;
-      self.testTypes2Execute |= CTTBM_UPLOAD;
-    }
-    else
+    } else {
       progressUpload = -1;
-    
-    if (![self.appDelegate enableTestsSelection] || ((cOptionDefinition*)self.casTestTypes.arrOptions[C_LATENCY_TEST]).state >= 1)
-    {
-      progressLatencyLoss = 0;
-      self.numberOfTests2Execute++;
-      self.testTypes2Execute |= CTTBM_LATENCYLOSSJITTER;
     }
-    else
+    if (self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) {
+      self.numberOfTests2Execute ++;
+      progressLatencyLoss = 0;
+    } else {
       progressLatencyLoss = -1;
+    }
     
     //Save the test selection to User Defaults
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -1404,13 +1448,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (IBAction)B_SelectTests:(id)sender {
   
-  if (!self.casTestTypes)
-  {
-    self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:@"OK"];
-    [self.casTestTypes addOption:@"Download" withImage:nil andTag:C_DOWNLOAD_TEST andState:(self.testTypes2Execute & CTTBM_DOWNLOAD)];
-    [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:(self.testTypes2Execute & CTTBM_UPLOAD)];
-    [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:(self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER)];
-  }
+ self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:@"OK"];
+ [self.casTestTypes addOption:@"Download" withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
+ [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
+ [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
   
   [self.casTestTypes expand];
 }

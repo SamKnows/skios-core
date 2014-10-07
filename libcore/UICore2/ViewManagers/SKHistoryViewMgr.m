@@ -52,7 +52,7 @@
 //  [self.btShare setTranslatesAutoresizingMaskIntoConstraints:YES];
 //  [self.btShare removeConstraints:self.btShare.constraints];
   
-  [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType];
+  [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType WithState:1];
   
   [self loadData];
   
@@ -221,51 +221,49 @@
     [self.casPeriod expand];
 }
 
--(void)selectedOption:(int)optionTag from:(cActionSheet *)sender
-{
-    if (sender == self.casNetworkType)
-    {
-        currentFilterNetworkType = optionTag;
-        
-        switch (optionTag) {
-            case C_FILTER_NETWORKTYPE_WIFI:
-                [self.btNetworkType setTitle:@"Wi-Fi" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_NETWORKTYPE_GSM:
-                [self.btNetworkType setTitle:@"Mobile" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_NETWORKTYPE_ALL:
-                [self.btNetworkType setTitle:@"All" forState:UIControlStateNormal];
-                break;
-            default:
-                break;
-        }
-        [self loadData];
-    }
-    else if (sender == self.casPeriod)
-    {
-        currentFilterPeriod = optionTag;
-        
-        switch (optionTag) {
-            case C_FILTER_PERIOD_1WEEK:
-                [self.btPeriod setTitle:@"1 week" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_PERIOD_1MONTH:
-                [self.btPeriod setTitle:@"1 month" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_PERIOD_3MONTHS:
-                [self.btPeriod setTitle:@"3 months" forState:UIControlStateNormal];
-                break;
-            case C_FILTER_PERIOD_1YEAR:
-                [self.btPeriod setTitle:@"1 year" forState:UIControlStateNormal];
-                break;
-            default:
-                break;
-        }
-        [self loadData];
-    }
+-(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state {
+  
+  if (sender == self.casNetworkType)
+  {
+    currentFilterNetworkType = optionTag;
     
-
+    switch (optionTag) {
+      case C_FILTER_NETWORKTYPE_WIFI:
+        [self.btNetworkType setTitle:@"Wi-Fi" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_NETWORKTYPE_GSM:
+        [self.btNetworkType setTitle:@"Mobile" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_NETWORKTYPE_ALL:
+        [self.btNetworkType setTitle:@"All" forState:UIControlStateNormal];
+        break;
+      default:
+        break;
+    }
+    [self loadData];
+  }
+  else if (sender == self.casPeriod)
+  {
+    currentFilterPeriod = optionTag;
+    
+    switch (optionTag) {
+      case C_FILTER_PERIOD_1WEEK:
+        [self.btPeriod setTitle:@"1 week" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_PERIOD_1MONTH:
+        [self.btPeriod setTitle:@"1 month" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_PERIOD_3MONTHS:
+        [self.btPeriod setTitle:@"3 months" forState:UIControlStateNormal];
+        break;
+      case C_FILTER_PERIOD_1YEAR:
+        [self.btPeriod setTitle:@"1 year" forState:UIControlStateNormal];
+        break;
+      default:
+        break;
+    }
+    [self loadData];
+  }
 }
 
 -(void)selectedMainButtonFrom:(cActionSheet *)sender
