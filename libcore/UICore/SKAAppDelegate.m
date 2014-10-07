@@ -290,9 +290,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 - (NSString*)getNetworkType:(int)date networkType:(NSString*)inNetworkType {
   return [self.class getNetworkType:date networkType:inNetworkType ForConnectionStatus:(ConnectionStatus)self.connectionStatus];
 }
-- (NSString*)getLocationInformation:(int)date
+- (NSString*)getLocationInformationForDate:(int)date
 {
-  NSString *str = [NSString stringWithFormat:@"LOCATION;%d;%@;%f;%f;NA;", self.locationDateAsTimeIntervalSince1970, [SKGlobalMethods getNetworkOrGps], self.locationLatitude, self.locationLongitude];
+  NSString *str = [NSString stringWithFormat:@"LOCATION;%f;%@;%f;%f;NA;", self.locationDateAsTimeIntervalSince1970, [SKGlobalMethods getNetworkOrGps], self.locationLatitude, self.locationLongitude];
 #ifdef DEBUG
   NSLog(@"getLocationInformation=%@", str);
 #endif // DEBUG

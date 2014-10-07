@@ -81,7 +81,7 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 - (NSString*)getNetworkType:(int)date networkType:(NSString*)networkType;
 - (NSString*)getNetworkState:(int)date;
 //- (NSString*)getLocationInformation:(int)date;
-- (NSString*)getLocationInformation;
+- (NSString*)getLocationInformationForDate:(int)date;
 - (NSString*)getPhoneIdentity:(int)date;
 - (NSString*)getSimOperator:(int)date;
 -(void)   amdSetClosestTarget:(NSString*)inClosestTarget;

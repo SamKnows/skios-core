@@ -14,7 +14,7 @@
 
 @protocol pViewManager <NSObject>
 
--(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_;
 -(void)performLayout;
 
 @optional

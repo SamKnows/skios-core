@@ -11,11 +11,12 @@
 
 @implementation SKSettingsMgr
 
-- (void)intialiseViewOnMasterView:(UIView*)masterView_
+- (void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_
 {
   self.backgroundColor = [UIColor clearColor];
   
-  self.masterView = masterView_;
+  self.masterViewController = masterViewController_;
+  self.masterView = masterViewController_.view;
   
   [self.tDataCapValue setDelegate:self];
   [self.tDataCapValue addTarget:self action:@selector(textChanged:) forControlEvents:UIControlEventEditingChanged];

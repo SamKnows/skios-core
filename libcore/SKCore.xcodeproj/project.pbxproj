@@ -72,6 +72,7 @@
 		B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */; };
 		B28006E019C970300008DF5F /* SKSBRunTestViewMgrController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */; };
 		B28006E319C9776D0008DF5F /* SKATestOverviewMetrics.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006E219C9776D0008DF5F /* SKATestOverviewMetrics.m */; };
+		B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = B282672A19E3F579003A4172 /* SKTestResultsSharer.m */; };
 		B28437AF18C8728400B3495E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28437AE18C8728400B3495E /* CoreText.framework */; };
 		B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */ = {isa = PBXBuildFile; fileRef = B297CE7918E0541800964CD3 /* UIView+SKView.m */; };
 		B2AE68151883DA4D00D87FAE /* SKAAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE67F41883DA4D00D87FAE /* SKAAboutController.m */; };
@@ -283,6 +284,8 @@
 		B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSBRunTestViewMgrController.m; sourceTree = "<group>"; };
 		B28006E119C9776D0008DF5F /* SKATestOverviewMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestOverviewMetrics.h; sourceTree = "<group>"; };
 		B28006E219C9776D0008DF5F /* SKATestOverviewMetrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestOverviewMetrics.m; sourceTree = "<group>"; };
+		B282672919E3F579003A4172 /* SKTestResultsSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestResultsSharer.h; sourceTree = "<group>"; };
+		B282672A19E3F579003A4172 /* SKTestResultsSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTestResultsSharer.m; sourceTree = "<group>"; };
 		B28437AE18C8728400B3495E /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		B297CE7818E0541800964CD3 /* UIView+SKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SKView.h"; sourceTree = "<group>"; };
 		B297CE7918E0541800964CD3 /* UIView+SKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SKView.m"; sourceTree = "<group>"; };
@@ -568,6 +571,8 @@
 		B22E5ED719D9713800666F16 /* NewViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B282672919E3F579003A4172 /* SKTestResultsSharer.h */,
+				B282672A19E3F579003A4172 /* SKTestResultsSharer.m */,
 				B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */,
 				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
 				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
@@ -1320,6 +1325,7 @@
 				B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */,
 				B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */,
 				B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */,
+				B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKInfoViewMgr.m in Sources */,
 				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
 				B2FB032F19B75D09007AA3C2 /* cTabController.m in Sources */,

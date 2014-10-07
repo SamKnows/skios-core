@@ -8,6 +8,7 @@
 
 #import "SKSBRunTestViewMgrController.h"
 #import "UIWelcomeView.h"
+#import "SKTestResultsSharer.h"
 
 #include <math.h>
 
@@ -16,9 +17,15 @@
 
 @interface SKSBRunTestViewMgrController()
 @property BOOL isWelcomePerformed;
+@property SKATestResults* mpTestResult;
+  // This may NOT be allocated locally, or it can get auto-released before we've finished using it!
+@property SKTestResultsSharer *mpSharer;
 @end
 
 @implementation SKSBRunTestViewMgrController
+
+@synthesize mpTestResult;
+@synthesize mpSharer;
 
 #pragma mark ProgressView
 
@@ -1368,34 +1375,34 @@ int sbSimulatorFakeConnectionToggle = 0;
     self.btShare.alpha = 0;
   }];
   
-  SKATestResults *testResults = [SKHistoryViewMgr sCreateNewTstToShareExternal];
-  testResults.testDateTime = [NSDate date];
-  testResults.downloadSpeed = -1;
-  testResults.uploadSpeed = -1;
-  testResults.latency = -1;
-  testResults.loss = -1;
-  testResults.jitter = -1;
+  mpTestResult = [SKHistoryViewMgr sCreateNewTstToShareExternal];
+  mpTestResult.testDateTime = [NSDate date];
+  mpTestResult.downloadSpeed = -1;
+  mpTestResult.uploadSpeed = -1;
+  mpTestResult.latency = -1;
+  mpTestResult.loss = -1;
+  mpTestResult.jitter = -1;
   
-  testResults.device = self.appDelegate.deviceModel;
-  testResults.os = [[UIDevice currentDevice] systemVersion];
-  testResults.carrier_name = self.appDelegate.carrierName;
-  testResults.country_code = self.appDelegate.countryCode;
-  //    [SKHistoryViewMgr sGetTstToShareExternal].iso_country_code;
-  [SKHistoryViewMgr sGetTstToShareExternal].network_code = self.appDelegate.networkCode;
+  mpTestResult.device = self.appDelegate.deviceModel;
+  mpTestResult.os = [[UIDevice currentDevice] systemVersion];
+  mpTestResult.carrier_name = self.appDelegate.carrierName;
+  mpTestResult.country_code = self.appDelegate.countryCode;
+  //    mpTestResult.iso_country_code;
+  mpTestResult.network_code = self.appDelegate.networkCode;
   
   if (!self.isConnected)
-    [SKHistoryViewMgr sGetTstToShareExternal].network_type = @"";
+    mpTestResult.network_type = @"";
   else
   {
     if (connectionStatus == WIFI)
     {
-      [SKHistoryViewMgr sGetTstToShareExternal].network_type = @"wi-fi'";
-      [SKHistoryViewMgr sGetTstToShareExternal].radio_type = @"";
+      mpTestResult.network_type = @"wi-fi'";
+      mpTestResult.radio_type = @"";
     }
     else
     {
-      [SKHistoryViewMgr sGetTstToShareExternal].network_type = @"mobile";
-      [SKHistoryViewMgr sGetTstToShareExternal].radio_type = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
+      mpTestResult.network_type = @"mobile";
+      mpTestResult.radio_type = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
     }
   }
   
@@ -1453,7 +1460,9 @@ int sbSimulatorFakeConnectionToggle = 0;
 
 - (IBAction)B_Share:(id)sender
 {
-  [historyViewMgr B_Share:historyViewMgr.btShare];
+  SK_ASSERT(mpTestResult != nil);
+  mpSharer = [[SKTestResultsSharer alloc] initWithViewController:self];
+  [mpSharer shareTest:mpTestResult];
 }
 
 @end

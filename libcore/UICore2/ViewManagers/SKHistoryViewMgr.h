@@ -24,12 +24,6 @@
 #define C_FILTER_PERIOD_3MONTHS  4
 #define C_FILTER_PERIOD_1YEAR  5
 
-#define C_SHARE_FACEBOOK    1
-#define C_SHARE_TWITTER    2
-#define C_SHARE_MAIL    3
-#define C_SHARE_SAVE    4
-
-
 @interface SKHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate, MFMailComposeViewControllerDelegate>
 {
     NSMutableArray *arrTestsList;
@@ -58,7 +52,6 @@
 
 @property (nonatomic, strong) cActionSheet* casNetworkType;
 @property (nonatomic, strong) cActionSheet* casPeriod;
-@property (nonatomic, strong) cActionSheet* casShare;
 
 +(SKATestResults *) sCreateNewTstToShareExternal;
 +(SKATestResults *) sGetTstToShareExternal;
@@ -67,7 +60,7 @@
 - (IBAction)B_Back:(id)sender;
 - (IBAction)B_Share:(id)sender;
 
--(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_;
 -(void)setColoursAndShowHideElements;
 -(void)performLayout;
 

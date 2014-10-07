@@ -20,7 +20,7 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   
-  [self.historyManagerView intialiseViewOnMasterView:self.view];
+  [self.historyManagerView intialiseViewOnMasterViewController:self];
   [self.historyManagerView setColoursAndShowHideElements];
   
   ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];

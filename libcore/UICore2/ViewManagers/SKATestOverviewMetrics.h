@@ -38,10 +38,6 @@
 //#define C_METRICS_STATUS_ERROR  3
 #define C_GUI_UPDATE_INTERVAL   0.2
 
-#define C_SHARE_FACEBOOK    1
-#define C_SHARE_TWITTER    2
-#define C_SHARE_MAIL    3
-#define C_SHARE_SAVE    4
 
 @interface SKATestOverviewMetrics : NSObject
 

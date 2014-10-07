@@ -22,7 +22,7 @@
 {
     bool isRunning;
     int testCells2Show;
-    SKHistoryViewMgr* historyViewMgr;
+    //SKHistoryViewMgr* historyViewMgr;
     
     float progressDownload;
     float progressUpload;
@@ -47,7 +47,6 @@
     int layoutCurrent;
     
     NSInteger connectionStatus;
-    SKATestResults* selectedTest;
 }
 
 @property (nonatomic, strong) cActionSheet* casTestTypes;

@@ -43,7 +43,7 @@ enum {
 - (IBAction)B_ClearDatabase:(id)sender;
 - (IBAction)B_ExportResults:(id)sender;
 
--(void)intialiseViewOnMasterView:(UIView*)masterView_;
+-(void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_;
 -(void)setColoursAndShowHideElements;
 -(void)performLayout;
 
