@@ -83,7 +83,7 @@
 @property (nonatomic) Reachability *internetReachability;
 @property (nonatomic) Reachability *wifiReachability;
 
-@property BOOL isConnected;
+-(BOOL) getIsConnected;
 
 -(IBAction)B_SelectTests:(id)sender;
 -(void)intialiseViewOnMasterView;

@@ -371,53 +371,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   return NO;
 }
 
+-(BOOL) getIsConnected {
+  return [[SKAAppDelegate getAppDelegate] getIsConnected];
+}
+
 - (void)reachabilityStatusChanged:(NSNotification*)notification
 {
-  Reachability* curReach;
-  
-  if (notification == nil)
-  {
-    curReach = self.internetReachability;
-  }
-  else
-  {
-    curReach = notification.object;
-  }
-  
-  NetworkStatus netStatus = [((Reachability*)curReach) currentReachabilityStatus];
-  
-  switch (netStatus)
-  {
-    case NotReachable:
-    {
-      connectionStatus = NONE;
-      self.isConnected = NO;
-      break;
-    }
-      
-    case ReachableViaWiFi:
-    {
-      if ([curReach isInterventionRequired])
-      {
-        self.isConnected = NO;
-        connectionStatus = NONE;
-      }
-      else
-      {
-        self.isConnected = ![curReach isConnectionRequired];
-        connectionStatus = self.isConnected ? WIFI : NONE;
-      }
-      
-      break;
-    }
-      
-    case ReachableViaWWAN:
-    {
-      self.isConnected = ![curReach isConnectionRequired];
-      connectionStatus = self.isConnected ? CELLULAR : NONE;
-      break;
-    }
-  }
   [self updateRadioType];
 }
 
@@ -496,9 +455,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)updateRadioType
 {
-  if (!self.isConnected) {
+  if ([[SKAAppDelegate getAppDelegate] getIsConnected] == NO) {
     [self.tmActivityIndicator setTopInfo:@"No connection"];
   } else {
+    connectionStatus = [SKAAppDelegate getAppDelegate].connectionStatus;
+    
     if (connectionStatus == WIFI) {
       [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
     } else {
@@ -507,23 +468,23 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }
 }
 
-#if TARGET_IPHONE_SIMULATOR
-int sbSimulatorFakeConnectionToggle = 0;
-#endif // TARGET_IPHONE_SIMULATOR
+//#if TARGET_IPHONE_SIMULATOR
+//int sbSimulatorFakeConnectionToggle = 0;
+//#endif // TARGET_IPHONE_SIMULATOR
 
 -(void)buttonPressed
 {
-#if TARGET_IPHONE_SIMULATOR
-  // Force UI to update!
-  if (sbSimulatorFakeConnectionToggle == 1) {
-    [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
-    sbSimulatorFakeConnectionToggle = 0;
-  }
-  else {
-    [self.tmActivityIndicator setTopInfo:@"No connection"];
-    sbSimulatorFakeConnectionToggle = 1;
-  }
-#endif // TARGET_IPHONE_SIMULATOR
+//#if TARGET_IPHONE_SIMULATOR
+//  // Force UI to update!
+//  if (sbSimulatorFakeConnectionToggle == 1) {
+//    [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
+//    sbSimulatorFakeConnectionToggle = 0;
+//  }
+//  else {
+//    [self.tmActivityIndicator setTopInfo:@"No connection"];
+//    sbSimulatorFakeConnectionToggle = 1;
+//  }
+//#endif // TARGET_IPHONE_SIMULATOR
   
   self.tvCurrentResults.hidden = NO;
   
@@ -1297,7 +1258,7 @@ int sbSimulatorFakeConnectionToggle = 0;
       
       [cell setResultDownload:[testResultsArray objectAtIndex:indexPath.row + C_DOWNLOAD_TEST] upload:[testResultsArray objectAtIndex:indexPath.row + C_UPLOAD_TEST] latency:[testResultsArray objectAtIndex:indexPath.row + C_LATENCY_TEST] loss:[testResultsArray objectAtIndex:indexPath.row + C_LOSS_TEST] jitter:[testResultsArray objectAtIndex:indexPath.row + C_JITTER_TEST]];
       
-      if (!self.isConnected)
+      if ([self getIsConnected] == NO)
       {
         cell.ivNetworkType = nil;
       }
@@ -1390,7 +1351,7 @@ int sbSimulatorFakeConnectionToggle = 0;
   //    mpTestResult.iso_country_code;
   mpTestResult.network_code = self.appDelegate.networkCode;
   
-  if (!self.isConnected)
+  if ([self getIsConnected] == NO)
     mpTestResult.network_type = @"";
   else
   {
