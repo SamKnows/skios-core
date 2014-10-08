@@ -7,7 +7,7 @@
 
 #import "SKASettingsController.h"
 #import "SKAAppDelegate.h"
-
+#import "SKAMainResultsController.h"
 
 @interface SKASettingsController ()
 
@@ -32,6 +32,15 @@
   self.latitudeLabel.text = NSLocalizedString(@"latitude",nil);
   self.longitudeLabel.text = NSLocalizedString(@"longitude",nil);
   self.dateLabel.text = NSLocalizedString(@"date",nil);
+  
+  // Added for new app
+  self.exportResultsLabel.text = NSLocalizedString(@"Menu_Export",nil);
+  self.termsAndConditionsLabel.text = NSLocalizedString(@"Menu_TermsOfUse",nil);
+  self.lblAboutCaption.text = NSLocalizedString(@"About_Version",nil);
+  NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+  NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
+  NSString *displayVersion = [NSString stringWithFormat:@"%@.%@", appVersion, bundleVersion];
+  self.lblAboutVersion.text = displayVersion;
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -283,7 +292,25 @@ enum {
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
     [SKAAppDelegate setIsActivated:NO];
     [self SKSafePerformSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
+  } else if ([cell.reuseIdentifier isEqualToString:@"export_results"]) {
+    UIViewController *fromThisVC = self;
+    id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
+    
+    [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
   }
+}
+
+
+//
+//
+//
+
+
+// The mail compose view controller delegate method
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+  // In your own app, you could use the delegate to track whether the user sent or canceled the email by examining the value in the result parameter.
+  [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

@@ -7,7 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SKASettingsController : UITableViewController <UIAlertViewDelegate, UITextFieldDelegate>
+#import <MessageUI/MessageUI.h>
+
+@interface SKASettingsController : UITableViewController <UIAlertViewDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
 
 // Simple labels
 @property (weak, nonatomic) IBOutlet UILabel *lblConfig;
@@ -36,4 +38,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *latitudeValue;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateValue;
+
+// Added for New App
+@property (weak, nonatomic) IBOutlet UILabel *exportResultsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *termsAndConditionsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lblAboutCaption;
+@property (weak, nonatomic) IBOutlet UILabel *lblAboutVersion;
+
 @end

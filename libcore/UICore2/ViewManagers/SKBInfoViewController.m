@@ -24,6 +24,20 @@
   
   ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
   ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+  
+  self.title = NSLocalizedString(@"Menu_TermsOfUse", @"");
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  
+  [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  
+  [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 @end

@@ -22,6 +22,10 @@
   
 //  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
 //  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+ 
+  for (UITabBarItem *item in self.tabBar.items) {
+    [item setTitle:NSLocalizedString(item.title, @"")];
+  }
 }
 
 -(void)viewWillAppear:(BOOL)animated
