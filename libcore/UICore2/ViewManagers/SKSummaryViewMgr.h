@@ -117,8 +117,8 @@
 -(void)setColoursAndShowHideElements;
 //-(void)performLayout;
 
-@property (retain, nonatomic) IBOutlet NSLayoutConstraint* backButtonHeightConstraint;
-@property (retain, nonatomic) IBOutlet NSLayoutConstraint* backButtonTopOffsetConstraint;
+//@property (retain, nonatomic) IBOutlet NSLayoutConstraint* backButtonHeightConstraint;
+//@property (retain, nonatomic) IBOutlet NSLayoutConstraint* backButtonTopOffsetConstraint;
 @property (retain, nonatomic) IBOutlet NSLayoutConstraint* chartHeightConstraint;
 
 @end

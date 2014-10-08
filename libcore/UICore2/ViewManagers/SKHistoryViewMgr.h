@@ -69,7 +69,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btGraph;
 @property (weak, nonatomic) IBOutlet UIButton *btShare;
 
-@property (retain, nonatomic) IBOutlet NSLayoutConstraint* backButtonHeightConstraint;
+//@property (retain, nonatomic) IBOutlet NSLayoutConstraint* backButtonHeightConstraint;
 @property (retain, nonatomic) IBOutlet NSLayoutConstraint* shareButtonTopOffsetConstraint;
 
 @end

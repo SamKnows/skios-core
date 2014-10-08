@@ -1048,7 +1048,16 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self resetProgressView];
                      [self.casStatusView setText:@"Tests executed" forever:YES];
                      self.lClosest.text = @"Press the Start button to run again";
-                     self.btShare.alpha = 1;
+                    
+                     if ([self.mpTestResult.network_type isEqualToString:@"mobile"])
+                     {
+                       // Only show if NETWORK!
+                       self.btShare.alpha = 1;
+                       self.btShare.userInteractionEnabled = YES;
+                     } else {
+                       self.btShare.alpha = 0;
+                       self.btShare.userInteractionEnabled = NO;
+                     }
                    }];
                    
                    [self setIsRunning:NO];

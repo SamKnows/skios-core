@@ -321,10 +321,11 @@
   else
     self.lResultJitter.text = [NSString stringWithFormat:@"%.0f ms", testResult.jitter];
   
-  if ([testResult_.network_type isEqualToString:@"mobile"])
+  if ([testResult_.network_type isEqualToString:@"mobile"]) {
     self.ivNetworkType.image  = [UIImage imageNamed:@"sgsm.png"];
-  else
+  } else {
     self.ivNetworkType.image = [UIImage imageNamed:@"swifi.png"];
+  }
   
   y = 100;
   

@@ -25,9 +25,6 @@
   
   self.backgroundColor = [UIColor clearColor];
   
-  // Remove the GREEN that we have there for debugging!
-  self.btBack.backgroundColor = [UIColor clearColor];
-  
   self.masterView = masterView_;
   
   [cActionSheet formatView:self.btNetworkType];
@@ -35,8 +32,6 @@
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
   currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
-  
-  self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
   
   // Set table to clear background colour!
   // http://stackoverflow.com/questions/18878258/uitableviewcell-show-white-background-and-cannot-be-modified-on-ios7
@@ -740,7 +735,6 @@
   
   CGFloat chartMoveUpToY = self.tvTests.frame.origin.y + cellFrame.size.height;
   SK_ASSERT(chartMoveUpToY >= 20.0);
-  CGFloat chartWidth = self.frame.size.width;
   // Account for TOOLBAR!
   const CGFloat cUITabBarHeight = 20.0; // 56.0;
   CGFloat chartHeight = (self.frame.size.height - cUITabBarHeight) - chartMoveUpToY;
@@ -749,12 +743,7 @@
   // Immediately position at the top of the table.
   cellContentView2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, mRestoreToY, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
   [self addSubview:cellContentView2putBack];
-  [self bringSubviewToFront:self.btBack];
   
-  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
-  [self layoutIfNeeded];
-  self.backButtonTopOffsetConstraint.constant = self.masterView.frame.size.height + 1;
-  //self.btBack.frame = CGRectMake(0, 0, 0, 0);
   // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
   [self layoutIfNeeded];
   
@@ -787,13 +776,13 @@
                        } completion:^(BOOL finished) {
                          // Animation, to put the button in the same place.
                          //self.btBack.frame = cellContentView2putBack.frame;
-                         self.backButtonTopOffsetConstraint.constant = 0; // Align to the top of the table view!
+                         //self.backButtonTopOffsetConstraint.constant = 0; // Align to the top of the table view!
                          // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
                          [self layoutIfNeeded];
                          
                          //[self.vChart setNeedsDisplay];
-                         [self bringSubviewToFront:self.btBack];
                          self.btBack.userInteractionEnabled = YES;
+                         [self bringSubviewToFront:self.btBack];
                          
                          //self.vChart.frame = CGRectMake(200, 200, 200, 200);
                          //[self.vChart setNeedsDisplay];
@@ -809,13 +798,14 @@
   // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
   [self layoutIfNeeded];
   
+  self.btBack.userInteractionEnabled = NO;
+  [self sendSubviewToBack:self.btBack];
+  
   dispatch_async(dispatch_get_main_queue(), ^{
     
     [UIView animateWithDuration:0.3 animations:^{
       
       cellContentView2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
-      
-      self.btBack.userInteractionEnabled = NO;
       
       //self.vChart.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 0);
       self.chartHeightConstraint.constant = 0.0;
@@ -838,6 +828,7 @@
         [cell2putBack addSubview:cellContentView2putBack];
         
         cellContentView2putBack.frame = cell2putBack.bounds;
+        
       }];
     }];
   });

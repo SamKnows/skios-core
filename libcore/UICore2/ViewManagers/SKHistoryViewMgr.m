@@ -44,13 +44,7 @@
   currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
 
   // Ensure that the back button is properly sized!
-  self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
-  
-  // Remove constraints to allow dynamic positioning, if we required.
-//  [self.btBack setTranslatesAutoresizingMaskIntoConstraints:YES];
-//  [self.btBack removeConstraints:self.btShare.constraints];
-//  [self.btShare setTranslatesAutoresizingMaskIntoConstraints:YES];
-//  [self.btShare removeConstraints:self.btShare.constraints];
+  //self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
   
   [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType WithState:1];
   
@@ -147,13 +141,13 @@
   [view2putBack removeFromSuperview];
   view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
   [self addSubview:view2putBack];
+  
+  self.btBack.userInteractionEnabled = YES;
   [self bringSubviewToFront:self.btBack];
   
   // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
   [self layoutIfNeeded];
   self.shareButtonTopOffsetConstraint.constant = self.masterView.frame.size.height + 1;
-  //self.btBack.frame = CGRectMake(0, 0, 0, 0);
-  //self.btShare.frame = CGRectMake(10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
   // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
   [self layoutIfNeeded];
   
@@ -182,6 +176,9 @@
                          
                          self.btShare.alpha = 1;
                          [self showMetrics];
+                      
+                         // Bring share button to front, in case required!
+                         [self bringSubviewToFront:self.btShare];
                          
                          // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
                          [self layoutIfNeeded];
@@ -321,78 +318,92 @@ static SKATestResults* testToShareExternal = nil;
 }
 
 - (IBAction)B_Back:(id)sender {
+  // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes
+  [self layoutIfNeeded];
+  
+  self.btBack.userInteractionEnabled = NO;
+  [self sendSubviewToBack:self.btBack];
+  [self sendSubviewToBack:self.btShare];
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    [UIView animateWithDuration:0.3 animations:^{
+      
+      view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
+      
+      [self hideMetrics];
+      self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+      self.btShare.alpha = 0;
+      
+      
+    } completion:^(BOOL finished) {
+      
+      self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
+      
+      float tableAnimationTime = 0.3;
+      
+      [UIView animateWithDuration:tableAnimationTime animations:^{
+        self.tvTests.alpha = 1;
+        self.tvTests.frame = CGRectMake(0, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
+      } completion:^(BOOL finished) {
         
-        [UIView animateWithDuration:0.3 animations:^{
-            
-            view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
-            
-            [self hideMetrics];
-            self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
-            self.btShare.alpha = 0;
-          
-            
-        } completion:^(BOOL finished) {
-            
-            self.tvTests.frame = CGRectMake(- self.tvTests.frame.size.width, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
-            
-            float tableAnimationTime = 0.3;
-          
-            [UIView animateWithDuration:tableAnimationTime animations:^{
-                self.tvTests.alpha = 1;
-                self.tvTests.frame = CGRectMake(0, self.tvTests.frame.origin.y, self.tvTests.frame.size.width, self.tvTests.frame.size.height);
-            } completion:^(BOOL finished) {
-                
-                [view2putBack removeFromSuperview];
-                [cell2putBack addSubview:view2putBack];
-                
-                view2putBack.frame = cell2putBack.bounds;
-                self.btShare.hidden = NO;
-                
-                [self destroyMetrics];
-            }];
-        }];
-    });
+        [view2putBack removeFromSuperview];
+        [cell2putBack addSubview:view2putBack];
+        
+        view2putBack.frame = cell2putBack.bounds;
+        self.btShare.hidden = YES;
+        
+        [self destroyMetrics];
+      }];
+    }];
+  });
 }
 
 -(void)printPassiveMetrics:(SKATestResults*)testResult_
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        y = [cTabController sGet_GUI_MULTIPLIER] * 110;
-    else
-        y = [cTabController sGet_GUI_MULTIPLIER] * 120;
-    
-    arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:[testResult_ numberOfOptionalMetrics]];
-    
-    [self placeMetrics:testResult_.device withLabelTextID:@"Phone"];
-    [self placeMetrics:testResult_.os withLabelTextID:@"OS"];
-    [self placeMetrics:testResult_.carrier_name withLabelTextID:@"Carrier_Name"];
-    [self placeMetrics:testResult_.country_code withLabelTextID:@"Carrier_Country"];
-    [self placeMetrics:testResult_.iso_country_code withLabelTextID:@"Carrier_ISO"];
-    [self placeMetrics:testResult_.network_code withLabelTextID:@"Carrier_Network"];
-    
-    if (testResult_.radio_type.length > 0)
-    {
-        NSString* networkType;
-        networkType = NSLocalizedString(@"Unknown",nil);
-        if ([testResult_.network_type isEqualToString:@"network"]) {
-            networkType = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
-        } else if ([testResult_.network_type isEqualToString:@"mobile"]) {
-            
-            NSString *mobileString = NSLocalizedString(@"NetworkTypeMenu_Mobile",nil);
-            
-            NSString *theRadio = [SKGlobalMethods getNetworkTypeLocalized:testResult_.radio_type];
-            if ([theRadio isEqualToString:NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil)]) {
-                networkType = mobileString;
-            } else {
-                networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
-            }
-        }
-        
-        [self placeMetrics:networkType withLabelTextID:@"Network_Type"];
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    y = [cTabController sGet_GUI_MULTIPLIER] * 110;
+  else
+    y = [cTabController sGet_GUI_MULTIPLIER] * 120;
+  
+  arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:[testResult_ numberOfOptionalMetrics]];
+  
+  [self placeMetrics:testResult_.device withLabelTextID:@"Phone"];
+  [self placeMetrics:testResult_.os withLabelTextID:@"OS"];
+  [self placeMetrics:testResult_.carrier_name withLabelTextID:@"Carrier_Name"];
+  [self placeMetrics:testResult_.country_code withLabelTextID:@"Carrier_Country"];
+  [self placeMetrics:testResult_.iso_country_code withLabelTextID:@"Carrier_ISO"];
+  [self placeMetrics:testResult_.network_code withLabelTextID:@"Carrier_Network"];
+  
+  // Only allow MOBILE results to be shared!
+  self.btShare.hidden = YES;
+  [self sendSubviewToBack:self.btShare];
+  
+  if (testResult_.radio_type.length > 0)
+  {
+    NSString* networkType;
+    networkType = NSLocalizedString(@"Unknown",nil);
+    if ([testResult_.network_type isEqualToString:@"network"]) {
+      networkType = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
+    } else if ([testResult_.network_type isEqualToString:@"mobile"]) {
+      
+      // Only allow MOBILE results to be shared!
+      self.btShare.hidden = NO;
+      [self bringSubviewToFront:self.btShare];
+      
+      NSString *mobileString = NSLocalizedString(@"NetworkTypeMenu_Mobile",nil);
+      
+      NSString *theRadio = [SKGlobalMethods getNetworkTypeLocalized:testResult_.radio_type];
+      if ([theRadio isEqualToString:NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil)]) {
+        networkType = mobileString;
+      } else {
+        networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
+      }
     }
-    [self placeMetrics:testResult_.target withLabelTextID:@"Target"];
+    
+    [self placeMetrics:networkType withLabelTextID:@"Network_Type"];
+  }
+  [self placeMetrics:testResult_.target withLabelTextID:@"Target"];
 }
 
 -(void)placeMetrics:(NSString*)text_ withLabelTextID:(NSString*)labelTextID_
@@ -430,7 +441,7 @@ static SKATestResults* testToShareExternal = nil;
     for (UILabel* l in arrPassiveLabelsAndValues) {
         l.frame = CGRectMake(l.frame.origin.x, self.bounds.size.height + l.frame.origin.y, l.frame.size.width, l.frame.size.height);
     }
-    self.btBack.userInteractionEnabled = NO;
+    //self.btBack.userInteractionEnabled = NO;
 }
 
 -(void)showMetrics
@@ -438,7 +449,7 @@ static SKATestResults* testToShareExternal = nil;
     for (UILabel* l in arrPassiveLabelsAndValues) {
         l.frame = CGRectMake(l.frame.origin.x, l.frame.origin.y - self.bounds.size.height, l.frame.size.width, l.frame.size.height);
     }
-    self.btBack.userInteractionEnabled = YES;
+    //self.btBack.userInteractionEnabled = YES;
 }
 
 - (IBAction)B_Share:(id)sender
