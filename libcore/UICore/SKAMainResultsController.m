@@ -684,19 +684,29 @@ NSMutableArray *GArrayForResultsController;
   
   if (actionSheet.tag == ACTION_RUN) {
     if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Download",nil)]) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self runTests:DOWNLOAD_TEST];
+      });
     }
     else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Upload",nil)]) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self runTests:UPLOAD_TEST];
+      });
     }
     else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_LatencyLoss",nil)]) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self runTests:LATENCY_TEST];
+      });
     }
     else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Jitter",nil)]) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self runTests:JITTER_TEST];
+      });
     }
     else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_All",nil)]) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self runTests:ALL_TESTS];
+      });
     } else {
       SK_ASSERT(false);
     }
