@@ -91,7 +91,6 @@
 //
 // Added for storyboard rework...
 //
-@property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC1;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC2;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC3;

@@ -16,7 +16,6 @@
 #define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
 
 @interface SKSBRunTestViewMgrController()
-@property BOOL isWelcomePerformed;
 @property SKATestResults* mpTestResult;
   // This may NOT be allocated locally, or it can get auto-released before we've finished using it!
 @property SKTestResultsSharer *mpSharer;
@@ -53,8 +52,6 @@
   //self.vC1.backgroundColor = [UIColor clearColor];
 //  self.vC1.innerColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
   //self.vC1.outerColor = [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
-
-  [self.view  bringSubviewToFront:self.vWelcomeView];
  
   [self View_OnLoadTweakControls];
 }
@@ -96,41 +93,15 @@
 
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
- 
-  self.vWelcomeView.frame = self.view.bounds;
-  [self.vWelcomeView initializeWelcomeText];
-  
-  if (self.isWelcomePerformed) self.vWelcomeView.hidden = YES;
 }
 
 -(void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   
-  if (self.isWelcomePerformed) //Came back from activation
+  if ([[SKAAppDelegate getAppDelegate] isActivated] == NO)
   {
-    
-  }
-  else
-  {
-    self.isWelcomePerformed = YES;
-    [self.vWelcomeView startAnimationOnCompletion:^{
-      
-      if ([[SKAAppDelegate getAppDelegate] isActivated] == NO)
-      {
-        [self SKSafePerformSegueWithIdentifier:@"segueActivate" sender:self];
-        return;
-      }
-      
-      [UIView animateWithDuration:0.3 animations:^{
-        
-        self.vWelcomeView.alpha = 0;
-        
-      } completion:^(BOOL finished) {
-        
-        self.vWelcomeView.hidden = YES;
-        
-      }];
-    }];
+    [self SKSafePerformSegueWithIdentifier:@"segueActivate" sender:self];
+    return;
   }
 }
 
