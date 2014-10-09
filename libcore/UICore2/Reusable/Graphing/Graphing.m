@@ -155,34 +155,37 @@
 
 -(void)drawRect:(CGRect)rect
 {
-    [super drawRect:rect];
-
-    context = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(context);
-    {
-        if (self.arrValues.count > 0) [self drawChartFrom:self.arrValues];
-        [self drawXAxis];
-        [self drawYAxis];
-
-        NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-        [style setAlignment:NSTextAlignmentCenter];
-        
-        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    self.fontChartTitle, NSFontAttributeName,
-                                    style, NSParagraphStyleAttributeName,
-                                    [UIColor whiteColor], NSForegroundColorAttributeName,
-                                    nil];
-
-        [self.chartTitle drawInRect:CGRectMake(0, 0, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
-
-        attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                      self.fontYAxisTitle, NSFontAttributeName,
-                      style, NSParagraphStyleAttributeName,
-                      [UIColor whiteColor], NSForegroundColorAttributeName,
-                      nil];
-
-        [self.axisYTitle drawInRect:CGRectMake(0, C_Y_INSET_TOP - 4 * self.fontYScale.pointSize, C_X_INSET_LEFT, [cTabController sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
+  [super drawRect:rect];
+  
+  context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  {
+    if (self.arrValues.count > 0) {
+      [self drawChartFrom:self.arrValues];
     }
+    
+    [self drawXAxis];
+    [self drawYAxis];
+    
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [style setAlignment:NSTextAlignmentCenter];
+    
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                self.fontChartTitle, NSFontAttributeName,
+                                style, NSParagraphStyleAttributeName,
+                                [UIColor whiteColor], NSForegroundColorAttributeName,
+                                nil];
+    
+    [self.chartTitle drawInRect:CGRectMake(0, 0, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
+    
+    attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                  self.fontYAxisTitle, NSFontAttributeName,
+                  style, NSParagraphStyleAttributeName,
+                  [UIColor whiteColor], NSForegroundColorAttributeName,
+                  nil];
+    
+    [self.axisYTitle drawInRect:CGRectMake(0, C_Y_INSET_TOP - 4 * self.fontYScale.pointSize, C_X_INSET_LEFT, [cTabController sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
+  }
 }
 
 -(void)drawXAxis
@@ -294,100 +297,102 @@
 
 -(void)drawChartFrom:(NSMutableArray*)arrValues_
 {
-    bool started = NO;
-    cGraphValue* dataValue;
-    CGPoint point = CGPointMake(C_X_INSET_LEFT, 0);
-    CGPoint point0 = point;
+  bool started = NO;
+  cGraphValue* dataValue;
+  CGPoint point = CGPointMake(C_X_INSET_LEFT, 0);
+  CGPoint point0 = point;
   
-    CGContextSaveGState(context);
+  CGContextSaveGState(context);
+  
+  float xLength = self.bounds.size.width - C_X_INSET_LEFT - C_X_INSET_RIGHT;
+  float yLength = self.bounds.size.height - C_Y_INSET_TOP - C_Y_INSET_BOTTOM;
+  
+  UIBezierPath *aPath = [UIBezierPath bezierPath];
+  UIBezierPath *aPathTop = [UIBezierPath bezierPath];
+  
+  if (arrValues_.count == 0) {
+    return;
+  }
+  
+  for (int i = 0; i < arrValues_.count; i++)
+  {
+    dataValue = arrValues_[i];
     
-    float xLength = self.bounds.size.width - C_X_INSET_LEFT - C_X_INSET_RIGHT;
-    float yLength = self.bounds.size.height - C_Y_INSET_TOP - C_Y_INSET_BOTTOM;
+    //        if (dataValue.sum / dataValue.numberOfElements > 70)
+    //            NSLog(@">=70");
+    //        
+    //        dataValue.sum = 70;
+    //        dataValue.numberOfElements = 1;
     
-    UIBezierPath *aPath = [UIBezierPath bezierPath];
-    UIBezierPath *aPathTop = [UIBezierPath bezierPath];
-   
-    if (arrValues_.count == 0) return;
-    
-    for (int i = 0; i < arrValues_.count; i++)
+    if (dataValue.active)
     {
-        dataValue = arrValues_[i];
-        
-//        if (dataValue.sum / dataValue.numberOfElements > 70)
-//            NSLog(@">=70");
-//        
-//        dataValue.sum = 70;
-//        dataValue.numberOfElements = 1;
-        
-        if (dataValue.active)
-        {
-            point = CGPointMake(i * xLength / arrValues_.count + C_X_INSET_LEFT, - dataValue.sum / dataValue.numberOfElements * yLength / (self.yMax - self.yMin) + self.bounds.size.height - C_Y_INSET_BOTTOM);
-
-            if (started)
-            {
-                [aPath addLineToPoint:point];
-                [aPathTop addLineToPoint:point];
-            }
-            else
-            {
-                started = YES;
-                [aPath moveToPoint:point];
-                [aPathTop moveToPoint:point];
-                point0 = point;
-            }
-        }
+      point = CGPointMake(i * xLength / arrValues_.count + C_X_INSET_LEFT, - dataValue.sum / dataValue.numberOfElements * yLength / (self.yMax - self.yMin) + self.bounds.size.height - C_Y_INSET_BOTTOM);
+      
+      if (started)
+      {
+        [aPath addLineToPoint:point];
+        [aPathTop addLineToPoint:point];
+      }
+      else
+      {
+        started = YES;
+        [aPath moveToPoint:point];
+        [aPathTop moveToPoint:point];
+        point0 = point;
+      }
     }
-    
-    point.y = self.bounds.size.height - C_Y_INSET_BOTTOM;
-    [aPath addLineToPoint:point];
-    point = point0;
-    point.y = self.bounds.size.height - C_Y_INSET_BOTTOM;
-    [aPath addLineToPoint:point];
-    [aPath addLineToPoint:point0];
-    
-    CGContextSetFillColorWithColor(context, [UIColor orangeColor].CGColor);
-    CGContextSetStrokeColorWithColor(context, [UIColor clearColor].CGColor);
-    [aPath stroke];
-    
-    [aPath addClip];
-    
+  }
+  
+  point.y = self.bounds.size.height - C_Y_INSET_BOTTOM;
+  [aPath addLineToPoint:point];
+  point = point0;
+  point.y = self.bounds.size.height - C_Y_INSET_BOTTOM;
+  [aPath addLineToPoint:point];
+  [aPath addLineToPoint:point0];
+  
+  CGContextSetFillColorWithColor(context, [UIColor orangeColor].CGColor);
+  CGContextSetStrokeColorWithColor(context, [UIColor clearColor].CGColor);
+  [aPath stroke];
+  
+  [aPath addClip];
+  
 #define C_BACK_GRAY_DARK 80.0
 #define C_BACK_GRAY_LIGHT 240.0
-    
-    size_t num_locations            = 2;
-    CGFloat locations[2]            = {0.1, 0.9};
-
-    CGFloat colorComponents[8]      = {C_BACK_GRAY_DARK/255.0, C_BACK_GRAY_DARK/255.0, C_BACK_GRAY_DARK/255.0, 1.0,
-        C_BACK_GRAY_LIGHT/255.0, C_BACK_GRAY_LIGHT/255.0, C_BACK_GRAY_LIGHT/255.0, 1.0};
-    CGColorSpaceRef myColorspace    = CGColorSpaceCreateDeviceRGB();
-    CGGradientRef gradient          = CGGradientCreateWithColorComponents (myColorspace, colorComponents, locations, num_locations);
-    
-    CGPoint centerPoint             = CGPointMake(self.bounds.size.width / 2.0,
-                                                  self.bounds.size.height / 2.0);
-    
-    // Draw the gradient
-    CGContextDrawRadialGradient(context, gradient, centerPoint, self.bounds.size.width, centerPoint, 0, (kCGGradientDrawsBeforeStartLocation));
-    
-    CGGradientRelease(gradient);
-    CGColorSpaceRelease(myColorspace);
-
-    CGContextBeginPath(context);
-    CGContextSetLineWidth(context, 0.5);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
-    
-    float xStep = (self.bounds.size.width - C_X_INSET_LEFT - C_X_INSET_RIGHT) / (self.arrLabelsX.count - 1);
-    for (int i = 0; i < self.arrLabelsX.count; i++) {
-        CGContextMoveToPoint(context, C_X_INSET_LEFT + i * (xStep), self.bounds.size.height - C_Y_INSET_BOTTOM);
-        CGContextAddLineToPoint(context, C_X_INSET_LEFT + i * (xStep), C_Y_INSET_TOP);
-    }
-    CGContextStrokePath(context);
-
-    CGContextRestoreGState(context);
-    
-    CGContextSetStrokeColorWithColor(context, [UIColor cornflowerColor].CGColor);
-    [aPathTop stroke];
-    
-    CGContextRestoreGState(context);
+  
+  size_t num_locations            = 2;
+  CGFloat locations[2]            = {0.1, 0.9};
+  
+  CGFloat colorComponents[8]      = {C_BACK_GRAY_DARK/255.0, C_BACK_GRAY_DARK/255.0, C_BACK_GRAY_DARK/255.0, 1.0,
+    C_BACK_GRAY_LIGHT/255.0, C_BACK_GRAY_LIGHT/255.0, C_BACK_GRAY_LIGHT/255.0, 1.0};
+  CGColorSpaceRef myColorspace    = CGColorSpaceCreateDeviceRGB();
+  CGGradientRef gradient          = CGGradientCreateWithColorComponents (myColorspace, colorComponents, locations, num_locations);
+  
+  CGPoint centerPoint             = CGPointMake(self.bounds.size.width / 2.0,
+                                                self.bounds.size.height / 2.0);
+  
+  // Draw the gradient
+  CGContextDrawRadialGradient(context, gradient, centerPoint, self.bounds.size.width, centerPoint, 0, (kCGGradientDrawsBeforeStartLocation));
+  
+  CGGradientRelease(gradient);
+  CGColorSpaceRelease(myColorspace);
+  
+  CGContextBeginPath(context);
+  CGContextSetLineWidth(context, 0.5);
+  CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+  
+  float xStep = (self.bounds.size.width - C_X_INSET_LEFT - C_X_INSET_RIGHT) / (self.arrLabelsX.count - 1);
+  for (int i = 0; i < self.arrLabelsX.count; i++) {
+    CGContextMoveToPoint(context, C_X_INSET_LEFT + i * (xStep), self.bounds.size.height - C_Y_INSET_BOTTOM);
+    CGContextAddLineToPoint(context, C_X_INSET_LEFT + i * (xStep), C_Y_INSET_TOP);
+  }
+  CGContextStrokePath(context);
+  
+  CGContextRestoreGState(context);
+  
+  CGContextSetStrokeColorWithColor(context, [UIColor cornflowerColor].CGColor);
+  [aPathTop stroke];
+  
+  CGContextRestoreGState(context);
 }
 @end
 

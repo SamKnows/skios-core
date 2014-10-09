@@ -48,10 +48,20 @@
                                              object:nil];
 }
 
+static BOOL sbReloadTableAfterBack = NO;
+
 -(void)updateTestList:(NSNotification *) notification
 {
   if ([[notification name] isEqualToString:@"TestListNeedsUpdate"]) {
-    [self loadData];
+    
+    if (self.btBack.userInteractionEnabled == YES) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        sbReloadTableAfterBack = YES;
+        [self B_Back:nil];
+      });
+    } else {
+      [self loadData];
+    }
   }
 }
 
@@ -544,18 +554,18 @@
       self.vChart.yMax = gv.sum / gv.numberOfElements;
   }
   
-  if (((cGraphValue*)[self.vChart.arrValues firstObject]).active == NO)
-  {
-    ((cGraphValue*)[self.vChart.arrValues firstObject]).sum = 0;
-    ((cGraphValue*)[self.vChart.arrValues firstObject]).numberOfElements = 1;
-    ((cGraphValue*)[self.vChart.arrValues firstObject]).active = YES;
-  }
-  if (((cGraphValue*)[self.vChart.arrValues lastObject]).active == NO)
-  {
-    ((cGraphValue*)[self.vChart.arrValues lastObject]).sum = 0;
-    ((cGraphValue*)[self.vChart.arrValues lastObject]).numberOfElements = 1;
-    ((cGraphValue*)[self.vChart.arrValues lastObject]).active = YES;
-  }
+//  if (((cGraphValue*)[self.vChart.arrValues firstObject]).active == NO)
+//  {
+//    ((cGraphValue*)[self.vChart.arrValues firstObject]).sum = 0;
+//    ((cGraphValue*)[self.vChart.arrValues firstObject]).numberOfElements = 1;
+//    ((cGraphValue*)[self.vChart.arrValues firstObject]).active = YES;
+//  }
+//  if (((cGraphValue*)[self.vChart.arrValues lastObject]).active == NO)
+//  {
+//    ((cGraphValue*)[self.vChart.arrValues lastObject]).sum = 0;
+//    ((cGraphValue*)[self.vChart.arrValues lastObject]).numberOfElements = 1;
+//    ((cGraphValue*)[self.vChart.arrValues lastObject]).active = YES;
+//  }
   
   [self.vChart setupYAxis];
   [self.vChart setupXAxis:currentFilterPeriod withStartDate:previousDate];
@@ -829,6 +839,10 @@
         
         cellContentView2putBack.frame = cell2putBack.bounds;
         
+        if (sbReloadTableAfterBack == YES) {
+          sbReloadTableAfterBack = NO;
+          [self loadData];
+        }
       }];
     }];
   });
