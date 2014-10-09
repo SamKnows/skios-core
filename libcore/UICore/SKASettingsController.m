@@ -202,6 +202,11 @@
       [SKDatabase sEmptyTheDatabase];
       // Delete any archived files!
       [SKAAppDelegate deleteAllArchivedJSONFiles];
+      
+      // Notify the rest of the UI!
+      [[NSNotificationCenter defaultCenter]
+       postNotificationName:@"TestListNeedsUpdate"
+       object:self];
     }
   } else {
     SK_ASSERT(false);
