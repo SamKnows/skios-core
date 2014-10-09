@@ -22,57 +22,43 @@
 @synthesize cpuCondition;
 
 //API API API **********************************************************
--(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate tests2execute:(int)tests2execute isContinuousTesting:(BOOL)isContinuousTesting
+-(id) initAndRunWithAutotestManagerDelegateWithBitmask:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate TestsToExecuteBitmask:(int)tests2execute isContinuousTesting:(BOOL)isContinuousTesting
 {
-    self = [super initWithAutotestManagerDelegate:inAutotestManagerDelegate autotestObserverDelegate:inAutotestObserverDelegate isContinuousTesting:isContinuousTesting];
+  if (self = [super initWithAutotestManagerDelegate:inAutotestManagerDelegate AndAutotestObserverDelegate:inAutotestObserverDelegate AndTestType:ALL_TESTS IsContinuousTesting:isContinuousTesting])
+  {
+    [self doInit:isContinuousTesting];
     
-    if (self = [super init])
-    {
-        self.mbIsContinuousTesting = isContinuousTesting;
-        self.accumulatedNetworkTypeLocationMetrics = [NSMutableArray new];
-        jsonDictionary = [[NSMutableDictionary alloc] init];
-        self.requestedTests = [NSMutableArray new];
-        [self writeJSON_TestHeader:[self.autotestManagerDelegate amdGetSchedule]];
-        self.testId = nil;
-        self.bitMaskForRequestedTests = tests2execute | CTTBM_CLOSESTTARGET;
-    }
+    tests2execute |= CTTBM_CLOSESTTARGET;
     
-    return self;
-}
-
-
-//API API API **********************************************************
--(void)runSetOfTests:(int)bitMaskForRequestedTests_
-{
-  bitMaskForRequestedTests_ |= CTTBM_CLOSESTTARGET;
+    [self startOfTestRunThrottleQuery];
+    [super runTheTestsWithBitmask:tests2execute];
+  }
   
-  [self startOfTestRunThrottleQuery];
-  
-  [super runSetOfTests:bitMaskForRequestedTests_];
+  return self;
 }
 
 -(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType  IsContinuousTesting:(BOOL)isContinuousTesting
 {
-  self = [super initWithAutotestManagerDelegate:inAutotestManagerDelegate AndAutotestObserverDelegate:inAutotestObserverDelegate AndTestType:testType IsContinuousTesting:isContinuousTesting];
-  
-  if (self)
+  if (self = [super initWithAutotestManagerDelegate:inAutotestManagerDelegate AndAutotestObserverDelegate:inAutotestObserverDelegate AndTestType:testType IsContinuousTesting:isContinuousTesting])
   {
-    self.mbIsContinuousTesting = isContinuousTesting;
+    [self doInit:isContinuousTesting];
     
-    self.accumulatedNetworkTypeLocationMetrics = [NSMutableArray new];
-    
-    jsonDictionary = [[NSMutableDictionary alloc] init];
-    
-    self.requestedTests = [NSMutableArray new];
-    
-    [self writeJSON_TestHeader:[self.autotestManagerDelegate amdGetSchedule]];
-    
-    self.testId = nil;
-    
-    [self runTheTests];
+    [self startOfTestRunThrottleQuery];
+    [super runTheTests];
   }
   
   return self;
+}
+
+-(void) doInit:(BOOL)isContinuousTesting {
+  
+  self.mbIsContinuousTesting = isContinuousTesting;
+  self.accumulatedNetworkTypeLocationMetrics = [NSMutableArray new];
+  jsonDictionary = [[NSMutableDictionary alloc] init];
+  self.requestedTests = [NSMutableArray new];
+  [self writeJSON_TestHeader:[self.autotestManagerDelegate amdGetSchedule]];
+  self.testId = nil;
+  
 }
 
 -(void) dealloc {
@@ -138,13 +124,6 @@
       self.mpThrottleResponse = @"no throttling";
     }
   }
-}
-
-- (void)runTheTests
-{
-  [self startOfTestRunThrottleQuery];
-
-  [super runTheTests];
 }
 
 -(SKAHttpTest *)getSKAHttpTest {

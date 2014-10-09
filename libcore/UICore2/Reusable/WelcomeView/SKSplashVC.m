@@ -42,15 +42,17 @@
   
   [self.vWelcomeView startAnimationOnCompletion:^{
     
-    [UIView animateWithDuration:0.3 animations:^{
-      
-      self.vWelcomeView.alpha = 0;
-      
-    } completion:^(BOOL finished) {
-      
-      [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVC" sender:self];
-      
-    }];
+    [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVC" sender:self];
+//    
+//    [UIView animateWithDuration:0.3 animations:^{
+//      
+//      self.vWelcomeView.alpha = 0;
+//      
+//    } completion:^(BOOL finished) {
+//      
+//      [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVC" sender:self];
+//      
+//    }];
   }];
 }
 

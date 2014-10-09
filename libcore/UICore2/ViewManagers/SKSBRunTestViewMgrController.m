@@ -398,8 +398,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       
       [self setIsRunning:YES];
       
-      autoTest = [[SKAAutotest alloc] initAndRunWithAutotestManagerDelegate:self.appDelegate autotestObserverDelegate:self tests2execute:self.testTypes2Execute isContinuousTesting:self.continuousTesting];
-      [autoTest runSetOfTests:self.testTypes2Execute];
+      autoTest = [[SKAAutotest alloc] initAndRunWithAutotestManagerDelegateWithBitmask:self.appDelegate autotestObserverDelegate:self TestsToExecuteBitmask:self.testTypes2Execute isContinuousTesting:self.continuousTesting];
     }
     else
     {
@@ -498,20 +497,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)buttonPressed
 {
-//#if TARGET_IPHONE_SIMULATOR
-//  // Force UI to update!
-//  if (sbSimulatorFakeConnectionToggle == 1) {
-//    [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
-//    sbSimulatorFakeConnectionToggle = 0;
-//  }
-//  else {
-//    [self.tmActivityIndicator setTopInfo:@"No connection"];
-//    sbSimulatorFakeConnectionToggle = 1;
-//  }
-//#endif // TARGET_IPHONE_SIMULATOR
-  
-  self.tvCurrentResults.hidden = NO;
-  
   if (isRunning)
   {
     UIAlertView *alert = [[UIAlertView alloc]
@@ -525,99 +510,105 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     [alert show];
     return;
   }
-  else
-  {
-    latencySUM = 0;
-    latencyCNT = 0;
-    
-    [self resetProgressView];
-    
-    for (int i = 0; i < C_NUMBER_OF_TESTS; i++) {
-      ((SKATestOverviewMetrics*)testResultsArray[i]).value = nil;
-    }
-    
-    self.numberOfTests2Execute = 0;
-    if (self.testTypes2Execute & CTTBM_DOWNLOAD) {
-      progressDownload = 0;
-      self.numberOfTests2Execute ++;
-    } else {
-      progressDownload = -1;
-    }
-    
-    if (self.testTypes2Execute & CTTBM_UPLOAD) {
-      self.numberOfTests2Execute ++;
-      progressUpload = 0;
-    } else {
-      progressUpload = -1;
-    }
-    if (self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) {
-      self.numberOfTests2Execute ++;
-      progressLatencyLoss = 0;
-    } else {
-      progressLatencyLoss = -1;
-    }
-    
-    //Save the test selection to User Defaults
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
-    [prefs synchronize];
-    
-    if (self.testTypes2Execute <= 0)
-    {
-      [self B_SelectTests:self];
-      return;
-    }
-    
-//    if (layoutCurrent == 1)
-//    {
-//      [UIView animateWithDuration:0.3 animations:^{
-//        [self layout2];
-//      }];
-//    }
-    
-    [self showTargets];
-    
-    [self.tmActivityIndicator displayReset:@""];
-    [self.tmActivityIndicator startAnimating];
-    [UIView animateWithDuration:0.3 animations:^{
-      
-      self.btSelectTests.alpha = 0;
-      
-    }];
-    
-    TestType GRunTheTestWithThisType = ALL_TESTS; //###
-    
-    if ([self checkIfTestsHaveExceededDataCap]) {
-      
-      UIAlertView *alert =
-      [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Exceeded", nil)
-                                 message:NSLocalizedString(@"Data_Exceed_Msg", nil)
-                                delegate:nil
-                       cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                       otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
-      [alert setTag:ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE];
-      [alert setDelegate:self];
-      [alert show];
-      
-      return;
-    }
-    
-    if ([self checkIfTestWillExceedDataCapForTestType:GRunTheTestWithThisType]) {
-      UIAlertView *alert =
-      [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Might_Be_Exceeded", nil)
-                                 message:NSLocalizedString(@"Data_Exceed_Msg", nil)
-                                delegate:nil
-                       cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                       otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
-      [alert setTag:ACTION_WILL_BE_EXCEEDED_PRESS_OK_TO_CONTINUE];
-      [alert setDelegate:self];
-      [alert show];
-      
-      return;
-    }
-    
-    [self selfRunTestAfterUserApprovedToDataCapChecks];
+  
+  if ((self.testTypes2Execute & ~CTTBM_CLOSESTTARGET) == 0) {
+    // No tests selected!
+    [self B_SelectTests:self];
+    return;
   }
+ 
+  // Assert at least one test selected!
+  SK_ASSERT ((self.testTypes2Execute & ~CTTBM_CLOSESTTARGET) != 0);
+  
+  self.tvCurrentResults.hidden = NO;
+  
+  latencySUM = 0;
+  latencyCNT = 0;
+  
+  [self resetProgressView];
+  
+  for (int i = 0; i < C_NUMBER_OF_TESTS; i++) {
+    ((SKATestOverviewMetrics*)testResultsArray[i]).value = nil;
+  }
+  
+  self.numberOfTests2Execute = 0;
+  if (self.testTypes2Execute & CTTBM_DOWNLOAD) {
+    progressDownload = 0;
+    self.numberOfTests2Execute ++;
+  } else {
+    progressDownload = -1;
+  }
+  
+  if (self.testTypes2Execute & CTTBM_UPLOAD) {
+    self.numberOfTests2Execute ++;
+    progressUpload = 0;
+  } else {
+    progressUpload = -1;
+  }
+  if (self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) {
+    self.numberOfTests2Execute ++;
+    progressLatencyLoss = 0;
+  } else {
+    progressLatencyLoss = -1;
+  }
+  
+  if (self.numberOfTests2Execute == 0)
+  {
+    // Should never happen - should be picked-up earlier in this method!
+    SK_ASSERT(false);
+    [self B_SelectTests:self];
+    return;
+  }
+  
+  //    if (layoutCurrent == 1)
+  //    {
+  //      [UIView animateWithDuration:0.3 animations:^{
+  //        [self layout2];
+  //      }];
+  //    }
+  
+  [self showTargets];
+  
+  [self.tmActivityIndicator displayReset:@""];
+  [self.tmActivityIndicator startAnimating];
+  [UIView animateWithDuration:0.3 animations:^{
+    
+    self.btSelectTests.alpha = 0;
+    
+  }];
+  
+  TestType GRunTheTestWithThisType = ALL_TESTS; //###
+  
+  if ([self checkIfTestsHaveExceededDataCap]) {
+    
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Exceeded", nil)
+                               message:NSLocalizedString(@"Data_Exceed_Msg", nil)
+                              delegate:nil
+                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
+                     otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+    [alert setTag:ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE];
+    [alert setDelegate:self];
+    [alert show];
+    
+    return;
+  }
+  
+  if ([self checkIfTestWillExceedDataCapForTestType:GRunTheTestWithThisType]) {
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Might_Be_Exceeded", nil)
+                               message:NSLocalizedString(@"Data_Exceed_Msg", nil)
+                              delegate:nil
+                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
+                     otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+    [alert setTag:ACTION_WILL_BE_EXCEEDED_PRESS_OK_TO_CONTINUE];
+    [alert setDelegate:self];
+    [alert show];
+    
+    return;
+  }
+  
+  [self selfRunTestAfterUserApprovedToDataCapChecks];
   
 }
 

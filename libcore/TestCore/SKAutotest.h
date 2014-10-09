@@ -16,8 +16,8 @@ typedef enum
   DOWNLOAD_TEST,
   UPLOAD_TEST,
   LATENCY_TEST,
-  JITTER_TEST,
-  UNKNOWN_TEST
+  JITTER_TEST
+  //UNKNOWN_TEST
   
 } TestType;
 
@@ -51,7 +51,6 @@ typedef enum
 
 @property (nonatomic, assign) BOOL runAllTests;
 @property (nonatomic, copy)   NSString *validTest;
-@property (nonatomic, assign) int bitMaskForRequestedTests;
 
 @property (nonatomic, retain) id<SKAutotestManagerDelegate> autotestManagerDelegate;
 @property (atomic, retain) id <SKAutotestObserverDelegate> autotestObserverDelegate;
@@ -65,16 +64,16 @@ typedef enum
 
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType  IsContinuousTesting:(BOOL)isContinuousTesting;
 
-//### HG
--(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting;
-
 //@public
 -(void)markTestAsStopped; // Only called by child class!
 -(void)stopTheTests;
--(void)runSetOfTests:(int)bitMaskForRequestedTests_;
 
 // @protected
+// Internal - run all the tests
 -(void)runTheTests;
+// Internal - run just a sub-set of tests
+-(void)runTheTestsWithBitmask:(int)bitMaskForRequestedTests_;
+
 -(void)runNextTest:(int)testIndex;
 -(void)createLatencyTest:(SKTestConfig *)config target:(NSString *)target;
 -(void)createClosestTargetTest:(NSArray *)targets NumDatagrams:(int)numDatagrams;

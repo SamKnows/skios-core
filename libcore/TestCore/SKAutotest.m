@@ -31,7 +31,6 @@ static BOOL sbTestIsRunning = NO;
 
 @synthesize runAllTests;
 @synthesize validTest;
-@synthesize bitMaskForRequestedTests;
 
 @synthesize autotestManagerDelegate;
 @synthesize autotestObserverDelegate;
@@ -49,7 +48,21 @@ static BOOL sbTestIsRunning = NO;
     isRunning = NO;
     sbTestIsRunning = NO;
     isCancelled = NO;
+    
+    switch (inTestType) {
+      case  ALL_TESTS:
+      case  DOWNLOAD_TEST:
+      case  UPLOAD_TEST:
+      case  LATENCY_TEST:
+      case  JITTER_TEST:
+        break;
+        
+      default:
+        SK_ASSERT(false);
+        break;
+    }
     runAllTests = (inTestType == ALL_TESTS);
+    
     validTest = [self getValidTestType:inTestType];
     udpClosestTargetTestSucceeded = NO;
   }
@@ -57,74 +70,8 @@ static BOOL sbTestIsRunning = NO;
   return self;
 }
 
--(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate isContinuousTesting:(BOOL)isContinuousTesting {
-  
-  self = [super init];
-  
-  if (self)
-  {
-    autotestManagerDelegate = inAutotestManagerDelegate;
-    autotestObserverDelegate = inAutotestObserverDelegate;
-    isRunning = NO;
-    sbTestIsRunning = NO;
-    isCancelled = NO;
-    bitMaskForRequestedTests = 0;
-  }
-  
-  return self;
-}
-
--(void)runSetOfTests:(int)bitMaskForRequestedTests_
-{
-    bitMaskForRequestedTests = bitMaskForRequestedTests_;
-    
-    self.btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        if (self.btid != UIBackgroundTaskInvalid) {
-            [[UIApplication sharedApplication] endBackgroundTask:self.btid];
-            self.btid = UIBackgroundTaskInvalid;
-        }
-    }];
-    
-    NSArray *testsTimes = [[self.autotestManagerDelegate amdGetSchedule] getTestsAndTimes];
-    
-    if (testsTimes != nil)
-    {
-        NSArray *testsAvailableList = [testsTimes objectAtIndex:0];
-        
-        self.autoTests = [[NSMutableArray alloc] init];
-        
-        for (int j=0; j<[testsAvailableList count]; j++)
-        {
-            NSDictionary* testFromAvailableList = [testsAvailableList objectAtIndex:j];
-            
-            if (([self translateTestNameToBitMask:((NSString *)[testFromAvailableList objectForKey:@"type"])] & bitMaskForRequestedTests_) != 0)
-                [self.autoTests addObject:testFromAvailableList];
-        }
-        
-        self.isRunning = YES;
-        [self runNextTest:-1];
-    }
-}
-
-
--(int)translateTestNameToBitMask:(NSString*)testName_
-{
-    if ([testName_ isEqualToString:@"closestTarget"]) return CTTBM_CLOSESTTARGET;
-    if ([testName_ isEqualToString:@"downstreamthroughput"]) return CTTBM_DOWNLOAD;
-    if ([testName_ isEqualToString:@"upstreamthroughput"]) return CTTBM_UPLOAD;
-    if ([testName_ isEqualToString:@"latency"]) return CTTBM_LATENCYLOSSJITTER;
-    
-    //TODO: Loss, jitter ?
-    
-    return 0;
-}
-
--(void) dealloc {
-  
-  [self stopTheTests];
-}
-
-- (void)runTheTests
+// 0 is special case - meaning RUN EVERYTHING!
+-(void)runTheTestsWithBitmask:(int)bitMaskForRequestedTests_
 {
   // START monitoring location data!
   sbTestIsRunning = YES;
@@ -179,25 +126,72 @@ static BOOL sbTestIsRunning = NO;
     {
       if ([nextTests count] > 0)
       {
-        if (nil == self.autoTests)
-        {
-          self.autoTests = [[NSMutableArray alloc] initWithArray:nextTests];
-        }
-        else
-        {
-          [self.autoTests removeAllObjects];
+        self.autoTests = [NSMutableArray new];
+        
+        if (bitMaskForRequestedTests_ > 0) {
+          // Only use tests in the bitmask!
+          for (NSDictionary *test in nextTests)
+          {
+            NSString *testNameFromType = [test objectForKey:@"type"];
+            //NSString *type = (([self translateTestNameToBitMask:((NSString *)[testFromAvailableList objectForKey:@"type"])] & bitMaskForRequestedTests_) != 0)
+            int bitMaskForTest = [self translateTestNameToBitMask:testNameFromType];
+            if ((bitMaskForRequestedTests_ & bitMaskForTest) != 0)
+            {
+              [self.autoTests addObject:test];
+            }
+          }
+          
+        } else {
+          // Use all tests!
           [self.autoTests addObjectsFromArray:nextTests];
         }
-        
-        self.isRunning = YES;
-        
-        [self runNextTest:-1];
       }
+      
+      self.isRunning = YES;
+      
+      [self runNextTest:-1];
     }
   } else {
     [self markTestAsStopped];
   }
 }
+
+- (void)runTheTests {
+  
+  // 0 is special case - meaning RUN EVERYTHING!
+  [self runTheTestsWithBitmask:0];
+}
+
+-(int)translateTestNameToBitMask:(NSString*)testName_
+{
+  if ([testName_ isEqualToString:@"closestTarget"]) {
+    return CTTBM_CLOSESTTARGET;
+  }
+  
+  if ([testName_ isEqualToString:@"downstreamthroughput"]) {
+    return CTTBM_DOWNLOAD;
+  }
+  
+  if ([testName_ isEqualToString:@"upstreamthroughput"]) {
+    return CTTBM_UPLOAD;
+  }
+  
+  if ([testName_ isEqualToString:@"latency"]) {
+    return CTTBM_LATENCYLOSSJITTER;
+  }
+  
+  //TODO: Loss, jitter ?
+  SK_ASSERT(false);
+  
+  return 0;
+}
+
+-(void) dealloc {
+  
+  [self stopTheTests];
+}
+
+
 
 - (void)ctdDidStartTargetTesting
 {
@@ -735,8 +729,13 @@ static BOOL sbTestIsRunning = NO;
   {
     return @"upstreamthroughput";
   }
+  else if (testType == LATENCY_TEST)
+  {
+    return @"latency";
+  }
   else
   {
+    SK_ASSERT(false);
     return @"latency";
   }
 }
