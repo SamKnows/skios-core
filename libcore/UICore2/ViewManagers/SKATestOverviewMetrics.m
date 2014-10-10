@@ -18,19 +18,19 @@
     
     switch (self.number) {
       case C_DOWNLOAD_TEST:
-        self.name = @"Download";
+        self.name = NSLocalizedString(@"Test_Download",nil);
         break;
       case C_UPLOAD_TEST:
-        self.name = @"Upload";
+        self.name = NSLocalizedString(@"Test_Upload",nil);
         break;
       case C_LATENCY_TEST:
-        self.name = @"Latency";
+        self.name = NSLocalizedString(@"Test_Latency",nil);
         break;
       case C_LOSS_TEST:
-        self.name = @"Loss";
+        self.name = NSLocalizedString(@"Test_Loss",nil);
         break;
       case C_JITTER_TEST:
-        self.name = @"Jitter";
+        self.name = NSLocalizedString(@"Test_Jitter",nil);
         break;
       default:
         switch (self.number - C_NUMBER_OF_TESTS) {

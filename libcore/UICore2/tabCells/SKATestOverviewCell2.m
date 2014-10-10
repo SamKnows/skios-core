@@ -136,39 +136,39 @@
   [self.contentView addSubview:self.vBackground];
   
   self.lDownloadLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 29, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 103, GUI_MULTIPLIER * 21)];
-  self.lDownloadLabel.text = @"Download";
+  self.lDownloadLabel.text = NSLocalizedString(@"Test_Download",nil);
   self.lDownloadLabel.textColor = [UIColor whiteColor];
   self.lDownloadLabel.font = labelFontLight;
   
   [self.contentView addSubview:self.lDownloadLabel];
   
   self.lUploadLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 82, GUI_MULTIPLIER * 21)];
-  self.lUploadLabel.text = @"Upload";
+  self.lUploadLabel.text = NSLocalizedString(@"Test_Upload",nil);
   self.lUploadLabel.textColor = [UIColor whiteColor];
   self.lUploadLabel.font = labelFontLight;
   [self.contentView addSubview:self.lUploadLabel];
   
   self.lMbpsLabel4Download = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 15, GUI_MULTIPLIER * 69, GUI_MULTIPLIER * 59, GUI_MULTIPLIER * 21)];
-  self.lMbpsLabel4Download.text = @"Mbps";
+  self.lMbpsLabel4Download.text = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
   self.lMbpsLabel4Download.textColor = [UIColor whiteColor];
   self.lMbpsLabel4Download.font = labelFontThin;
   [self.contentView addSubview:self.lMbpsLabel4Download];
   
   self.lMbpsLabel4Upload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 105, GUI_MULTIPLIER * 69, GUI_MULTIPLIER * 46, GUI_MULTIPLIER * 21)];
-  self.lMbpsLabel4Upload.text = @"Mbps";
+  self.lMbpsLabel4Upload.text = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
   self.lMbpsLabel4Upload.textColor = [UIColor whiteColor];
   self.lMbpsLabel4Upload.font = labelFontThin;
   [self.contentView addSubview:self.lMbpsLabel4Upload];
   
   self.lLatencyLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
-  self.lLatencyLabel.text = @"Latency";
+  self.lLatencyLabel.text = NSLocalizedString(@"Test_Latency",nil);
   self.lLatencyLabel.textColor = [UIColor whiteColor];
   self.lLatencyLabel.font = labelFontLight;
   self.lLatencyLabel.textAlignment = UITextAlignmentCenter;
   [self.contentView addSubview:self.lLatencyLabel];
   
   self.lLossLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
-  self.lLossLabel.text = @"Loss";
+  self.lLossLabel.text = NSLocalizedString(@"Test_Loss",nil);
   self.lLossLabel.textColor = [UIColor whiteColor];
   self.lLossLabel.font = labelFontLight;
   self.lLossLabel.textAlignment = UITextAlignmentCenter;
@@ -177,7 +177,7 @@
   if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported])
   {
     self.lJitterLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
-    self.lJitterLabel.text = @"Jitter";
+    self.lJitterLabel.text = NSLocalizedString(@"Test_Jitter",nil);
     self.lJitterLabel.textColor = [UIColor whiteColor];
     self.lJitterLabel.font = labelFontLight;
     self.lJitterLabel.textAlignment = UITextAlignmentCenter;

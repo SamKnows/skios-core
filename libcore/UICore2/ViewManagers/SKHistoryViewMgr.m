@@ -195,10 +195,10 @@
     
     if (!self.casNetworkType)
     {
-        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:@"Cancel"];
-        [self.casNetworkType addOption:@"Wi-Fi" withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-        [self.casNetworkType addOption:@"Mobile" withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
-        [self.casNetworkType addOption:@"All" withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
+        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
+        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil) withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_Mobile",nil) withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
+        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_All",nil) withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
     }
     
     [self.casNetworkType expand];
@@ -208,11 +208,11 @@
     
     if (!self.casPeriod)
     {
-        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:@"Cancel"];
-        [self.casPeriod addOption:@"1 week" withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
-        [self.casPeriod addOption:@"1 month" withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
-        [self.casPeriod addOption:@"3 months" withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
-        [self.casPeriod addOption:@"1 year" withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
+        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
+        [self.casPeriod addOption:NSLocalizedString(@"time_period_1week",nil) withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
+        [self.casPeriod addOption:NSLocalizedString(@"time_period_1month",nil) withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
+        [self.casPeriod addOption:NSLocalizedString(@"time_period_3months",nil) withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
+        [self.casPeriod addOption:NSLocalizedString(@"time_period_1year",nil) withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
     }
     
     [self.casPeriod expand];
@@ -226,13 +226,13 @@
     
     switch (optionTag) {
       case C_FILTER_NETWORKTYPE_WIFI:
-        [self.btNetworkType setTitle:@"Wi-Fi" forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil) forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_GSM:
-        [self.btNetworkType setTitle:@"Mobile" forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_Mobile",nil) forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_ALL:
-        [self.btNetworkType setTitle:@"All" forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_All",nil) forState:UIControlStateNormal];
         break;
       default:
         break;
@@ -245,16 +245,16 @@
     
     switch (optionTag) {
       case C_FILTER_PERIOD_1WEEK:
-        [self.btPeriod setTitle:@"1 week" forState:UIControlStateNormal];
+        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1week",nil) forState:UIControlStateNormal];
         break;
       case C_FILTER_PERIOD_1MONTH:
-        [self.btPeriod setTitle:@"1 month" forState:UIControlStateNormal];
+        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1month",nil) forState:UIControlStateNormal];
         break;
       case C_FILTER_PERIOD_3MONTHS:
-        [self.btPeriod setTitle:@"3 months" forState:UIControlStateNormal];
+        [self.btPeriod setTitle:NSLocalizedString(@"time_period_3months",nil) forState:UIControlStateNormal];
         break;
       case C_FILTER_PERIOD_1YEAR:
-        [self.btPeriod setTitle:@"1 year" forState:UIControlStateNormal];
+        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1year",nil) forState:UIControlStateNormal];
         break;
       default:
         break;
@@ -368,12 +368,12 @@ static SKATestResults* testToShareExternal = nil;
   
   arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:[testResult_ numberOfOptionalMetrics]];
   
-  [self placeMetrics:testResult_.device withLabelTextID:@"Phone"];
-  [self placeMetrics:testResult_.os withLabelTextID:@"OS"];
-  [self placeMetrics:testResult_.carrier_name withLabelTextID:@"Carrier_Name"];
-  [self placeMetrics:testResult_.country_code withLabelTextID:@"Carrier_Country"];
-  [self placeMetrics:testResult_.iso_country_code withLabelTextID:@"Carrier_ISO"];
-  [self placeMetrics:testResult_.network_code withLabelTextID:@"Carrier_Network"];
+  [self placeMetricsWithLocalizedText:testResult_.device withLocalizedLabelTextID:NSLocalizedString(@"Phone",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.os withLocalizedLabelTextID:NSLocalizedString(@"OS",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.carrier_name withLocalizedLabelTextID:NSLocalizedString(@"Carrier_Name",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.country_code withLocalizedLabelTextID:NSLocalizedString(@"Carrier_Country",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.iso_country_code withLocalizedLabelTextID:NSLocalizedString(@"Carrier_ISO",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.network_code withLocalizedLabelTextID:NSLocalizedString(@"Carrier_Network",nil)];
   
   // Only allow MOBILE results to be shared!
   self.btShare.hidden = YES;
@@ -401,31 +401,31 @@ static SKATestResults* testToShareExternal = nil;
       }
     }
     
-    [self placeMetrics:networkType withLabelTextID:@"Network_Type"];
+    [self placeMetricsWithLocalizedText:networkType withLocalizedLabelTextID:NSLocalizedString(@"Network_Type",nil)];
   }
-  [self placeMetrics:testResult_.target withLabelTextID:@"Target"];
+  [self placeMetricsWithLocalizedText:testResult_.target withLocalizedLabelTextID:NSLocalizedString(@"Target",nil)];
 }
 
--(void)placeMetrics:(NSString*)text_ withLabelTextID:(NSString*)labelTextID_
+-(void)placeMetricsWithLocalizedText:(NSString*)text_ withLocalizedLabelTextID:(NSString*)localizedLabelTextID_
 {
-    UILabel* label;
-    if (text_.length > 0)
-    {
-        label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 155, [cTabController sGet_GUI_MULTIPLIER] * 18)];
-        label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
-        label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
-        label.text = NSLocalizedString(labelTextID_, nil);
-        [self addSubview:label];
-        [arrPassiveLabelsAndValues addObject:label];
-        
-        label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 155, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 210, [cTabController sGet_GUI_MULTIPLIER] * 18)];
-        label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
-        label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
-        label.text = text_;
-        [self addSubview:label];
-        [arrPassiveLabelsAndValues addObject:label];
-        y += [cTabController sGet_GUI_MULTIPLIER] * 15;
-    }
+  UILabel* label;
+  if (text_.length > 0)
+  {
+    label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 155, [cTabController sGet_GUI_MULTIPLIER] * 18)];
+    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+    label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
+    label.text = localizedLabelTextID_;
+    [self addSubview:label];
+    [arrPassiveLabelsAndValues addObject:label];
+    
+    label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 155, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 210, [cTabController sGet_GUI_MULTIPLIER] * 18)];
+    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+    label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
+    label.text = text_;
+    [self addSubview:label];
+    [arrPassiveLabelsAndValues addObject:label];
+    y += [cTabController sGet_GUI_MULTIPLIER] * 15;
+  }
 }
 
 -(void)destroyMetrics

@@ -209,12 +209,12 @@
   [self.casStatusView initialize];
   
   //[self.tmActivityIndicator layoutSubviews];
-  [self.tmActivityIndicator displayReset:@"Start"];
+  [self.tmActivityIndicator displayReset:NSLocalizedString(@"Start",nil)];
   //[self.tmActivityIndicator setNeedsLayout];
   
-  [self.casStatusView setText:@"Ready to run" forever:YES];
+  [self.casStatusView setText:NSLocalizedString(@"Ready to run",nil) forever:YES];
   //self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
-  self.lClosest.text = @"Press the Start button";
+  self.lClosest.text = NSLocalizedString(@"Press the Start button",nil);
   self.tvCurrentResults.hidden = YES;
   
   [self updateRadioType];
@@ -432,12 +432,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)updateRadioType
 {
   if ([[SKAAppDelegate getAppDelegate] getIsConnected] == NO) {
-    [self.tmActivityIndicator setTopInfo:@"No connection"];
+    [self.tmActivityIndicator setTopInfo:NSLocalizedString(@"No connection",nil)];
   } else {
     connectionStatus = [SKAAppDelegate getAppDelegate].connectionStatus;
     
     if (connectionStatus == WIFI) {
-      [self.tmActivityIndicator setTopInfo:@"Wi-Fi"];
+      [self.tmActivityIndicator setTopInfo:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil)];
     } else {
       [self.tmActivityIndicator setTopInfo:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
     }
@@ -641,7 +641,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)restoreButton
 {
   [self.tmActivityIndicator stopAnimating];
-  [self.tmActivityIndicator displayReset:@"Start"];
+  [self.tmActivityIndicator displayReset:NSLocalizedString(@"Start",nil)];
   [self.tmActivityIndicator setAngle:0];
   
   if ([self.appDelegate enableTestsSelection])
@@ -782,8 +782,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)aodLatencyTestDidStart
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [self.casStatusView setText:@"Latency / Loss testing" forever:YES];
-    [self.tmActivityIndicator setUnitMeasurement:@"ms" measurement:@"Latency"];
+    [self.casStatusView setText:NSLocalizedString(@"Latency / Loss testing",nil) forever:YES];
+    [self.tmActivityIndicator setUnitMeasurement:NSLocalizedString(@"Graph_Suffix_Ms",nil) measurement:NSLocalizedString(@"Test_Latency",nil)];
     if (((self.testTypes2Execute & CTTBM_DOWNLOAD) != 0) || ((self.testTypes2Execute & CTTBM_UPLOAD) != 0))
       [self.tmActivityIndicator displayReset:@"0"];
     
@@ -853,7 +853,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self.tmActivityIndicator.arrLabels addObject:@"30"];
                      [self.tmActivityIndicator.arrLabels addObject:@"100"];
                      
-                     [self.tmActivityIndicator setUnitMeasurement:@"Mb/s" measurement:@"Download"];
+                     [self.tmActivityIndicator setUnitMeasurement:NSLocalizedString(@"Graph_Suffix_Mbps",nil) measurement:NSLocalizedString(@"Test_Download",nil)];
                    }
                    else
                    {
@@ -866,7 +866,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self.tmActivityIndicator.arrLabels addObject:@"2"];
                      [self.tmActivityIndicator.arrLabels addObject:@"5"];
                      [self.tmActivityIndicator.arrLabels addObject:@"10"];
-                     [self.tmActivityIndicator setUnitMeasurement:@"Mb/s" measurement:@"Upload"];
+                     [self.tmActivityIndicator setUnitMeasurement:NSLocalizedString(@"Graph_Suffix_Mbps",nil) measurement:NSLocalizedString(@"Test_Upload",nil)];
                    }
                  });
 }
@@ -942,7 +942,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   //    ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_LATENCY_TEST]).value = @"#";
   //    ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_LOSS_TEST]).value = @"#";
   //    ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_JITTER_TEST]).value = @"#";
-  [self.casStatusView setText:@"Error" forever:YES];
+  [self.casStatusView setText:NSLocalizedString(@"Error",nil) forever:YES];
   [self updateTableAnimated];
 }
 
@@ -1008,8 +1008,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    
                    [UIView animateWithDuration:1.0 animations:^{
                      [self resetProgressView];
-                     [self.casStatusView setText:@"Tests executed" forever:YES];
-                     self.lClosest.text = @"Press the Start button to run again";
+                     [self.casStatusView setText:NSLocalizedString(@"Tests executed",nil) forever:YES];
+                     self.lClosest.text = NSLocalizedString(@"Press the Start button to run again",nil);
                     
                      if ([self.mpTestResult.network_type isEqualToString:@"mobile"])
                      {
@@ -1076,8 +1076,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }];
   
   //TODO: If cancelled or error
-  [self.casStatusView setText:@"Tests cancelled" forever:YES];
-  self.lClosest.text = @"Press the Start button to run again";
+  [self.casStatusView setText:NSLocalizedString(@"Tests canceled",nil) forever:YES];
+  self.lClosest.text = NSLocalizedString(@"Press the Start button to run again",nil);
   
   [self setIsRunning:NO];
   [self setEndDataUsage];
@@ -1179,7 +1179,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)aodDidStartTargetTesting
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [self.casStatusView setText:@"Target Selection" forever:YES];
+    [self.casStatusView setText:NSLocalizedString(@"Target Selection",nil) forever:YES];
   });
 }
 
@@ -1372,7 +1372,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   {
     if (connectionStatus == WIFI)
     {
-      mpTestResult.network_type = @"wi-fi'";
+      mpTestResult.network_type = @"network";
       mpTestResult.radio_type = @"";
     }
     else
@@ -1419,10 +1419,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (IBAction)B_SelectTests:(id)sender {
   
- self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:@"OK"];
- [self.casTestTypes addOption:@"Download" withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
- [self.casTestTypes addOption:@"Upload" withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
- [self.casTestTypes addOption:@"Latency / Loss / Jitter" withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
+ self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_OK",nil)];
+ [self.casTestTypes addOption:NSLocalizedString(@"Test_Download",nil) withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
+ [self.casTestTypes addOption:NSLocalizedString(@"Test_Upload",nil) withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
+ [self.casTestTypes addOption:NSLocalizedString(@"Latency / Loss / Jitter",nil) withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
   
   [self.casTestTypes expand];
 }

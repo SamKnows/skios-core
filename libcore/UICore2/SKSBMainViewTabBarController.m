@@ -24,7 +24,17 @@
 //  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
  
   for (UITabBarItem *item in self.tabBar.items) {
-    [item setTitle:NSLocalizedString(item.title, @"")];
+    if ([item.title isEqualToString:@"Run"]) {
+      [item setTitle:NSLocalizedString(@"Run", nil)];
+    } else if ([item.title isEqualToString:@"Results"]) {
+      [item setTitle:NSLocalizedString(@"Results", nil)];
+    } else if ([item.title isEqualToString:@"Summary"]) {
+      [item setTitle:NSLocalizedString(@"Summary", nil)];
+    } else if ([item.title isEqualToString:@"Settings"]) {
+      [item setTitle:NSLocalizedString(@"Settings", nil)];
+    } else {
+      SK_ASSERT(false);
+    }
   }
 }
 
