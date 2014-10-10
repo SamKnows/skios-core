@@ -8,6 +8,10 @@
 
 #import "cAnimatedStatusView.h"
 
+@interface cAnimatedStatusView()
+@property (nonatomic) int activeLabel;
+@end
+
 @implementation cAnimatedStatusView
 
 - (id)initWithFrame:(CGRect)frame
@@ -21,37 +25,31 @@
 
 -(void)initialize;
 {
-    self.backgroundColor = [UIColor clearColor];
-    
-    self.activeLabel = 1;
-
-    self.v1 = [[UIView alloc] initWithFrame:self.bounds];
-    self.v1.alpha = 0;
-    [self addSubview:self.v1];
-    self.l1h = [[UILabel alloc] initWithFrame:self.bounds];
-    self.l1n = [[UILabel alloc] initWithFrame:self.bounds];
-    [self.v1 addSubview:self.l1n];
-    [self.v1 addSubview:self.l1h];
-    self.l1n.font = [UIFont fontWithName:@"Roboto-Light" size:0.85 * self.bounds.size.height];
-    self.l1h.font = self.l1n.font;
-    self.l1n.textColor = [UIColor lightGrayColor];
-    self.l1h.textColor = [UIColor whiteColor];
-    self.l1n.textAlignment = UITextAlignmentCenter;
-    self.l1h.textAlignment = UITextAlignmentCenter;
-
-    self.v2 = [[UIView alloc] initWithFrame:self.bounds];
-    self.v2.alpha = 0;
-    [self addSubview:self.v2];
-    self.l2h = [[UILabel alloc] initWithFrame:self.bounds];
-    self.l2n = [[UILabel alloc] initWithFrame:self.bounds];
-    [self.v2 addSubview:self.l2n];
-    [self.v2 addSubview:self.l2h];
-    self.l2n.font = self.l1n.font;
-    self.l2h.font = self.l1n.font;
-    self.l2n.textColor = self.l1n.textColor;
-    self.l2h.textColor = self.l1h.textColor;
-    self.l2n.textAlignment = UITextAlignmentCenter;
-    self.l2h.textAlignment = UITextAlignmentCenter;
+  self.backgroundColor = [UIColor clearColor];
+  
+  self.activeLabel = 1;
+  
+  self.v1.alpha = 0;
+  
+  UIFont *theFont = [UIFont fontWithName:@"Roboto-Light" size:0.85 * self.bounds.size.height];
+  
+  self.l1n.font = theFont;
+  self.l1n.textColor = [UIColor lightGrayColor];
+  self.l1n.textAlignment = UITextAlignmentCenter;
+  
+  self.l1h.font = theFont;
+  self.l1h.textColor = [UIColor whiteColor];
+  self.l1h.textAlignment = UITextAlignmentCenter;
+  
+  self.v2.alpha = 0;
+  
+  self.l2n.font = theFont;
+  self.l2n.textColor = self.l1n.textColor;
+  self.l2n.textAlignment = UITextAlignmentCenter;
+  
+  self.l2h.font = theFont;
+  self.l2h.textColor = self.l1h.textColor;
+  self.l2h.textAlignment = UITextAlignmentCenter;
 }
 
 -(void)startAnimating:(UILabel*)l_ forever:(BOOL)forever_

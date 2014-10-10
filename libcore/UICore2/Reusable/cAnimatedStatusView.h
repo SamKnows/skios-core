@@ -10,18 +10,16 @@
 
 @interface cAnimatedStatusView : UIView
 
-@property (nonatomic, strong) UILabel* l1h;
-@property (nonatomic, strong) UILabel* l1n;
-@property (nonatomic, strong) UIView* v1;
+@property (weak, nonatomic) IBOutlet UILabel* l1h;
+@property (weak, nonatomic) IBOutlet UILabel* l1n;
+@property (weak, nonatomic) IBOutlet UIView* v1;
 
-@property (nonatomic, strong) UILabel* l2h;
-@property (nonatomic, strong) UILabel* l2n;
-@property (nonatomic, strong) UIView* v2;
+@property (weak, nonatomic) IBOutlet UILabel* l2h;
+@property (weak, nonatomic) IBOutlet UILabel* l2n;
+@property (weak, nonatomic) IBOutlet UIView* v2;
 
 //@property (nonatomic, strong) UIImageView* iv1;
 //@property (nonatomic, strong) UIImageView* iv2;
-
-@property (nonatomic) int activeLabel;
 
 -(void)initialize;
 -(void)setText:(NSString*)text_ forever:(bool)forever_;
