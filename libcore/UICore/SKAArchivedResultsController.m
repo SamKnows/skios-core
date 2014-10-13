@@ -69,9 +69,9 @@
     [self.uiToolbar setHidden:YES];
   }
 
-  self.title = NSLocalizedString(@"Storyboard_ArchivedResults_Title",nil);
-  self.lblMain.text = NSLocalizedString(@"Storyboard_ArchivedResults_Archived_Result",nil);
-  self.lblMain.text = NSLocalizedString(@"Storyboard_ArchivedResults_Archived_Result",nil);
+  self.title = sSKCoreGetLocalisedString(@"Storyboard_ArchivedResults_Title");
+  self.lblMain.text = sSKCoreGetLocalisedString(@"Storyboard_ArchivedResults_Archived_Result");
+  self.lblMain.text = sSKCoreGetLocalisedString(@"Storyboard_ArchivedResults_Archived_Result");
   
 //  self.navigationController.delegate = self;
   
@@ -167,14 +167,14 @@
 
 - (void)setLabels
 {
-  self.navigationItem.title = NSLocalizedString(@"RESULT_Title", nil);
+  self.navigationItem.title = sSKCoreGetLocalisedString(@"RESULT_Title");
 
   
-  [self.lblMain setText:NSLocalizedString(@"RESULT_Label", nil)];
+  [self.lblMain setText:sSKCoreGetLocalisedString(@"RESULT_Label")];
   
   NSString *txt = [NSString stringWithFormat:@"%d %@ %d",
                    (int)self.testIndex+1,
-                   NSLocalizedString(@"Storyboard_ArchivedResults_Of_Separator",nil),
+                   sSKCoreGetLocalisedString(@"Storyboard_ArchivedResults_Of_Separator"),
                    (int)[self.testMetaData count]];
   [self.lblCount setText:txt];
 }
@@ -421,13 +421,13 @@
     case 0:
     {
       // e.g. "Active Metrics"
-      NSMutableString *activeMetricsText = [NSMutableString stringWithString:NSLocalizedString(@"Label_Active", nil)];
+      NSMutableString *activeMetricsText = [NSMutableString stringWithString:sSKCoreGetLocalisedString(@"Label_Active")];
       // e.g. "Active Metrics (Mobile)" or "Active Metrics (Wifi)"
       NSString *theType = (NSString*)[self.metricsDictionary objectForKey:@"NETWORK_TYPE"];
       if ([theType isEqualToString:@"mobile"]) {
-        theType = NSLocalizedString(@"NetworkTypeMenu_Mobile",nil);
+        theType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
       } else {
-        theType = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
+        theType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
       }
       [activeMetricsText appendString:[NSString stringWithFormat:@" (%@)", theType]];
       
@@ -522,9 +522,9 @@
       cell.lblLossResult.text = result2;
       cell.lblJitterResult.text = result3;
       
-      cell.lblLatency.text = NSLocalizedString(@"Test_Latency", nil);
-      cell.lblLoss.text = NSLocalizedString(@"Test_Loss", nil);
-      cell.lblJitter.text = NSLocalizedString(@"Test_Jitter", nil);
+      cell.lblLatency.text = sSKCoreGetLocalisedString(@"Test_Latency");
+      cell.lblLoss.text = sSKCoreGetLocalisedString(@"Test_Loss");
+      cell.lblJitter.text = sSKCoreGetLocalisedString(@"Test_Jitter");
       
       return cell;
     }
@@ -578,16 +578,16 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (row == 0) {
-      cell.lblTitle.text = NSLocalizedString(@"Network_Type", nil);
-      cell.lblDetail.text = NSLocalizedString(@"Unknown",nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Network_Type");
+      cell.lblDetail.text = sSKCoreGetLocalisedString(@"Unknown");
       if ([self.networkType isEqualToString:@"network"]) {
-        cell.lblDetail.text = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
+        cell.lblDetail.text = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
       } else if ([self.networkType isEqualToString:@"mobile"]) {
         
-        NSString *mobileString = NSLocalizedString(@"NetworkTypeMenu_Mobile",nil);
+        NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
        
         NSString *theRadio =[SKGlobalMethods getNetworkTypeLocalized:self.radioType];
-        if ([theRadio isEqualToString:NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil)]) {
+        if ([theRadio isEqualToString:sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown")]) {
           cell.lblDetail.text = mobileString;
         } else {
           cell.lblDetail.text = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
@@ -596,32 +596,32 @@
     }
     else if (row == 1)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_Name", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_Name");
       cell.lblDetail.text = self.carrierName;
     }
     else if (row == 2)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_Country", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_Country");
       cell.lblDetail.text = self.carrierCountryCode;
     }
     else if (row == 3)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_Network", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_Network");
       cell.lblDetail.text =self.carrierNetworkCode;
     }
     else if (row == 4)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_ISO", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_ISO");
       cell.lblDetail.text = self.carrierIsoCode;
     }
     else if (row == 5)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Phone", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Phone");
       cell.lblDetail.text = [SKAArchivedResultsController platformString:self.device];
     }
     else if (row == 6)
     {
-      cell.lblTitle.text = NSLocalizedString(@"OS", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"OS");
       cell.lblDetail.text = self.os;
     }
     else
@@ -707,10 +707,10 @@
   if (![self.networkType isEqualToString:@"mobile"]) {
     UIAlertView *alert =
     [[UIAlertView alloc]
-     initWithTitle:NSLocalizedString(@"Title_ShareUsingSocialMediaMobile",nil)
-     message:NSLocalizedString(@"Message_ShareUsingSocialMediaMobile",nil)
+     initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaMobile")
+     message:sSKCoreGetLocalisedString(@"Message_ShareUsingSocialMediaMobile")
      delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
      otherButtonTitles:nil];
     [alert show];
     return;

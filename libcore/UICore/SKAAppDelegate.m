@@ -1268,7 +1268,12 @@ static NSString *networkTypeSwitchValue = nil;
           break;
         case SLComposeViewControllerResultDone:
         {
-          UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Posted",nil) message:NSLocalizedString(@"Post successful",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss",nil) otherButtonTitles: nil];
+          UIAlertView * alert = [[UIAlertView alloc]
+                                 initWithTitle:sSKCoreGetLocalisedString(@"Posted")
+                                 message:sSKCoreGetLocalisedString(@"Post successful")
+                                 delegate:nil
+                                 cancelButtonTitle:sSKCoreGetLocalisedString(@"Dismiss")
+                                 otherButtonTitles:nil];
           [alert show];
         }
           break;
@@ -1302,23 +1307,23 @@ static NSString *networkTypeSwitchValue = nil;
 #endif // DEBUG
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
-                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis1",nil)
+                        sSKCoreGetLocalisedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis1")
                         withString:
-                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeToThis1",nil)
+                        sSKCoreGetLocalisedString(@"SocialMedia_TwitterIfUsingImage_ChangeToThis1")
                         ];
         
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
-                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis2",nil)
+                        sSKCoreGetLocalisedString(@"SocialMedia_TwitterIfUsingImage_ChangeFromThis2")
                         withString:
-                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeToThis2",nil)
+                        sSKCoreGetLocalisedString(@"SocialMedia_TwitterIfUsingImage_ChangeToThis2")
                         ];
         
         exportString = [exportString
                         stringByReplacingOccurrencesOfString:
-                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeRegex4From",nil)
+                        sSKCoreGetLocalisedString(@"SocialMedia_TwitterIfUsingImage_ChangeRegex4From")
                         withString:
-                        NSLocalizedString(@"SocialMedia_TwitterIfUsingImage_ChangeRegex4To",nil)
+                        sSKCoreGetLocalisedString(@"SocialMedia_TwitterIfUsingImage_ChangeRegex4To")
                         options:NSRegularExpressionSearch
                         range:NSMakeRange(0, exportString.length)
                         ];
@@ -1351,11 +1356,12 @@ static NSString *networkTypeSwitchValue = nil;
   // media post. Prompt the user to see if they want to attache a screen grab.
   SK_ASSERT([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported]);
   UIAlertView *alert = [[UIAlertView alloc]
-                        initWithTitle:NSLocalizedString(@"Include screenshot?",nil)
-                        message:NSLocalizedString(@"Would you like to include a screenshot with your social media post?",nil)
+                        initWithTitle:sSKCoreGetLocalisedString(@"Include screenshot?")
+                        message:sSKCoreGetLocalisedString(@"Would you like to include a screenshot with your social media post?")
                         delegate:nil
-                        cancelButtonTitle:NSLocalizedString(@"MenuAlert_No",nil)
-                        otherButtonTitles:NSLocalizedString(@"MenuAlert_Yes",nil), nil];
+                        cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_No")
+                        otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_Yes"),
+                        nil];
   
   [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
     
@@ -1382,16 +1388,16 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   if (actionSheet.tag == ACTION_MENU) {
     NSString *buttonText = [actionSheet buttonTitleAtIndex:range];
     
-    if ([buttonText isEqualToString:NSLocalizedString(@"SocialMediaOption_Twitter",nil)]) {
+    if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"SocialMediaOption_Twitter")]) {
       
       NSString *bodyString = GShowThisTextForSocialMediaExport[SLServiceTypeTwitter];
       [SKAAppDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeTwitter ExportThisString:bodyString];
-    } else if ([buttonText isEqualToString:NSLocalizedString(@"SocialMediaOption_SinaWeibo",nil)]) {
+    } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"SocialMediaOption_SinaWeibo")]) {
       
       NSString *bodyString = GShowThisTextForSocialMediaExport[SLServiceTypeSinaWeibo];
       [SKAAppDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeSinaWeibo ExportThisString:bodyString];
       
-    } else if ([buttonText isEqualToString:NSLocalizedString(@"SocialMediaOption_Facebook",nil)]) {
+    } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"SocialMediaOption_Facebook")]) {
       NSString *bodyString = GShowThisTextForSocialMediaExport[SLServiceTypeFacebook];
       [SKAAppDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeFacebook ExportThisString:bodyString];
       
@@ -1431,7 +1437,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
    */
   
   
-  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Title_ShareUsingSocialMedia",nil)
+  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMedia")
                                                            delegate:[SKAAppDelegate getAppDelegate]
                                                   cancelButtonTitle:nil
                                              destructiveButtonTitle:nil
@@ -1445,31 +1451,31 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
 //#endif // TARGET_IPHONE_SIMULATOR
   {
-    [array addObject:NSLocalizedString(@"SocialMediaOption_Twitter",nil)];
+    [array addObject:sSKCoreGetLocalisedString(@"SocialMediaOption_Twitter")];
   }
   if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
   {
-    [array addObject:NSLocalizedString(@"SocialMediaOption_Facebook",nil)];
+    [array addObject:sSKCoreGetLocalisedString(@"SocialMediaOption_Facebook")];
   }
   if([SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo])
   {
-    [array addObject:NSLocalizedString(@"SocialMediaOption_SinaWeibo",nil)];
+    [array addObject:sSKCoreGetLocalisedString(@"SocialMediaOption_SinaWeibo")];
   }
   //[array addObject:@"Email"];
   
   if (array.count == 0) {
     UIAlertView *alert =
     [[UIAlertView alloc]
-     initWithTitle:NSLocalizedString(@"Title_ShareUsingSocialMediaInfo",nil)
-     message:NSLocalizedString(@"Message_ShareUsingSocialMediaInfo",nil)
+     initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaInfo")
+     message:sSKCoreGetLocalisedString(@"Message_ShareUsingSocialMediaInfo")
      delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
      otherButtonTitles:nil];
     [alert show];
     return;
   }
   
-  [array addObject:NSLocalizedString(@"MenuAlert_Cancel",nil)];
+  [array addObject:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   
   int i;
   for (i = 0; i < array.count; i++)
@@ -1514,15 +1520,15 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   if ([socialNetwork isEqualToString:SLServiceTypeTwitter]) {
     if ((carrierName != nil) && (carrierName.length > 0)) {
       if (thisDataIsAveraged) {
-        [bodyString setString:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"SocialMedia_Header_Twitter_Carrier_Average",nil), carrierNameReformatted]];
+        [bodyString setString:[NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Twitter_Carrier_Average"), carrierNameReformatted]];
       } else {
-        [bodyString setString:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"SocialMedia_Header_Twitter_Carrier",nil), carrierNameReformatted]];
+        [bodyString setString:[NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Twitter_Carrier"), carrierNameReformatted]];
       }
     } else {
       if (thisDataIsAveraged) {
-        [bodyString setString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"SocialMedia_Header_Twitter_NoCarrier_Average",nil)]];
+        [bodyString setString:[NSString stringWithFormat:@"%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Twitter_NoCarrier_Average")]];
       } else {
-        [bodyString setString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"SocialMedia_Header_Twitter_NoCarrier",nil)]];
+        [bodyString setString:[NSString stringWithFormat:@"%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Twitter_NoCarrier")]];
         
       }
     }
@@ -1530,26 +1536,26 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
     bShortMessages = NO;
     if ((carrierName != nil) && (carrierName.length > 0)) {
       if (thisDataIsAveraged) {
-        [bodyString setString:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"SocialMedia_Header_Facebook_Carrier_Average",nil), carrierNameReformatted]];
+        [bodyString setString:[NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Facebook_Carrier_Average"), carrierNameReformatted]];
       } else {
-        [bodyString setString:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"SocialMedia_Header_Facebook_Carrier",nil), carrierNameReformatted]];
+        [bodyString setString:[NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Facebook_Carrier"), carrierNameReformatted]];
       }
     } else {
       if (thisDataIsAveraged) {
-        [bodyString setString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"SocialMedia_Header_Facebook_NoCarrier_Average",nil)]];
+        [bodyString setString:[NSString stringWithFormat:@"%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Facebook_NoCarrier_Average")]];
       } else {
-        [bodyString setString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"SocialMedia_Header_Facebook_NoCarrier",nil)]];
+        [bodyString setString:[NSString stringWithFormat:@"%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_Facebook_NoCarrier")]];
       }
     }
   } else if ([socialNetwork isEqualToString:SLServiceTypeSinaWeibo]) {
     if ((carrierName != nil) && (carrierName.length > 0)) {
       if (thisDataIsAveraged) {
-        [bodyString setString:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"SocialMedia_Header_SinaWeibo_Carrier_Average",nil), carrierNameReformatted]];
+        [bodyString setString:[NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_SinaWeibo_Carrier_Average"), carrierNameReformatted]];
       } else {
-        [bodyString setString:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"SocialMedia_Header_SinaWeibo_Carrier",nil), carrierNameReformatted]];
+        [bodyString setString:[NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_SinaWeibo_Carrier"), carrierNameReformatted]];
       }
     } else {
-      [bodyString setString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"SocialMedia_Header_SinaWeibo_NoCarrier",nil)]];
+      [bodyString setString:[NSString stringWithFormat:@"%@", sSKCoreGetLocalisedString(@"SocialMedia_Header_SinaWeibo_NoCarrier")]];
     }
   } else {
     SK_ASSERT(false);
@@ -1561,7 +1567,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   
   if (download != nil) {
     [bodyString appendString:@" "];
-    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SocialMedia_Download_Short",nil), download]];
+    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", sSKCoreGetLocalisedString(@"SocialMedia_Download_Short"), download]];
     
     bGotData = YES;
   }
@@ -1578,7 +1584,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
     
     bGotData = YES;
     
-    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"SocialMedia_Upload_Short",nil),upload]];
+    [bodyString appendString:[NSString stringWithFormat:@"%@: %@", sSKCoreGetLocalisedString(@"SocialMedia_Upload_Short"),upload]];
   }
   
   // TODO - what should we do if bGotData is NO...?
@@ -1587,10 +1593,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   [bodyString appendString:@" "];
   
   if (bShortMessages) {
-    [bodyString appendString:NSLocalizedString(@"SocialMedia_Footer_Short",nil)];
+    [bodyString appendString:sSKCoreGetLocalisedString(@"SocialMedia_Footer_Short")];
     // SK_ASSERT(bodyString.length < 140);
   } else {
-    [bodyString appendString:NSLocalizedString(@"SocialMedia_Footer_Long",nil)];
+    [bodyString appendString:sSKCoreGetLocalisedString(@"SocialMedia_Footer_Long")];
   }
   
   return bodyString;

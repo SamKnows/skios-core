@@ -356,43 +356,43 @@ const int cBlockDataLength = 32768;
 
 
 +(NSString*) getUpStream {
-  return NSLocalizedString(@"to_UpStream",nil);
+  return sSKCoreGetLocalisedString(@"to_UpStream");
 }
 
 +(NSString*) getDownStream {
-  return NSLocalizedString(@"to_DownStream",nil);
+  return sSKCoreGetLocalisedString(@"to_DownStream");
 }
 
 +(NSString*) getStatusInitializing {
-  return NSLocalizedString(@"to_StatusInitializing",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusInitializing");
 }
 
 +(NSString*) getStatusWarming {
-  return NSLocalizedString(@"to_StatusWarming",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusWarming");
 }
 
 +(NSString*) getStatusTransferring {
-  return NSLocalizedString(@"to_StatusTransferring",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusTransferring");
 }
 
 +(NSString*) getStatusComplete {
-  return NSLocalizedString(@"to_StatusComplete",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusComplete");
 }
 
 +(NSString*) getStatusCancelled {
-  return NSLocalizedString(@"to_StatusCancelled",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusCancelled");
 }
 
 +(NSString*) getStatusFailed {
-  return NSLocalizedString(@"to_StatusFailed",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusFailed");
 }
 
 +(NSString*) getStatusFinished {
-  return NSLocalizedString(@"to_StatusFinished",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusFinished");
 }
 
 +(NSString*) getStatusIdle {
-  return NSLocalizedString(@"to_StatusIdle",nil);
+  return sSKCoreGetLocalisedString(@"to_StatusIdle");
 }
 
 -(BOOL)getAsyncFlag {

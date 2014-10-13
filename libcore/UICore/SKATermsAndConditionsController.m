@@ -27,9 +27,9 @@
 {
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"Storyboard_Terms_Title",nil);
+  self.title = sSKCoreGetLocalisedString(@"Storyboard_Terms_Title");
   
-  self.dataLabel.text = NSLocalizedString(@"Storyboard_Terms_DataLabel",nil);
+  self.dataLabel.text = sSKCoreGetLocalisedString(@"Storyboard_Terms_DataLabel");
   
   // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
  
@@ -78,7 +78,7 @@
   if (self.webView != nil) {
     // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
     
-    self.lblMain.text = (index == 2) ? NSLocalizedString(@"TC_Label_Data", nil) : NSLocalizedString(@"TC_Label", nil);
+    self.lblMain.text = (index == 2) ? sSKCoreGetLocalisedString(@"TC_Label_Data") : sSKCoreGetLocalisedString(@"TC_Label");
     
     if (index == 2)
     {
@@ -111,7 +111,7 @@
     label.textColor = [UIColor blackColor];
     
     label.backgroundColor = [UIColor clearColor];
-    label.text = NSLocalizedString(@"TC_Title", nil);
+    label.text = sSKCoreGetLocalisedString(@"TC_Title");
     [label sizeToFit];
     self.navigationItem.titleView = label;
   }
@@ -124,7 +124,7 @@
   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                   message:msg
                                                  delegate:nil
-                                        cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+                                        cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                                         otherButtonTitles: nil];
   [alert show];
 }
@@ -246,7 +246,7 @@
         else
         {
           // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-          [self displayMessage:NSLocalizedString(@"TC_App_Activated", nil)];
+          [self displayMessage:sSKCoreGetLocalisedString(@"TC_App_Activated")];
         }
       }
     }
@@ -311,7 +311,7 @@
   
   NSString *idx = [NSString stringWithFormat:@"Msg_%d_%d", screenIndex, messageIndex];
   
-  [self displayMessage:NSLocalizedString(idx, nil)];
+  [self displayMessage:sSKCoreGetLocalisedString(idx)];
 }
 
 @end

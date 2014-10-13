@@ -85,3 +85,5 @@ FOUNDATION_EXPORT NSString *const Prefs_ViewableUnitId;
 +(SKCore*) getInstance;
 
 @end
+
+NSString*sSKCoreGetLocalisedString(NSString*theString);

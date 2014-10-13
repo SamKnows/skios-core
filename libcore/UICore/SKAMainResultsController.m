@@ -137,7 +137,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 {
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"Storyboard_SKAMainResultsController_Title",nil);
+  self.title = sSKCoreGetLocalisedString(@"Storyboard_SKAMainResultsController_Title");
   
   spSKAMainResultsController = self;
   
@@ -170,7 +170,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   
   self.networkTypeButton.titleLabel.textColor = [UIColor blackColor];
   
-  self.networkTypeButton.titleLabel.text = NSLocalizedString(@"ShowingResults_Mobile",nil);
+  self.networkTypeButton.titleLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_Mobile");
   [self setNetworkTypeTo:@"mobile"];
 }
 
@@ -186,13 +186,13 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 -(void) setNetworkTypeTo:(NSString*)toNetworkType {
   if ([toNetworkType isEqualToString:@"mobile"]) {
     [[SKAAppDelegate getAppDelegate] switchNetworkTypeToMobile];
-    self.networkTypeLabel.text = NSLocalizedString(@"ShowingResults_Mobile",nil); // : @"WiFi results");
+    self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_Mobile"); // : @"WiFi results");
   } else if ([toNetworkType isEqualToString:@"network"]) {
     [[SKAAppDelegate getAppDelegate] switchNetworkTypeToWiFi];
-    self.networkTypeLabel.text = NSLocalizedString(@"ShowingResults_WiFi",nil); // : @"WiFi results");
+    self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_WiFi"); // : @"WiFi results");
   } else if ([toNetworkType isEqualToString:@"all"]) {
     [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
-    self.networkTypeLabel.text = NSLocalizedString(@"ShowingResults_All",nil); // : @"WiFi results");
+    self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_All"); // : @"WiFi results");
   } else {
     SK_ASSERT(false);
     return;
@@ -215,16 +215,16 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 // If the switch is ON, we show MOBILE (the default!)
 - (IBAction)networkTypeButton:(id)sender {
   
-  UIActionSheet *action =[[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Title_SelectResultsToShow",nil)
+  UIActionSheet *action =[[UIActionSheet alloc] initWithTitle:sSKCoreGetLocalisedString(@"Title_SelectResultsToShow")
                                                      delegate:self
                                             cancelButtonTitle:nil
                                        destructiveButtonTitle:nil
                                             otherButtonTitles:nil];
   
   NSArray *array = [[NSArray alloc] initWithObjects:
-                    NSLocalizedString(@"NetworkTypeMenu_Mobile",nil),
-                    NSLocalizedString(@"NetworkTypeMenu_WiFi",nil),
-                    NSLocalizedString(@"NetworkTypeMenu_All",nil),
+                    sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile"),
+                    sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi"),
+                    sSKCoreGetLocalisedString(@"NetworkTypeMenu_All"),
                     nil];
   
   for (int j=0; j<[array count]; j++)
@@ -232,7 +232,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
     [action addButtonWithTitle:[array objectAtIndex:j]];
   }
   
-  [action addButtonWithTitle:NSLocalizedString(@"MenuAlert_Cancel", nil)];
+  [action addButtonWithTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   [action setCancelButtonIndex:[array count]];
   [action setTag:ACTION_NETWORKTYPE];
   [action setActionSheetStyle:UIActionSheetStyleDefault];
@@ -314,7 +314,7 @@ NSMutableArray *GArrayForResultsController;
     return;
   }
   
-  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Title_SelectOption",nil)
+  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:sSKCoreGetLocalisedString(@"Title_SelectOption")
                                                       delegate:self
                                              cancelButtonTitle:nil
                                         destructiveButtonTitle:nil
@@ -323,15 +323,15 @@ NSMutableArray *GArrayForResultsController;
   
   NSMutableArray *array = [NSMutableArray new];
   
-  [array addObject:NSLocalizedString(@"Menu_Settings",nil)];
-  [array addObject:NSLocalizedString(@"Menu_About",nil)];
-  [array addObject:NSLocalizedString(@"Menu_TermsOfUse",nil)];
+  [array addObject:sSKCoreGetLocalisedString(@"Menu_Settings")];
+  [array addObject:sSKCoreGetLocalisedString(@"Menu_About")];
+  [array addObject:sSKCoreGetLocalisedString(@"Menu_TermsOfUse")];
   
   if ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]) {
-    [array addObject:NSLocalizedString(@"Menu_Export",nil)];
+    [array addObject:sSKCoreGetLocalisedString(@"Menu_Export")];
   }
   
-  [array addObject:NSLocalizedString(@"MenuAlert_Cancel",nil)];
+  [array addObject:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   
   int i;
   for (i = 0; i < array.count; i++)
@@ -388,10 +388,10 @@ NSMutableArray *GArrayForResultsController;
   if (![[SKAAppDelegate getAppDelegate] isNetworkTypeMobile]) {
     UIAlertView *alert =
     [[UIAlertView alloc]
-     initWithTitle:NSLocalizedString(@"Title_ShareUsingSocialMediaMobile",nil)
-     message:NSLocalizedString(@"Message_ShareUsingSocialMediaMobile",nil)
+     initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaMobile")
+     message:sSKCoreGetLocalisedString(@"Message_ShareUsingSocialMediaMobile")
      delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
      otherButtonTitles:nil];
     [alert show];
     return;
@@ -401,10 +401,10 @@ NSMutableArray *GArrayForResultsController;
   if (dateLastRun == nil) {
     UIAlertView *alert =
     [[UIAlertView alloc]
-     initWithTitle:NSLocalizedString(@"Title_ShareUsingSocialMediaInfo",nil)
-     message:NSLocalizedString(@"RESULTS_Label_Data",nil)
+     initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaInfo")
+     message:sSKCoreGetLocalisedString(@"RESULTS_Label_Data")
      delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
      otherButtonTitles:nil];
     [alert show];
     return;
@@ -493,13 +493,13 @@ NSMutableArray *GArrayForResultsController;
   label.textColor = [UIColor blackColor];
   
   label.backgroundColor = [UIColor clearColor];
-  label.text = NSLocalizedString(@"RESULTS_Title", nil);
+  label.text = sSKCoreGetLocalisedString(@"RESULTS_Title");
   [label sizeToFit];
   self.navigationItem.titleView = label;
   
-  [self.lblMain setText:NSLocalizedString(@"RESULTS_Label", nil)];
-  [self.lblAlert setText:NSLocalizedString(@"RESULTS_Label_Data", nil)];
-  //    [self.btnRun setTitle:NSLocalizedString(@"RESULTS_Label_Run", nil) forState:UIControlStateNormal];
+  [self.lblMain setText:sSKCoreGetLocalisedString(@"RESULTS_Label")];
+  [self.lblAlert setText:sSKCoreGetLocalisedString(@"RESULTS_Label_Data")];
+  //    [self.btnRun setTitle:sSKCoreGetLocalisedString(@"RESULTS_Label_Run") forState:UIControlStateNormal];
   //    [self.btnRange setTitle:[self getDateRangeText] forState:UIControlStateNormal];
   
   [self setDateLabel];
@@ -513,7 +513,7 @@ NSMutableArray *GArrayForResultsController;
   if (dateLastRun != nil)
   {
     NSString *strDateLastRun = [SKGlobalMethods formatDate:dateLastRun];
-    NSString *txt = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"RESULTS_Label_Date_Last_Run", nil), strDateLastRun];
+    NSString *txt = [NSString stringWithFormat:@"%@%@", sSKCoreGetLocalisedString(@"RESULTS_Label_Date_Last_Run"), strDateLastRun];
     self.lblLastDate.text = txt;
     
     self.lblLastDate.hidden = NO;
@@ -619,17 +619,21 @@ NSMutableArray *GArrayForResultsController;
 {
   SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
   
-  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Export_Title",nil) message:NSLocalizedString(@"Export_Body",nil) delegate:nil  cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)  otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil), nil];
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Export_Title")
+                                                  message:sSKCoreGetLocalisedString(@"Export_Body")
+                                                 delegate:nil
+                                        cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                                        otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"), nil];
   
   [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
     int items = 0;
     
     if ([SKAAppDelegate exportArchivedJSONFilesToZip:&items] == NO) {
       UIAlertView *alert = [[UIAlertView alloc]
-                            initWithTitle:NSLocalizedString(@"Export_Failed_Title",nil)
-                            message:NSLocalizedString(@"Export_Failed_Body",nil)
+                            initWithTitle:sSKCoreGetLocalisedString(@"Export_Failed_Title")
+                            message:sSKCoreGetLocalisedString(@"Export_Failed_Body")
                             delegate:nil
-                            cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+                            cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                             otherButtonTitles:nil];
       [alert show];
     } else {
@@ -637,10 +641,10 @@ NSMutableArray *GArrayForResultsController;
       // If there are no items, tell the user - otherwise, the zip file is malformed!
       if (items == 0) {
         UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:NSLocalizedString(@"Export_NoItems_Title",nil)
-                              message:NSLocalizedString(@"Export_NoItems_Body",nil)
+                              initWithTitle:sSKCoreGetLocalisedString(@"Export_NoItems_Title")
+                              message:sSKCoreGetLocalisedString(@"Export_NoItems_Body")
                               delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                               otherButtonTitles:nil];
         [alert show];
       } else {
@@ -661,8 +665,8 @@ NSMutableArray *GArrayForResultsController;
         lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@"__" withString:@"_"];
         
         [SKAMainResultsController sLaunchEmailWithAttachment:@""
-                                                     subject:[NSString stringWithFormat:@"%@ - %@", NSLocalizedString(@"MenuExport_Mail_Subject",nil), lpReadableDate]
-                                                    bodyText:[NSString stringWithFormat:@"%@\n\n%@", NSLocalizedString(@"MenuExport_Mail_Body",nil), lpFileNameWithExtension]
+                                                     subject:[NSString stringWithFormat:@"%@ - %@", sSKCoreGetLocalisedString(@"MenuExport_Mail_Subject"), lpReadableDate]
+                                                    bodyText:[NSString stringWithFormat:@"%@\n\n%@", sSKCoreGetLocalisedString(@"MenuExport_Mail_Body"), lpFileNameWithExtension]
                                                 fileToAttach:zipPath
                                               attachWithName:lpFileNameWithExtension
                                       FromThisViewController:fromThisVC
@@ -683,27 +687,27 @@ NSMutableArray *GArrayForResultsController;
   NSString *selectedString = [actionSheet buttonTitleAtIndex:index];
   
   if (actionSheet.tag == ACTION_RUN) {
-    if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Download",nil)]) {
+    if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"Test_Run_Download")]) {
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self runTests:DOWNLOAD_TEST];
       });
     }
-    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Upload",nil)]) {
+    else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"Test_Run_Upload")]) {
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self runTests:UPLOAD_TEST];
       });
     }
-    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_LatencyLoss",nil)]) {
+    else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss")]) {
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self runTests:LATENCY_TEST];
       });
     }
-    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_Jitter",nil)]) {
+    else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"Test_Run_Jitter")]) {
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self runTests:JITTER_TEST];
       });
     }
-    else if ([selectedString isEqualToString:NSLocalizedString(@"Test_Run_All",nil)]) {
+    else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"Test_Run_All")]) {
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self runTests:ALL_TESTS];
       });
@@ -714,15 +718,15 @@ NSMutableArray *GArrayForResultsController;
     
     DATERANGE_1w1m3m1y range = DATERANGE_1w1m3m1y_ONE_WEEK;
     
-    if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1week", nil)]) {
+    if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"time_period_1week")]) {
       range = DATERANGE_1w1m3m1y_ONE_WEEK;
-    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1month", nil)]) {
+    } else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"time_period_1month")]) {
       range = DATERANGE_1w1m3m1y_ONE_MONTH;
-    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_3months", nil)]) {
+    } else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"time_period_3months")]) {
       range = DATERANGE_1w1m3m1y_THREE_MONTHS;
-    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1year", nil)]) {
+    } else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"time_period_1year")]) {
       range = DATERANGE_1w1m3m1y_ONE_YEAR;
-    } else if ([selectedString isEqualToString:NSLocalizedString(@"time_period_1day", nil)]) {
+    } else if ([selectedString isEqualToString:sSKCoreGetLocalisedString(@"time_period_1day")]) {
       range = DATERANGE_1w1m3m1y_ONE_DAY;
     } else {
       SK_ASSERT(false);
@@ -778,22 +782,22 @@ NSMutableArray *GArrayForResultsController;
     NSString *buttonText = [actionSheet buttonTitleAtIndex:index];
     
     // TODO!
-    if ([buttonText isEqualToString:NSLocalizedString(@"Menu_Settings",nil)]) {
+    if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"Menu_Settings")]) {
       // Settings
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self SKSafePerformSegueWithIdentifier:@"segueFromMainToSettingsController" sender:self];
       });
-    } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_About",nil)]) {
+    } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"Menu_About")]) {
         // About
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self SKSafePerformSegueWithIdentifier:@"segueFromMainToAbout" sender:self];
       });
-    } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_TermsOfUse",nil)]) {
+    } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"Menu_TermsOfUse")]) {
       // Terms of Use
       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self SKSafePerformSegueWithIdentifier:@"segueFromMainToTAndCController" sender:self];
       });
-    } else if ([buttonText isEqualToString:NSLocalizedString(@"Menu_Export",nil)]) {
+    } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"Menu_Export")]) {
       
       UIViewController *fromThisVC = self;
       id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
@@ -827,11 +831,11 @@ static TestType GRunTheTestWithThisType;
   } else {
     if ([self checkIfTestWillExceedDataCapForTestType:type]) {
       UIAlertView *alert =
-      [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Might_Be_Exceeded", nil)
-                                 message:NSLocalizedString(@"Data_Exceed_Msg", nil)
+      [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Data_Might_Be_Exceeded")
+                                 message:sSKCoreGetLocalisedString(@"Data_Exceed_Msg")
                                 delegate:nil
-                       cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                       otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                       cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                       otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
       [alert setTag:ACTION_WILL_BE_EXCEEDED_PRESS_OK_TO_CONTINUE];
       [alert setDelegate:self];
       [alert show];
@@ -855,9 +859,9 @@ static TestType GRunTheTestWithThisType;
   {
     UIAlertView *alert =
     [[UIAlertView alloc] initWithTitle:nil
-                               message:NSLocalizedString(@"Offline_message", nil)
+                               message:sSKCoreGetLocalisedString(@"Offline_message")
                               delegate:nil
-                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                      otherButtonTitles: nil];
     
     [alert show];
@@ -1010,11 +1014,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = YES;
     
     UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Exceeded", nil)
-                               message:NSLocalizedString(@"Data_Exceed_Msg", nil)
+    [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Data_Exceeded")
+                               message:sSKCoreGetLocalisedString(@"Data_Exceed_Msg")
                               delegate:nil
-                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                     otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                     otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
     [alert setTag:ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE];
     [alert setDelegate:self];
     [alert show];
@@ -1053,18 +1057,18 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   
   if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported] == NO) {
     array = [[NSArray alloc] initWithObjects:
-             NSLocalizedString(@"Test_Run_Download",   nil),
-             NSLocalizedString(@"Test_Run_Upload",     nil),
-             NSLocalizedString(@"Test_Run_LatencyLoss",nil),
-             NSLocalizedString(@"Test_Run_All",        nil),
+             sSKCoreGetLocalisedString(@"Test_Run_Download"),
+             sSKCoreGetLocalisedString(@"Test_Run_Upload"),
+             sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss"),
+             sSKCoreGetLocalisedString(@"Test_Run_All"),
              nil];
   } else {
     array = [[NSArray alloc] initWithObjects:
-             NSLocalizedString(@"Test_Run_Download",   nil),
-             NSLocalizedString(@"Test_Run_Upload",     nil),
-             NSLocalizedString(@"Test_Run_LatencyLoss",nil),
-             NSLocalizedString(@"Test_Run_Jitter",nil),
-             NSLocalizedString(@"Test_Run_All",        nil),
+             sSKCoreGetLocalisedString(@"Test_Run_Download"),
+             sSKCoreGetLocalisedString(@"Test_Run_Upload"),
+             sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss"),
+             sSKCoreGetLocalisedString(@"Test_Run_Jitter"),
+             sSKCoreGetLocalisedString(@"Test_Run_All"),
              nil];
   }
   
@@ -1073,7 +1077,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     [action addButtonWithTitle:[array objectAtIndex:j]];
   }
   
-  [action addButtonWithTitle:NSLocalizedString(@"MenuAlert_Cancel", nil)];
+  [action addButtonWithTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   [action setCancelButtonIndex:[array count]];
   [action setTag:ACTION_RUN];
   [action setActionSheetStyle:UIActionSheetStyleDefault];
@@ -1091,15 +1095,15 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   
   // One day results view
   if ([[SKAAppDelegate getAppDelegate] supportOneDayResultView]) {
-    [action addButtonWithTitle:NSLocalizedString(@"time_period_1day", nil)];
+    [action addButtonWithTitle:sSKCoreGetLocalisedString(@"time_period_1day")];
   }
   
-  [action addButtonWithTitle:NSLocalizedString(@"time_period_1week", nil)];
-  [action addButtonWithTitle:NSLocalizedString(@"time_period_1month", nil)];
-  [action addButtonWithTitle:NSLocalizedString(@"time_period_3months", nil)];
-  [action addButtonWithTitle:NSLocalizedString(@"time_period_1year", nil)];
+  [action addButtonWithTitle:sSKCoreGetLocalisedString(@"time_period_1week")];
+  [action addButtonWithTitle:sSKCoreGetLocalisedString(@"time_period_1month")];
+  [action addButtonWithTitle:sSKCoreGetLocalisedString(@"time_period_3months")];
+  [action addButtonWithTitle:sSKCoreGetLocalisedString(@"time_period_1year")];
   
-  int cancelButtonIndex = (int)[action addButtonWithTitle:NSLocalizedString(@"MenuAlert_Cancel", nil)];
+  int cancelButtonIndex = (int)[action addButtonWithTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   [action setCancelButtonIndex:cancelButtonIndex];
   
   [action setTag:ACTION_RANGE];
@@ -1190,20 +1194,20 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 {
   switch ([self getDateRange]) {
     case DATERANGE_1w1m3m1y_ONE_WEEK:
-      return NSLocalizedString(@"RESULTS_Label_Date_1_Week",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Week");
     case DATERANGE_1w1m3m1y_ONE_MONTH:
-      return NSLocalizedString(@"RESULTS_Label_Date_1_Month",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Month");
     case DATERANGE_1w1m3m1y_THREE_MONTHS:
-      return NSLocalizedString(@"RESULTS_Label_Date_3_Months",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_3_Months");
     case DATERANGE_1w1m3m1y_SIX_MONTHS:
-      return NSLocalizedString(@"RESULTS_Label_Date_6_Months",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_6_Months");
     case DATERANGE_1w1m3m1y_ONE_YEAR:
-      return NSLocalizedString(@"RESULTS_Label_Date_1_Year",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Year");
     case DATERANGE_1w1m3m1y_ONE_DAY:
-      return NSLocalizedString(@"RESULTS_Label_Date_1_Day",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Day");
     default:
       SK_ASSERT(false);
-      return NSLocalizedString(@"RESULTS_Label_Date_1_Week",nil);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Week");
   }
 }
 
@@ -1263,23 +1267,23 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   switch (section)
   {
     case 2:
-      return NSLocalizedString(@"Test_Download", nil);
+      return sSKCoreGetLocalisedString(@"Test_Download");
       break;
       
     case 3:
-      return NSLocalizedString(@"Test_Upload", nil);
+      return sSKCoreGetLocalisedString(@"Test_Upload");
       break;
       
     case 4:
-      return NSLocalizedString(@"Test_Latency", nil);
+      return sSKCoreGetLocalisedString(@"Test_Latency");
       break;
       
     case 5:
-      return NSLocalizedString(@"Test_Packetloss", nil);
+      return sSKCoreGetLocalisedString(@"Test_Packetloss");
       break;
       
     default:
-      return NSLocalizedString(@"Test_Jitter", nil);
+      return sSKCoreGetLocalisedString(@"Test_Jitter");
       break;
   }
 }
@@ -1449,9 +1453,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
         cell = [[SKAGraphViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
       }
       
-      cell.lblDate.text = NSLocalizedString(@"Storyboard_GraphViewCell_DataTimeLabel", nil);
-      cell.lblLocation.text = NSLocalizedString(@"Storyboard_GraphViewCell_LocationLabel", nil);
-      cell.lblResults.text = NSLocalizedString(@"Storyboard_GraphViewCell_ResultLabel", nil);
+      cell.lblDate.text = sSKCoreGetLocalisedString(@"Storyboard_GraphViewCell_DataTimeLabel");
+      cell.lblLocation.text = sSKCoreGetLocalisedString(@"Storyboard_GraphViewCell_LocationLabel");
+      cell.lblResults.text = sSKCoreGetLocalisedString(@"Storyboard_GraphViewCell_ResultLabel");
       
       [cell setDelegate:self];
       [cell setSelectionStyle:UITableViewCellSelectionStyleNone];

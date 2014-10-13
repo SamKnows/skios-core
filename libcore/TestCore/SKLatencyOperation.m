@@ -162,39 +162,39 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 +(NSString*) getIdleStatus
 {
-  return NSLocalizedString(@"lo_Idle",nil);
+  return sSKCoreGetLocalisedString(@"lo_Idle");
 }
 +(NSString*) getInitializingStatus
 {
-  return NSLocalizedString(@"lo_Initializing",nil);
+  return sSKCoreGetLocalisedString(@"lo_Initializing");
 }
 +(NSString*) getRunningStatus
 {
-  return NSLocalizedString(@"lo_Running",nil);
+  return sSKCoreGetLocalisedString(@"lo_Running");
 }
 +(NSString*) getCompleteStatus
 {
-  return NSLocalizedString(@"lo_Complete",nil);
+  return sSKCoreGetLocalisedString(@"lo_Complete");
 }
 +(NSString*) getFinishedStatus
 {
-  return NSLocalizedString(@"lo_Finished",nil);
+  return sSKCoreGetLocalisedString(@"lo_Finished");
 }
 +(NSString*) getCancelledStatus
 {
-  return NSLocalizedString(@"lo_Cancelled",nil);
+  return sSKCoreGetLocalisedString(@"lo_Cancelled");
 }
 +(NSString*) getTimeoutStatus
 {
-  return NSLocalizedString(@"lo_Timeout",nil);
+  return sSKCoreGetLocalisedString(@"lo_Timeout");
 }
 +(NSString*) getSearchingStatus
 {
-  return NSLocalizedString(@"lo_Searching",nil);
+  return sSKCoreGetLocalisedString(@"lo_Searching");
 }
 +(NSString*) getFailedStatus
 {
-  return NSLocalizedString(@"lo_Failed",nil);
+  return sSKCoreGetLocalisedString(@"lo_Failed");
 }
 
 +(NSString*) getStringSpace

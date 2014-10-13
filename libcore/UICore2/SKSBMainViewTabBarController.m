@@ -25,13 +25,13 @@
  
   for (UITabBarItem *item in self.tabBar.items) {
     if ([item.title isEqualToString:@"Run"]) {
-      [item setTitle:NSLocalizedString(@"Run", nil)];
+      [item setTitle:sSKCoreGetLocalisedString(@"Run")];
     } else if ([item.title isEqualToString:@"Results"]) {
-      [item setTitle:NSLocalizedString(@"Results", nil)];
+      [item setTitle:sSKCoreGetLocalisedString(@"Results")];
     } else if ([item.title isEqualToString:@"Summary"]) {
-      [item setTitle:NSLocalizedString(@"Summary", nil)];
+      [item setTitle:sSKCoreGetLocalisedString(@"Summary")];
     } else if ([item.title isEqualToString:@"Settings"]) {
-      [item setTitle:NSLocalizedString(@"Settings", nil)];
+      [item setTitle:sSKCoreGetLocalisedString(@"Settings")];
     } else {
       SK_ASSERT(false);
     }

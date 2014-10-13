@@ -27,16 +27,16 @@
   [self setLabels];
   [self setDataAllowance];
   
-  self.lblClearAllData.text = NSLocalizedString(@"Settings_ClearAllResults",nil);
-  self.lblActivate.text = NSLocalizedString(@"Settings_Activate",nil);
-  self.latitudeLabel.text = NSLocalizedString(@"latitude",nil);
-  self.longitudeLabel.text = NSLocalizedString(@"longitude",nil);
-  self.dateLabel.text = NSLocalizedString(@"date",nil);
+  self.lblClearAllData.text = sSKCoreGetLocalisedString(@"Settings_ClearAllResults");
+  self.lblActivate.text = sSKCoreGetLocalisedString(@"Settings_Activate");
+  self.latitudeLabel.text = sSKCoreGetLocalisedString(@"latitude");
+  self.longitudeLabel.text = sSKCoreGetLocalisedString(@"longitude");
+  self.dateLabel.text = sSKCoreGetLocalisedString(@"date");
   
   // Added for new app
-  self.exportResultsLabel.text = NSLocalizedString(@"Menu_Export",nil);
-  self.termsAndConditionsLabel.text = NSLocalizedString(@"Menu_TermsOfUse",nil);
-  self.lblAboutCaption.text = NSLocalizedString(@"About_Version",nil);
+  self.exportResultsLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
+  self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
+  self.lblAboutCaption.text = sSKCoreGetLocalisedString(@"About_Version");
   NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
   NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
   NSString *displayVersion = [NSString stringWithFormat:@"%@.%@", appVersion, bundleVersion];
@@ -74,14 +74,14 @@
     self.longitudeValue.text = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
     
     if (dateAsTimeIntervalSince1970 == 0) {
-      self.dateValue.text = NSLocalizedString(@"Unknown",nil);
+      self.dateValue.text = sSKCoreGetLocalisedString(@"Unknown");
     } else {
     self.dateValue.text = [SKGlobalMethods formatDate:[NSDate dateWithTimeIntervalSince1970:dateAsTimeIntervalSince1970]];
     }
   } else {
-    self.latitudeValue.text = NSLocalizedString(@"Unknown",nil);
-    self.longitudeValue.text = NSLocalizedString(@"Unknown",nil);
-    self.dateValue.text = NSLocalizedString(@"Unknown",nil);
+    self.latitudeValue.text = sSKCoreGetLocalisedString(@"Unknown");
+    self.longitudeValue.text = sSKCoreGetLocalisedString(@"Unknown");
+    self.dateValue.text = sSKCoreGetLocalisedString(@"Unknown");
   }
 }
 
@@ -90,13 +90,13 @@
   switch (section)
   {
     case 0:
-      return NSLocalizedString(@"Storyboard_Settings_Configuration",nil);
+      return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
       
     case 1:
-      return NSLocalizedString(@"Storyboard_Settings_MonthlyData",nil);
+      return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
       
     case 2:
-      return NSLocalizedString(@"last_known_location_info",nil);
+      return sSKCoreGetLocalisedString(@"last_known_location_info");
   }
   
   SK_ASSERT(false);
@@ -122,14 +122,14 @@
   label.textColor = [UIColor blackColor];
   
   label.backgroundColor = [UIColor clearColor];
-  label.text = NSLocalizedString(@"SETTINGS_Title", nil);
+  label.text = sSKCoreGetLocalisedString(@"SETTINGS_Title");
   [label sizeToFit];
   self.navigationItem.titleView = label;
   
-  [self setTitle:NSLocalizedString(@"SETTINGS_Title", nil)];
-  [self.lblDataCap setText:NSLocalizedString(@"SETTINGS_Data_Cap", nil)];
-  [self.lblDataUsage setText:NSLocalizedString(@"SETTINGS_Data_Usage", nil)];
-  [self.lblConfig setText:NSLocalizedString(@"SETTINGS_Config", nil)];
+  [self setTitle:sSKCoreGetLocalisedString(@"SETTINGS_Title")];
+  [self.lblDataCap setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Cap")];
+  [self.lblDataUsage setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Usage")];
+  [self.lblConfig setText:sSKCoreGetLocalisedString(@"SETTINGS_Config")];
   
   SKAAppDelegate *delegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
   int64_t bytesUsed = [delegate amdGetDataUsageBytes];
@@ -254,11 +254,12 @@ enum {
   
   UIAlertView *alert =
   [[UIAlertView alloc]
-   initWithTitle:NSLocalizedString(@"Title_MonthlyDataCap",nil)
+   initWithTitle:sSKCoreGetLocalisedString(@"Title_MonthlyDataCap")
    message:nil
    delegate:self
-   cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-   otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil), nil];
+   cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+   otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),
+   nil];
   alert.tag = ALERT_DATACAP;
  
   alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -273,7 +274,7 @@ enum {
   mb = mb / CBytesInAMegabyte;
   
   textField.text = [NSString stringWithFormat:@"%d", (int)mb];
-  textField.placeholder = NSLocalizedString(@"Settings_DataCap_Placeholder",nil);
+  textField.placeholder = sSKCoreGetLocalisedString(@"Settings_DataCap_Placeholder");
   
   [alert show];
 }
@@ -287,11 +288,12 @@ enum {
     NSLog(@"TODO - optionally, clear the database!");
     
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:NSLocalizedString(@"Settings_ClearAllResults_Title", nil)
-                          message:NSLocalizedString(@"Settings_ClearAllResults_Message", nil)
+                          initWithTitle:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Title")
+                          message:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Message")
                           delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                          otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                          otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),
+                          nil];
     alert.tag = ALERT_WIPEDATA;
     [alert show];
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {

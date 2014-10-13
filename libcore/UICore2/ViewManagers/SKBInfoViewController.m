@@ -25,7 +25,7 @@
   ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
   ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
   
-  self.title = NSLocalizedString(@"Menu_TermsOfUse", nil);
+  self.title = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
 }
 
 -(void) viewWillAppear:(BOOL)animated {

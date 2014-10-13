@@ -13,7 +13,7 @@
 {
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"Storyboard_SummaryTerms_Title",nil);
+  self.title = sSKCoreGetLocalisedString(@"Storyboard_SummaryTerms_Title");
 
   NSString *resource = @"terms_of_use";
   NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:@"htm"];

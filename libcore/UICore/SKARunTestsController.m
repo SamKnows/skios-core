@@ -73,7 +73,7 @@
 
 - (void)aodClosestTargetTestDidStart
 {
-  [self.lblClosest setText:NSLocalizedString(@"TEST_Label_Finding_Best_Target", nil)];
+  [self.lblClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
 }
 
 - (void)aodClosestTargetTestDidFail
@@ -83,7 +83,7 @@
 #endif // DEBUG
   [self stopTestFromAlertResponse:NO];
   testsComplete = YES;
-  [self.lblClosest setText:NSLocalizedString(@"TEST_Label_Closest_Failed", nil)];
+  [self.lblClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
   
   NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
   SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
@@ -105,7 +105,7 @@
   [SKAAppDelegate setClosestTarget:target];
   
   NSString *closest = [NSString stringWithFormat:@"%@ %@",
-                       NSLocalizedString(@"TEST_Label_Closest_Target", nil),
+                       sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
                        [appDelegate.schedule getClosestTargetName:target]];
   
   [self.lblClosest setText:closest];
@@ -125,7 +125,7 @@
   } else {
     // None of the UDP closest target tests succeed (we rolled-back to HTTP based), so we can assume
     // that UDP is completely blocked. Show "UDP Blocked"
-    statusString = NSLocalizedString(@"UDP blocked",nil);
+    statusString = sSKCoreGetLocalisedString(@"UDP blocked");
   }
   
   if (nil != cell)
@@ -204,7 +204,7 @@
   
   NSString *statusString = [SKTransferOperation getStatusFailed];
   if (autoTest.udpClosestTargetTestSucceeded == NO) {
-    statusString = NSLocalizedString(@"UDP blocked",nil);
+    statusString = sSKCoreGetLocalisedString(@"UDP blocked");
   }
   
   if (nil != cell)
@@ -418,20 +418,22 @@
     {
       if (self.continuousTesting) {
         UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:NSLocalizedString(@"Continuous_Tests_Running_Title", nil)
-                              message:NSLocalizedString(@"Continuous_Tests_Running_Message", nil)
+                              initWithTitle:sSKCoreGetLocalisedString(@"Continuous_Tests_Running_Title")
+                              message:sSKCoreGetLocalisedString(@"Continuous_Tests_Running_Message")
                               delegate:self
-                              cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                              otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                              otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),
+                              nil];
         [alert show];
         
       } else {
         UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:NSLocalizedString(@"Tests_Running_Title", nil)
-                              message:NSLocalizedString(@"Tests_Running_Message", nil)
+                              initWithTitle:sSKCoreGetLocalisedString(@"Tests_Running_Title")
+                              message:sSKCoreGetLocalisedString(@"Tests_Running_Message")
                               delegate:self
-                              cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                              otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                              otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),
+                              nil];
         [alert show];
       }
       
@@ -502,7 +504,7 @@
          
         NSString *statusString = [SKLatencyOperation getFailedStatus];
         if (autoTest.udpClosestTargetTestSucceeded == NO) {
-          statusString = NSLocalizedString(@"UDP blocked",nil);
+          statusString = sSKCoreGetLocalisedString(@"UDP blocked");
         }
  
         if (cell.lblLatencyResult.hidden)
@@ -791,7 +793,7 @@
     
     if ([appDelegate getIsConnected] == NO) {
       // We're not actually connected - don't run any tests until we are!
-      [self.lblClosest setText:NSLocalizedString(@"ConnectionString_Offline", nil)];
+      [self.lblClosest setText:sSKCoreGetLocalisedString(@"ConnectionString_Offline")];
       [self.tableView reloadData];
       [self.spinnerMain startAnimating];
       
@@ -882,13 +884,13 @@ static BOOL sbViewIsVisible;
   label.textColor = [UIColor blackColor];
   
   label.backgroundColor = [UIColor clearColor];
-  label.text = NSLocalizedString(@"TEST_Title", nil);
+  label.text = sSKCoreGetLocalisedString(@"TEST_Title");
   [label sizeToFit];
   self.navigationItem.titleView = label;
   
   NSString *txt = (self.testType == ALL_TESTS) ?
-  NSLocalizedString(@"TEST_Label_Multiple", nil) :
-  NSLocalizedString(@"TEST_Label_Single", nil);
+  sSKCoreGetLocalisedString(@"TEST_Label_Multiple") :
+  sSKCoreGetLocalisedString(@"TEST_Label_Single");
   
   [self.lblMain setText:txt];
   
@@ -937,13 +939,13 @@ static BOOL sbViewIsVisible;
     case 0:
       SK_ASSERT(self.networkType != nil);
       if ([self.networkType isEqualToString:@"mobile"]) {
-        return NSLocalizedString(@"ResultsTestHeader_ActiveMetrics_Mobile",nil);
+        return sSKCoreGetLocalisedString(@"ResultsTestHeader_ActiveMetrics_Mobile");
       }
-      return NSLocalizedString(@"ResultsTestHeader_ActiveMetrics_WiFi",nil);
+      return sSKCoreGetLocalisedString(@"ResultsTestHeader_ActiveMetrics_WiFi");
       
     case 1:
     default:
-      return NSLocalizedString(@"ResultsTestHeader_PassiveMetrics",nil);
+      return sSKCoreGetLocalisedString(@"ResultsTestHeader_PassiveMetrics");
   }
   
 }
@@ -1024,9 +1026,9 @@ static BOOL sbViewIsVisible;
       cell.lblLossResult.text = result2;
       cell.lblJitterResult.text = result3;
       
-      cell.lblLatency.text = NSLocalizedString(@"Test_Latency", nil);
-      cell.lblLoss.text = NSLocalizedString(@"Test_Loss", nil);
-      cell.lblJitter.text = NSLocalizedString(@"Test_Jitter", nil);
+      cell.lblLatency.text = sSKCoreGetLocalisedString(@"Test_Latency");
+      cell.lblLoss.text = sSKCoreGetLocalisedString(@"Test_Loss");
+      cell.lblJitter.text = sSKCoreGetLocalisedString(@"Test_Jitter");
       
       SK_ASSERT([NSThread isMainThread]);
       cell.latencyProgressView.progress = progress / 100;
@@ -1123,17 +1125,17 @@ static BOOL sbViewIsVisible;
     
     if (row == 0)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Network_Type", nil);
-      cell.lblDetail.text = NSLocalizedString(@"Unknown",nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Network_Type");
+      cell.lblDetail.text = sSKCoreGetLocalisedString(@"Unknown");
       SK_ASSERT(self.networkType != nil);
       if ([self.networkType isEqualToString:@"network"]) {
-        cell.lblDetail.text = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
+        cell.lblDetail.text = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
       } else if ([self.networkType isEqualToString:@"mobile"]) {
-        NSString *mobileString = NSLocalizedString(@"NetworkTypeMenu_Mobile",nil);
+        NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
         
         NSString *radioType = [SKGlobalMethods getNetworkType];
         NSString *theRadio = [SKGlobalMethods getNetworkTypeLocalized:radioType];
-        if ([theRadio isEqualToString:NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil)]) {
+        if ([theRadio isEqualToString:sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown")]) {
           cell.lblDetail.text = mobileString;
         } else {
           cell.lblDetail.text = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
@@ -1142,32 +1144,32 @@ static BOOL sbViewIsVisible;
     }
     else if (row == 1)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_Name", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_Name");
       cell.lblDetail.text = appDelegate.carrierName;
     }
     else if (row == 2)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_Country", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_Country");
       cell.lblDetail.text = appDelegate.countryCode;
     }
     else if (row == 3)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_Network", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_Network");
       cell.lblDetail.text = appDelegate.networkCode;
     }
     else if (row == 4)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Carrier_ISO", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Carrier_ISO");
       cell.lblDetail.text = appDelegate.isoCode;
     }
     else if (row == 5)
     {
-      cell.lblTitle.text = NSLocalizedString(@"Phone", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"Phone");
       cell.lblDetail.text = [SKAArchivedResultsController platformString:appDelegate.deviceModel];
     }
     else if (row == 6)
     {
-      cell.lblTitle.text = NSLocalizedString(@"OS", nil);
+      cell.lblTitle.text = sSKCoreGetLocalisedString(@"OS");
       cell.lblDetail.text = [[UIDevice currentDevice] systemVersion];
     }
     else
@@ -1216,10 +1218,10 @@ static BOOL sbViewIsVisible;
   if (![self.networkType isEqualToString:@"mobile"]) {
     UIAlertView *alert =
     [[UIAlertView alloc]
-     initWithTitle:NSLocalizedString(@"Title_ShareUsingSocialMediaMobile",nil)
-     message:NSLocalizedString(@"Message_ShareUsingSocialMediaMobile",nil)
+     initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaMobile")
+     message:sSKCoreGetLocalisedString(@"Message_ShareUsingSocialMediaMobile")
      delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
      otherButtonTitles:nil];
     [alert show];
     return;

@@ -51,15 +51,15 @@
   
     if (self.testType == DOWNLOAD_DATA || self.testType == UPLOAD_DATA)
     {
-        suffix = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+        suffix = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
     }
     else if ( (self.testType == LATENCY_DATA) || (self.testType == JITTER_DATA) )
     {
-        suffix = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+        suffix = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
     }
     else
     {
-        suffix = NSLocalizedString(@"Graph_Suffix_Percent",nil);
+        suffix = sSKCoreGetLocalisedString(@"Graph_Suffix_Percent");
     }
     return suffix;
 }
@@ -470,7 +470,7 @@
     
     [cell setDelegate:self];
     cell.backgroundColor = [UIColor samKnowsGrayColor];
-    cell.centerLabel.text = NSLocalizedString(@"Storyboard_GraphViewFooterCell_CenterLabel",nil);
+    cell.centerLabel.text = sSKCoreGetLocalisedString(@"Storyboard_GraphViewFooterCell_CenterLabel");
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     return cell;

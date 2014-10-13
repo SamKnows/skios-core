@@ -44,9 +44,9 @@
   self.tDataCapValue.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
   self.tDataCapValue.text = @"";
   
-  //    [self setTitle:NSLocalizedString(@"SETTINGS_Title", nil)];
-  [self.lMonthlyDataCap setText:NSLocalizedString(@"SETTINGS_Data_Cap", nil)];
-  [self.lCapUsed setText:NSLocalizedString(@"SETTINGS_Data_Usage", nil)];
+  //    [self setTitle:sSKCoreGetLocalisedString(@"SETTINGS_Title")];
+  [self.lMonthlyDataCap setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Cap")];
+  [self.lCapUsed setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Usage")];
   self.lMonthlyDataCap.font = [UIFont fontWithName:@"Roboto-Light" size:15];
   self.lCapUsed.font = [UIFont fontWithName:@"Roboto-Light" size:15];
   
@@ -56,7 +56,7 @@
   [self setDataCapFromUserSettings];
   
   if (self.lClearAllData != nil) {
-    self.lClearAllData.text = NSLocalizedString(@"Settings_ClearAllResults",nil);
+    self.lClearAllData.text = sSKCoreGetLocalisedString(@"Settings_ClearAllResults");
   }
   
   BOOL canDisableDataCap = [[SKAAppDelegate getAppDelegate] canDisableDataCap];
@@ -92,11 +92,11 @@
   [self setColoursAndShowHideElements];
 }
 
-//return NSLocalizedString(@"Storyboard_Settings_Configuration",nil);
-//return NSLocalizedString(@"Storyboard_Settings_MonthlyData",nil);
+//return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
+//return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
 //[self.lblVersion setText:delegate.schedule.scheduleVersion];
 
-//[self.lblConfig setText:NSLocalizedString(@"SETTINGS_Config", nil)]; - out ?
+//[self.lblConfig setText:sSKCoreGetLocalisedString(@"SETTINGS_Config")]; - out ?
 
 - (void)setDataCapFromUserSettings
 {
@@ -132,11 +132,11 @@
 - (IBAction)B_ClearDatabase:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:NSLocalizedString(@"Settings_ClearAllResults_Title", nil)
-                          message:NSLocalizedString(@"Settings_ClearAllResults_Message", nil)
+                          initWithTitle:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Title")
+                          message:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Message")
                           delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                          otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                          otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
     alert.tag = ALERT_WIPEDATA;
     [alert show];
 }
@@ -246,58 +246,62 @@
 
 -(IBAction)B_ExportResults:(id)sender
 {
-    SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
+  SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
+  
+  //TODO: Export body contains "FCC" word
+  
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Export_Title")
+                                                  message:sSKCoreGetLocalisedString(@"Export_Body")
+                                                 delegate:nil
+                                        cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                                        otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
+  
+  [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
+    int items = 0;
     
-    //TODO: Export body contains "FCC" word
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Export_Title",nil) message:NSLocalizedString(@"Export_Body",nil) delegate:nil  cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)  otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil), nil];
-    
-    [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
-        int items = 0;
+    if ([SKAAppDelegate exportArchivedJSONFilesToZip:&items] == NO) {
+      UIAlertView *alert = [[UIAlertView alloc]
+                            initWithTitle:sSKCoreGetLocalisedString(@"Export_Failed_Title")
+                            message:sSKCoreGetLocalisedString(@"Export_Failed_Body")
+                            delegate:nil
+                            cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                            otherButtonTitles:nil];
+      [alert show];
+    } else {
+      // Succeeded!
+      // If there are no items, tell the user - otherwise, the zip file is malformed!
+      if (items == 0) {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:sSKCoreGetLocalisedString(@"Export_NoItems_Title")
+                              message:sSKCoreGetLocalisedString(@"Export_NoItems_Body")
+                              delegate:nil
+                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                              otherButtonTitles:nil];
+        [alert show];
+      } else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"YYYY_MMM_dd_HH_mm_ss"];
+        NSString *lpReadableDate = [dateFormatter stringFromDate:[NSDate date]];
         
-        if ([SKAAppDelegate exportArchivedJSONFilesToZip:&items] == NO) {
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle:NSLocalizedString(@"Export_Failed_Title",nil)
-                                  message:NSLocalizedString(@"Export_Failed_Body",nil)
-                                  delegate:nil
-                                  cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
-                                  otherButtonTitles:nil];
-            [alert show];
-        } else {
-            // Succeeded!
-            // If there are no items, tell the user - otherwise, the zip file is malformed!
-            if (items == 0) {
-                UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle:NSLocalizedString(@"Export_NoItems_Title",nil)
-                                      message:NSLocalizedString(@"Export_NoItems_Body",nil)
-                                      delegate:nil
-                                      cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
-                                      otherButtonTitles:nil];
-                [alert show];
-            } else {
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"YYYY_MMM_dd_HH_mm_ss"];
-                NSString *lpReadableDate = [dateFormatter stringFromDate:[NSDate date]];
-                
-                NSString *lpFileNameWithExtension = [NSString stringWithFormat:@"export_%@.zip",lpReadableDate];
-                
-                [self launchEmailWithAttachment:@""
-                                        subject:[NSString stringWithFormat:@"%@ - %@",
-                                                 NSLocalizedString(@"MenuExport_Mail_Subject",nil),
-                                                 lpReadableDate
-                                                 ]
-                                       bodyText:[NSString stringWithFormat:@"%@\n\n%@",
-                                                 NSLocalizedString(@"MenuExport_Mail_Body",nil),
-                                                 lpFileNameWithExtension
-                                                 ]
-                                   fileToAttach:[SKAAppDelegate getJSONArchiveZipFilePath]
-                                 attachWithName:lpFileNameWithExtension];
-            }
-        }
-    } cancelBlock:^(UIAlertView *inView) {
-        // Nothing to do!
-    }];
-
+        NSString *lpFileNameWithExtension = [NSString stringWithFormat:@"export_%@.zip",lpReadableDate];
+        
+        [self launchEmailWithAttachment:@""
+                                subject:[NSString stringWithFormat:@"%@ - %@",
+                                         sSKCoreGetLocalisedString(@"MenuExport_Mail_Subject"),
+                                         lpReadableDate
+                                         ]
+                               bodyText:[NSString stringWithFormat:@"%@\n\n%@",
+                                         sSKCoreGetLocalisedString(@"MenuExport_Mail_Body"),
+                                         lpFileNameWithExtension
+                                         ]
+                           fileToAttach:[SKAAppDelegate getJSONArchiveZipFilePath]
+                         attachWithName:lpFileNameWithExtension];
+      }
+    }
+  } cancelBlock:^(UIAlertView *inView) {
+    // Nothing to do!
+  }];
+  
 }
 
 - (bool)launchEmailWithAttachment:(NSString *)PpMailAddress subject:(NSString *)PpSubject bodyText:(NSString *)PpBodyText fileToAttach:(NSString *)PFileToAttach attachWithName:(NSString *)inAttachWithName
@@ -400,11 +404,11 @@
 //
 //    UIAlertView *alert =
 //    [[UIAlertView alloc]
-//     initWithTitle:NSLocalizedString(@"Title_MonthlyDataCap",nil)
+//     initWithTitle:sSKCoreGetLocalisedString(@"Title_MonthlyDataCap")
 //     message:nil
 //     delegate:self
-//     cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-//     otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil), nil];
+//     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+//     otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK",nil), ];
 //    alert.tag = ALERT_DATACAP;
 //
 //    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -419,7 +423,7 @@
 //    mb = mb / CBytesInAMegabyte;
 //
 //    textField.text = [NSString stringWithFormat:@"%d", (int)mb];
-//    textField.placeholder = NSLocalizedString(@"Settings_DataCap_Placeholder",nil);
+//    textField.placeholder = sSKCoreGetLocalisedString(@"Settings_DataCap_Placeholder");
 //
 //    [alert show];
 //}
@@ -433,11 +437,11 @@
 //        NSLog(@"TODO - optionally, clear the database!");
 //
 //        UIAlertView *alert = [[UIAlertView alloc]
-//                              initWithTitle:NSLocalizedString(@"Settings_ClearAllResults_Title", nil)
-//                              message:NSLocalizedString(@"Settings_ClearAllResults_Message", nil)
+//                              initWithTitle:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Title")
+//                              message:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Message")
 //                              delegate:self
-//                              cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-//                              otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+//                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+//                              otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK",nil),];
 //        alert.tag = ALERT_WIPEDATA;
 //        [alert show];
 //    } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {

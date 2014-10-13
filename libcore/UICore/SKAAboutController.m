@@ -19,19 +19,19 @@
 {
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"Storyboard_About_Title",nil);
+  self.title = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
   
-  self.downloadText.text = NSLocalizedString(@"Storyboard_About_Text_Download",nil);
-  self.uploadText.text = NSLocalizedString(@"Storyboard_About_Text_Upload",nil);
-  self.latencyText.text = NSLocalizedString(@"Storyboard_About_Text_Latency",nil);
-  self.packetLossText.text = NSLocalizedString(@"Storyboard_About_Text_PacketLoss",nil);
+  self.downloadText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Download");
+  self.uploadText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Upload");
+  self.latencyText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Latency");
+  self.packetLossText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_PacketLoss");
   if (self.jitterText != nil) {
-    self.jitterText.text = NSLocalizedString(@"Storyboard_About_Text_Jitter",nil);
+    self.jitterText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Jitter");
   }
 
   NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
   NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
-  NSString *displayVersion = [NSString stringWithFormat:@"%@: %@.%@", NSLocalizedString(@"About_Version",nil), appVersion, bundleVersion];
+  NSString *displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
   self.versionLabel.text = displayVersion;
 }
 
@@ -47,22 +47,22 @@
   switch (section)
   {
     case 0:
-    return NSLocalizedString(@"Storyboard_About_Section_AppName",nil); // "My Speed Test"
+    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_AppName"); // "My Speed Test"
     
     case 1:
-    return NSLocalizedString(@"Storyboard_About_Section_Download",nil); // "Download"
+    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Download"); // "Download"
        
     case 2:
-    return NSLocalizedString(@"Storyboard_About_Section_Upload",nil); // "Upload"
+    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Upload"); // "Upload"
        
     case 3:
-    return NSLocalizedString(@"Storyboard_About_Section_Latency",nil); // "Latency"
+    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Latency"); // "Latency"
     
     case 4:
-    return NSLocalizedString(@"Storyboard_About_Section_PacketLoss",nil); // "Packet Loss"
+    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_PacketLoss"); // "Packet Loss"
     
     case 5:
-    return NSLocalizedString(@"Storyboard_About_Section_Jitter",nil); // "Jitter"
+    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Jitter"); // "Jitter"
   }
   
   SK_ASSERT(false);

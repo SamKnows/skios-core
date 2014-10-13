@@ -37,7 +37,7 @@
 {
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"Storyboard_Activation_Title",nil);
+  self.title = sSKCoreGetLocalisedString(@"Storyboard_Activation_Title");
   
   isRunning = YES;
   
@@ -46,9 +46,9 @@
   
   appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
   
-  self.lblMain.text = NSLocalizedString(@"ACTV_Label", nil);
-  self.lblActivating.text = NSLocalizedString(@"ACTV_Label_Activating", nil);
-  self.lblDownloading.text = NSLocalizedString(@"ACTV_Label_Downloading", nil);
+  self.lblMain.text = sSKCoreGetLocalisedString(@"ACTV_Label");
+  self.lblActivating.text = sSKCoreGetLocalisedString(@"ACTV_Label_Activating");
+  self.lblDownloading.text = sSKCoreGetLocalisedString(@"ACTV_Label_Downloading");
   
   SK_ASSERT(self.spinnerActivating != NULL);
   SK_ASSERT(self.spinnerDownloading != NULL);
@@ -78,7 +78,7 @@
   label.textColor = [UIColor blackColor];
   
   label.backgroundColor = [UIColor clearColor];
-  label.text = NSLocalizedString(@"ACTV_Title", nil);
+  label.text = sSKCoreGetLocalisedString(@"ACTV_Title");
   [label sizeToFit];
   self.navigationItem.titleView = label;
 }
@@ -94,9 +94,9 @@
      )
   {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:NSLocalizedString(@"ACTV_Running", nil)
+                                                    message:sSKCoreGetLocalisedString(@"ACTV_Running")
                                                    delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+                                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                                           otherButtonTitles: nil];
     [alert show];
     return;

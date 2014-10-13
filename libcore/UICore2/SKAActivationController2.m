@@ -45,7 +45,7 @@
 {
   [super viewDidLoad];
   
-  self.lTitle.text = NSLocalizedString(@"Storyboard_Activation_Title",nil);
+  self.lTitle.text = sSKCoreGetLocalisedString(@"Storyboard_Activation_Title");
   self.lTitle.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
   self.lTitle.layer.cornerRadius = 3;
   self.lTitle.layer.borderWidth = 0.5;
@@ -53,14 +53,14 @@
   self.lTitle.clipsToBounds = YES;
   [self.view addSubview:self.lTitle];
   
-  self.lActivating.text = NSLocalizedString(@"ACTV_Label_Activating", nil);
+  self.lActivating.text = sSKCoreGetLocalisedString(@"ACTV_Label_Activating");
   self.lActivating.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
   self.lActivating.layer.cornerRadius = 3;
   self.lActivating.layer.borderWidth = 0.5;
   self.lActivating.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
   self.lActivating.clipsToBounds = YES;
   
-  self.lDownloading.text = NSLocalizedString(@"ACTV_Label_Downloading", nil);
+  self.lDownloading.text = sSKCoreGetLocalisedString(@"ACTV_Label_Downloading");
   self.lDownloading.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
   self.lDownloading.layer.cornerRadius = 3;
   self.lDownloading.layer.borderWidth = 0.5;
@@ -115,7 +115,7 @@
     label.textColor = [UIColor blackColor];
     
     label.backgroundColor = [UIColor clearColor];
-    label.text = NSLocalizedString(@"ACTV_Title", nil);
+    label.text = sSKCoreGetLocalisedString(@"ACTV_Title");
     [label sizeToFit];
     self.navigationItem.titleView = label;
 }
@@ -131,9 +131,9 @@
 //        )
 //    {
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                        message:NSLocalizedString(@"ACTV_Running", nil)
+//                                                        message:sSKCoreGetLocalisedString(@"ACTV_Running")
 //                                                       delegate:nil
-//                                              cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+//                                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
 //                                              otherButtonTitles: nil];
 //        [alert show];
 //        return;
@@ -190,58 +190,62 @@
 
 - (void)getBaseServer
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinnerActivating startAnimating];
-    });
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    NSString *baseUrlString = [[SKAAppDelegate getAppDelegate] getBaseUrlString];
-    NSURL *url = [NSURL URLWithString:baseUrlString];
-    [request setURL:url];
-    [request setHTTPMethod:@"GET"];
-    [request setTimeoutInterval:20];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    
-    NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
-    [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
-    
-    NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
-    [idQueue setName:@"com.samknows.basequeue"];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:idQueue completionHandler:^(NSURLResponse *response,
-                                                                                       NSData *data,
-                                                                                       NSError *error)
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.spinnerActivating startAnimating];
+  });
+  
+  NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+  NSString *baseUrlString = [[SKAAppDelegate getAppDelegate] getBaseUrlString];
+  NSURL *url = [NSURL URLWithString:baseUrlString];
+  [request setURL:url];
+  [request setHTTPMethod:@"GET"];
+  [request setTimeoutInterval:20];
+  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+  
+  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
+  
+  NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
+  [idQueue setName:@"com.samknows.basequeue"];
+  
+#ifdef DEBUG
+  NSLog(@"DEBUG: getBaseServer, request=%@", [request description]);
+#endif // DEBUG
+  
+  [NSURLConnection sendAsynchronousRequest:request queue:idQueue completionHandler:^(NSURLResponse *response,
+                                                                                     NSData *data,
+                                                                                     NSError *error)
+   {
+     SK_ASSERT_NONSERROR(error);
+     
+     if (nil == error)
      {
-         SK_ASSERT_NONSERROR(error);
+       if (nil != data)
+       {
+         NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
          
-         if (nil == error)
+         if (nil != strData)
          {
-             if (nil != data)
-             {
-                 NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                 
-                 if (nil != strData)
-                 {
-                     NSString *server = [strData stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-                     
-                     NSString *final = [NSString stringWithFormat:@"%@%@", @"http://", server];
-                     
-                     if (nil != final)
-                     {
-                         // To get here, we succeeeded!
-                         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                         [prefs setObject:final forKey:Prefs_TargetServer];
-                         [prefs synchronize];
-                         [self getConfig];
-                         return;
-                     }
-                 }
-             }
+           NSString *server = [strData stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+           
+           NSString *final = [NSString stringWithFormat:@"%@%@", @"http://", server];
+           
+           if (nil != final)
+           {
+             // To get here, we succeeeded!
+             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+             [prefs setObject:final forKey:Prefs_TargetServer];
+             [prefs synchronize];
+             [self getConfig];
+             return;
+           }
          }
-         
-         // TO get here, there is an ERROR!
-         [self activationError:@"getBaseServer"];
-     }];
+       }
+     }
+     
+     // TO get here, there is an ERROR!
+     [self activationError:@"getBaseServer"];
+   }];
 }
 
 - (void)getConfig

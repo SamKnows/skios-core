@@ -79,6 +79,7 @@ static SKCore *sbCore = nil;
 +(SKCore*) getInstance {
   if (sbCore == nil) {
     sbCore = [[SKCore alloc] init];
+    SK_ASSERT([sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyLTE") isEqualToString:@"LTE"]);
   }
  
   // Always initialise the operators singleton!
@@ -88,3 +89,14 @@ static SKCore *sbCore = nil;
 }
 
 @end
+
+NSString*sSKCoreGetLocalisedString(NSString*theString)
+{
+  // Allow the string to be looked-up from the app.
+  NSString *theResult = NSLocalizedString(theString, nil);
+  // If the app doesn't override, use the internal default!
+  if ([theResult isEqualToString:theString]) {
+    theResult = NSLocalizedStringFromTable(theString, @"libcore", nil);
+  }
+  return theResult;
+}

@@ -83,10 +83,10 @@ static BOOL sbReloadTableAfterBack = NO;
     
     if (!self.casNetworkType)
     {
-        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
-        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil) withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_Mobile",nil) withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
-        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_All",nil) withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
+        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
+        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
     }
     
     [self.casNetworkType expand];
@@ -97,12 +97,12 @@ static BOOL sbReloadTableAfterBack = NO;
     
     if (!self.casPeriod)
     {
-        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1day",nil) withImage:nil andTag:C_FILTER_PERIOD_1DAY];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1week",nil) withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1month",nil) withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_3months",nil) withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1year",nil) withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
+        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1day") withImage:nil andTag:C_FILTER_PERIOD_1DAY];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1week") withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1month") withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_3months") withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1year") withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
     }
     
     [self.casPeriod expand];
@@ -121,13 +121,13 @@ static BOOL sbReloadTableAfterBack = NO;
     
     switch (optionTag) {
       case C_FILTER_NETWORKTYPE_WIFI:
-        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil) forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_GSM:
-        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_Mobile",nil) forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_ALL:
-        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_All",nil) forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
         break;
       default:
         break;
@@ -140,23 +140,23 @@ static BOOL sbReloadTableAfterBack = NO;
     
     switch (optionTag) {
       case C_FILTER_PERIOD_1DAY:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1day",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1day") forState:UIControlStateNormal];
         currentFilterPeriod = C_FILTER_PERIOD_1DAY;
         break;
       case C_FILTER_PERIOD_1WEEK:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1week",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
         currentFilterPeriod = C_FILTER_PERIOD_1WEEK;
         break;
       case C_FILTER_PERIOD_1MONTH:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1month",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1month") forState:UIControlStateNormal];
         currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
         break;
       case C_FILTER_PERIOD_3MONTHS:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_3months",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_3months") forState:UIControlStateNormal];
         currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
         break;
       case C_FILTER_PERIOD_1YEAR:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1year",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1year") forState:UIControlStateNormal];
         currentFilterPeriod = C_FILTER_PERIOD_1YEAR;
         break;
       default:
@@ -321,25 +321,25 @@ static BOOL sbReloadTableAfterBack = NO;
 {
   self.lNumberOfRecords.text = nil;
   self.lDownloadAvg = nil;
-  self.lDownloadAvgUnit = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+  self.lDownloadAvgUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
   self.lDownloadBst = nil;
-  self.lDownloadBstUnit = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+  self.lDownloadBstUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
   self.lUploadAvg = nil;
-  self.lUploadAvgUnit = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+  self.lUploadAvgUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
   self.lUploadBst = nil;
-  self.lUploadBstUnit = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+  self.lUploadBstUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
   self.lLatencyAvg = nil;
-  self.lLatencyAvgUnit = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+  self.lLatencyAvgUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
   self.lLatencyBst = nil;
-  self.lLatencyBstUnit = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+  self.lLatencyBstUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
   self.lLossAvg = nil;
-  self.lLossAvgUnit = NSLocalizedString(@"Graph_Suffix_Percent",nil);
+  self.lLossAvgUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Percent");
   self.lLossBst = nil;
-  self.lLossBstUnit = NSLocalizedString(@"Graph_Suffix_Percent",nil);
+  self.lLossBstUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Percent");
   self.lJitterAvg = nil;
-  self.lJitterAvgUnit = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+  self.lJitterAvgUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
   self.lJitterBst = nil;
-  self.lJitterBstUnit = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+  self.lJitterBstUnit = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
   
 //  [UIView animateWithDuration:0.5 animations:^{
 //    self.lNumberOfRecords.alpha = 0;
@@ -572,42 +572,42 @@ static BOOL sbReloadTableAfterBack = NO;
   
   switch (currentChartType) {
     case 0:
-      self.vChart.chartTitle = NSLocalizedString(@"Download speed for ",nil);
-      self.vChart.axisYTitle = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Download speed for ");
+      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
       break;
     case 1:
-      self.vChart.chartTitle = NSLocalizedString(@"Upload speed for ",nil);
-      self.vChart.axisYTitle = NSLocalizedString(@"Graph_Suffix_Mbps",nil);
+      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Upload speed for ");
+      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
       break;
     case 2:
-      self.vChart.chartTitle = NSLocalizedString(@"Latency for ",nil);
-      self.vChart.axisYTitle = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Latency for ");
+      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
       break;
     case 3:
-      self.vChart.chartTitle = NSLocalizedString(@"Loss for ",nil);
-      self.vChart.axisYTitle = NSLocalizedString(@"Graph_Suffix_Percent",nil);
+      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Loss for ");
+      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Percent");
       break;
     case 4:
-      self.vChart.chartTitle = NSLocalizedString(@"Jitter for ",nil);
-      self.vChart.axisYTitle = NSLocalizedString(@"Graph_Suffix_Ms",nil);
+      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Jitter for ");
+      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
       break;
   }
   
   switch (currentFilterPeriod) {
     case C_FILTER_PERIOD_1DAY:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, NSLocalizedString(@"time_period_1day",nil)];
+      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1day")];
       break;
     case C_FILTER_PERIOD_1WEEK:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, NSLocalizedString(@"time_period_1week",nil)];
+      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1week")];
       break;
     case C_FILTER_PERIOD_1MONTH:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, NSLocalizedString(@"time_period_1month",nil)];
+      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1month")];
       break;
     case C_FILTER_PERIOD_3MONTHS:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, NSLocalizedString(@"time_period_3months",nil)];
+      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_3months")];
       break;
     case C_FILTER_PERIOD_1YEAR:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, NSLocalizedString(@"time_period_1year",nil)];
+      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1year")];
       break;
   }
 }
@@ -648,7 +648,7 @@ static BOOL sbReloadTableAfterBack = NO;
   switch (row) {
     case 0:
       [cell prepareWithTopLeftImage:[UIImage imageNamed:@"ga.png"]
-                       TopLeftTitle:NSLocalizedString(@"Test_Download",nil)
+                       TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Download")
                    LeftAverageValue:self.lDownloadAvg
                    LeftAverageUnits:self.lDownloadAvgUnit
                      RightBestValue:self.lDownloadBst
@@ -657,7 +657,7 @@ static BOOL sbReloadTableAfterBack = NO;
       break;
     case 1:
       [cell prepareWithTopLeftImage:[UIImage imageNamed:@"ra.png"]
-                       TopLeftTitle:NSLocalizedString(@"Test_Upload",nil)
+                       TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Upload")
                    LeftAverageValue:self.lUploadAvg
                    LeftAverageUnits:self.lUploadAvgUnit
                      RightBestValue:self.lUploadBst
@@ -666,7 +666,7 @@ static BOOL sbReloadTableAfterBack = NO;
       break;
     case 2:
       [cell prepareWithTopLeftImage:nil
-                       TopLeftTitle:NSLocalizedString(@"Test_Latency",nil)
+                       TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Latency")
                    LeftAverageValue:self.lLatencyAvg
                    LeftAverageUnits:self.lLatencyAvgUnit
                      RightBestValue:self.lLatencyBst
@@ -675,7 +675,7 @@ static BOOL sbReloadTableAfterBack = NO;
       break;
     case 3:
       [cell prepareWithTopLeftImage:nil
-                       TopLeftTitle:NSLocalizedString(@"Test_Loss",nil)
+                       TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Loss")
                    LeftAverageValue:self.lLossAvg
                    LeftAverageUnits:self.lLossAvgUnit
                      RightBestValue:self.lLossBst
@@ -685,7 +685,7 @@ static BOOL sbReloadTableAfterBack = NO;
     case 4:
     default:
       [cell prepareWithTopLeftImage:nil
-                       TopLeftTitle:NSLocalizedString(@"Test_Jitter",nil)
+                       TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Jitter")
                    LeftAverageValue:self.lJitterAvg
                    LeftAverageUnits:self.lJitterAvgUnit
                      RightBestValue:self.lJitterBst

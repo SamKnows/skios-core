@@ -195,10 +195,10 @@
     
     if (!self.casNetworkType)
     {
-        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
-        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil) withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_Mobile",nil) withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
-        [self.casNetworkType addOption:NSLocalizedString(@"NetworkTypeMenu_All",nil) withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
+        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
+        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
     }
     
     [self.casNetworkType expand];
@@ -208,11 +208,11 @@
     
     if (!self.casPeriod)
     {
-        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1week",nil) withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1month",nil) withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_3months",nil) withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
-        [self.casPeriod addOption:NSLocalizedString(@"time_period_1year",nil) withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
+        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1week") withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1month") withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_3months") withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
+        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1year") withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
     }
     
     [self.casPeriod expand];
@@ -226,13 +226,13 @@
     
     switch (optionTag) {
       case C_FILTER_NETWORKTYPE_WIFI:
-        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil) forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_GSM:
-        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_Mobile",nil) forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_ALL:
-        [self.btNetworkType setTitle:NSLocalizedString(@"NetworkTypeMenu_All",nil) forState:UIControlStateNormal];
+        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
         break;
       default:
         break;
@@ -245,16 +245,16 @@
     
     switch (optionTag) {
       case C_FILTER_PERIOD_1WEEK:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1week",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
         break;
       case C_FILTER_PERIOD_1MONTH:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1month",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1month") forState:UIControlStateNormal];
         break;
       case C_FILTER_PERIOD_3MONTHS:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_3months",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_3months") forState:UIControlStateNormal];
         break;
       case C_FILTER_PERIOD_1YEAR:
-        [self.btPeriod setTitle:NSLocalizedString(@"time_period_1year",nil) forState:UIControlStateNormal];
+        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1year") forState:UIControlStateNormal];
         break;
       default:
         break;
@@ -368,12 +368,12 @@ static SKATestResults* testToShareExternal = nil;
   
   arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:[testResult_ numberOfOptionalMetrics]];
   
-  [self placeMetricsWithLocalizedText:testResult_.device withLocalizedLabelTextID:NSLocalizedString(@"Phone",nil)];
-  [self placeMetricsWithLocalizedText:testResult_.os withLocalizedLabelTextID:NSLocalizedString(@"OS",nil)];
-  [self placeMetricsWithLocalizedText:testResult_.carrier_name withLocalizedLabelTextID:NSLocalizedString(@"Carrier_Name",nil)];
-  [self placeMetricsWithLocalizedText:testResult_.country_code withLocalizedLabelTextID:NSLocalizedString(@"Carrier_Country",nil)];
-  [self placeMetricsWithLocalizedText:testResult_.iso_country_code withLocalizedLabelTextID:NSLocalizedString(@"Carrier_ISO",nil)];
-  [self placeMetricsWithLocalizedText:testResult_.network_code withLocalizedLabelTextID:NSLocalizedString(@"Carrier_Network",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.device withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Phone")];
+  [self placeMetricsWithLocalizedText:testResult_.os withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"OS")];
+  [self placeMetricsWithLocalizedText:testResult_.carrier_name withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Name")];
+  [self placeMetricsWithLocalizedText:testResult_.country_code withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Country")];
+  [self placeMetricsWithLocalizedText:testResult_.iso_country_code withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_ISO")];
+  [self placeMetricsWithLocalizedText:testResult_.network_code withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Network")];
   
   // Only allow MOBILE results to be shared!
   self.btShare.hidden = YES;
@@ -382,28 +382,28 @@ static SKATestResults* testToShareExternal = nil;
   if (testResult_.radio_type.length > 0)
   {
     NSString* networkType;
-    networkType = NSLocalizedString(@"Unknown",nil);
+    networkType = sSKCoreGetLocalisedString(@"Unknown");
     if ([testResult_.network_type isEqualToString:@"network"]) {
-      networkType = NSLocalizedString(@"NetworkTypeMenu_WiFi",nil);
+      networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
     } else if ([testResult_.network_type isEqualToString:@"mobile"]) {
       
       // Only allow MOBILE results to be shared!
       self.btShare.hidden = NO;
       [self bringSubviewToFront:self.btShare];
       
-      NSString *mobileString = NSLocalizedString(@"NetworkTypeMenu_Mobile",nil);
+      NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
       
       NSString *theRadio = [SKGlobalMethods getNetworkTypeLocalized:testResult_.radio_type];
-      if ([theRadio isEqualToString:NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil)]) {
+      if ([theRadio isEqualToString:sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown")]) {
         networkType = mobileString;
       } else {
         networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
       }
     }
     
-    [self placeMetricsWithLocalizedText:networkType withLocalizedLabelTextID:NSLocalizedString(@"Network_Type",nil)];
+    [self placeMetricsWithLocalizedText:networkType withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Network_Type")];
   }
-  [self placeMetricsWithLocalizedText:testResult_.target withLocalizedLabelTextID:NSLocalizedString(@"Target",nil)];
+  [self placeMetricsWithLocalizedText:testResult_.target withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Target")];
 }
 
 -(void)placeMetricsWithLocalizedText:(NSString*)text_ withLocalizedLabelTextID:(NSString*)localizedLabelTextID_

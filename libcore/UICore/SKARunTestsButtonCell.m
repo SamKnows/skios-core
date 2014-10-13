@@ -26,10 +26,10 @@
 {
   if (continuousTesting == true) {
     self.mbContinuousTesting = YES;
-    [self.btnRun setTitle:NSLocalizedString(@"RESULTS_Label_Continuous_Start", nil) forState:UIControlStateNormal];
+    [self.btnRun setTitle:sSKCoreGetLocalisedString(@"RESULTS_Label_Continuous_Start") forState:UIControlStateNormal];
   } else {
     self.mbContinuousTesting = NO;
-    [self.btnRun setTitle:NSLocalizedString(@"RESULTS_Label_Run", nil) forState:UIControlStateNormal];
+    [self.btnRun setTitle:sSKCoreGetLocalisedString(@"RESULTS_Label_Run") forState:UIControlStateNormal];
   }
 }
 

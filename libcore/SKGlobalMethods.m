@@ -443,15 +443,15 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 {
     if (value == WIFI)
     {
-        return NSLocalizedString(@"ConnectionString_WiFi",nil);
+        return sSKCoreGetLocalisedString(@"ConnectionString_WiFi");
     }
     else if (value == CELLULAR)
     {
-        return NSLocalizedString(@"ConnectionString_Cellular",nil);
+        return sSKCoreGetLocalisedString(@"ConnectionString_Cellular");
     }
     else
     {
-        return NSLocalizedString(@"ConnectionString_Offline",nil);
+        return sSKCoreGetLocalisedString(@"ConnectionString_Offline");
     }
 }
 
@@ -515,14 +515,14 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   
   if (theType == nil)
   {
-    return NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil);
+    return sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown");
   }
   
   if ([theType isEqualToString:@"Unknown"]) {
-    return NSLocalizedString(@"CTRadioAccessTechnologyUnknown",nil);
+    return sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown");
   }
   
-  return NSLocalizedString(theType,nil);
+  return sSKCoreGetLocalisedString(theType);
 }
 
 +(NSString*)getNetworkType {

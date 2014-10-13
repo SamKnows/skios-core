@@ -33,7 +33,7 @@
 {
   selectedTest = testResult;
   
-  self.casShare = [[cActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)];
+  self.casShare = [[cActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   [self.casShare addOption:@"Facebook" withImage:[UIImage imageNamed:@"share-facebook"] andTag:C_SHARE_FACEBOOK];
   [self.casShare addOption:@"Twitter" withImage:[UIImage imageNamed:@"share-twitter"] andTag:C_SHARE_TWITTER];
   [self.casShare addOption:@"Email" withImage:[UIImage imageNamed:@"share-mail"] andTag:C_SHARE_MAIL];

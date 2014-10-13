@@ -209,12 +209,12 @@
   [self.casStatusView initialize];
   
   //[self.tmActivityIndicator layoutSubviews];
-  [self.tmActivityIndicator displayReset:NSLocalizedString(@"Start",nil)];
+  [self.tmActivityIndicator displayReset:sSKCoreGetLocalisedString(@"Start")];
   //[self.tmActivityIndicator setNeedsLayout];
   
-  [self.casStatusView setText:NSLocalizedString(@"Ready to run",nil) forever:YES];
+  [self.casStatusView setText:sSKCoreGetLocalisedString(@"Ready to run") forever:YES];
   //self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
-  self.lClosest.text = NSLocalizedString(@"Press the Start button",nil);
+  self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button");
   self.tvCurrentResults.hidden = YES;
   
   [self updateRadioType];
@@ -411,9 +411,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     
     UIAlertView *alert =
     [[UIAlertView alloc] initWithTitle:nil
-                               message:NSLocalizedString(@"Offline_message", nil)
+                               message:sSKCoreGetLocalisedString(@"Offline_message")
                               delegate:nil
-                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_OK",nil)
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                      otherButtonTitles: nil];
     
     [alert show];
@@ -432,12 +432,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)updateRadioType
 {
   if ([[SKAAppDelegate getAppDelegate] getIsConnected] == NO) {
-    [self.tmActivityIndicator setTopInfo:NSLocalizedString(@"No connection",nil)];
+    [self.tmActivityIndicator setTopInfo:sSKCoreGetLocalisedString(@"No connection")];
   } else {
     connectionStatus = [SKAAppDelegate getAppDelegate].connectionStatus;
     
     if (connectionStatus == WIFI) {
-      [self.tmActivityIndicator setTopInfo:NSLocalizedString(@"NetworkTypeMenu_WiFi",nil)];
+      [self.tmActivityIndicator setTopInfo:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi")];
     } else {
       [self.tmActivityIndicator setTopInfo:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
     }
@@ -500,11 +500,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   if (isRunning)
   {
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:NSLocalizedString(@"Tests_Running_Title", nil)
-                          message:NSLocalizedString(@"Tests_Running_Message", nil)
+                          initWithTitle:sSKCoreGetLocalisedString(@"Tests_Running_Title")
+                          message:sSKCoreGetLocalisedString(@"Tests_Running_Message")
                           delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                          otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                          otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
     
     alert.tag = ACTION_CANCEL_CONFIRMATION;
     [alert show];
@@ -582,11 +582,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   if ([self checkIfTestsHaveExceededDataCap]) {
     
     UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Exceeded", nil)
-                               message:NSLocalizedString(@"Data_Exceed_Msg", nil)
+    [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Data_Exceeded")
+                               message:sSKCoreGetLocalisedString(@"Data_Exceed_Msg")
                               delegate:nil
-                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                     otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                     otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
     [alert setTag:ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE];
     [alert setDelegate:self];
     [alert show];
@@ -596,11 +596,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   if ([self checkIfTestWillExceedDataCapForTestType:GRunTheTestWithThisType]) {
     UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Data_Might_Be_Exceeded", nil)
-                               message:NSLocalizedString(@"Data_Exceed_Msg", nil)
+    [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Data_Might_Be_Exceeded")
+                               message:sSKCoreGetLocalisedString(@"Data_Exceed_Msg")
                               delegate:nil
-                     cancelButtonTitle:NSLocalizedString(@"MenuAlert_Cancel",nil)
-                     otherButtonTitles:NSLocalizedString(@"MenuAlert_OK",nil),nil];
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                     otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),nil];
     [alert setTag:ACTION_WILL_BE_EXCEEDED_PRESS_OK_TO_CONTINUE];
     [alert setDelegate:self];
     [alert show];
@@ -641,7 +641,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)restoreButton
 {
   [self.tmActivityIndicator stopAnimating];
-  [self.tmActivityIndicator displayReset:NSLocalizedString(@"Start",nil)];
+  [self.tmActivityIndicator displayReset:sSKCoreGetLocalisedString(@"Start")];
   [self.tmActivityIndicator setAngle:0];
   
   if ([self.appDelegate enableTestsSelection])
@@ -689,7 +689,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodClosestTargetTestDidStart
 {
-  [self.lClosest setText:NSLocalizedString(@"TEST_Label_Finding_Best_Target", nil)];
+  [self.lClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
   [self showTargets];
 }
 
@@ -700,7 +700,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 #endif // DEBUG
   [self stopTestFromAlertResponse:NO];
   [self setIsRunning:NO];
-  [self.lClosest setText:NSLocalizedString(@"TEST_Label_Closest_Failed", nil)];
+  [self.lClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
 }
 
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target
@@ -708,7 +708,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   [SKAAppDelegate setClosestTarget:target];
   
   NSString *closest = [NSString stringWithFormat:@"%@ %@",
-                       NSLocalizedString(@"TEST_Label_Closest_Target", nil),
+                       sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
                        [self.appDelegate.schedule getClosestTargetName:target]];
   
   [self.lClosest setText:closest];
@@ -782,8 +782,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)aodLatencyTestDidStart
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [self.casStatusView setText:NSLocalizedString(@"Latency / Loss testing",nil) forever:YES];
-    [self.tmActivityIndicator setUnitMeasurement:NSLocalizedString(@"Graph_Suffix_Ms",nil) measurement:NSLocalizedString(@"Test_Latency",nil)];
+    [self.casStatusView setText:sSKCoreGetLocalisedString(@"Latency / Loss testing") forever:YES];
+    [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Ms") measurement:sSKCoreGetLocalisedString(@"Test_Latency")];
     if (((self.testTypes2Execute & CTTBM_DOWNLOAD) != 0) || ((self.testTypes2Execute & CTTBM_UPLOAD) != 0))
       [self.tmActivityIndicator displayReset:@"0"];
     
@@ -853,7 +853,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self.tmActivityIndicator.arrLabels addObject:@"30"];
                      [self.tmActivityIndicator.arrLabels addObject:@"100"];
                      
-                     [self.tmActivityIndicator setUnitMeasurement:NSLocalizedString(@"Graph_Suffix_Mbps",nil) measurement:NSLocalizedString(@"Test_Download",nil)];
+                     [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Download")];
                    }
                    else
                    {
@@ -866,7 +866,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self.tmActivityIndicator.arrLabels addObject:@"2"];
                      [self.tmActivityIndicator.arrLabels addObject:@"5"];
                      [self.tmActivityIndicator.arrLabels addObject:@"10"];
-                     [self.tmActivityIndicator setUnitMeasurement:NSLocalizedString(@"Graph_Suffix_Mbps",nil) measurement:NSLocalizedString(@"Test_Upload",nil)];
+                     [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Upload")];
                    }
                  });
 }
@@ -942,7 +942,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   //    ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_LATENCY_TEST]).value = @"#";
   //    ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_LOSS_TEST]).value = @"#";
   //    ((SKATestOverviewMetrics*)[testResultsArray objectAtIndex:C_JITTER_TEST]).value = @"#";
-  [self.casStatusView setText:NSLocalizedString(@"Error",nil) forever:YES];
+  [self.casStatusView setText:sSKCoreGetLocalisedString(@"Error") forever:YES];
   [self updateTableAnimated];
 }
 
@@ -1008,8 +1008,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    
                    [UIView animateWithDuration:1.0 animations:^{
                      [self resetProgressView];
-                     [self.casStatusView setText:NSLocalizedString(@"Tests executed",nil) forever:YES];
-                     self.lClosest.text = NSLocalizedString(@"Press the Start button to run again",nil);
+                     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
+                     self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
                     
                      if ([self.mpTestResult.network_type isEqualToString:@"mobile"])
                      {
@@ -1076,8 +1076,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }];
   
   //TODO: If cancelled or error
-  [self.casStatusView setText:NSLocalizedString(@"Tests canceled",nil) forever:YES];
-  self.lClosest.text = NSLocalizedString(@"Press the Start button to run again",nil);
+  [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests canceled") forever:YES];
+  self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
   
   [self setIsRunning:NO];
   [self setEndDataUsage];
@@ -1179,7 +1179,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)aodDidStartTargetTesting
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [self.casStatusView setText:NSLocalizedString(@"Target Selection",nil) forever:YES];
+    [self.casStatusView setText:sSKCoreGetLocalisedString(@"Target Selection") forever:YES];
   });
 }
 
@@ -1419,10 +1419,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (IBAction)B_SelectTests:(id)sender {
   
- self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:NSLocalizedString(@"MenuAlert_OK",nil)];
- [self.casTestTypes addOption:NSLocalizedString(@"Test_Download",nil) withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
- [self.casTestTypes addOption:NSLocalizedString(@"Test_Upload",nil) withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
- [self.casTestTypes addOption:NSLocalizedString(@"Latency / Loss / Jitter",nil) withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
+ self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")];
+ [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Download") withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
+ [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Upload") withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
+ [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Latency / Loss / Jitter") withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
   
   [self.casTestTypes expand];
 }
