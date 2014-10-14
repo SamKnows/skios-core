@@ -22,8 +22,8 @@
   
   [self.settingsManagerView setColoursAndShowHideElements];
   
-  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
 }
 
 -(void) viewDidAppear:(BOOL)animated {

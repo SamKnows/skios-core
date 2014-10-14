@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIViewWithGradient.h"
-#import "cTabController.h"
+#import "SKAppColourScheme.h"
 #import "SKHistoryViewMgr.h"
 #import "SKSummaryViewMgr.h"
 #import "SKSettingsMgr.h"

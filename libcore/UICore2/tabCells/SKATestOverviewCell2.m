@@ -121,7 +121,7 @@
 {
   if (self.vBackground != nil) return;
   
-  float GUI_MULTIPLIER = [cTabController sGet_GUI_MULTIPLIER];
+  float GUI_MULTIPLIER = [SKAppColourScheme sGet_GUI_MULTIPLIER];
   
   UIFont* labelFontLight = [UIFont fontWithName:@"Roboto-Light" size:GUI_MULTIPLIER * 12];
   UIFont* labelFontThin = [UIFont fontWithName:@"Roboto-Thin" size:GUI_MULTIPLIER * 12];

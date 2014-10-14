@@ -69,7 +69,7 @@ static BOOL sbReloadTableAfterBack = NO;
   self.backgroundColor = [UIColor clearColor];
   
   self.vHeader.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-  self.vHeader.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
+  self.vHeader.layer.cornerRadius = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 3;
   self.vHeader.layer.borderWidth = 0.5;
   self.vHeader.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
   

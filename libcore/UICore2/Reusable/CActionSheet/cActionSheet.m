@@ -38,8 +38,8 @@
         
         self.backgroundGradientView = [[UIViewWithGradient alloc] initWithFrame:self.backgroundView.bounds];
         
-        self.backgroundGradientView.innerColor = [cTabController sGetInnerColor];
-        self.backgroundGradientView.outerColor = [cTabController sGetOuterColor];
+        self.backgroundGradientView.innerColor = [SKAppColourScheme sGetInnerColor];
+        self.backgroundGradientView.outerColor = [SKAppColourScheme sGetOuterColor];
         
         [self.backgroundView addSubview:self.backgroundGradientView];
 
@@ -47,7 +47,7 @@
 
         self.btCancel = [[UIButton alloc] initWithFrame:self.backgroundView.bounds];
         [self.btCancel addTarget:self action:@selector(mainButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        self.btCancel.titleLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+        self.btCancel.titleLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
         self.btCancel.titleLabel.alpha = 0.7;
         
         [self.btCancel setTitle:mainButtonTitle_ forState:UIControlStateNormal];
@@ -59,13 +59,13 @@
     return self;
 }
 
-#define C_BUTTON_INSET_X    ([cTabController sGet_GUI_MULTIPLIER] * 20)
+#define C_BUTTON_INSET_X    ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 20)
 
 -(void)expand
 {
-    float optHeight = [cTabController sGet_GUI_MULTIPLIER] * 40;
-    float optSpaceV = [cTabController sGet_GUI_MULTIPLIER] * 10;
-    float cancelOffestV = [cTabController sGet_GUI_MULTIPLIER] * 50;
+    float optHeight = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 40;
+    float optSpaceV = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10;
+    float cancelOffestV = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 50;
     
     CGRect rectEndBackground;
     rectEndBackground = CGRectMake(self.parentView.bounds.origin.x, self.parentView.bounds.origin.y, self.parentView.bounds.size.width, self.parentView.bounds.size.height);
@@ -95,7 +95,7 @@
     } completion:^(BOOL finished) {
         if (finished)
         {
-            self.btCancel.frame = CGRectMake(0, rectEndBackground.size.height - cancelOffestV, rectEndBackground.size.width, [cTabController sGet_GUI_MULTIPLIER] * 30);
+            self.btCancel.frame = CGRectMake(0, rectEndBackground.size.height - cancelOffestV, rectEndBackground.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 30);
             float optionsStartY = (rectEndBackground.size.height - self.arrOptions.count * optHeight - (self.arrOptions.count - 1) * optSpaceV) / 2;
             
             int optionNumber;
@@ -107,7 +107,7 @@
                 //                CGRect paragraphRect = [option.label.text boundingRectWithSize:CGSizeMake(1000, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributes context:nil];
                 //                option.imageView.frame = CGRectMake((self.backgroundView.bounds.size.width - paragraphRect.size.width) / 2 - optHeight - 10, optionsStartY + optionNumber * (optHeight + optSpaceV) + 5, optHeight - 10, optHeight - 10 );
                 
-                option.imageView.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 40, optionsStartY + optionNumber * (optHeight + optSpaceV) + [cTabController sGet_GUI_MULTIPLIER] * 5, optHeight - [cTabController sGet_GUI_MULTIPLIER] * 10, optHeight - [cTabController sGet_GUI_MULTIPLIER] * 10 );
+                option.imageView.frame = CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40, optionsStartY + optionNumber * (optHeight + optSpaceV) + [SKAppColourScheme sGet_GUI_MULTIPLIER] * 5, optHeight - [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, optHeight - [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10 );
 
                 optionNumber++;
             }
@@ -206,7 +206,7 @@
   option.label.text = optionTitle;
   option.label.textAlignment = NSTextAlignmentCenter;
   option.label.textColor = [UIColor whiteColor];
-  option.label.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+  option.label.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
   option.mDisplayState = state_;
   
   option.button = [[UIButton alloc] init];

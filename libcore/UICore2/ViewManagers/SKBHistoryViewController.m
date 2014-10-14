@@ -23,8 +23,8 @@
   [self.historyManagerView intialiseViewOnMasterViewController:self];
   [self.historyManagerView setColoursAndShowHideElements];
   
-  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
  
   // http://stackoverflow.com/questions/18775874/ios-7-status-bar-overlaps-the-view
   self.edgesForExtendedLayout = UIRectEdgeNone;

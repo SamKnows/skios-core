@@ -9,10 +9,10 @@
 #import "Graphing.h"
 #import "SKHistoryViewMgr.h"
 
-#define C_X_INSET_LEFT  ([cTabController sGet_GUI_MULTIPLIER] * 30)
-#define C_X_INSET_RIGHT  ([cTabController sGet_GUI_MULTIPLIER] * 20)
-#define C_Y_INSET_BOTTOM    ([cTabController sGet_GUI_MULTIPLIER] * 20)
-#define C_Y_INSET_TOP    ([cTabController sGet_GUI_MULTIPLIER] * 30)
+#define C_X_INSET_LEFT  ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 30)
+#define C_X_INSET_RIGHT  ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 20)
+#define C_Y_INSET_BOTTOM    ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 20)
+#define C_Y_INSET_TOP    ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 30)
 
 #define C_X_SCALEMARKER_SIZE    3
 #define C_Y_SCALEMARKER_SIZE    3
@@ -25,10 +25,10 @@
 {
     self.chartTitle = @"--- Set the chart title ---";
     
-    self.fontXScale = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 7];
-    self.fontYScale = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 7];
-    self.fontChartTitle = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
-    self.fontYAxisTitle = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 9];
+    self.fontXScale = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 7];
+    self.fontYScale = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 7];
+    self.fontChartTitle = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
+    self.fontYAxisTitle = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 9];
     self.axisYTitle = @"???";
     
     self.yMin = 0;
@@ -174,7 +174,7 @@
                                 [UIColor whiteColor], NSForegroundColorAttributeName,
                                 nil];
     
-    [self.chartTitle drawInRect:CGRectMake(0, 0, self.bounds.size.width, [cTabController sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
+    [self.chartTitle drawInRect:CGRectMake(0, 0, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
     
     attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                   self.fontYAxisTitle, NSFontAttributeName,
@@ -182,7 +182,7 @@
                   [UIColor whiteColor], NSForegroundColorAttributeName,
                   nil];
     
-    [self.axisYTitle drawInRect:CGRectMake(0, C_Y_INSET_TOP - 4 * self.fontYScale.pointSize, C_X_INSET_LEFT, [cTabController sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
+    [self.axisYTitle drawInRect:CGRectMake(0, C_Y_INSET_TOP - 4 * self.fontYScale.pointSize, C_X_INSET_LEFT, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
   }
 }
 
@@ -231,7 +231,7 @@
     
         labelText = [self.arrLabelsX objectAtIndex:i];
         
-        [labelText drawInRect:CGRectMake(C_X_INSET_LEFT + i * (xStep) - xStep / 2, self.bounds.size.height - C_Y_INSET_BOTTOM + C_X_SCALEMARKER_SIZE, xStep, [cTabController sGet_GUI_MULTIPLIER] * 10) withAttributes:attributes];
+        [labelText drawInRect:CGRectMake(C_X_INSET_LEFT + i * (xStep) - xStep / 2, self.bounds.size.height - C_Y_INSET_BOTTOM + C_X_SCALEMARKER_SIZE, xStep, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10) withAttributes:attributes];
     }
     
     CGContextStrokePath(context);

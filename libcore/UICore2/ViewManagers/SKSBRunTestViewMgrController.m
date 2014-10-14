@@ -12,8 +12,8 @@
 
 #include <math.h>
 
-#define C_SHARE_BUTTON_HEIGHT   ([cTabController sGet_GUI_MULTIPLIER] * 40)
-#define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
+#define C_SHARE_BUTTON_HEIGHT   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
+#define C_SHARE_BUTTON_WIDTH   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 
 @interface SKSBRunTestViewMgrController()
 @property SKATestResults* mpTestResult;
@@ -43,8 +43,8 @@
   
   // The main background view...
   //self.view.backgroundColor = [UIColor clearColor];
-  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
   
   // The progress/splash background view...
   //SK_ASSERT(self.vC1 != nil);
@@ -121,7 +121,7 @@
   self.networkType = [SKGlobalMethods getNetworkTypeString];
   self.appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
   
-  //self.btShare = [[UIButton alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 12, 20, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT)];
+  //self.btShare = [[UIButton alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 12, 20, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT)];
   //[self.btShare addTarget:self action:@selector(B_Share:) forControlEvents:UIControlEventTouchUpInside];
   //[self.btShare setImage:[UIImage imageNamed:@"share-button"] forState:UIControlStateNormal];
   self.btShare.alpha = 0;
@@ -213,14 +213,11 @@
   //[self.tmActivityIndicator setNeedsLayout];
   
   [self.casStatusView setText:sSKCoreGetLocalisedString(@"Ready to run") forever:YES];
-  //self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[cTabController sGet_GUI_MULTIPLIER] * 12];
+  //self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
   self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button");
   self.tvCurrentResults.hidden = YES;
   
   [self updateRadioType];
-
-  // TODO - does this even make sense?!
-  //historyViewMgr = (SKHistoryViewMgr*)((cTabOption*)[cTabController globalInstance].arrOptions[1]).view;
 }
 
 BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
@@ -1238,8 +1235,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   if (tableView == self.tvCurrentResults)
   {
-    activeRowHeight = [cTabController sGet_GUI_MULTIPLIER] * 95;
-    passiveRowHeight = [cTabController sGet_GUI_MULTIPLIER] * 18;
+    activeRowHeight = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 95;
+    passiveRowHeight = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18;
     
     switch (indexPath.row) {
       case 0:

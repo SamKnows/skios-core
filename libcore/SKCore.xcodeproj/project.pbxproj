@@ -127,7 +127,7 @@
 		B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */; };
 		B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */; };
 		B2FB032E19B75D09007AA3C2 /* cAnimatedStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */; };
-		B2FB032F19B75D09007AA3C2 /* cTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030419B75D09007AA3C2 /* cTabController.m */; };
+		B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030419B75D09007AA3C2 /* SKAppColourScheme.m */; };
 		B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030719B75D09007AA3C2 /* Graphing.m */; };
 		B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030A19B75D09007AA3C2 /* IPHelper.m */; };
 		B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */; };
@@ -458,8 +458,8 @@
 		B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CActivityBlinking.m; sourceTree = "<group>"; };
 		B2FB030019B75D09007AA3C2 /* cAnimatedStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cAnimatedStatusView.h; sourceTree = "<group>"; };
 		B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cAnimatedStatusView.m; sourceTree = "<group>"; };
-		B2FB030319B75D09007AA3C2 /* cTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cTabController.h; sourceTree = "<group>"; };
-		B2FB030419B75D09007AA3C2 /* cTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cTabController.m; sourceTree = "<group>"; };
+		B2FB030319B75D09007AA3C2 /* SKAppColourScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAppColourScheme.h; sourceTree = "<group>"; };
+		B2FB030419B75D09007AA3C2 /* SKAppColourScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppColourScheme.m; sourceTree = "<group>"; };
 		B2FB030619B75D09007AA3C2 /* Graphing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphing.h; sourceTree = "<group>"; };
 		B2FB030719B75D09007AA3C2 /* Graphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Graphing.m; sourceTree = "<group>"; };
 		B2FB030919B75D09007AA3C2 /* IPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPHelper.h; sourceTree = "<group>"; };
@@ -1057,7 +1057,7 @@
 				B2FB02FD19B75D09007AA3C2 /* CActivityBlinking */,
 				B2FB030019B75D09007AA3C2 /* cAnimatedStatusView.h */,
 				B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */,
-				B2FB030219B75D09007AA3C2 /* CTabController */,
+				B2FB030219B75D09007AA3C2 /* SKAppColourScheme */,
 				B2FB030519B75D09007AA3C2 /* Graphing */,
 				B2FB030819B75D09007AA3C2 /* IPHelper */,
 				B2FB030B19B75D09007AA3C2 /* TYMActivityIndicatorView */,
@@ -1085,13 +1085,13 @@
 			path = CActivityBlinking;
 			sourceTree = "<group>";
 		};
-		B2FB030219B75D09007AA3C2 /* CTabController */ = {
+		B2FB030219B75D09007AA3C2 /* SKAppColourScheme */ = {
 			isa = PBXGroup;
 			children = (
-				B2FB030319B75D09007AA3C2 /* cTabController.h */,
-				B2FB030419B75D09007AA3C2 /* cTabController.m */,
+				B2FB030319B75D09007AA3C2 /* SKAppColourScheme.h */,
+				B2FB030419B75D09007AA3C2 /* SKAppColourScheme.m */,
 			);
-			path = CTabController;
+			path = SKAppColourScheme;
 			sourceTree = "<group>";
 		};
 		B2FB030519B75D09007AA3C2 /* Graphing */ = {
@@ -1333,7 +1333,7 @@
 				B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKInfoViewMgr.m in Sources */,
 				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
-				B2FB032F19B75D09007AA3C2 /* cTabController.m in Sources */,
+				B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */,
 				B2FB033519B75D09007AA3C2 /* SKAActivationController2.m in Sources */,
 				B221AEDC18FFC22500323923 /* ioapi.c in Sources */,
 				B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */,

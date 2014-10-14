@@ -20,8 +20,8 @@
   
   //[self.infoManagerView setColoursAndShowHideElements];
   
-//  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
-//  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+//  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
+//  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
  
   for (UITabBarItem *item in self.tabBar.items) {
     if ([item.title isEqualToString:@"Run"]) {

@@ -1,12 +1,12 @@
 //
-//  cTabController.m
+//  SKAppColourScheme.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "cTabController.h"
+#import "SKAppColourScheme.h"
 
 
 #define C_TAB_HEIGHT    50
@@ -23,7 +23,7 @@
 //#define C_OPTION_SELECTOR_Y 45
 //#define C_OPTION_SELECTOR_HEIGHT    5
 
-@implementation cTabController
+@implementation SKAppColourScheme
 
 +(UIColor*)sGetInnerColor {
   return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
@@ -42,9 +42,5 @@
     return 1.0;
   }
 }
-
-@end
-
-@implementation cTabOption
 
 @end

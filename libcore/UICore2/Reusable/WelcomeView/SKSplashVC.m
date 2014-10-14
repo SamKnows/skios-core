@@ -10,7 +10,7 @@
 
 #import "UIWelcomeView.h"
 #import "UIViewWithGradient.h"
-#import "cTabController.h"
+#import "SKAppColourScheme.h"
 
 @interface SKSplashVC ()
 
@@ -27,8 +27,8 @@
   
   // The main background view...
   //self.view.backgroundColor = [UIColor clearColor];
-  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
 }
 
 -(void) viewWillAppear:(BOOL)animated {

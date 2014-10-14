@@ -10,8 +10,8 @@
 #import "SKTestResults.h"
 #import "SKTestResultsSharer.h"
 
-#define C_SHARE_BUTTON_HEIGHT   ([cTabController sGet_GUI_MULTIPLIER] * 40)
-#define C_SHARE_BUTTON_WIDTH   ([cTabController sGet_GUI_MULTIPLIER] * 40)
+#define C_SHARE_BUTTON_HEIGHT   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
+#define C_SHARE_BUTTON_WIDTH   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 
 @interface SKHistoryViewMgr()
 
@@ -44,7 +44,7 @@
   currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
 
   // Ensure that the back button is properly sized!
-  //self.backButtonHeightConstraint.constant = [cTabController sGet_GUI_MULTIPLIER] * 100;
+  //self.backButtonHeightConstraint.constant = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 100;
   
   [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType WithState:1];
   
@@ -111,7 +111,7 @@
     if (indexPath.row == expandedRow)
         return testHeight;
     
-    return [cTabController sGet_GUI_MULTIPLIER] * 100;
+    return [SKAppColourScheme sGet_GUI_MULTIPLIER] * 100;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -171,8 +171,8 @@
        
                        animations:^{
                          view2putBack.frame = CGRectMake(0, 20, view2putBack.frame.size.width, view2putBack.frame.size.height);
-                         self.shareButtonTopOffsetConstraint.constant = y + [cTabController sGet_GUI_MULTIPLIER] * 10;
-                         //self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + [cTabController sGet_GUI_MULTIPLIER] * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+                         self.shareButtonTopOffsetConstraint.constant = y + [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10;
+                         //self.btShare.frame = CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, y + [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
                          
                          self.btShare.alpha = 1;
                          [self showMetrics];
@@ -332,7 +332,7 @@ static SKATestResults* testToShareExternal = nil;
       view2putBack.frame = CGRectMake(cell2putBack.frame.origin.x, cell2putBack.frame.origin.y - self.tvTests.contentOffset.y + self.tvTests.frame.origin.y, cell2putBack.frame.size.width, cell2putBack.frame.size.height);
       
       [self hideMetrics];
-      self.btShare.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
+      self.btShare.frame = CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, self.masterView.bounds.size.height + 1, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT);
       self.btShare.alpha = 0;
       
       
@@ -362,9 +362,9 @@ static SKATestResults* testToShareExternal = nil;
 -(void)printPassiveMetrics:(SKATestResults*)testResult_
 {
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    y = [cTabController sGet_GUI_MULTIPLIER] * 110;
+    y = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 110;
   else
-    y = [cTabController sGet_GUI_MULTIPLIER] * 120;
+    y = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 120;
   
   arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:[testResult_ numberOfOptionalMetrics]];
   
@@ -411,20 +411,20 @@ static SKATestResults* testToShareExternal = nil;
   UILabel* label;
   if (text_.length > 0)
   {
-    label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 155, [cTabController sGet_GUI_MULTIPLIER] * 18)];
-    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+    label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, y + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 155, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
+    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
     label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
     label.text = localizedLabelTextID_;
     [self addSubview:label];
     [arrPassiveLabelsAndValues addObject:label];
     
-    label = [[UILabel alloc] initWithFrame:CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 155, y + self.bounds.size.height, [cTabController sGet_GUI_MULTIPLIER] * 210, [cTabController sGet_GUI_MULTIPLIER] * 18)];
-    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[cTabController sGet_GUI_MULTIPLIER] * 14];
+    label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 155, y + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 210, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
+    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
     label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
     label.text = text_;
     [self addSubview:label];
     [arrPassiveLabelsAndValues addObject:label];
-    y += [cTabController sGet_GUI_MULTIPLIER] * 15;
+    y += [SKAppColourScheme sGet_GUI_MULTIPLIER] * 15;
   }
 }
 
@@ -454,7 +454,7 @@ static SKATestResults* testToShareExternal = nil;
 
 - (IBAction)B_Share:(id)sender
 {
-    //if ([cTabController globalInstance].selectedTab != C_TABINDX_HISTORY) //Call from another tab
+    //if ([SKAppColourScheme globalInstance].selectedTab != C_TABINDX_HISTORY) //Call from another tab
     //[self shareTest:self.testToShareExternal];
     //else
     [self shareTest:selectedTest];

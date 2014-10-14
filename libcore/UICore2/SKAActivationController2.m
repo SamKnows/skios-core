@@ -7,7 +7,7 @@
 //
 
 #import "SKAActivationController2.h"
-#import "Reusable/CTabController/cTabController.h"
+#import "Reusable/SKAppColourScheme/SKAppColourScheme.h"
 
 @interface SKAActivationController2 ()
 {
@@ -88,8 +88,8 @@
 {
   [super viewWillAppear:animated];
   
-  ((UIViewWithGradient*)self.view).innerColor = [cTabController sGetInnerColor];
-  ((UIViewWithGradient*)self.view).outerColor = [cTabController sGetOuterColor];
+  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
+  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "../UIViewWithGradient/UIViewWithGradient.h"
-#import "../CTabController/cTabController.h"
+#import "../SKAppColourScheme/SKAppColourScheme.h"
 
 @class cActionSheet;
 

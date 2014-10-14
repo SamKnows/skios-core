@@ -29,7 +29,7 @@
   self.backgroundColor = [UIColor clearColor];
   
   self.vSmallBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
-  self.vSmallBackground.layer.cornerRadius = [cTabController sGet_GUI_MULTIPLIER] * 3;
+  self.vSmallBackground.layer.cornerRadius = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 3;
   self.vSmallBackground.layer.borderWidth = 0.5;
   self.vSmallBackground.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
   
@@ -79,11 +79,11 @@
 
 -(void)performLayout
 {
-  self.vSmallBackground.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 30, [cTabController sGet_GUI_MULTIPLIER] * 300, 150);
+  self.vSmallBackground.frame = CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, 30, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 300, 150);
   
-  self.btClearDB.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 200, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
+  self.btClearDB.frame = CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, 200, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 300, 35);
   
-  self.btExport.frame = CGRectMake([cTabController sGet_GUI_MULTIPLIER] * 10, 245, [cTabController sGet_GUI_MULTIPLIER] * 300, 35);
+  self.btExport.frame = CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, 245, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 300, 35);
   
   self.tDataCapValue.frame = CGRectMake(187, self.lMonthlyDataCap.frame.origin.y - 5, 90, 26 + 10);
   
