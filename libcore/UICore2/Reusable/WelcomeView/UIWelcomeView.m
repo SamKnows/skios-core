@@ -25,11 +25,6 @@
 {
   if (isInitialised) return;
   
-  //    UIImageView* iv = [[UIImageView alloc] initWithFrame:self.bounds];
-  //    iv.image = [UIImage imageNamed:@"launch3.png"];
-  //    [self addSubview:iv];
-  //    [self sendSubviewToBack:iv];
-  
   self.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
   
   //NSString *cFontName = @"RobotoBold";
