@@ -23,24 +23,86 @@
 //#define C_OPTION_SELECTOR_Y 45
 //#define C_OPTION_SELECTOR_HEIGHT    5
 
+
+static NSObject<PSKAppColourScheme> *spAppColourScheme;
+
 @implementation SKAppColourScheme
 
 +(UIColor*)sGetInnerColor {
-  return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+  return [[SKAppColourScheme sGetAppColourScheme] getInnerColor];
 }
 
 +(UIColor*)sGetOuterColor {
-  return [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
+  return [[SKAppColourScheme sGetAppColourScheme] getOuterColor];
 }
 
++(UIColor*)sGetWelcomeSplashBackgroundColor {
+  return [[SKAppColourScheme sGetAppColourScheme] getWelcomeSplashBackgroundColor];
+}
+
++(UIColor*)sGetWelcomeSplashTextColor {
+  return [[SKAppColourScheme sGetAppColourScheme] getWelcomeSplashTextColor];
+}
+
+
 +(float) sGet_GUI_MULTIPLIER {
-  // TODO - this should be removed, to work in LANDSCAPE mode and with different layouts!
+  // TODO - this should be removed, so we work fully with storyboards,
+  // in LANDSCAPE mode and with different layouts!
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
     return 768.0 / 320.0;
   }
-  else {
-    return 1.0;
-  }
+  
+  return 1.0;
 }
+
+//
+// Base implementation, overridden for different colour schemes!
+//
+
+// The app can call this static method, in order to provide a custom app colour scheme!
++(void)sSetAppColourScheme:(NSObject<PSKAppColourScheme>*)theAppColourScheme {
+  spAppColourScheme = theAppColourScheme;
+}
+
++(NSObject<PSKAppColourScheme>*)sGetAppColourScheme {
+  
+  if (spAppColourScheme == nil) {
+    spAppColourScheme = [SKAppColourScheme new];
+  }
+  
+  return spAppColourScheme;
+}
+
++(UIColor*)sGetSamKnowsBlue {
+  // "#009fe3"
+  return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+}
+
++(UIColor*)sGetSamKnowsDarkBlue {
+  return [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
+}
+
+
++(UIColor*)sGetSamKnowsWhite {
+  return [UIColor whiteColor];
+}
+
+
+-(UIColor*)getInnerColor {
+  return [SKAppColourScheme sGetSamKnowsBlue];
+}
+
+-(UIColor*)getOuterColor {
+  return [SKAppColourScheme sGetSamKnowsDarkBlue];
+}
+
+-(UIColor*)getWelcomeSplashBackgroundColor {
+  return [SKAppColourScheme sGetSamKnowsBlue];
+}
+
+-(UIColor*)getWelcomeSplashTextColor {
+  return [SKAppColourScheme sGetSamKnowsWhite];
+}
+
 
 @end

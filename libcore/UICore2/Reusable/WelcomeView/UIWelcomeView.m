@@ -19,17 +19,17 @@
   return self;
 }
 
-#define C_COLOR_OF_WELCOME_TEXT 1
-
 -(void)initializeWelcomeText
 {
   if (isInitialised) return;
   
-  self.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+  self.backgroundColor = [SKAppColourScheme sGetWelcomeSplashBackgroundColor];
   
   //NSString *cFontName = @"RobotoBold";
   const CGFloat cFontSizeiPhone = 83;
   const CGFloat cFontSizeiPad = 200;
+  
+  UIColor *welcomeSplashTextColor = [SKAppColourScheme sGetWelcomeSplashTextColor];
   
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
   {
@@ -38,56 +38,56 @@
     
     self.l_S1 = [[UILabel alloc] initWithFrame:CGRectMake(17, 199, 100, 100)];
     self.l_S1.font = font;
-    self.l_S1.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_S1.textColor = welcomeSplashTextColor;
     self.l_S1.text = @"S";
     self.l_S1.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_S1];
     
     self.l_A = [[UILabel alloc] initWithFrame:CGRectMake(65, 199, 100, 100)];
     self.l_A.font = font;
-    self.l_A.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_A.textColor = welcomeSplashTextColor;
     self.l_A.text = @"a";
     self.l_A.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_A];
     
     self.l_M = [[UILabel alloc] initWithFrame:CGRectMake(120, 199, 100, 100)];
     self.l_M.font = font;
-    self.l_M.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_M.textColor = welcomeSplashTextColor;
     self.l_M.text = @"m";
     self.l_M.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_M];
     
     self.l_K = [[UILabel alloc] initWithFrame:CGRectMake(17, 265, 100, 100)];
     self.l_K.font = font;
-    self.l_K.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_K.textColor = welcomeSplashTextColor;
     self.l_K.text = @"K";
     self.l_K.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_K];
     
     self.l_N = [[UILabel alloc] initWithFrame:CGRectMake(65, 265, 100, 100)];
     self.l_N.font = font;
-    self.l_N.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_N.textColor = welcomeSplashTextColor;
     self.l_N.text = @"n";
     self.l_N.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_N];
     
     self.l_O = [[UILabel alloc] initWithFrame:CGRectMake(110, 265, 100, 100)];
     self.l_O.font = font;
-    self.l_O.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_O.textColor = welcomeSplashTextColor;
     self.l_O.text = @"o";
     self.l_O.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_O];
     
     self.l_W = [[UILabel alloc] initWithFrame:CGRectMake(167, 265, 100, 100)];
     self.l_W.font = font;
-    self.l_W.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_W.textColor = welcomeSplashTextColor;
     self.l_W.text = @"w";
     self.l_W.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_W];
     
     self.l_S2 = [[UILabel alloc] initWithFrame:CGRectMake(220, 265, 100, 100)];
     self.l_S2.font = font;
-    self.l_S2.textColor = [UIColor colorWithWhite:1 alpha:1];
+    self.l_S2.textColor = welcomeSplashTextColor;
     self.l_S2.text = @"s";
     self.l_S2.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_S2];
@@ -99,56 +99,56 @@
     
     self.l_S1 = [[UILabel alloc] initWithFrame:CGRectMake(48, 302, 200, 200)];
     self.l_S1.font = font;
-    self.l_S1.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_S1.textColor = welcomeSplashTextColor;
     self.l_S1.text = @"S";
     self.l_S1.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_S1];
     
     self.l_A = [[UILabel alloc] initWithFrame:CGRectMake(158, 302, 200, 200)];
     self.l_A.font = font;
-    self.l_A.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_A.textColor = welcomeSplashTextColor;
     self.l_A.text = @"a";
     self.l_A.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_A];
     
     self.l_M = [[UILabel alloc] initWithFrame:CGRectMake(296, 302, 200, 200)];
     self.l_M.font = font;
-    self.l_M.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_M.textColor = welcomeSplashTextColor;
     self.l_M.text = @"m";
     self.l_M.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_M];
     
     self.l_K = [[UILabel alloc] initWithFrame:CGRectMake(48, 470, 200, 200)];
     self.l_K.font = font;
-    self.l_K.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_K.textColor = welcomeSplashTextColor;
     self.l_K.text = @"K";
     self.l_K.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_K];
     
     self.l_N = [[UILabel alloc] initWithFrame:CGRectMake(163, 470, 200, 200)];
     self.l_N.font = font;
-    self.l_N.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_N.textColor = welcomeSplashTextColor;
     self.l_N.text = @"n";
     self.l_N.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_N];
     
     self.l_O = [[UILabel alloc] initWithFrame:CGRectMake(274, 470, 200, 200)];
     self.l_O.font = font;
-    self.l_O.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_O.textColor = welcomeSplashTextColor;
     self.l_O.text = @"o";
     self.l_O.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_O];
     
     self.l_W = [[UILabel alloc] initWithFrame:CGRectMake(412, 470, 200, 200)];
     self.l_W.font = font;
-    self.l_W.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_W.textColor = welcomeSplashTextColor;
     self.l_W.text = @"w";
     self.l_W.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_W];
     
     self.l_S2 = [[UILabel alloc] initWithFrame:CGRectMake(538, 470, 200, 200)];
     self.l_S2.font = font;
-    self.l_S2.textColor = [UIColor colorWithWhite:C_COLOR_OF_WELCOME_TEXT alpha:1];
+    self.l_S2.textColor = welcomeSplashTextColor;
     self.l_S2.text = @"s";
     self.l_S2.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_S2];
