@@ -271,8 +271,8 @@
     CGContextStrokePath(context);
     
     CGContextBeginPath(context);
-    CGContextSetFillColorWithColor(context, [UIColor grassColor].CGColor);
-    CGContextSetStrokeColorWithColor(context, [UIColor cornflowerColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor sSKCGetColor_grassColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [UIColor sSKCGetColor_cornflowerColor].CGColor);
     
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     [style setAlignment:NSTextAlignmentCenter];
@@ -393,7 +393,7 @@
     
     CGContextRestoreGState(context);
     
-    CGContextSetStrokeColorWithColor(context, [UIColor cornflowerColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [UIColor sSKCGetColor_cornflowerColor].CGColor);
     [aPathTop stroke];
   }
   

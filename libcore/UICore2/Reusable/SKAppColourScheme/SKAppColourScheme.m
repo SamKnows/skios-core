@@ -75,7 +75,8 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 
 +(UIColor*)sGetSamKnowsBlue {
   // "#009fe3"
-  return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
+  return [UIColor sSKCGetColor_samKnowsBlueColor];
+  //return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
 }
 
 +(UIColor*)sGetSamKnowsDarkBlue {

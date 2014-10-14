@@ -187,111 +187,111 @@
 
 #pragma mark - System Colors
 
-+ (UIColor *)infoBlueColor
++ (UIColor *)sSKCGetColor_infoBlueColor
 {
 	return [UIColor colorWithRed:47/255.0f green:112/255.0f blue:225/255.0f alpha:1.0];
 }
 
-+ (UIColor *)successColor
++ (UIColor *)sSKCGetColor_successColor
 {
 	return [UIColor colorWithRed:25/255.0f green:188/255.0f blue:63/255.0f alpha:1.0];
 }
 
-+ (UIColor *)warningColor
++ (UIColor *)sSKCGetColor_warningColor
 {
 	return [UIColor colorWithRed:221/255.0f green:170/255.0f blue:59/255.0f alpha:1.0];
 }
 
-+ (UIColor *)dangerColor
++ (UIColor *)sSKCGetColor_dangerColor
 {
 	return [UIColor colorWithRed:229/255.0f green:0/255.0f blue:15/255.0f alpha:1.0];
 }
 
 #pragma mark - Whites
 
-+ (UIColor *)antiqueWhiteColor
++ (UIColor *)sSKCGetColor_antiqueWhiteColor
 {
 	return [UIColor colorWithRed:250/255.0f green:235/255.0f blue:215/255.0f alpha:1.0];
 }
 
-+ (UIColor *)oldLaceColor
++ (UIColor *)sSKCGetColor_oldLaceColor
 {
 	return [UIColor colorWithRed:253/255.0f green:245/255.0f blue:230/255.0f alpha:1.0];
 }
 
-+ (UIColor *)ivoryColor
++ (UIColor *)sSKCGetColor_ivoryColor
 {
 	return [UIColor colorWithRed:255/255.0f green:255/255.0f blue:240/255.0f alpha:1.0];
 }
 
-+ (UIColor *)seashellColor
++ (UIColor *)sSKCGetColor_seashellColor
 {
 	return [UIColor colorWithRed:255/255.0f green:245/255.0f blue:238/255.0f alpha:1.0];
 }
 
-+ (UIColor *)ghostWhiteColor
++ (UIColor *)sSKCGetColor_ghostWhiteColor
 {
 	return [UIColor colorWithRed:248/255.0f green:248/255.0f blue:255/255.0f alpha:1.0];
 }
 
-+ (UIColor *)snowColor
++ (UIColor *)sSKCGetColor_snowColor
 {
 	return [UIColor colorWithRed:255/255.0f green:250/255.0f blue:250/255.0f alpha:1.0];
 }
 
-+ (UIColor *)linenColor
++ (UIColor *)sSKCGetColor_linenColor
 {
 	return [UIColor colorWithRed:250/255.0f green:240/255.0f blue:230/255.0f alpha:1.0];
 }
 
 #pragma mark - Grays
 
-+ (UIColor *)black25PercentColor
++ (UIColor *)sSKCGetColor_black25PercentColor
 {
 	return [UIColor colorWithWhite:0.25 alpha:1.0];
 }
 
-+ (UIColor *)black50PercentColor
++ (UIColor *)sSKCGetColor_black50PercentColor
 {
 	return [UIColor colorWithWhite:0.5  alpha:1.0];
 }
 
-+ (UIColor *)black75PercentColor
++ (UIColor *)sSKCGetColor_black75PercentColor
 {
 	return [UIColor colorWithWhite:0.75 alpha:1.0];
 }
 
-+ (UIColor *)warmGrayColor
++ (UIColor *)sSKCGetColor_warmGrayColor
 {
 	return [UIColor colorWithRed:133/255.0f green:117/255.0f blue:112/255.0f alpha:1.0];
 }
 
-+ (UIColor *)coolGrayColor
++ (UIColor *)sSKCGetColor_coolGrayColor
 {
 	return [UIColor colorWithRed:118/255.0f green:122/255.0f blue:133/255.0f alpha:1.0];
 }
 
-+ (UIColor *)charcoalColor
++ (UIColor *)sSKCGetColor_charcoalColor
 {
 	return [UIColor colorWithRed:34/255.0f green:34/255.0f blue:34/255.0f alpha:1.0];
 }
 
-+ (UIColor *)samKnowsGrayColor
++ (UIColor *)sSKCGetColor_samKnowsGrayColor
 {
     return [UIColor colorWithRed:221/255.0f green:221/255.0f blue:221/255.0f alpha:1.0];
 }
 
-+ (UIColor *)samKnowsLightGrayColor
++ (UIColor *)sSKCGetColor_samKnowsLightGrayColor
 {
     return [UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1.0];
 }
 
-+ (UIColor *)samKnowsVeryLightGrayColor
++ (UIColor *)sSKCGetColor_samKnowsVeryLightGrayColor
 {
     return [UIColor colorWithRed:249/255.0f green:249/255.0f blue:249/255.0f alpha:1.0];
 }
 
-+ (UIColor *)samKnowsExtremelyLightGrayColor
++ (UIColor *)sSKCGetColor_samKnowsExtremelyLightGrayColor
 {
     //return [UIColor colorWithRed:56/255.0f green:237/255.0f blue:56/255.0f alpha:1.0];
     //return [UIColor colorWithRed:255/255.0f green:95/255.0f blue:154/255.0f alpha:1.0];
@@ -300,429 +300,431 @@
 
 #pragma mark - Blues
 
-+ (UIColor *)tealColor
++ (UIColor *)sSKCGetColor_tealColor
 {
 	return [UIColor colorWithRed:28/255.0f green:160/255.0f blue:170/255.0f alpha:1.0];
 }
 
-+ (UIColor *)steelBlueColor
++ (UIColor *)sSKCGetColor_steelBlueColor
 {
 	return [UIColor colorWithRed:103/255.0f green:153/255.0f blue:170/255.0f alpha:1.0];
 }
 
-+ (UIColor *)robinEggColor
++ (UIColor *)sSKCGetColor_robinEggColor
 {
 	return [UIColor colorWithRed:141/255.0f green:218/255.0f blue:247/255.0f alpha:1.0];
 }
 
-+ (UIColor *)pastelBlueColor
++ (UIColor *)sSKCGetColor_pastelBlueColor
 {
 	return [UIColor colorWithRed:99/255.0f green:161/255.0f blue:247/255.0f alpha:1.0];
 }
 
-+ (UIColor *)turquoiseColor
++ (UIColor *)sSKCGetColor_turquoiseColor
 {
 	return [UIColor colorWithRed:112/255.0f green:219/255.0f blue:219/255.0f alpha:1.0];
 }
 
-+ (UIColor *)skyeBlueColor
++ (UIColor *)sSKCGetColor_skyeBlueColor
 {
 	return [UIColor colorWithRed:0/255.0f green:178/255.0f blue:238/255.0f alpha:1.0];
 }
 
-+ (UIColor *)indigoColor
++ (UIColor *)sSKCGetColor_indigoColor
 {
 	return [UIColor colorWithRed:13/255.0f green:79/255.0f blue:139/255.0f alpha:1.0];
 }
 
-+ (UIColor *)denimColor
++ (UIColor *)sSKCGetColor_denimColor
 {
 	return [UIColor colorWithRed:67/255.0f green:114/255.0f blue:170/255.0f alpha:1.0];
 }
 
-+ (UIColor *)blueberryColor
++ (UIColor *)sSKCGetColor_blueberryColor
 {
 	return [UIColor colorWithRed:89/255.0f green:113/255.0f blue:173/255.0f alpha:1.0];
 }
 
-+ (UIColor *)cornflowerColor
++ (UIColor *)sSKCGetColor_cornflowerColor
 {
 	return [UIColor colorWithRed:100/255.0f green:149/255.0f blue:237/255.0f alpha:1.0];
 }
 
-+ (UIColor *)babyBlueColor
++ (UIColor *)sSKCGetColor_babyBlueColor
 {
 	return [UIColor colorWithRed:190/255.0f green:220/255.0f blue:230/255.0f alpha:1.0];
 }
 
-+ (UIColor *)midnightBlueColor
++ (UIColor *)sSKCGetColor_midnightBlueColor
 {
 	return [UIColor colorWithRed:13/255.0f green:26/255.0f blue:35/255.0f alpha:1.0];
 }
 
-+ (UIColor *)fadedBlueColor
++ (UIColor *)sSKCGetColor_fadedBlueColor
 {
 	return [UIColor colorWithRed:23/255.0f green:137/255.0f blue:155/255.0f alpha:1.0];
 }
 
-+ (UIColor *)icebergColor
++ (UIColor *)sSKCGetColor_icebergColor
 {
 	return [UIColor colorWithRed:200/255.0f green:213/255.0f blue:219/255.0f alpha:1.0];
 }
 
-+ (UIColor *)waveColor
++ (UIColor *)sSKCGetColor_waveColor
 {
 	return [UIColor colorWithRed:102/255.0f green:169/255.0f blue:251/255.0f alpha:1.0];
 }
 
-+ (UIColor *)samKnowsBlueColor
++ (UIColor *)sSKCGetColor_samKnowsBlueColor
 {
-    return [UIColor colorWithRed:5/255.0f green:145/255.0f blue:198/255.0f alpha:1.0];
+  // Only used by spinner...  return [UIColor colorWithRed:5/255.0f green:145/255.0f blue:198/255.0f alpha:1.0];
+  // Seems to be used everywhere else
+  return [UIColor colorWithRed:0.0/255.0 green:159.0/255.0 blue:227.0/255.0 alpha:1];
 }
 
 #pragma mark - Greens
 
-+ (UIColor *)emeraldColor
++ (UIColor *)sSKCGetColor_emeraldColor
 {
 	return [UIColor colorWithRed:1/255.0f green:152/255.0f blue:117/255.0f alpha:1.0];
 }
 
-+ (UIColor *)grassColor
++ (UIColor *)sSKCGetColor_grassColor
 {
 	return [UIColor colorWithRed:99/255.0f green:214/255.0f blue:74/255.0f alpha:1.0];
 }
 
-+ (UIColor *)pastelGreenColor
++ (UIColor *)sSKCGetColor_pastelGreenColor
 {
 	return [UIColor colorWithRed:126/255.0f green:242/255.0f blue:124/255.0f alpha:1.0];
 }
 
-+ (UIColor *)seafoamColor
++ (UIColor *)sSKCGetColor_seafoamColor
 {
 	return [UIColor colorWithRed:77/255.0f green:226/255.0f blue:140/255.0f alpha:1.0];
 }
 
-+ (UIColor *)paleGreenColor
++ (UIColor *)sSKCGetColor_paleGreenColor
 {
 	return [UIColor colorWithRed:176/255.0f green:226/255.0f blue:172/255.0f alpha:1.0];
 }
 
-+ (UIColor *)cactusGreenColor
++ (UIColor *)sSKCGetColor_cactusGreenColor
 {
 	return [UIColor colorWithRed:99/255.0f green:111/255.0f blue:87/255.0f alpha:1.0];
 }
 
-+ (UIColor *)chartreuseColor
++ (UIColor *)sSKCGetColor_chartreuseColor
 {
 	return [UIColor colorWithRed:69/255.0f green:139/255.0f blue:0/255.0f alpha:1.0];
 }
 
-+ (UIColor *)hollyGreenColor
++ (UIColor *)sSKCGetColor_hollyGreenColor
 {
 	return [UIColor colorWithRed:32/255.0f green:87/255.0f blue:14/255.0f alpha:1.0];
 }
 
-+ (UIColor *)oliveColor
++ (UIColor *)sSKCGetColor_oliveColor
 {
 	return [UIColor colorWithRed:91/255.0f green:114/255.0f blue:34/255.0f alpha:1.0];
 }
 
-+ (UIColor *)oliveDrabColor
++ (UIColor *)sSKCGetColor_oliveDrabColor
 {
 	return [UIColor colorWithRed:107/255.0f green:142/255.0f blue:35/255.0f alpha:1.0];
 }
 
-+ (UIColor *)moneyGreenColor
++ (UIColor *)sSKCGetColor_moneyGreenColor
 {
 	return [UIColor colorWithRed:134/255.0f green:198/255.0f blue:124/255.0f alpha:1.0];
 }
 
-+ (UIColor *)honeydewColor
++ (UIColor *)sSKCGetColor_honeydewColor
 {
 	return [UIColor colorWithRed:216/255.0f green:255/255.0f blue:231/255.0f alpha:1.0];
 }
 
-+ (UIColor *)limeColor
++ (UIColor *)sSKCGetColor_limeColor
 {
 	return [UIColor colorWithRed:56/255.0f green:237/255.0f blue:56/255.0f alpha:1.0];
 }
 
-+ (UIColor *)cardTableColor
++ (UIColor *)sSKCGetColor_cardTableColor
 {
 	return [UIColor colorWithRed:87/255.0f green:121/255.0f blue:107/255.0f alpha:1.0];
 }
 
 #pragma mark - Reds
 
-+ (UIColor *)salmonColor
++ (UIColor *)sSKCGetColor_salmonColor
 {
 	return [UIColor colorWithRed:233/255.0f green:87/255.0f blue:95/255.0f alpha:1.0];
 }
 
-+ (UIColor *)brickRedColor
++ (UIColor *)sSKCGetColor_brickRedColor
 {
 	return [UIColor colorWithRed:151/255.0f green:27/255.0f blue:16/255.0f alpha:1.0];
 }
 
-+ (UIColor *)easterPinkColor
++ (UIColor *)sSKCGetColor_easterPinkColor
 {
 	return [UIColor colorWithRed:241/255.0f green:167/255.0f blue:162/255.0f alpha:1.0];
 }
 
-+ (UIColor *)grapefruitColor
++ (UIColor *)sSKCGetColor_grapefruitColor
 {
 	return [UIColor colorWithRed:228/255.0f green:31/255.0f blue:54/255.0f alpha:1.0];
 }
 
-+ (UIColor *)pinkColor
++ (UIColor *)sSKCGetColor_pinkColor
 {
 	return [UIColor colorWithRed:255/255.0f green:95/255.0f blue:154/255.0f alpha:1.0];
 }
 
-+ (UIColor *)indianRedColor
++ (UIColor *)sSKCGetColor_indianRedColor
 {
 	return [UIColor colorWithRed:205/255.0f green:92/255.0f blue:92/255.0f alpha:1.0];
 }
 
-+ (UIColor *)strawberryColor
++ (UIColor *)sSKCGetColor_strawberryColor
 {
 	return [UIColor colorWithRed:190/255.0f green:38/255.0f blue:37/255.0f alpha:1.0];
 }
 
-+ (UIColor *)coralColor
++ (UIColor *)sSKCGetColor_coralColor
 {
 	return [UIColor colorWithRed:240/255.0f green:128/255.0f blue:128/255.0f alpha:1.0];
 }
 
-+ (UIColor *)maroonColor
++ (UIColor *)sSKCGetColor_maroonColor
 {
 	return [UIColor colorWithRed:80/255.0f green:4/255.0f blue:28/255.0f alpha:1.0];
 }
 
-+ (UIColor *)watermelonColor
++ (UIColor *)sSKCGetColor_watermelonColor
 {
 	return [UIColor colorWithRed:242/255.0f green:71/255.0f blue:63/255.0f alpha:1.0];
 }
 
-+ (UIColor *)tomatoColor
++ (UIColor *)sSKCGetColor_tomatoColor
 {
 	return [UIColor colorWithRed:255/255.0f green:99/255.0f blue:71/255.0f alpha:1.0];
 }
 
-+ (UIColor *)pinkLipstickColor
++ (UIColor *)sSKCGetColor_pinkLipstickColor
 {
 	return [UIColor colorWithRed:255/255.0f green:105/255.0f blue:180/255.0f alpha:1.0];
 }
 
-+ (UIColor *)paleRoseColor
++ (UIColor *)sSKCGetColor_paleRoseColor
 {
 	return [UIColor colorWithRed:255/255.0f green:228/255.0f blue:225/255.0f alpha:1.0];
 }
 
-+ (UIColor *)crimsonColor
++ (UIColor *)sSKCGetColor_crimsonColor
 {
 	return [UIColor colorWithRed:187/255.0f green:18/255.0f blue:36/255.0f alpha:1.0];
 }
 
 #pragma mark - Purples
 
-+ (UIColor *)eggplantColor
++ (UIColor *)sSKCGetColor_eggplantColor
 {
 	return [UIColor colorWithRed:105/255.0f green:5/255.0f blue:98/255.0f alpha:1.0];
 }
 
-+ (UIColor *)pastelPurpleColor
++ (UIColor *)sSKCGetColor_pastelPurpleColor
 {
 	return [UIColor colorWithRed:207/255.0f green:100/255.0f blue:235/255.0f alpha:1.0];
 }
 
-+ (UIColor *)palePurpleColor
++ (UIColor *)sSKCGetColor_palePurpleColor
 {
 	return [UIColor colorWithRed:229/255.0f green:180/255.0f blue:235/255.0f alpha:1.0];
 }
 
-+ (UIColor *)coolPurpleColor
++ (UIColor *)sSKCGetColor_coolPurpleColor
 {
 	return [UIColor colorWithRed:140/255.0f green:93/255.0f blue:228/255.0f alpha:1.0];
 }
 
-+ (UIColor *)violetColor
++ (UIColor *)sSKCGetColor_violetColor
 {
 	return [UIColor colorWithRed:191/255.0f green:95/255.0f blue:255/255.0f alpha:1.0];
 }
 
-+ (UIColor *)plumColor
++ (UIColor *)sSKCGetColor_plumColor
 {
 	return [UIColor colorWithRed:139/255.0f green:102/255.0f blue:139/255.0f alpha:1.0];
 }
 
-+ (UIColor *)lavenderColor
++ (UIColor *)sSKCGetColor_lavenderColor
 {
 	return [UIColor colorWithRed:204/255.0f green:153/255.0f blue:204/255.0f alpha:1.0];
 }
 
-+ (UIColor *)raspberryColor
++ (UIColor *)sSKCGetColor_raspberryColor
 {
 	return [UIColor colorWithRed:135/255.0f green:38/255.0f blue:87/255.0f alpha:1.0];
 }
 
-+ (UIColor *)fuschiaColor
++ (UIColor *)sSKCGetColor_fuschiaColor
 {
 	return [UIColor colorWithRed:255/255.0f green:20/255.0f blue:147/255.0f alpha:1.0];
 }
 
-+ (UIColor *)grapeColor
++ (UIColor *)sSKCGetColor_grapeColor
 {
 	return [UIColor colorWithRed:54/255.0f green:11/255.0f blue:88/255.0f alpha:1.0];
 }
 
-+ (UIColor *)periwinkleColor
++ (UIColor *)sSKCGetColor_periwinkleColor
 {
 	return [UIColor colorWithRed:135/255.0f green:159/255.0f blue:237/255.0f alpha:1.0];
 }
 
-+ (UIColor *)orchidColor
++ (UIColor *)sSKCGetColor_orchidColor
 {
 	return [UIColor colorWithRed:218/255.0f green:112/255.0f blue:214/255.0f alpha:1.0];
 }
 
 #pragma mark - Yellows
 
-+ (UIColor *)goldenrodColor
++ (UIColor *)sSKCGetColor_goldenrodColor
 {
 	return [UIColor colorWithRed:215/255.0f green:170/255.0f blue:51/255.0f alpha:1.0];
 }
 
-+ (UIColor *)yellowGreenColor
++ (UIColor *)sSKCGetColor_yellowGreenColor
 {
 	return [UIColor colorWithRed:192/255.0f green:242/255.0f blue:39/255.0f alpha:1.0];
 }
 
-+ (UIColor *)bananaColor
++ (UIColor *)sSKCGetColor_bananaColor
 {
 	return [UIColor colorWithRed:229/255.0f green:227/255.0f blue:58/255.0f alpha:1.0];
 }
 
-+ (UIColor *)mustardColor
++ (UIColor *)sSKCGetColor_mustardColor
 {
 	return [UIColor colorWithRed:205/255.0f green:171/255.0f blue:45/255.0f alpha:1.0];
 }
 
-+ (UIColor *)buttermilkColor
++ (UIColor *)sSKCGetColor_buttermilkColor
 {
 	return [UIColor colorWithRed:254/255.0f green:241/255.0f blue:181/255.0f alpha:1.0];
 }
 
-+ (UIColor *)goldColor
++ (UIColor *)sSKCGetColor_goldColor
 {
 	return [UIColor colorWithRed:139/255.0f green:117/255.0f blue:18/255.0f alpha:1.0];
 }
 
-+ (UIColor *)creamColor
++ (UIColor *)sSKCGetColor_creamColor
 {
 	return [UIColor colorWithRed:240/255.0f green:226/255.0f blue:187/255.0f alpha:1.0];
 }
 
-+ (UIColor *)lightCreamColor
++ (UIColor *)sSKCGetColor_lightCreamColor
 {
 	return [UIColor colorWithRed:240/255.0f green:238/255.0f blue:215/255.0f alpha:1.0];
 }
 
-+ (UIColor *)wheatColor
++ (UIColor *)sSKCGetColor_wheatColor
 {
 	return [UIColor colorWithRed:240/255.0f green:238/255.0f blue:215/255.0f alpha:1.0];
 }
 
-+ (UIColor *)beigeColor
++ (UIColor *)sSKCGetColor_beigeColor
 {
 	return [UIColor colorWithRed:245/255.0f green:245/255.0f blue:220/255.0f alpha:1.0];
 }
 
 #pragma mark - Oranges
 
-+ (UIColor *)peachColor
++ (UIColor *)sSKCGetColor_peachColor
 {
 	return [UIColor colorWithRed:242/255.0f green:187/255.0f blue:97/255.0f alpha:1.0];
 }
 
-+ (UIColor *)burntOrangeColor
++ (UIColor *)sSKCGetColor_burntOrangeColor
 {
 	return [UIColor colorWithRed:184/255.0f green:102/255.0f blue:37/255.0f alpha:1.0];
 }
 
-+ (UIColor *)pastelOrangeColor
++ (UIColor *)sSKCGetColor_pastelOrangeColor
 {
 	return [UIColor colorWithRed:248/255.0f green:197/255.0f blue:143/255.0f alpha:1.0];
 }
 
-+ (UIColor *)cantaloupeColor
++ (UIColor *)sSKCGetColor_cantaloupeColor
 {
 	return [UIColor colorWithRed:250/255.0f green:154/255.0f blue:79/255.0f alpha:1.0];
 }
 
-+ (UIColor *)carrotColor
++ (UIColor *)sSKCGetColor_carrotColor
 {
 	return [UIColor colorWithRed:237/255.0f green:145/255.0f blue:33/255.0f alpha:1.0];
 }
 
-+ (UIColor *)mandarinColor
++ (UIColor *)sSKCGetColor_mandarinColor
 {
 	return [UIColor colorWithRed:247/255.0f green:145/255.0f blue:55/255.0f alpha:1.0];
 }
 
 #pragma mark - Browns
 
-+ (UIColor *)chiliPowderColor
++ (UIColor *)sSKCGetColor_chiliPowderColor
 {
 	return [UIColor colorWithRed:199/255.0f green:63/255.0f blue:23/255.0f alpha:1.0];
 }
 
-+ (UIColor *)burntSiennaColor
++ (UIColor *)sSKCGetColor_burntSiennaColor
 {
 	return [UIColor colorWithRed:138/255.0f green:54/255.0f blue:15/255.0f alpha:1.0];
 }
 
-+ (UIColor *)chocolateColor
++ (UIColor *)sSKCGetColor_chocolateColor
 {
 	return [UIColor colorWithRed:94/255.0f green:38/255.0f blue:5/255.0f alpha:1.0];
 }
 
-+ (UIColor *)coffeeColor
++ (UIColor *)sSKCGetColor_coffeeColor
 {
 	return [UIColor colorWithRed:141/255.0f green:60/255.0f blue:15/255.0f alpha:1.0];
 }
 
-+ (UIColor *)cinnamonColor
++ (UIColor *)sSKCGetColor_cinnamonColor
 {
 	return [UIColor colorWithRed:123/255.0f green:63/255.0f blue:9/255.0f alpha:1.0];
 }
 
-+ (UIColor *)almonColor
++ (UIColor *)sSKCGetColor_almonColor
 {
 	return [UIColor colorWithRed:196/255.0f green:142/255.0f blue:72/255.0f alpha:1.0];
 }
 
-+ (UIColor *)eggshellColor
++ (UIColor *)sSKCGetColor_eggshellColor
 {
 	return [UIColor colorWithRed:252/255.0f green:230/255.0f blue:201/255.0f alpha:1.0];
 }
 
-+ (UIColor *)sandColor
++ (UIColor *)sSKCGetColor_sandColor
 {
 	return [UIColor colorWithRed:222/255.0f green:182/255.0f blue:151/255.0f alpha:1.0];
 }
 
-+ (UIColor *)mudColor
++ (UIColor *)sSKCGetColor_mudColor
 {
 	return [UIColor colorWithRed:70/255.0f green:45/255.0f blue:29/255.0f alpha:1.0];
 }
 
-+ (UIColor *)siennaColor
++ (UIColor *)sSKCGetColor_siennaColor
 {
 	return [UIColor colorWithRed:160/255.0f green:82/255.0f blue:45/255.0f alpha:1.0];
 }
 
-+ (UIColor *)dustColor
++ (UIColor *)sSKCGetColor_dustColor
 {
 	return [UIColor colorWithRed:236/255.0f green:214/255.0f blue:197/255.0f alpha:1.0];
 }

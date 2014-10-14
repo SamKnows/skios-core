@@ -40,7 +40,7 @@
     [self setWellLayer:w];
     
     CAShapeLayer *s = [CAShapeLayer layer];
-    [s setStrokeColor:[[UIColor samKnowsBlueColor] CGColor]];
+    [s setStrokeColor:[[UIColor sSKCGetColor_samKnowsBlueColor] CGColor]];
     [s setFillColor:[[UIColor clearColor] CGColor]];
     [[self layer] addSublayer:s];
     [self setSpinLayer:s];
@@ -48,7 +48,7 @@
     [self setBackgroundColor:[UIColor clearColor]];
     
     [self setWellThickness:10.0];
-    [self setColor:[UIColor samKnowsBlueColor]];
+    [self setColor:[UIColor sSKCGetColor_samKnowsBlueColor]];
     [self setProgress:0.0];
 }
 

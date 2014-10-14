@@ -469,7 +469,7 @@
     }
     
     [cell setDelegate:self];
-    cell.backgroundColor = [UIColor samKnowsGrayColor];
+    cell.backgroundColor = [UIColor sSKCGetColor_samKnowsGrayColor];
     cell.centerLabel.text = sSKCoreGetLocalisedString(@"Storyboard_GraphViewFooterCell_CenterLabel");
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
