@@ -18,8 +18,6 @@
 {
   [super viewDidLoad];
   
-  //[self.infoManagerView setColoursAndShowHideElements];
-  
 //  ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
 //  ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
  

@@ -23,7 +23,7 @@
 		B221AEE518FFE24800323923 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
 		B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2246C7917CF691700E1DC79 /* SKAutotest.m */; };
 		B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */; };
-		B22E5EDA19D9715B00666F16 /* SKBInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */; };
+		B22E5EDA19D9715B00666F16 /* SKBTermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */; };
 		B22E5EDF19DAC40000666F16 /* SKBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */; };
 		B22E5EE019DAC40000666F16 /* SKBSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */; };
 		B22E5EE319DAEC7000666F16 /* SKBSummaryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EE219DAEC7000666F16 /* SKBSummaryTableViewCell.m */; };
@@ -116,7 +116,7 @@
 		B2BE448917C7610F00C96D58 /* SKTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BE448317C7610E00C96D58 /* SKTest.m */; };
 		B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BE448717C7610F00C96D58 /* SKTestConfig.m */; };
 		B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C5A06917CE39AB009A9244 /* SKScheduler.m */; };
-		B2D1DE4B19E66F93003840BE /* SKSplashVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D1DE4A19E66F93003840BE /* SKSplashVC.m */; };
+		B2D1DE4B19E66F93003840BE /* SKBSplashVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D1DE4A19E66F93003840BE /* SKBSplashVC.m */; };
 		B2D49AF417D72F7000B88FD2 /* SKTestCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D49AF217D72F6F00B88FD2 /* SKTestCommon.m */; };
 		B2D934E317D4D4240012C169 /* SKGlobalMethodsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D934E217D4D4240012C169 /* SKGlobalMethodsTest.m */; };
 		B2D934E517D4D46D0012C169 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2D934E417D4D46D0012C169 /* CoreTelephony.framework */; };
@@ -138,7 +138,7 @@
 		B2FB033819B75D09007AA3C2 /* SKATestOverviewCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */; };
 		B2FB033919B75D09007AA3C2 /* SKATestResultSuperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */; };
 		B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */; };
-		B2FB033B19B75D09007AA3C2 /* SKInfoViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032519B75D09007AA3C2 /* SKInfoViewMgr.m */; };
+		B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032519B75D09007AA3C2 /* SKBTermsView.m */; };
 		B2FB033D19B75D09007AA3C2 /* SKSettingsMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */; };
 		B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */; };
 		B2FB4389192DFFEC00DE371B /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB437E192DFFEC00DE371B /* libOCMock.a */; };
@@ -200,8 +200,8 @@
 		B2246C7917CF691700E1DC79 /* SKAutotest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAutotest.m; sourceTree = "<group>"; };
 		B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSettingsViewController.h; sourceTree = "<group>"; };
 		B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsViewController.m; sourceTree = "<group>"; };
-		B22E5ED819D9715B00666F16 /* SKBInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBInfoViewController.h; sourceTree = "<group>"; };
-		B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBInfoViewController.m; sourceTree = "<group>"; };
+		B22E5ED819D9715B00666F16 /* SKBTermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTermsViewController.h; sourceTree = "<group>"; };
+		B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTermsViewController.m; sourceTree = "<group>"; };
 		B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBHistoryViewController.h; sourceTree = "<group>"; };
 		B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBHistoryViewController.m; sourceTree = "<group>"; };
 		B22E5EDD19DAC40000666F16 /* SKBSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSummaryViewController.h; sourceTree = "<group>"; };
@@ -441,8 +441,8 @@
 		B2BE448B17C77B2500C96D58 /* SKHttpTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKHttpTest.h; sourceTree = "<group>"; };
 		B2C5A06917CE39AB009A9244 /* SKScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKScheduler.m; sourceTree = "<group>"; };
 		B2C5A06A17CE39AB009A9244 /* SKScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKScheduler.h; sourceTree = "<group>"; };
-		B2D1DE4919E66F93003840BE /* SKSplashVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSplashVC.h; sourceTree = "<group>"; };
-		B2D1DE4A19E66F93003840BE /* SKSplashVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSplashVC.m; sourceTree = "<group>"; };
+		B2D1DE4919E66F93003840BE /* SKBSplashVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSplashVC.h; sourceTree = "<group>"; };
+		B2D1DE4A19E66F93003840BE /* SKBSplashVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSplashVC.m; sourceTree = "<group>"; };
 		B2D49AF217D72F6F00B88FD2 /* SKTestCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTestCommon.m; sourceTree = "<group>"; };
 		B2D49AF317D72F7000B88FD2 /* SKTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestCommon.h; sourceTree = "<group>"; };
 		B2D934E217D4D4240012C169 /* SKGlobalMethodsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGlobalMethodsTest.m; sourceTree = "<group>"; };
@@ -482,8 +482,8 @@
 		B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestResultSuperCell.m; sourceTree = "<group>"; };
 		B2FB032219B75D09007AA3C2 /* SKHistoryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKHistoryViewMgr.h; sourceTree = "<group>"; };
 		B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHistoryViewMgr.m; sourceTree = "<group>"; };
-		B2FB032419B75D09007AA3C2 /* SKInfoViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKInfoViewMgr.h; sourceTree = "<group>"; };
-		B2FB032519B75D09007AA3C2 /* SKInfoViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKInfoViewMgr.m; sourceTree = "<group>"; };
+		B2FB032419B75D09007AA3C2 /* SKBTermsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTermsView.h; sourceTree = "<group>"; };
+		B2FB032519B75D09007AA3C2 /* SKBTermsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTermsView.m; sourceTree = "<group>"; };
 		B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsMgr.h; sourceTree = "<group>"; };
 		B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsMgr.m; sourceTree = "<group>"; };
 		B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSummaryViewMgr.h; sourceTree = "<group>"; };
@@ -580,8 +580,10 @@
 				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
 				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
 				B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */,
-				B22E5ED819D9715B00666F16 /* SKBInfoViewController.h */,
-				B22E5ED919D9715B00666F16 /* SKBInfoViewController.m */,
+				B22E5ED819D9715B00666F16 /* SKBTermsViewController.h */,
+				B2FB032419B75D09007AA3C2 /* SKBTermsView.h */,
+				B2FB032519B75D09007AA3C2 /* SKBTermsView.m */,
+				B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */,
 				B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */,
 				B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */,
 				B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */,
@@ -1137,8 +1139,8 @@
 			children = (
 				B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */,
 				B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */,
-				B2D1DE4919E66F93003840BE /* SKSplashVC.h */,
-				B2D1DE4A19E66F93003840BE /* SKSplashVC.m */,
+				B2D1DE4919E66F93003840BE /* SKBSplashVC.h */,
+				B2D1DE4A19E66F93003840BE /* SKBSplashVC.m */,
 			);
 			path = WelcomeView;
 			sourceTree = "<group>";
@@ -1163,8 +1165,6 @@
 			children = (
 				B2FB032219B75D09007AA3C2 /* SKHistoryViewMgr.h */,
 				B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */,
-				B2FB032419B75D09007AA3C2 /* SKInfoViewMgr.h */,
-				B2FB032519B75D09007AA3C2 /* SKInfoViewMgr.m */,
 				B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */,
 				B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */,
 				B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */,
@@ -1331,7 +1331,7 @@
 				B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */,
 				B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */,
 				B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */,
-				B2FB033B19B75D09007AA3C2 /* SKInfoViewMgr.m in Sources */,
+				B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */,
 				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
 				B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */,
 				B2FB033519B75D09007AA3C2 /* SKAActivationController2.m in Sources */,
@@ -1381,7 +1381,7 @@
 				B22E893217C37C90005D9094 /* SKUDPDataGram.m in Sources */,
 				B2FB033819B75D09007AA3C2 /* SKATestOverviewCell2.m in Sources */,
 				B22E893A17C391D0005D9094 /* SKTransferOperation.m in Sources */,
-				B2D1DE4B19E66F93003840BE /* SKSplashVC.m in Sources */,
+				B2D1DE4B19E66F93003840BE /* SKBSplashVC.m in Sources */,
 				B221AEDB18FFC21E00323923 /* mztools.c in Sources */,
 				B2BE448917C7610F00C96D58 /* SKTest.m in Sources */,
 				B2AE681A1883DA4D00D87FAE /* SKAGraphViewCell.m in Sources */,
@@ -1403,7 +1403,7 @@
 				B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */,
 				B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */,
 				B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */,
-				B22E5EDA19D9715B00666F16 /* SKBInfoViewController.m in Sources */,
+				B22E5EDA19D9715B00666F16 /* SKBTermsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

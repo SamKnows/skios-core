@@ -1,24 +1,24 @@
 //
-//  SKSplashVC.m
+//  SKBSplashVC.m
 //  SKCore
 //
 //  Created by Pete Cole on 09/10/2014.
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKSplashVC.h"
+#import "SKBSplashVC.h"
 
 #import "UIWelcomeView.h"
 #import "UIViewWithGradient.h"
 #import "SKAppColourScheme.h"
 
-@interface SKSplashVC ()
+@interface SKBSplashVC ()
 
 @property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
 
 @end
 
-@implementation SKSplashVC
+@implementation SKBSplashVC
 
 - (void)viewDidLoad {
   [super viewDidLoad];

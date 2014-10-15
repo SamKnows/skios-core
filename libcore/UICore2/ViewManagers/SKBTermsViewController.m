@@ -1,26 +1,26 @@
 //
-//  SKBInfoViewController.m
+//  SKBTermsViewController.m
 //  SKCore
 //
 //  Created by Pete Cole on 29/09/2014.
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKBInfoViewController.h"
+#import "SKBTermsViewController.h"
 
-#import "SKInfoViewMgr.h"
+#import "SKBTermsView.h"
 #import "SKSettingsMgr.h"
 
-@interface SKBInfoViewController ()
+@interface SKBTermsViewController ()
 
 @end
 
-@implementation SKBInfoViewController
+@implementation SKBTermsViewController
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  [self.infoManagerView setColoursAndShowHideElements];
+  [self.termsView setColoursAndShowHideElements];
   
   ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
   ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];

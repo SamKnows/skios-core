@@ -1,5 +1,5 @@
 //
-//  SKSplashVC.h
+//  SKBSplashVC.h
 //  SKCore
 //
 //  Created by Pete Cole on 09/10/2014.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SKSplashVC : UIViewController
+@interface SKBSplashVC : UIViewController
 
 @end
