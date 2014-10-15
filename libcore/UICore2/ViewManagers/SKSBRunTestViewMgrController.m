@@ -58,8 +58,12 @@
   [self View_OnLoadTweakControls];
  
   NSString *warningMessage = sSKCoreGetLocalisedString(@"Initial_Warning_Text");
-  if (warningMessage.length == 0) {
+  if ( (warningMessage.length == 0) ||
+       ([warningMessage isEqualToString:@"Initial_Warning_Text"])
+      )
+  {
     self.warningLabelBeforeTableFirstShown.hidden = YES;
+    self.warningLabelBeforeTableFirstShown.text = @"";
   } else {
     self.warningLabelBeforeTableFirstShown.hidden = NO;
     self.warningLabelBeforeTableFirstShown.text = warningMessage;
@@ -1231,8 +1235,15 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (tableView == self.tvCurrentResults) {
-    return C_NUMBER_OF_PASSIVE_METRICS + 1; //1 for the test results cell
+    if ([[SKAAppDelegate getAppDelegate] getShowMetricsOnMainScreen] == NO) {
+      // Just the test results cell!
+      return 1;
+    } else {
+      return 1 + C_NUMBER_OF_PASSIVE_METRICS; //1 (for the test results cell) + one cell per metric!
+    }
   }
+ 
+  SK_ASSERT(false);
   
   return 0;
 }

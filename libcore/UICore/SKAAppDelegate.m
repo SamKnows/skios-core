@@ -1722,4 +1722,8 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return;
 }
 
+-(BOOL) getShowMetricsOnMainScreen {
+  return YES;
+}
+
 @end
