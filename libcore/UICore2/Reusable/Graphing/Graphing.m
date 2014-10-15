@@ -171,7 +171,7 @@
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.fontChartTitle, NSFontAttributeName,
                                 style, NSParagraphStyleAttributeName,
-                                [UIColor whiteColor], NSForegroundColorAttributeName,
+                                [SKAppColourScheme sGetGraphColourTitleText], NSForegroundColorAttributeName,
                                 nil];
     
     [self.chartTitle drawInRect:CGRectMake(0, 0, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
@@ -179,7 +179,7 @@
     attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                   self.fontYAxisTitle, NSFontAttributeName,
                   style, NSParagraphStyleAttributeName,
-                  [UIColor whiteColor], NSForegroundColorAttributeName,
+                  [SKAppColourScheme sGetGraphColourTitleText], NSForegroundColorAttributeName,
                   nil];
     
     [self.axisYTitle drawInRect:CGRectMake(0, C_Y_INSET_TOP - 4 * self.fontYScale.pointSize, C_X_INSET_LEFT, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 15) withAttributes:attributes];
@@ -200,14 +200,14 @@
     
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 0.5);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourAxisMain].CGColor);
     CGContextMoveToPoint(context, C_X_INSET_LEFT, self.bounds.size.height - C_Y_INSET_BOTTOM);
     CGContextAddLineToPoint(context, self.bounds.size.width - C_X_INSET_RIGHT, self.bounds.size.height - C_Y_INSET_BOTTOM);
     CGContextStrokePath(context);
     
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 0.5);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourAxisTick].CGColor);
     for (int i = 0; i < numberOfPoints; i++) {
         
         CGContextMoveToPoint(context, C_X_INSET_LEFT + i * (xStep), self.bounds.size.height - C_Y_INSET_BOTTOM);
@@ -215,16 +215,13 @@
     }
     CGContextStrokePath(context);
 
-    CGContextBeginPath(context);
-    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
-    
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     [style setAlignment:NSTextAlignmentCenter];
     
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.fontXScale, NSFontAttributeName,
                                 style, NSParagraphStyleAttributeName,
-                                [UIColor whiteColor], NSForegroundColorAttributeName,
+                                [SKAppColourScheme sGetGraphColourAxisLabelText], NSForegroundColorAttributeName,
                                 nil];
     
     for (int i = 0; i < numberOfPoints; i++) {
@@ -234,7 +231,6 @@
         [labelText drawInRect:CGRectMake(C_X_INSET_LEFT + i * (xStep) - xStep / 2, self.bounds.size.height - C_Y_INSET_BOTTOM + C_X_SCALEMARKER_SIZE, xStep, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 10) withAttributes:attributes];
     }
     
-    CGContextStrokePath(context);
     CGContextRestoreGState(context);
 }
 
@@ -253,7 +249,7 @@
     
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 0.5);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourAxisMain].CGColor);
     
     CGContextMoveToPoint(context, C_X_INSET_LEFT, self.bounds.size.height - C_Y_INSET_BOTTOM);
     CGContextAddLineToPoint(context, C_X_INSET_LEFT, C_Y_INSET_TOP);
@@ -262,7 +258,7 @@
     
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 0.5);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourAxisTick].CGColor);
     for (int i = 0; i < numberOfPoints; i++) {
         CGContextMoveToPoint(context, C_X_INSET_LEFT, self.bounds.size.height - C_Y_INSET_BOTTOM - i * (yStep));
         CGContextAddLineToPoint(context, C_X_INSET_LEFT - C_Y_SCALEMARKER_SIZE, self.bounds.size.height - C_Y_INSET_BOTTOM - i * (yStep));
@@ -270,17 +266,13 @@
     }
     CGContextStrokePath(context);
     
-    CGContextBeginPath(context);
-    CGContextSetFillColorWithColor(context, [UIColor sSKCGetColor_grassColor].CGColor);
-    CGContextSetStrokeColorWithColor(context, [UIColor sSKCGetColor_cornflowerColor].CGColor);
-    
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     [style setAlignment:NSTextAlignmentCenter];
     
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.fontXScale, NSFontAttributeName,
                                 style, NSParagraphStyleAttributeName,
-                                [UIColor whiteColor], NSForegroundColorAttributeName,
+                                [SKAppColourScheme sGetGraphColourAxisLabelText], NSForegroundColorAttributeName,
                                 nil];
     
     for (int i = 0; i < numberOfPoints; i++) {
@@ -289,7 +281,7 @@
         [labelText drawInRect:CGRectMake(0, self.bounds.size.height - C_Y_INSET_BOTTOM - i * yStep - 0.85 * self.fontYScale.pointSize, C_X_INSET_LEFT - C_Y_SCALEMARKER_SIZE, self.fontYScale.pointSize * 2) withAttributes:attributes];
     }
     
-    CGContextStrokePath(context);
+    //CGContextStrokePath(context);
     CGContextRestoreGState(context);
 }
 
@@ -352,8 +344,8 @@
    
     // If we don't give a thick line width, then a single result is never shown!
     CGContextSetLineWidth(context, 10);
-    CGContextSetFillColorWithColor(context, [UIColor orangeColor].CGColor);
-    CGContextSetStrokeColorWithColor(context, [UIColor orangeColor].CGColor);
+    CGContextSetFillColorWithColor(context, [SKAppColourScheme sGetGraphColourSideLineColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourSideLineColor].CGColor);
     [aPath stroke];
     //NSLog(@"aPath:%@", [aPath description]);
    
@@ -382,7 +374,7 @@
     
     CGContextBeginPath(context);
     CGContextSetLineWidth(context, 0.5);
-    CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourFillColor].CGColor);
     
     float xStep = (self.bounds.size.width - C_X_INSET_LEFT - C_X_INSET_RIGHT) / (self.arrLabelsX.count - 1);
     for (int i = 0; i < self.arrLabelsX.count; i++) {
@@ -392,8 +384,8 @@
     CGContextStrokePath(context);
     
     CGContextRestoreGState(context);
-    
-    CGContextSetStrokeColorWithColor(context, [UIColor sSKCGetColor_cornflowerColor].CGColor);
+ 
+    CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetGraphColourTopLine].CGColor);
     [aPathTop stroke];
   }
   

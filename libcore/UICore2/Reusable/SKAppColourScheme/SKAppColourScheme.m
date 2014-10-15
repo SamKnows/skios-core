@@ -44,6 +44,33 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [[SKAppColourScheme sGetAppColourScheme] getWelcomeSplashTextColor];
 }
 
++(UIColor*)sGetGraphColourTopLine {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourTopLine];
+}
+
++(UIColor*)sGetGraphColourTitleText {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourTitleText];
+}
+
++(UIColor*)sGetGraphColourAxisMain {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourAxisMain];
+}
+
++(UIColor*)sGetGraphColourAxisTick {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourAxisTick];
+}
+
++(UIColor*)sGetGraphColourAxisLabelText {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourAxisLabelText];
+}
+
++(UIColor*)sGetGraphColourSideLineColor {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourSideLineColor];
+}
+
++(UIColor*)sGetGraphColourFillColor {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourFillColor];
+}
 
 +(float) sGet_GUI_MULTIPLIER {
   // TODO - this should be removed, so we work fully with storyboards,
@@ -105,5 +132,33 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [SKAppColourScheme sGetSamKnowsWhite];
 }
 
+// Graph colours!
+-(UIColor*)getGraphColourTopLine {
+  return [UIColor sSKCGetColor_cornflowerColor];
+}
+
+-(UIColor*)getGraphColourTitleText {
+  return [UIColor whiteColor];
+}
+
+-(UIColor*)getGraphColourAxisMain {
+  return [UIColor lightGrayColor];
+}
+          
+-(UIColor*)getGraphColourAxisTick {
+  return [UIColor lightGrayColor];
+}
+
+-(UIColor*)getGraphColourAxisLabelText {
+  return [UIColor whiteColor];
+}
+
+-(UIColor*)getGraphColourSideLineColor {
+  return [UIColor orangeColor];
+}
+
+-(UIColor*)getGraphColourFillColor {
+  return [UIColor lightGrayColor];
+}
 
 @end

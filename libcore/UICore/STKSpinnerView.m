@@ -14,6 +14,7 @@
 @property (nonatomic, assign) CALayer *maskLayer;
 @property (nonatomic, assign) CAShapeLayer *wellLayer;
 @property (nonatomic, assign) CAShapeLayer *spinLayer;
+//@property (nonatomic, strong) UIColor *color;
 @end
 
 @implementation STKSpinnerView
@@ -89,8 +90,7 @@
 
 - (void)setColor:(UIColor *)color
 {
-    _color = color;
-    [[self spinLayer] setStrokeColor:[_color CGColor]];
+  [[self spinLayer] setStrokeColor:[color CGColor]];
 }
 
 - (void)setProgress:(float)progress animated:(BOOL)animated

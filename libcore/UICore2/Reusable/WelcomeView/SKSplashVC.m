@@ -23,10 +23,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
-  //[[UITabBar appearance] setBarTintColor:[UIColor yellowColor]];
-  
   // The main background view...
-  //self.view.backgroundColor = [UIColor clearColor];
   ((UIViewWithGradient*)self.view).innerColor = [SKAppColourScheme sGetInnerColor];
   ((UIViewWithGradient*)self.view).outerColor = [SKAppColourScheme sGetOuterColor];
 }

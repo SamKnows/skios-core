@@ -15,6 +15,13 @@
 -(UIColor*)getOuterColor;
 -(UIColor*)getWelcomeSplashBackgroundColor;
 -(UIColor*)getWelcomeSplashTextColor;
+-(UIColor*)getGraphColourTopLine;
+-(UIColor*)getGraphColourTitleText;
+-(UIColor*)getGraphColourAxisMain;
+-(UIColor*)getGraphColourAxisTick;
+-(UIColor*)getGraphColourAxisLabelText;
+-(UIColor*)getGraphColourSideLineColor;
+-(UIColor*)getGraphColourFillColor;
 @end
 
 @interface SKAppColourScheme : NSObject<PSKAppColourScheme>
@@ -28,6 +35,13 @@
 +(UIColor*)sGetOuterColor;
 +(UIColor*)sGetWelcomeSplashBackgroundColor;
 +(UIColor*)sGetWelcomeSplashTextColor;
++(UIColor*)sGetGraphColourTopLine;
++(UIColor*)sGetGraphColourTitleText;
++(UIColor*)sGetGraphColourAxisMain;
++(UIColor*)sGetGraphColourAxisTick;
++(UIColor*)sGetGraphColourAxisLabelText;
++(UIColor*)sGetGraphColourSideLineColor;
++(UIColor*)sGetGraphColourFillColor;
 
 +(UIColor*)sGetSamKnowsBlue;
 +(UIColor*)sGetSamKnowsWhite;
