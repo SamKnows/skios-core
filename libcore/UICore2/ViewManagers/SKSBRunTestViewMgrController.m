@@ -30,6 +30,8 @@
 
 -(void) viewDidLoad {
   [super viewDidLoad];
+ 
+  [[SKAAppDelegate getAppDelegate] setLogoImage:self.optionalTopLeftLogoView];
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   if (![prefs objectForKey:Prefs_LastTestSelection])
@@ -54,6 +56,15 @@
   //self.vC1.outerColor = [UIColor colorWithRed:37.0/255.0 green:82.0/255.0 blue:164.0/255.0 alpha:1];
  
   [self View_OnLoadTweakControls];
+ 
+  NSString *warningMessage = sSKCoreGetLocalisedString(@"Initial_Warning_Text");
+  if (warningMessage.length == 0) {
+    self.warningLabelBeforeTableFirstShown.hidden = YES;
+  } else {
+    self.warningLabelBeforeTableFirstShown.hidden = NO;
+    self.warningLabelBeforeTableFirstShown.text = warningMessage;
+    self.warningLabelBeforeTableFirstShown.textColor = [UIColor whiteColor];
+  }
 }
 
 -(void) setIsRunning:(BOOL)value {
@@ -185,6 +196,8 @@
 -(void) viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
  
+  // ?? [[SKAAppDelegate getAppDelegate] getLogoUIView:self.optionalTopLeftLogoView];
+  
   // We MUST ensure that the main "dial" preserves a square aspect ratio, or it doesn't look good!
   [self adjustViewSizesOnStartOrOnDidRotate];
 }
@@ -517,6 +530,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   // Assert at least one test selected!
   SK_ASSERT ((self.testTypes2Execute & ~CTTBM_CLOSESTTARGET) != 0);
   
+  self.warningLabelBeforeTableFirstShown.hidden = YES;
   self.tvCurrentResults.hidden = NO;
   
   latencySUM = 0;

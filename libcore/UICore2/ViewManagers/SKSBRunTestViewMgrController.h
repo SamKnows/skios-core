@@ -59,6 +59,7 @@
 
 @property (weak, nonatomic) IBOutlet TYMActivityIndicatorView *tmActivityIndicator;
 @property (weak, nonatomic) IBOutlet UITableView *tvCurrentResults;
+@property (weak, nonatomic) IBOutlet UILabel *warningLabelBeforeTableFirstShown;
 @property (weak, nonatomic) IBOutlet UIView *vProgressView;
 @property (weak, nonatomic) IBOutlet UIButton *btSelectTests;
 @property (weak, nonatomic) IBOutlet UIButton *btShare;
@@ -96,6 +97,7 @@
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC3;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC4;
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC5;
+@property (weak, nonatomic) IBOutlet UIImageView *optionalTopLeftLogoView;
 
 @end
 

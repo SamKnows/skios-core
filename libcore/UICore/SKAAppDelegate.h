@@ -171,4 +171,7 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 - (void)startLocationMonitoring;
 - (void)stopLocationMonitoring;
 
+// Optional method!
+-(void) setLogoImage:(UIImageView*)uiImage;
+
 @end
