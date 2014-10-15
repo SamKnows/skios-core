@@ -43,9 +43,43 @@
   self.lblAboutVersion.text = displayVersion;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+  if ( (self.parentViewController == nil) ||
+        (![[self.parentViewController.class description] containsString:@"SKBSettingsTabViewController"])
+     )
+  {
+    // Not embedded!
+    //[super tableView:tableView willDisplayHeaderView:view forSection:section];
+    return;
+  }
+  
+  // Text Color
+  UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+  header.contentView.backgroundColor = [UIColor colorFromHexString:@"#EBEBF1"]; // Sampled from real screen!
+  header.textLabel.textColor = [UIColor blackColor];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+  if (self.parentViewController == nil) {
+    // Not embedded!
+    return [super tableView:tableView heightForFooterInSection:section];
+  }
+  
+  return 0.01f;
+}
+
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
  
+  UIViewController *parentViewController = self.parentViewController;
+  if ([[parentViewController.class description] containsString:@"SKBSettingsTabViewController"]) {
+    // We're embedded - reveal the background when scrolling!
+    [self.tableView setBackgroundView:nil];
+    [self.tableView setBackgroundColor:[UIColor clearColor]];
+  }
+
   BOOL canDisableDataCap = [[SKAAppDelegate getAppDelegate] canDisableDataCap];
   BOOL datacapEnabled = [[SKAAppDelegate getAppDelegate] isDataCapEnabled];
   self.datacapSwitch.hidden = !canDisableDataCap;
@@ -298,7 +332,13 @@ enum {
     [alert show];
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
     [SKAAppDelegate setIsActivated:NO];
+   
+    //UIViewController *doSequeFrom = nil;
+    //if (self.parentViewController != nil) {
+    //}
     [self SKSafePerformSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
+  } else if ([cell.reuseIdentifier isEqualToString:@"terms_and_conditions"]) {
+    [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
   } else if ([cell.reuseIdentifier isEqualToString:@"export_results"]) {
     UIViewController *fromThisVC = self;
     id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;

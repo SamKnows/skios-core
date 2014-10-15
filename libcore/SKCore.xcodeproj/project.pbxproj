@@ -67,6 +67,7 @@
 		B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */; };
 		B2672B0C180BEC92004280CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0B180BEC92004280CB /* CoreGraphics.framework */; };
 		B2672B0E180BED06004280CB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0D180BED06004280CB /* QuartzCore.framework */; };
+		B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */; };
 		B279124B18D88AF000E17EBF /* SKOperatorsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B279124A18D88AF000E17EBF /* SKOperatorsTests.m */; };
 		B27B0D88181A7F58008D76D6 /* SKCoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B27B0D87181A7F58008D76D6 /* SKCoreTests.m */; };
 		B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */; };
@@ -277,6 +278,8 @@
 		B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncUdpSocket.m; path = GCD/GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		B2672B0B180BEC92004280CB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B2672B0D180BED06004280CB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B271658819EEA86D005FAECA /* SKBSettingsTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSettingsTabViewController.h; sourceTree = "<group>"; };
+		B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsTabViewController.m; sourceTree = "<group>"; };
 		B279124A18D88AF000E17EBF /* SKOperatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKOperatorsTests.m; sourceTree = "<group>"; };
 		B27B0D87181A7F58008D76D6 /* SKCoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoreTests.m; sourceTree = "<group>"; };
 		B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSBMainViewTabBarController.h; path = ../SKSBMainViewTabBarController.h; sourceTree = "<group>"; };
@@ -578,6 +581,8 @@
 				B282672A19E3F579003A4172 /* SKTestResultsSharer.m */,
 				B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */,
 				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
+				B271658819EEA86D005FAECA /* SKBSettingsTabViewController.h */,
+				B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */,
 				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
 				B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */,
 				B22E5ED819D9715B00666F16 /* SKBTermsViewController.h */,
@@ -1371,6 +1376,7 @@
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
 				B2AE68421883DE6800D87FAE /* SKALatencyTest.m in Sources */,
+				B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */,
 				B2AE683E1883DE6800D87FAE /* SKAAutotest.m in Sources */,
 				B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,
