@@ -7,7 +7,7 @@
 //
 
 #import "SKASimpleResultCell2.h"
-#import "SKATestOverviewMetrics.h"
+#import "SKATestResultValue.h"
 //#import "../ViewManagers/SKRunTestViewMgr.h"
 
 @implementation SKASimpleResultCell2
@@ -19,7 +19,7 @@
   self.lResult.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
 }
 
--(void)setMetrics:(SKATestOverviewMetrics*)metricsObject
+-(void)setMetrics:(SKATestResultValue*)metricsObject
 {
   self.cellMetrics = metricsObject;
   [self updateDisplay];
@@ -27,7 +27,7 @@
 
 -(void)updateDisplay
 {
-  self.lMeasureName.text = self.cellMetrics.name;
+  self.lMeasureName.text = self.cellMetrics.mLocalizedIdentifier;
   self.lResult.text = self.cellMetrics.value;
 }
 

@@ -8,17 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@class SKATestOverviewMetrics;
+@class SKATestResultValue;
 
 @interface SKASimpleResultCell2 : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lMeasureName;
 @property (weak, nonatomic) IBOutlet UILabel *lResult;
 
-@property (strong, nonatomic) SKATestOverviewMetrics* cellMetrics;
+@property (strong, nonatomic) SKATestResultValue* cellMetrics;
 
 -(void)initCell;
--(void)setMetrics:(SKATestOverviewMetrics*)metricsObject;
+-(void)setMetrics:(SKATestResultValue*)metricsObject;
 -(void)updateDisplay;
 
 @end

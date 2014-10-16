@@ -15,7 +15,7 @@
 #import "SKHistoryViewMgr.h"
 #import "SKTestResults.h"
 
-@class SKATestOverviewMetrics;
+@class SKATestResultValue;
 @class UIWelcomeView;
 
 @interface SKSBRunTestViewMgrController : UIViewController <pTYMAOwner, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -38,7 +38,6 @@
     int64_t dataStart;
     int64_t dataEnd;
     
-    NSMutableArray* testResultsArray;
     BOOL showPassiveMetrics;
     
     float latencySUM;
@@ -49,6 +48,7 @@
     NSInteger connectionStatus;
 }
 
+@property NSMutableArray* mTestResultsArray;
 @property (nonatomic, strong) cActionSheet* casTestTypes;
 @property (weak, nonatomic) IBOutlet cAnimatedStatusView *casStatusView;
 @property (nonatomic, strong) cActionSheet* casShare;
@@ -101,6 +101,6 @@
 
 @end
 
-#import "SKATestOverviewMetrics.h"
+#import "SKATestResultValue.h"
 
 

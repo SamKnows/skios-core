@@ -7,13 +7,13 @@
 //
 
 #import "SKATestOverviewCell2.h"
-#import "SKATestOverviewMetrics.h"
+#import "SKATestResultValue.h"
 #import "SKHistoryViewMgr.h"
 #import "SKTestResults.h"
 
 @implementation SKATestOverviewCell2
 
--(void)setResultDownload:(SKATestOverviewMetrics*)down_ upload:(SKATestOverviewMetrics*)up_ latency:(SKATestOverviewMetrics*)lat_ loss:(SKATestOverviewMetrics*)loss_ jitter:(SKATestOverviewMetrics*)jitter_
+-(void)setResultDownload:(SKATestResultValue*)down_ upload:(SKATestResultValue*)up_ latency:(SKATestResultValue*)lat_ loss:(SKATestResultValue*)loss_ jitter:(SKATestResultValue*)jitter_
 {
   self.aiActivity.hidden = YES;
   
