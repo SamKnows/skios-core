@@ -19,6 +19,7 @@
 @property SKATestResults* mpTestResult;
   // This may NOT be allocated locally, or it can get auto-released before we've finished using it!
 @property SKTestResultsSharer *mpSharer;
+@property NSNumber *mTestId;
 @end
 
 @implementation SKSBRunTestViewMgrController
@@ -146,8 +147,12 @@
   dataEnd = 0;
   
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(statusChanged:)
-                                               name:@"StatusChanged"
+                                           selector:@selector(SKAAutoTest_GeneratedTestId:)
+                                               name:kSKAAutoTest_GeneratedTestId
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(SKB_public_ip_and_submission_id:)
+                                               name:@"SKB_public_ip_and_submission_id"
                                              object:nil];
   
   [self prepareResultsArray];
@@ -171,6 +176,43 @@
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
+- (void)SKAAutoTest_GeneratedTestId:(NSNotification*)notification
+{
+  NSNumber *theTestId = notification.object;
+  self.mTestId = theTestId;
+}
+
+//
+// This notification is received when a test file has been uploaded.
+// Does it match the test that we (might) have just run?
+//
+- (void)SKB_public_ip_and_submission_id:(NSNotification*)notification
+{
+  // TODO - show the panel, if not already shown - with just these metrics;
+  // depending on the specific app requirements!
+  // TODO _ how do we get the TEST ID!?
+  if (self.mTestId != nil)
+  {
+    NSNumber *theTestId = notification.object;
+    SK_ASSERT(theTestId != nil);
+    SK_ASSERT([theTestId isKindOfClass:NSNumber.class]);
+    if (theTestId.longLongValue == self.mTestId.longLongValue) {
+      NSDictionary *values = notification.userInfo;
+      
+      NSNumber *theTestId = values[@"test_id"];
+      SK_ASSERT(theTestId != nil);
+      NSString *thePublicIp = values[@"public_ip"];
+      SK_ASSERT(thePublicIp != nil);
+      NSString *theSubmissionId = values[@"submission_id"];
+      SK_ASSERT(theSubmissionId != nil);
+      
+      SK_ASSERT(false);
+      
+      [self.tvCurrentResults reloadData];
+    }
+  }
 }
 
 -(void) adjustViewSizesOnStartOrOnDidRotate {

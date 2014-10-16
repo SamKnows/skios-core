@@ -277,7 +277,7 @@ static BOOL sbTestIsRunning = NO;
 
 - (void)checkTestId
 {
-  if (nil == self.testId)
+  if (self.testId == nil)
   {
     // Only set this once, after at least one test has completed successfully
     // A successful closest target test alone does not constitute a successful batch test..
@@ -300,6 +300,10 @@ static BOOL sbTestIsRunning = NO;
                    storeBatchTestMapData:latitude
                    longitude:longitude
                    target:targetName];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_GeneratedTestId object:self.testId];
+    });
   }
 }
 

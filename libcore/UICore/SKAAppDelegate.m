@@ -805,6 +805,35 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 }
 
 - (void)postResultsJsonToServer:(NSData*)jsonData filePath:(NSString*)filePath {
+
+  NSError *error = nil;
+  NSDictionary *theDictionaryToSend = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                     options:NSJSONReadingMutableLeaves
+                                                                       error:&error];
+  NSArray *metricsArray = theDictionaryToSend[@"metrics"];
+  
+  NSString *test_id = nil;
+  NSNumber *testId = nil;
+  
+  for (NSObject *jsonObject in metricsArray) {
+    //NSLog(@"DEBUG: description = %@", jsonObject.description);
+    if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+      NSDictionary *theDict = (NSDictionary*)jsonObject;
+      if ([theDict objectForKey:@"test_id"]) {
+        test_id = theDict[@"test_id"];
+        break;
+      }
+    }
+  }
+  
+  if (test_id == nil) {
+#ifdef DEBUG
+    NSLog(@"DEBUG: This is an OLD TEST - with no test_id!");
+#endif // DEBUG
+  } else {
+    testId = [NSNumber numberWithLongLong:test_id.longLongValue];
+    NSLog(@"DEBUG: test_id = %@", testId);
+  }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSString *server = [prefs objectForKey:Prefs_TargetServer];
@@ -865,9 +894,6 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
            NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
 #endif // DEBUG
            
-           // TODO - do something with this data - we need to display it in the New App, and save
-           // in the passive metrics associated with the test!
-           
            NSError *error = nil;
            NSDictionary *theObject = [NSJSONSerialization JSONObjectWithData:data
                                                                      options:NSJSONReadingMutableLeaves
@@ -875,6 +901,28 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 #ifdef DEBUG
            NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
 #endif // DEBUG
+           if (testId != nil) {
+             // TODO: Write the data to the database, along with the
+             // other passive metrics associated with the test!
+             // TODO: Display this data in the OFCA app
+             NSString *thePublicIp = theObject[@"public_ip"];
+             SK_ASSERT(thePublicIp != nil);
+             NSString *theSubmissionId = theObject[@"submission_id"];
+             SK_ASSERT(theSubmissionId != nil);
+             
+             [SKDatabase updateMetricForTestId:testId
+                                  MetricColumn:@"public_ip"
+                                   MetricValue:thePublicIp];
+             
+             [SKDatabase updateMetricForTestId:testId
+                                  MetricColumn:@"submission_id"
+                                   MetricValue:theSubmissionId];
+             
+             // Send the notification - it is used ONLY if it matches THE CURRENT TEST ID!
+             dispatch_async(dispatch_get_main_queue(), ^{
+               [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_submission_id" object:testId userInfo:@{@"test_id":testId, @"public_ip": thePublicIp, @"submission_id":theSubmissionId}];
+             });
+           }
            
            // file upload successfully.. remove the uploaded file
            if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])

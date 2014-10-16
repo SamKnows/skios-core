@@ -280,6 +280,34 @@
   
   BOOL bRes;
   
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"public_ip"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN public_ip TEXT NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"submission_id"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN submission_id TEXT NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
   if ([SKDatabase checkExistsTable:@"metrics" Column:@"network_type"] == NO) {
     
     // New column that was not always present in the old version of the application.
@@ -867,6 +895,56 @@ public static String convertConnectivityType(int type) {
   return SK2AppSettings.getInstance().getResourceString(string_id);
 }
 */
+
+
++ (void)updateMetricForTestId:(NSNumber*)testId
+              MetricColumn:(NSString*)metricColumn
+                 MetricValue:(NSString*)metricValue
+{
+  if (testId == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  if ( ([metricColumn isEqualToString:@"public_ip"])  ||
+       ([metricColumn isEqualToString:@"submission_id"])
+      )
+  {
+    // Column is one we expect!
+  }
+  else
+  {
+    // Not OK!
+    SK_ASSERT(false);
+    return;
+  }
+  
+  FMDatabase *db = [SKDatabase openDatabase];
+  if (db == NULL) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  BOOL bRes;
+  
+  bRes = [db beginTransaction];
+  SK_ASSERT(bRes);
+  
+  NSString *theSql = [NSString stringWithFormat:@"UPDATE metrics set %@=? where test_id=?", metricColumn];
+  
+  bRes = [db executeUpdate:
+          theSql,
+          metricValue,
+          testId];
+  
+  SK_ASSERT(bRes);
+  
+  bRes = [db commit];
+  SK_ASSERT(bRes);
+  
+  bRes = [db close];
+  SK_ASSERT(bRes);
+}
 
 + (void)storeMetrics:(NSNumber*)testId
               device:(NSString*)device

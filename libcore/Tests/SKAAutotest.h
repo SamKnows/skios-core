@@ -10,6 +10,7 @@
 @interface SKAAutotest : SKAutotest
 
 #define kSKAAutoTest_UDPFailedSkipTests @"kSKAAutoTest_UDPFailedSkipTests"
+#define kSKAAutoTest_GeneratedTestId @"kSKAAutoTest_GeneratedTestId"
 
 -(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType IsContinuousTesting:(BOOL)isContinuousTesting;
 

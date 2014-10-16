@@ -399,7 +399,7 @@
    "os_type":"android",
    "os_version":api android.os.Build.VERSION.SDK_INT,
    "timestamp":1359128107
-   
+   "test_id":"190329108"
    */
   
   NSMutableDictionary *phone = [NSMutableDictionary dictionary];
@@ -428,6 +428,9 @@
   
   [phone setObject:[SKGlobalMethods getTimeStamp]
             forKey:@"timestamp"];
+  
+  [phone setObject:[self.testId stringValue]
+            forKey:@"test_id"];
   
   
   // Location ////////////////////////////////////////////////////////////////////////////////////////////////

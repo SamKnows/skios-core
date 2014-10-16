@@ -28,6 +28,10 @@
 + (NSDictionary*)getLossResultsForTestId:(NSNumber*)testId;
 + (NSDictionary*)getJitterResultsForTestId:(NSNumber*)testId;
 
++ (void)updateMetricForTestId:(NSNumber*)testId
+                 MetricColumn:(NSString*)metricColumn
+                  MetricValue:(NSString*)metricValue;
+
 + (void)storeMetrics:(NSNumber*)testId
               device:(NSString*)device
                   os:(NSString*)os
