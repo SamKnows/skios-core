@@ -40,6 +40,11 @@
 - (void)refreshData:(NSArray*)data;
 
 +(int) getMaxResultsCells;
++ (NSDictionary*)sFetchGraphDataTestType:(NSString*)inTestType
+                                ForDateRange:(DATERANGE_1w1m3m1y)inDateRange
+                                    FromDate:(NSDate*)fromDate
+                                      ToDate:(NSDate*)toDate
+                                    DataPath:(NSString*)dataPath;
 
 @end
 

@@ -10,7 +10,7 @@
 #import "UIViewWithGradient.h"
 #import "SKAppColourScheme.h"
 #import "SKHistoryViewMgr.h"
-#import "SKSummaryViewMgr.h"
+#import "SKBSummaryViewMgr.h"
 #import "SKSettingsMgr.h"
 #import "SKBTermsView.h"
 #import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"

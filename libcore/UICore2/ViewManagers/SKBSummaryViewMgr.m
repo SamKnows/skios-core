@@ -1,14 +1,19 @@
 //
-//  SKSummaryViewMgr.m
+//  SKBSummaryViewMgr.m
 //  SKCore
 //
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKSummaryViewMgr.h"
+#import "SKBSummaryViewMgr.h"
 #import "SKBSummaryTableViewCell.h"
+#import "SKAGraphViewCell.h"
 
-@implementation SKSummaryViewMgr
+@interface SKBSummaryViewMgr()
+@property SKGraphForResults *skGraphForResults;
+@end
+
+@implementation SKBSummaryViewMgr
 {
   UIView* cellContentView2putBack;
   SKBSummaryTableViewCell* cell2putBack;
@@ -16,11 +21,15 @@
   CGFloat mRestoreToY;
 }
 
+@synthesize skGraphForResults;
+
 #define C_BUTTON_BASE_ALPHA 0.1
 #define C_VIEWS_Y_FIRST 110
 
 - (void)intialiseViewOnMasterView:(UIView*)masterView_
 {
+  SK_ASSERT(self.vChart != nil);
+  
   currentChartType= -1;
   
   self.backgroundColor = [UIColor clearColor];
@@ -31,6 +40,8 @@
   [cActionSheet formatView:self.btPeriod];
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
+  [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
+  
   currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
   
   // Set table to clear background colour!
@@ -74,7 +85,8 @@ static BOOL sbReloadTableAfterBack = NO;
   self.vHeader.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
   
   self.vChart.alpha = 0;
-  self.vChart.backgroundColor = [UIColor clearColor];
+  self.vChart.backgroundColor = [SKAppColourScheme sGetGraphColourBackground];
+  self.vChart.layer.cornerRadius = 10.0;
   // DEBUG!
   //self.vChart.backgroundColor = [UIColor greenColor];
 }
@@ -121,12 +133,15 @@ static BOOL sbReloadTableAfterBack = NO;
     
     switch (optionTag) {
       case C_FILTER_NETWORKTYPE_WIFI:
+       [[SKAAppDelegate getAppDelegate] switchNetworkTypeToWiFi];
         [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_GSM:
+        [[SKAAppDelegate getAppDelegate] switchNetworkTypeToMobile];
         [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
         break;
       case C_FILTER_NETWORKTYPE_ALL:
+        [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
         [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
         break;
       default:
@@ -428,188 +443,166 @@ static BOOL sbReloadTableAfterBack = NO;
     self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
 }
 
-- (void)prepareDataForChart
+
+- (NSString*)getDateRangeText:(DATERANGE_1w1m3m1y) curDateFilter
 {
-  if (currentChartType == -1)
-  {
-    currentChartType = 0;
+  switch (curDateFilter) {
+    case DATERANGE_1w1m3m1y_ONE_WEEK:
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Week");
+    case DATERANGE_1w1m3m1y_ONE_MONTH:
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Month");
+    case DATERANGE_1w1m3m1y_THREE_MONTHS:
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_3_Months");
+    case DATERANGE_1w1m3m1y_SIX_MONTHS:
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_6_Months");
+    case DATERANGE_1w1m3m1y_ONE_YEAR:
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Year");
+    case DATERANGE_1w1m3m1y_ONE_DAY:
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Day");
+    default:
+      SK_ASSERT(false);
+      return sSKCoreGetLocalisedString(@"RESULTS_Label_Date_1_Week");
   }
+}
+
+- (void)refreshLocalData
+{
+  //NSDate *previousDate = nil;
   
-  int numberOfPoints;
-  float pixelLength;
-  int intervals;
-  
-  [self.vChart setDefaultValues];
+  DATERANGE_1w1m3m1y curDateFilter;
   
   switch (currentFilterPeriod) {
     case C_FILTER_PERIOD_1DAY:
-      numberOfPoints = 600;
-      pixelLength = 3600*24 / numberOfPoints;
+      curDateFilter = DATERANGE_1w1m3m1y_ONE_DAY;
       break;
     case C_FILTER_PERIOD_1WEEK:
-      numberOfPoints = 600;
-      pixelLength = 3600*24*7 / numberOfPoints;
+      curDateFilter = DATERANGE_1w1m3m1y_ONE_WEEK;
       break;
     case C_FILTER_PERIOD_1MONTH:
-      numberOfPoints = 600;
-      pixelLength = 3600*24*31 / numberOfPoints;
+      curDateFilter = DATERANGE_1w1m3m1y_ONE_MONTH;
       break;
     case C_FILTER_PERIOD_3MONTHS:
-      numberOfPoints = 600;
-      pixelLength = 3600*24*31*3 / numberOfPoints;
+      curDateFilter = DATERANGE_1w1m3m1y_THREE_MONTHS;
       break;
     case C_FILTER_PERIOD_1YEAR:
-      numberOfPoints = 600;
-      pixelLength = 3600*24*364 / numberOfPoints;
-      break;
     default:
-      SK_ASSERT(false);
-      numberOfPoints = 0;
-      pixelLength = 1;
+      curDateFilter = DATERANGE_1w1m3m1y_ONE_YEAR;
       break;
   }
   
-  [self.vChart createAndInitialiseArrayOfValues:numberOfPoints];
-  
-  cGraphValue* graphValue;
-  
-  switch (currentChartType) {
-    case 0: {
-      for (SKATestResults* tr in arrTestsList) {
-        intervals = [tr.testDateTime timeIntervalSinceDate:previousDate];
-        if (tr.downloadSpeed >= 0) //If the test was executed
-        {
-          graphValue = ((cGraphValue*)self.vChart.arrValues[(int)floorf(intervals / pixelLength)]);
-          graphValue.sum += tr.downloadSpeed;
-          graphValue.numberOfElements++;
-          graphValue.active = YES;
-        }
-      }
-    }
+  switch (curDateFilter)
+  {
+    case DATERANGE_1w1m3m1y_ONE_WEEK:
+      previousDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
       break;
       
-    case 1: {
-      for (SKATestResults* tr in arrTestsList) {
-        intervals = [tr.testDateTime timeIntervalSinceDate:previousDate];
-        if (tr.uploadSpeed >= 0) //If the test was executed
-        {
-          graphValue = ((cGraphValue*)self.vChart.arrValues[(int)floorf(intervals / pixelLength)]);
-          graphValue.sum += tr.uploadSpeed;
-          graphValue.numberOfElements++;
-          graphValue.active = YES;
-        }
-      }
-    }
+    case DATERANGE_1w1m3m1y_ONE_MONTH:
+      previousDate = [NSDate dateWithTimeIntervalSinceNow:-30*24*60*60];
       break;
       
-    case 2: {
-      for (SKATestResults* tr in arrTestsList) {
-        intervals = [tr.testDateTime timeIntervalSinceDate:previousDate];
-        if (tr.latency >= 0) //If the test was executed
-        {
-          graphValue = ((cGraphValue*)self.vChart.arrValues[(int)floorf(intervals / pixelLength)]);
-          graphValue.sum += tr.latency;
-          graphValue.numberOfElements++;
-          graphValue.active = YES;
-        }
-      }
-    }
+    case DATERANGE_1w1m3m1y_THREE_MONTHS:
+      previousDate = [NSDate dateWithTimeIntervalSinceNow:-3*30*24*60*60];
       break;
       
-    case 3: {
-      for (SKATestResults* tr in arrTestsList) {
-        intervals = [tr.testDateTime timeIntervalSinceDate:previousDate];
-        if (tr.loss >= 0) //If the test was executed
-        {
-          graphValue = ((cGraphValue*)self.vChart.arrValues[(int)floorf(intervals / pixelLength)]);
-          graphValue.sum += tr.loss;
-          graphValue.numberOfElements++;
-          graphValue.active = YES;
-        }
-      }
-    }
+    case DATERANGE_1w1m3m1y_SIX_MONTHS:
+      previousDate = [NSDate dateWithTimeIntervalSinceNow:-6*30*24*60*60];
       break;
       
-    case 4: {
-      for (SKATestResults* tr in arrTestsList) {
-        intervals = [tr.testDateTime timeIntervalSinceDate:previousDate];
-        if (tr.jitter >= 0) //If the test was executed
-        {
-          graphValue = ((cGraphValue*)self.vChart.arrValues[(int)floorf(intervals / pixelLength)]);
-          graphValue.sum += tr.jitter;
-          graphValue.numberOfElements++;
-          graphValue.active = YES;
-        }
-      }
-    }
+    case DATERANGE_1w1m3m1y_ONE_YEAR:
+      previousDate = [NSDate dateWithTimeIntervalSinceNow:-12*30*24*60*60];
+      break;
+      
+    case DATERANGE_1w1m3m1y_ONE_DAY:
+      previousDate = [NSDate dateWithTimeIntervalSinceNow:-1*24*60*60];
       break;
       
     default:
       SK_ASSERT(false);
+      return;
   }
-  
-  self.vChart.yMax = 0;
-  for (cGraphValue* gv in self.vChart.arrValues) {
-    if ((gv.sum / gv.numberOfElements) > self.vChart.yMax) //Recalculating the Y MAX
-      self.vChart.yMax = gv.sum / gv.numberOfElements;
-  }
-  
-//  if (((cGraphValue*)[self.vChart.arrValues firstObject]).active == NO)
-//  {
-//    ((cGraphValue*)[self.vChart.arrValues firstObject]).sum = 0;
-//    ((cGraphValue*)[self.vChart.arrValues firstObject]).numberOfElements = 1;
-//    ((cGraphValue*)[self.vChart.arrValues firstObject]).active = YES;
-//  }
-//  if (((cGraphValue*)[self.vChart.arrValues lastObject]).active == NO)
-//  {
-//    ((cGraphValue*)[self.vChart.arrValues lastObject]).sum = 0;
-//    ((cGraphValue*)[self.vChart.arrValues lastObject]).numberOfElements = 1;
-//    ((cGraphValue*)[self.vChart.arrValues lastObject]).active = YES;
-//  }
-  
-  [self.vChart setupYAxis];
-  [self.vChart setupXAxis:currentFilterPeriod withStartDate:previousDate];
-  
+ 
+  NSString *testType = @"";
   switch (currentChartType) {
+    case -1:
     case 0:
-      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Download speed for ");
-      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
+      testType = @"downstream_mt";
       break;
     case 1:
-      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Upload speed for ");
-      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
+      testType = @"upstream_mt";
       break;
     case 2:
-      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Latency for ");
-      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
+      testType = @"latency";
       break;
     case 3:
-      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Loss for ");
-      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Percent");
+      testType = @"packetloss";
       break;
     case 4:
-      self.vChart.chartTitle = sSKCoreGetLocalisedString(@"Jitter for ");
-      self.vChart.axisYTitle = sSKCoreGetLocalisedString(@"Graph_Suffix_Ms");
+      testType = @"jitter";
+      break;
+    default:
+      SK_ASSERT(false);
       break;
   }
   
-  switch (currentFilterPeriod) {
-    case C_FILTER_PERIOD_1DAY:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1day")];
-      break;
-    case C_FILTER_PERIOD_1WEEK:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1week")];
-      break;
-    case C_FILTER_PERIOD_1MONTH:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1month")];
-      break;
-    case C_FILTER_PERIOD_3MONTHS:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_3months")];
-      break;
-    case C_FILTER_PERIOD_1YEAR:
-      self.vChart.chartTitle = [NSString stringWithFormat:@"%@%@", self.vChart.chartTitle, sSKCoreGetLocalisedString(@"time_period_1year")];
-      break;
+  NSDate *dateNow = [SKCore getToday];
+  
+  NSString *rootPath = NSTemporaryDirectory();
+  NSString *testString = [self getDateRangeText:curDateFilter];
+  NSString *dataFilename = [NSString stringWithFormat:@"data_%d_%@.json", curDateFilter, testString];
+  NSString *dataPath = [rootPath stringByAppendingPathComponent:dataFilename];
+  NSString *infoPath = [rootPath stringByAppendingPathComponent:@"info.json"];
+  NSString *info = [NSString stringWithFormat:@"{\"file\":\"%@\",\"test\":\"%@\"}", dataFilename, testString];
+  
+  NSFileManager *filemgr = [NSFileManager defaultManager];
+  if (![filemgr createFileAtPath:infoPath contents:[info dataUsingEncoding:NSASCIIStringEncoding] attributes:nil])
+  {
+    NSLog(@"Failed");
   }
+  
+  NSDictionary *graphDataForDateRange = [SKAGraphViewCell sFetchGraphDataTestType:testType
+                                                                        ForDateRange:curDateFilter
+                                                                            FromDate:previousDate
+                                                                              ToDate:dateNow
+                                                                            DataPath:dataPath];
+  
+  if (graphDataForDateRange != nil)
+  {
+    if ([graphDataForDateRange count] == 2)
+    {
+      NSError *err = nil;
+      NSData *json = [NSJSONSerialization dataWithJSONObject:graphDataForDateRange
+                                                     options:NSJSONWritingPrettyPrinted
+                                                       error:&err];
+      
+      //[SKGlobalMethods printNSData:json];
+      
+      if (nil == err)
+      {
+        SK_ASSERT([NSThread isMainThread]);
+        
+        // Update the CORE PLOT!
+        if (self.skGraphForResults == nil) {
+          self.skGraphForResults = [[SKGraphForResults alloc] init];
+        }
+       
+        CGRect frame = self.vChart.frame;
+        frame.origin.x = 0;
+        frame.origin.y = 0;
+        [self.skGraphForResults updateGraphWithTheseResults:json OnParentView:self.vChart InFrame:frame StartHidden:NO WithDateFilter:curDateFilter];
+        
+        return;
+      }
+      else
+      {
+        NSLog(@"Error : %@", [err localizedDescription]);
+      }
+    }
+  }
+}
+
+- (void)prepareDataForChart
+{
+  [self refreshLocalData];
 }
 
 #pragma mark TabelView
@@ -760,7 +753,9 @@ static BOOL sbReloadTableAfterBack = NO;
   // Move chart to off bottom of screen...
   self.vChart.alpha = 0.0;
   self.chartHeightConstraint.constant = 0.0F;
-  [self.vChart setNeedsDisplay];
+  self.vChart.hidden = YES;
+  //[self prepareDataForChart];
+  //[self.vChart setNeedsDisplay];
   
   dispatch_async(dispatch_get_main_queue(), ^{
     [UIView animateWithDuration:0.3 animations:^{
@@ -780,8 +775,8 @@ static BOOL sbReloadTableAfterBack = NO;
                          cellContentView2putBack.frame = CGRectMake(0, mRestoreToY, cellFrame.size.width, cellFrame.size.height);
                          //self.vChart.frame = CGRectMake(0, chartMoveUpToY, chartWidth, chartHeight);
                          self.chartHeightConstraint.constant = chartHeight;
-                         self.vChart.alpha = 1.0;
-                         [self.vChart setNeedsDisplay];
+                         //self.vChart.alpha = 1.0;
+                         //[self.vChart setNeedsDisplay];
                          
                        } completion:^(BOOL finished) {
                          // Animation, to put the button in the same place.
@@ -796,6 +791,11 @@ static BOOL sbReloadTableAfterBack = NO;
                          
                          //self.vChart.frame = CGRectMake(200, 200, 200, 200);
                          //[self.vChart setNeedsDisplay];
+                         
+                         [self prepareDataForChart];
+                         self.vChart.alpha = 1.0;
+                         self.vChart.hidden = NO;
+                         [self.vChart setNeedsDisplay];
                        }];
     }];
   });
@@ -819,7 +819,9 @@ static BOOL sbReloadTableAfterBack = NO;
       
       //self.vChart.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 0);
       self.chartHeightConstraint.constant = 0.0;
+      SK_ASSERT(self.vChart != nil);
       self.vChart.alpha = 0;
+      self.vChart.hidden = YES;
       
     } completion:^(BOOL finished) {
       // http://stackoverflow.com/questions/12622424/how-do-i-animate-constraint-changes

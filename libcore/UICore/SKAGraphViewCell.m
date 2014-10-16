@@ -221,7 +221,7 @@
     NSLog(@"Failed");
   }
   
-  NSDictionary *graphDataForDateRange = [SKAGraphViewCell fetchGraphDataForDateRange:self.testString
+  NSDictionary *graphDataForDateRange = [SKAGraphViewCell sFetchGraphDataTestType:self.testString
                                                                         ForDateRange:self.dateRange
                                                                             FromDate:previousDate
                                                                               ToDate:dateNow
@@ -270,7 +270,7 @@
   [self.tableView reloadData];
 }
 
-+ (NSDictionary*)fetchGraphDataForDateRange:(NSString*)inTestType
++ (NSDictionary*)sFetchGraphDataTestType:(NSString*)inTestType
                                 ForDateRange:(DATERANGE_1w1m3m1y)inDateRange
                                     FromDate:(NSDate*)fromDate
                                       ToDate:(NSDate*)toDate

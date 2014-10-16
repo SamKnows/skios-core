@@ -44,6 +44,10 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [[SKAppColourScheme sGetAppColourScheme] getWelcomeSplashTextColor];
 }
 
++(UIColor*)sGetGraphColourBackground {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourBackground];
+}
+
 +(UIColor*)sGetGraphColourTopLine {
   return [[SKAppColourScheme sGetAppColourScheme] getGraphColourTopLine];
 }
@@ -130,6 +134,10 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 
 -(UIColor*)getWelcomeSplashTextColor {
   return [SKAppColourScheme sGetSamKnowsWhite];
+}
+
+-(UIColor*)getGraphColourBackground {
+  return [SKAppColourScheme sGetSamKnowsBlue];
 }
 
 // Graph colours!

@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class SKSummaryViewMgr;
+@class SKBSummaryViewMgr;
 
 @interface SKBSummaryViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet SKSummaryViewMgr *summaryManagerView;
+@property (weak, nonatomic) IBOutlet SKBSummaryViewMgr *summaryManagerView;
 
 @end

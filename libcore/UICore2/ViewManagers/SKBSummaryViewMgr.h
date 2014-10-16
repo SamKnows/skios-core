@@ -1,5 +1,5 @@
 //
-//  SKSummaryViewMgr.h
+//  SKBSummaryViewMgr.h
 //  SKCore
 //
 
@@ -13,7 +13,7 @@
 #import "../Reusable/Graphing/Graphing.h"
 #import "SKTestResults.h"
 
-@interface SKSummaryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate>
+@interface SKBSummaryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate>
 {
     NSMutableArray *arrTestsList;
     NSDate* previousDate;
@@ -103,7 +103,7 @@
 @property (strong, nonatomic) UIButton *btLatencySelect;
 @property (strong, nonatomic) UIButton *btLossSelect;
 
-@property (strong, nonatomic) IBOutlet Graphing *vChart;
+@property (strong, nonatomic) IBOutlet UIView *vChart;
 
 // New stuff!
 @property (weak, nonatomic) IBOutlet UITableView *tvTests;

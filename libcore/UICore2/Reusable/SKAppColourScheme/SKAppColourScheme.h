@@ -15,6 +15,7 @@
 -(UIColor*)getOuterColor;
 -(UIColor*)getWelcomeSplashBackgroundColor;
 -(UIColor*)getWelcomeSplashTextColor;
+-(UIColor*)getGraphColourBackground;
 -(UIColor*)getGraphColourTopLine;
 -(UIColor*)getGraphColourTitleText;
 -(UIColor*)getGraphColourAxisMain;
@@ -35,6 +36,7 @@
 +(UIColor*)sGetOuterColor;
 +(UIColor*)sGetWelcomeSplashBackgroundColor;
 +(UIColor*)sGetWelcomeSplashTextColor;
++(UIColor*)sGetGraphColourBackground;
 +(UIColor*)sGetGraphColourTopLine;
 +(UIColor*)sGetGraphColourTitleText;
 +(UIColor*)sGetGraphColourAxisMain;

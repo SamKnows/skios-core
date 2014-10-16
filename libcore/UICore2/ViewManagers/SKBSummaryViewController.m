@@ -8,7 +8,7 @@
 
 #import "SKBSummaryViewController.h"
 
-#import "SKSummaryViewMgr.h"
+#import "SKBSummaryViewMgr.h"
 
 @interface SKBSummaryViewController ()
 

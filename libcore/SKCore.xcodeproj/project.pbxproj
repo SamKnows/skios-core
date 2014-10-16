@@ -141,7 +141,7 @@
 		B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */; };
 		B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032519B75D09007AA3C2 /* SKBTermsView.m */; };
 		B2FB033D19B75D09007AA3C2 /* SKSettingsMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */; };
-		B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */; };
+		B2FB033E19B75D09007AA3C2 /* SKBSummaryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */; };
 		B2FB4389192DFFEC00DE371B /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB437E192DFFEC00DE371B /* libOCMock.a */; };
 		B2FB438C192E009400DE371B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEDD18FFC24F00323923 /* libz.dylib */; };
 		B2FB438D192E00AE00DE371B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
@@ -489,8 +489,8 @@
 		B2FB032519B75D09007AA3C2 /* SKBTermsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTermsView.m; sourceTree = "<group>"; };
 		B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsMgr.h; sourceTree = "<group>"; };
 		B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsMgr.m; sourceTree = "<group>"; };
-		B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSummaryViewMgr.h; sourceTree = "<group>"; };
-		B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSummaryViewMgr.m; sourceTree = "<group>"; };
+		B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSummaryViewMgr.h; sourceTree = "<group>"; };
+		B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSummaryViewMgr.m; sourceTree = "<group>"; };
 		B2FB437E192DFFEC00DE371B /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		B2FB4380192DFFEC00DE371B /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
 		B2FB4381192DFFEC00DE371B /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
@@ -1172,8 +1172,8 @@
 				B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */,
 				B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */,
 				B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */,
-				B2FB032A19B75D09007AA3C2 /* SKSummaryViewMgr.h */,
-				B2FB032B19B75D09007AA3C2 /* SKSummaryViewMgr.m */,
+				B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */,
+				B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */,
 				B28006E119C9776D0008DF5F /* SKATestOverviewMetrics.h */,
 				B28006E219C9776D0008DF5F /* SKATestOverviewMetrics.m */,
 				B22E5ED719D9713800666F16 /* NewViewControllers */,
@@ -1333,7 +1333,7 @@
 				B2AE68211883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.m in Sources */,
 				B2AE68201883DA4D00D87FAE /* SKASettingsController.m in Sources */,
 				B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */,
-				B2FB033E19B75D09007AA3C2 /* SKSummaryViewMgr.m in Sources */,
+				B2FB033E19B75D09007AA3C2 /* SKBSummaryViewMgr.m in Sources */,
 				B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */,
 				B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */,
