@@ -46,8 +46,6 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)reachabilityChanged:(NSNotification*)note;
 
-- (void)submitJSON:(NSData*)jsonData filePath:(NSString*)filePath;
-
 @end
 
 @implementation SKAAppDelegate
@@ -792,17 +790,21 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
         
         NSData *json = [NSData dataWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
         
-        if (nil == json) break;
+        if (nil == json) {
+          break;
+        }
         
-        if ([json length] == 0) break;
+        if ([json length] == 0) {
+          break;
+        }
         
-        [self submitJSON:json filePath:pathToFile];
+        [self postResultsJsonToServer:json filePath:pathToFile];
       }
     }
   }
 }
 
-- (void)submitJSON:(NSData*)jsonData filePath:(NSString*)filePath {
+- (void)postResultsJsonToServer:(NSData*)jsonData filePath:(NSString*)filePath {
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSString *server = [prefs objectForKey:Prefs_TargetServer];
@@ -813,6 +815,8 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
   [request setURL:url];
   [request setHTTPMethod:@"POST"];
+  //[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+  //[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [request setTimeoutInterval:60];
   [request setValue:@"false" forHTTPHeaderField:@"X-Encrypted"];
   
@@ -822,7 +826,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   
 #ifdef DEBUG
   NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-  NSLog(@"DEBUG: upload - jsonStr=...\n%@", jsonStr);
+  NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
 #endif // DEBUG
   
   NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
@@ -834,14 +838,16 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
    {
      SK_ASSERT_NONSERROR(error);
      
-     if (nil != error)
+     if (error != nil)
      {
-       NSLog(@"Error uploading JSON file : %@", error);
+       NSLog(@"Error uploading JSON file : %@", error.description);
+       SK_ASSERT(false);
      }
      else
      {
-       if (nil == response)
+       if (response == nil)
        {
+         SK_ASSERT(false);
          return;
        }
        
@@ -851,7 +857,26 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
        {
          if (httpResponse.statusCode == 200)
          {
-           // file upload successful.. blast out the file
+           //
+           // File upload successfully!
+           //
+#ifdef DEBUG
+           NSString *jsonStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+           NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
+#endif // DEBUG
+           
+           // TODO - do something with this data - we need to display it in the New App, and save
+           // in the passive metrics associated with the test!
+           
+           NSError *error = nil;
+           NSDictionary *theObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                     options:NSJSONReadingMutableLeaves
+                                                                       error:&error];
+#ifdef DEBUG
+           NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
+#endif // DEBUG
+           
+           // file upload successfully.. remove the uploaded file
            if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])
            {
 #ifdef DEBUG
@@ -867,15 +892,15 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
          }
          else
          {
+#ifdef DEBUG
            if (nil != data)
            {
              NSString* newStr = [[NSString alloc] initWithData:data
                                                       encoding:NSUTF8StringEncoding];
              
-#ifdef DEBUG
-             NSLog(@"DEBUG: submitJSON Error Response : %@", newStr);
-#endif // DEBUG
+             NSLog(@"DEBUG: postResultsJsonToServer Error Response : %@", newStr);
            }
+#endif // DEBUG
          }
        }
      }
