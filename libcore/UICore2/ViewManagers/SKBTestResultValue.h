@@ -1,5 +1,5 @@
 //
-//  SKATestResultValue.h
+//  SKBTestResultValue.h
 //  SKCore
 //
 //  Copyright (c) 2014 SamKnows. All rights reserved.
@@ -51,7 +51,7 @@
 #define SKB_TESTVALUERESULT_C_PM_PUBLIC_IP @"Public IP"
 #define SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID @"Submission ID"
 
-@interface SKATestResultValue : NSObject
+@interface SKBTestResultValue : NSObject
 
 //@property (nonatomic) int number;
 //@property (nonatomic) int status;

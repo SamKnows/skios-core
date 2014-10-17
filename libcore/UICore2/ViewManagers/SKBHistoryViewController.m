@@ -8,7 +8,7 @@
 
 #import "SKBHistoryViewController.h"
 
-#import "SKHistoryViewMgr.h"
+#import "SKBHistoryViewMgr.h"
 
 @interface SKBHistoryViewController ()
 

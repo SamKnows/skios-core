@@ -1,5 +1,5 @@
 //
-//  SKHistoryViewMgr.h
+//  SKBHistoryViewMgr.h
 //  SKCore
 //
 
@@ -10,7 +10,7 @@
 #import <MessageUI/MessageUI.h>
 //#import <MessageUI/MFMailComposeViewController.h>
 #import "cActionSheet.h"
-#import "../tabCells/SKATestOverviewCell2.h"
+#import "../tabCells/SKBTestOverviewCell.h"
 
 @class SKATestResults;
 
@@ -24,7 +24,7 @@
 #define C_FILTER_PERIOD_3MONTHS  4
 #define C_FILTER_PERIOD_1YEAR  5
 
-@interface SKHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface SKBHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate, MFMailComposeViewControllerDelegate>
 {
     NSMutableArray *arrTestsList;
     
@@ -36,7 +36,7 @@
     int testHeight;
     int expandedRow;
     
-    SKATestOverviewCell2* cell2putBack;
+    SKBTestOverviewCell* cell2putBack;
     UIView* view2putBack;
     CGRect originalCellFrame;
     

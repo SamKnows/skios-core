@@ -1,15 +1,15 @@
 //
-//  SKAActivationController2.m
+//  SKBActivationController.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKAActivationController2.h"
+#import "SKBActivationController.h"
 #import "Reusable/SKAppColourScheme/SKAppColourScheme.h"
 
-@interface SKAActivationController2 ()
+@interface SKBActivationController ()
 {
     BOOL isRunning;
     SKAAppDelegate *appDelegate;
@@ -29,7 +29,7 @@
 - (void)activationError:(NSString*)error;
 @end
 
-@implementation SKAActivationController2
+@implementation SKBActivationController
 
 -(void)showActivated
 {

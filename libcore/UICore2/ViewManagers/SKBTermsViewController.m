@@ -9,7 +9,7 @@
 #import "SKBTermsViewController.h"
 
 #import "SKBTermsView.h"
-#import "SKSettingsMgr.h"
+#import "SKBSettingsMgr.h"
 
 @interface SKBTermsViewController ()
 

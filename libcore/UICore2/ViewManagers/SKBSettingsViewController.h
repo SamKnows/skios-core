@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class SKSettingsMgr;
+@class SKBSettingsMgr;
 
 @interface SKBSettingsViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet SKSettingsMgr *settingsManagerView;
+@property (weak, nonatomic) IBOutlet SKBSettingsMgr *settingsManagerView;
 
 @end

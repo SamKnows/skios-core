@@ -7,7 +7,7 @@
 //
 
 #import "Graphing.h"
-#import "SKHistoryViewMgr.h"
+#import "SKBHistoryViewMgr.h"
 
 #define C_X_INSET_LEFT  ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 30)
 #define C_X_INSET_RIGHT  ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 20)

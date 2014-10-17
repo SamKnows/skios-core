@@ -1,15 +1,15 @@
 //
-//  SKSettingsMgr.m
+//  SKBSettingsMgr.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKSettingsMgr.h"
+#import "SKBSettingsMgr.h"
 #import "../Reusable/CActionSheet/cActionSheet.h"
 
-@implementation SKSettingsMgr
+@implementation SKBSettingsMgr
 
 - (void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_
 {

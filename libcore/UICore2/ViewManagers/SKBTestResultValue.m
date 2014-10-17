@@ -1,14 +1,14 @@
 //
-//  SKATestResultValue.m
+//  SKBTestResultValue.m
 //  SKCore
 //
 //  Created by Pete Cole on 17/09/2014.
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKATestResultValue.h"
+#import "SKBTestResultValue.h"
 
-@implementation SKATestResultValue
+@implementation SKBTestResultValue
 
 -(id)initWithResultIdentifier:(NSString*)resultIdentifier
 {

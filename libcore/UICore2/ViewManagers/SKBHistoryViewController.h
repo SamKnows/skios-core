@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class SKHistoryViewMgr;
+@class SKBHistoryViewMgr;
 
 @interface SKBHistoryViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet SKHistoryViewMgr *historyManagerView;
+@property (weak, nonatomic) IBOutlet SKBHistoryViewMgr *historyManagerView;
 
 @end

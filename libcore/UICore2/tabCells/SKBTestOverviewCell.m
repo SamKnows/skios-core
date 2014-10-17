@@ -1,19 +1,19 @@
 //
-//  SKATestOverviewCell2.m
+//  SKBTestOverviewCell.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKATestOverviewCell2.h"
-#import "SKATestResultValue.h"
-#import "SKHistoryViewMgr.h"
+#import "SKBTestOverviewCell.h"
+#import "SKBTestResultValue.h"
+#import "SKBHistoryViewMgr.h"
 #import "SKTestResults.h"
 
-@implementation SKATestOverviewCell2
+@implementation SKBTestOverviewCell
 
--(void)setResultDownload:(SKATestResultValue*)down_ upload:(SKATestResultValue*)up_ latency:(SKATestResultValue*)lat_ loss:(SKATestResultValue*)loss_ jitter:(SKATestResultValue*)jitter_
+-(void)setResultDownload:(SKBTestResultValue*)down_ upload:(SKBTestResultValue*)up_ latency:(SKBTestResultValue*)lat_ loss:(SKBTestResultValue*)loss_ jitter:(SKBTestResultValue*)jitter_
 {
   self.aiActivity.hidden = YES;
   
@@ -299,12 +299,12 @@
   if (testResult_.downloadSpeed < 0)
     self.lResultDownload.text = @"-";
   else
-    self.lResultDownload.text = [SKATestOverviewCell2 get3digitsNumber:testResult_.downloadSpeed];
+    self.lResultDownload.text = [SKBTestOverviewCell get3digitsNumber:testResult_.downloadSpeed];
   
   if (testResult.uploadSpeed < 0)
     self.lResultUpload.text = @"-";
   else
-    self.lResultUpload.text = [SKATestOverviewCell2 get3digitsNumber:testResult.uploadSpeed];
+    self.lResultUpload.text = [SKBTestOverviewCell get3digitsNumber:testResult.uploadSpeed];
   
   if (testResult.latency < 0)
     self.lResultLatency.text = @"-";
@@ -349,27 +349,27 @@
 
 -(void)printLayoutDefinition
 {
-  [SKATestOverviewCell2 printFrameForView:self.lDownloadLabel withName:@"lDownloadLabel"];
-  [SKATestOverviewCell2 printFrameForView:self.lUploadLabel withName:@"lUploadLabel"];
+  [SKBTestOverviewCell printFrameForView:self.lDownloadLabel withName:@"lDownloadLabel"];
+  [SKBTestOverviewCell printFrameForView:self.lUploadLabel withName:@"lUploadLabel"];
   
-  [SKATestOverviewCell2 printFrameForView:self.lMbpsLabel4Download withName:@"lMbpsLabel4Download"];
-  [SKATestOverviewCell2 printFrameForView:self.lMbpsLabel4Upload withName:@"lMbpsLabel4Upload"];
-  [SKATestOverviewCell2 printFrameForView:self.lLatencyLabel withName:@"lLatencyLabel"];
-  [SKATestOverviewCell2 printFrameForView:self.lLossLabel withName:@"lLossLabel"];
+  [SKBTestOverviewCell printFrameForView:self.lMbpsLabel4Download withName:@"lMbpsLabel4Download"];
+  [SKBTestOverviewCell printFrameForView:self.lMbpsLabel4Upload withName:@"lMbpsLabel4Upload"];
+  [SKBTestOverviewCell printFrameForView:self.lLatencyLabel withName:@"lLatencyLabel"];
+  [SKBTestOverviewCell printFrameForView:self.lLossLabel withName:@"lLossLabel"];
   
-  [SKATestOverviewCell2 printFrameForView:self.lDateOfTest withName:@"lDateOfTest"];
-  [SKATestOverviewCell2 printFrameForView:self.lTimeOfTest withName:@"lTimeOfTest"];
+  [SKBTestOverviewCell printFrameForView:self.lDateOfTest withName:@"lDateOfTest"];
+  [SKBTestOverviewCell printFrameForView:self.lTimeOfTest withName:@"lTimeOfTest"];
   
-  [SKATestOverviewCell2 printFrameForView:self.lResultDownload withName:@"lResultDownload"];
-  [SKATestOverviewCell2 printFrameForView:self.lResultUpload withName:@"lResultUpload"];
-  [SKATestOverviewCell2 printFrameForView:self.lResultLatency withName:@"lResultLatency"];
-  [SKATestOverviewCell2 printFrameForView:self.lResultLoss withName:@"lResultLoss"];
+  [SKBTestOverviewCell printFrameForView:self.lResultDownload withName:@"lResultDownload"];
+  [SKBTestOverviewCell printFrameForView:self.lResultUpload withName:@"lResultUpload"];
+  [SKBTestOverviewCell printFrameForView:self.lResultLatency withName:@"lResultLatency"];
+  [SKBTestOverviewCell printFrameForView:self.lResultLoss withName:@"lResultLoss"];
   
-  [SKATestOverviewCell2 printFrameForView:self.ivNetworkType withName:@"ivNetworkType"];
-  [SKATestOverviewCell2 printFrameForView:self.ivArrowDownload withName:@"ivArrowDownload"];
-  [SKATestOverviewCell2 printFrameForView:self.ivArrowUpload withName:@"ivArrowUpload"];
+  [SKBTestOverviewCell printFrameForView:self.ivNetworkType withName:@"ivNetworkType"];
+  [SKBTestOverviewCell printFrameForView:self.ivArrowDownload withName:@"ivArrowDownload"];
+  [SKBTestOverviewCell printFrameForView:self.ivArrowUpload withName:@"ivArrowUpload"];
   
-  [SKATestOverviewCell2 printFrameForView:self.ivNetworkType withName:@"ivNetworkType"];
+  [SKBTestOverviewCell printFrameForView:self.ivNetworkType withName:@"ivNetworkType"];
 }
 
 +(void)printFrameForView:(UIView*)view_ withName:(NSString*)name_

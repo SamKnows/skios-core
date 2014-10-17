@@ -1,16 +1,16 @@
 //
-//  SKASimpleResultCell2.m
+//  SKBSimpleResultCell.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKASimpleResultCell2.h"
-#import "SKATestResultValue.h"
+#import "SKBSimpleResultCell.h"
+#import "SKBTestResultValue.h"
 //#import "../ViewManagers/SKRunTestViewMgr.h"
 
-@implementation SKASimpleResultCell2
+@implementation SKBSimpleResultCell
 
 -(void)initCell
 {
@@ -19,7 +19,7 @@
   self.lResult.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
 }
 
--(void)setMetrics:(SKATestResultValue*)metricsObject
+-(void)setMetrics:(SKBTestResultValue*)metricsObject
 {
   self.cellMetrics = metricsObject;
   [self updateDisplay];

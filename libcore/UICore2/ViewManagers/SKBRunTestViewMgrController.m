@@ -1,30 +1,30 @@
 //
-//  SKSBRunTestViewMgrController.m
+//  SKBRunTestViewMgrController.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKSBRunTestViewMgrController.h"
+#import "SKBRunTestViewMgrController.h"
 #import "UIWelcomeView.h"
-#import "SKTestResultsSharer.h"
+#import "SKBTestResultsSharer.h"
 
 #include <math.h>
 
 #define C_SHARE_BUTTON_HEIGHT   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 #define C_SHARE_BUTTON_WIDTH   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 
-@interface SKSBRunTestViewMgrController()
+@interface SKBRunTestViewMgrController()
 @property SKATestResults* mpTestResult;
   // This may NOT be allocated locally, or it can get auto-released before we've finished using it!
-@property SKTestResultsSharer *mpSharer;
+@property SKBTestResultsSharer *mpSharer;
 @property NSNumber *mTestId;
 @property int mNumberOfNonPassiveMetrics;
 @property int mNumberOfPassiveMetrics;
 @end
 
-@implementation SKSBRunTestViewMgrController
+@implementation SKBRunTestViewMgrController
 
 @synthesize mTestResultsArray;
 @synthesize mpTestResult;
@@ -37,9 +37,9 @@
 
   // Calculate how many passive metrics we have!
   
-  NSMutableArray* nonPassiveMetricArrayTemp = [SKSBRunTestViewMgrController sGetNonPassiveMetricsInArray];
+  NSMutableArray* nonPassiveMetricArrayTemp = [SKBRunTestViewMgrController sGetNonPassiveMetricsInArray];
   self.mNumberOfNonPassiveMetrics = nonPassiveMetricArrayTemp.count;
-  NSMutableArray* passiveMetricArrayTemp = [SKSBRunTestViewMgrController sGetPassiveMetricsInArray];
+  NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray];
   self.mNumberOfPassiveMetrics = passiveMetricArrayTemp.count;
   
   [[SKAAppDelegate getAppDelegate] setLogoImage:self.optionalTopLeftLogoView];
@@ -496,8 +496,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }
 }
 
--(SKATestResultValue*) getTheTestResultValueForTestIdentifier:(NSString*)inIdentifier {
-  for (SKATestResultValue* theValue in mTestResultsArray) {
+-(SKBTestResultValue*) getTheTestResultValueForTestIdentifier:(NSString*)inIdentifier {
+  for (SKBTestResultValue* theValue in mTestResultsArray) {
     if ([theValue.mNonlocalizedIdentifier isEqualToString:inIdentifier]) {
       return theValue;
     }
@@ -609,7 +609,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   [self resetProgressView];
   
-  for (SKATestResultValue* theValue in mTestResultsArray) {
+  for (SKBTestResultValue* theValue in mTestResultsArray) {
     theValue.value = nil;
   }
   
@@ -822,9 +822,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST].value = [NSString stringWithFormat:@"%.0f %%", packetLoss];
   [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST].value = [NSString stringWithFormat:@"%.0f ms", jitter];
   
-  [SKHistoryViewMgr sGetTstToShareExternal].latency = latency;
-  [SKHistoryViewMgr sGetTstToShareExternal].loss = packetLoss;
-  [SKHistoryViewMgr sGetTstToShareExternal].jitter = jitter;
+  [SKBHistoryViewMgr sGetTstToShareExternal].latency = latency;
+  [SKBHistoryViewMgr sGetTstToShareExternal].loss = packetLoss;
+  [SKBHistoryViewMgr sGetTstToShareExternal].jitter = jitter;
   
   [self updateTableAnimated];
 }
@@ -1019,11 +1019,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)setErrorMessage
 {
-  //    ((SKATestResultValue*)[testResultsArray objectAtIndex:C_DOWNLOAD_TEST]).value = @"#";
-  //    ((SKATestResultValue*)[testResultsArray objectAtIndex:C_UPLOAD_TEST]).value = @"#";
-  //    ((SKATestResultValue*)[testResultsArray objectAtIndex:C_LATENCY_TEST]).value = @"#";
-  //    ((SKATestResultValue*)[testResultsArray objectAtIndex:C_LOSS_TEST]).value = @"#";
-  //    ((SKATestResultValue*)[testResultsArray objectAtIndex:C_JITTER_TEST]).value = @"#";
+  //    ((SKBTestResultValue*)[testResultsArray objectAtIndex:C_DOWNLOAD_TEST]).value = @"#";
+  //    ((SKBTestResultValue*)[testResultsArray objectAtIndex:C_UPLOAD_TEST]).value = @"#";
+  //    ((SKBTestResultValue*)[testResultsArray objectAtIndex:C_LATENCY_TEST]).value = @"#";
+  //    ((SKBTestResultValue*)[testResultsArray objectAtIndex:C_LOSS_TEST]).value = @"#";
+  //    ((SKBTestResultValue*)[testResultsArray objectAtIndex:C_JITTER_TEST]).value = @"#";
   [self.casStatusView setText:sSKCoreGetLocalisedString(@"Error") forever:YES];
   [self updateTableAnimated];
 }
@@ -1043,7 +1043,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)updateTableAnimated
 {
-  for (SKASimpleResultCell2 *cell in self.tvCurrentResults.visibleCells)
+  for (SKBSimpleResultCell *cell in self.tvCurrentResults.visibleCells)
   {
     [cell updateDisplay];
   }
@@ -1064,14 +1064,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    
                    if (isDownstream) //Download test
                    {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKATestOverviewCell2 get3digitsNumber: bitrate1024Based];
-                     [SKHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
+                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell get3digitsNumber: bitrate1024Based];
+                     [SKBHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
                      progressDownload = 1;
                    }
                    else
                    {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKATestOverviewCell2 get3digitsNumber: bitrate1024Based];
-                     [SKHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
+                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell get3digitsNumber: bitrate1024Based];
+                     [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
                      progressUpload = 1;
                    }
                    
@@ -1350,22 +1350,22 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   {
     if (indexPath.row == 0)
     {
-      SKATestOverviewCell2 *cell;
-      static NSString *CellIdentifier = @"SKATestOverviewCell2";
+      SKBTestOverviewCell *cell;
+      static NSString *CellIdentifier = @"SKBTestOverviewCell";
       
       cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
       if (cell == nil) {
         
-        cell = [[SKATestOverviewCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SKBTestOverviewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
       }
       
       [cell initCell];
       
-      SKATestResultValue *downloadResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST];
-      SKATestResultValue *uploadResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST];
-      SKATestResultValue *latencyResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST];
-      SKATestResultValue *lossResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST];
-      SKATestResultValue *jitterResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST];
+      SKBTestResultValue *downloadResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST];
+      SKBTestResultValue *uploadResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST];
+      SKBTestResultValue *latencyResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST];
+      SKBTestResultValue *lossResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST];
+      SKBTestResultValue *jitterResultValue = [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST];
       [cell setResultDownload:downloadResultValue upload:uploadResultValue latency:latencyResultValue loss:lossResultValue jitter:jitterResultValue];
       
       if ([self getIsConnected] == NO)
@@ -1385,13 +1385,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     }
     else
     {
-      SKASimpleResultCell2 *cell;
-      static NSString *CellIdentifier = @"SKASimpleResultCell2";
+      SKBSimpleResultCell *cell;
+      static NSString *CellIdentifier = @"SKBSimpleResultCell";
       
       cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
       if (cell == nil) {
         
-        cell = [[SKASimpleResultCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SKBSimpleResultCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
       }
       
       [cell initCell];
@@ -1427,59 +1427,59 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 +(void)sAddNonPassiveMetricsToArray:(NSMutableArray*)testResultsArray
 {
-  SKATestResultValue* tr0;
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST];
+  SKBTestResultValue* tr0;
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST];
   [testResultsArray addObject:tr0];
 }
 
 +(void)sAddPassiveMetricsToArray:(NSMutableArray*)testResultsArray
 {
-  SKATestResultValue* tr0;
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
+  SKBTestResultValue* tr0;
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_PHONE];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_PHONE];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_OS];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_OS];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_TARGET];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_TARGET];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP];
   [testResultsArray addObject:tr0];
-  tr0 = [[SKATestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
+  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
   [testResultsArray addObject:tr0];
 }
 
 +(NSMutableArray*)sGetNonPassiveMetricsInArray {
   NSMutableArray *theTestResultsArray = [NSMutableArray new];
-  [SKSBRunTestViewMgrController sAddNonPassiveMetricsToArray:theTestResultsArray];
+  [SKBRunTestViewMgrController sAddNonPassiveMetricsToArray:theTestResultsArray];
   return theTestResultsArray;
 }
 
 +(NSMutableArray*)sGetPassiveMetricsInArray {
   NSMutableArray *theTestResultsArray = [NSMutableArray new];
-  [SKSBRunTestViewMgrController sAddPassiveMetricsToArray:theTestResultsArray];
+  [SKBRunTestViewMgrController sAddPassiveMetricsToArray:theTestResultsArray];
   return theTestResultsArray;
 }
 
 -(void)prepareResultsArray
 {
   mTestResultsArray = [NSMutableArray new];
-  [SKSBRunTestViewMgrController sAddNonPassiveMetricsToArray:mTestResultsArray];
-  [SKSBRunTestViewMgrController sAddPassiveMetricsToArray:mTestResultsArray];
+  [SKBRunTestViewMgrController sAddNonPassiveMetricsToArray:mTestResultsArray];
+  [SKBRunTestViewMgrController sAddPassiveMetricsToArray:mTestResultsArray];
 }
 
 -(void)fillPassiveMetrics
@@ -1488,7 +1488,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     self.btShare.alpha = 0;
   }];
   
-  mpTestResult = [SKHistoryViewMgr sCreateNewTstToShareExternal];
+  mpTestResult = [SKBHistoryViewMgr sCreateNewTstToShareExternal];
   mpTestResult.testDateTime = [NSDate date];
   mpTestResult.downloadSpeed = -1;
   mpTestResult.uploadSpeed = -1;
@@ -1571,7 +1571,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 - (IBAction)B_Share:(id)sender
 {
   SK_ASSERT(mpTestResult != nil);
-  mpSharer = [[SKTestResultsSharer alloc] initWithViewController:self];
+  mpSharer = [[SKBTestResultsSharer alloc] initWithViewController:self];
   [mpSharer shareTest:mpTestResult];
 }
 

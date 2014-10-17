@@ -1,5 +1,5 @@
 //
-//  SKTestResultsSharer.h
+//  SKBTestResultsSharer.h
 //  SKCore
 //
 //  Created by Pete Cole on 07/10/2014.
@@ -17,7 +17,7 @@
 #define C_SHARE_MAIL    3
 #define C_SHARE_SAVE    4
 
-@interface SKTestResultsSharer : NSObject <pActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface SKBTestResultsSharer : NSObject <pActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
 - (instancetype)initWithViewController:(UIViewController*)inViewController;
 

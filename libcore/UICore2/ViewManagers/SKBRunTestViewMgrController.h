@@ -1,5 +1,5 @@
 //
-//  SKSBRunTestViewMgrController.h
+//  SKBRunTestViewMgrController.h
 //  SKCore
 //
 
@@ -8,21 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "../Reusable/TYMActivityIndicatorView/TYMActivityIndicatorView.h"
-#import "../tabCells/SKASimpleResultCell2.h"
-#import "../tabCells/SKATestOverviewCell2.h"
+#import "../tabCells/SKBSimpleResultCell.h"
+#import "../tabCells/SKBTestOverviewCell.h"
 #import "cActionSheet.h"
 #import "cAnimatedStatusView.h"
-#import "SKHistoryViewMgr.h"
+#import "SKBHistoryViewMgr.h"
 #import "SKTestResults.h"
 
-@class SKATestResultValue;
+@class SKBTestResultValue;
 @class UIWelcomeView;
 
-@interface SKSBRunTestViewMgrController : UIViewController <pTYMAOwner, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SKBRunTestViewMgrController : UIViewController <pTYMAOwner, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     bool isRunning;
     int testCells2Show;
-    //SKHistoryViewMgr* historyViewMgr;
+    //SKBHistoryViewMgr* historyViewMgr;
     
     float progressDownload;
     float progressUpload;
@@ -101,6 +101,6 @@
 
 @end
 
-#import "SKATestResultValue.h"
+#import "SKBTestResultValue.h"
 
 

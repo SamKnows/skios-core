@@ -1,5 +1,5 @@
 //
-//  SKAActivationController2.h
+//  SKBActivationController.h
 //  SKCore
 //
 
@@ -11,7 +11,7 @@
 
 @protocol SKAActivationDelegate;
 
-@interface SKAActivationController2 : UIViewController
+@interface SKBActivationController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *lTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lActivating;

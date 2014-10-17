@@ -1,5 +1,5 @@
 //
-//  SKASimpleResultCell2.h
+//  SKBSimpleResultCell.h
 //  SKCore
 //
 
@@ -8,17 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@class SKATestResultValue;
+@class SKBTestResultValue;
 
-@interface SKASimpleResultCell2 : UITableViewCell
+@interface SKBSimpleResultCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lMeasureName;
 @property (weak, nonatomic) IBOutlet UILabel *lResult;
 
-@property (strong, nonatomic) SKATestResultValue* cellMetrics;
+@property (strong, nonatomic) SKBTestResultValue* cellMetrics;
 
 -(void)initCell;
--(void)setMetrics:(SKATestResultValue*)metricsObject;
+-(void)setMetrics:(SKBTestResultValue*)metricsObject;
 -(void)updateDisplay;
 
 @end

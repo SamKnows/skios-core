@@ -1,18 +1,18 @@
 //
-//  SKSBMainViewTabBarController.m
+//  SKBMainViewTabBarController.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKSBMainViewTabBarController.h"
+#import "SKBMainViewTabBarController.h"
 
-@interface SKSBMainViewTabBarController ()
+@interface SKBMainViewTabBarController ()
 
 @end
 
-@implementation SKSBMainViewTabBarController
+@implementation SKBMainViewTabBarController
 
 - (void)viewDidLoad
 {

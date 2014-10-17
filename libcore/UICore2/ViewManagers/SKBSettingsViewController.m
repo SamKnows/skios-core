@@ -8,7 +8,7 @@
 
 #import "SKBSettingsViewController.h"
 
-#import "SKSettingsMgr.h"
+#import "SKBSettingsMgr.h"
 
 @interface SKBSettingsViewController ()
 

@@ -1,5 +1,5 @@
 //
-//  SKATestOverviewCell2.h
+//  SKBTestOverviewCell.h
 //  SKCore
 //
 
@@ -13,9 +13,9 @@
 
 //#import "../ViewManagers/SKRunTestViewMgr.h"
 
-@class SKATestResultValue;
+@class SKBTestResultValue;
 
-@interface SKATestOverviewCell2 : UITableViewCell
+@interface SKBTestOverviewCell : UITableViewCell
 
 {
   bool initialised;
@@ -25,7 +25,7 @@
   float y;
 }
 
-@property (strong, nonatomic) SKATestResultValue* cellMetrics;
+@property (strong, nonatomic) SKBTestResultValue* cellMetrics;
 
 @property (strong, nonatomic) UIView* vBackground;
 
@@ -33,11 +33,11 @@
 @property (strong, nonatomic) UIActivityIndicatorView *aiActivity;
 
 @property (nonatomic) int networkType;
-@property (strong, nonatomic) SKATestResultValue* cellResultDownload;
-@property (strong, nonatomic) SKATestResultValue* cellResultUpload;
-@property (strong, nonatomic) SKATestResultValue* cellResultLatency;
-@property (strong, nonatomic) SKATestResultValue* cellResultLoss;
-@property (strong, nonatomic) SKATestResultValue* cellResultJitter;
+@property (strong, nonatomic) SKBTestResultValue* cellResultDownload;
+@property (strong, nonatomic) SKBTestResultValue* cellResultUpload;
+@property (strong, nonatomic) SKBTestResultValue* cellResultLatency;
+@property (strong, nonatomic) SKBTestResultValue* cellResultLoss;
+@property (strong, nonatomic) SKBTestResultValue* cellResultJitter;
 @property (strong, nonatomic) NSDate* testDateTime;
 
 @property (strong, nonatomic) UILabel *lDownloadLabel;
@@ -69,7 +69,7 @@
 @property (strong, nonatomic) CActivityBlinking* aiJitter;
 
 -(void)initCell;
--(void)setResultDownload:(SKATestResultValue*)down_ upload:(SKATestResultValue*)up_ latency:(SKATestResultValue*)lat_ loss:(SKATestResultValue*)loss_ jitter:(SKATestResultValue*)jitter_;
+-(void)setResultDownload:(SKBTestResultValue*)down_ upload:(SKBTestResultValue*)up_ latency:(SKBTestResultValue*)lat_ loss:(SKBTestResultValue*)loss_ jitter:(SKBTestResultValue*)jitter_;
 -(void)setTest:(SKATestResults*)testResult;
 
 -(UIView*)getView;

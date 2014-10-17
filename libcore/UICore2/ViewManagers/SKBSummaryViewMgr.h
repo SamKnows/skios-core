@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "../Reusable/CActionSheet/cActionSheet.h"
-#import "SKHistoryViewMgr.h"
-#import "../tabCells/SKATestOverviewCell2.h"
+#import "SKBHistoryViewMgr.h"
+#import "../tabCells/SKBTestOverviewCell.h"
 #import "../Reusable/Graphing/Graphing.h"
 #import "SKTestResults.h"
 

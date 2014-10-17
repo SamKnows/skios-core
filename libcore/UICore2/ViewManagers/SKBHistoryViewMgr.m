@@ -1,29 +1,29 @@
 //
-//  SKHistoryViewMgr.m
+//  SKBHistoryViewMgr.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKHistoryViewMgr.h"
+#import "SKBHistoryViewMgr.h"
 #import "SKTestResults.h"
-#import "SKTestResultsSharer.h"
+#import "SKBTestResultsSharer.h"
 
 #define C_SHARE_BUTTON_HEIGHT   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 #define C_SHARE_BUTTON_WIDTH   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 
-@interface SKHistoryViewMgr()
+@interface SKBHistoryViewMgr()
 
-@property (nonatomic, strong) SKTestResultsSharer* mpSharer;
+@property (nonatomic, strong) SKBTestResultsSharer* mpSharer;
 
 @end
 
-@implementation SKHistoryViewMgr
+@implementation SKBHistoryViewMgr
 
 - (void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_
 {
-  self.mpSharer = [[SKTestResultsSharer alloc] initWithViewController:masterViewController_];
+  self.mpSharer = [[SKBTestResultsSharer alloc] initWithViewController:masterViewController_];
   
   self.masterViewController = masterViewController_;
   self.masterView = masterViewController_.view;
@@ -116,13 +116,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SKATestOverviewCell2 *cell;
-    static NSString *CellIdentifier = @"SKATestOverviewCell2";
+    SKBTestOverviewCell *cell;
+    static NSString *CellIdentifier = @"SKBTestOverviewCell";
     
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         
-        cell = [[SKATestOverviewCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SKBTestOverviewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     [cell initCell];
@@ -134,7 +134,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   selectedTest = arrTestsList[indexPath.row];
-  cell2putBack = (SKATestOverviewCell2*)[tableView cellForRowAtIndexPath:indexPath];
+  cell2putBack = (SKBTestOverviewCell*)[tableView cellForRowAtIndexPath:indexPath];
   view2putBack = [cell2putBack getView];
   originalCellFrame = cell2putBack.frame;
   

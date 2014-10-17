@@ -70,10 +70,10 @@
 		B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */; };
 		B279124B18D88AF000E17EBF /* SKOperatorsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B279124A18D88AF000E17EBF /* SKOperatorsTests.m */; };
 		B27B0D88181A7F58008D76D6 /* SKCoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B27B0D87181A7F58008D76D6 /* SKCoreTests.m */; };
-		B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */; };
-		B28006E019C970300008DF5F /* SKSBRunTestViewMgrController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */; };
-		B28006E319C9776D0008DF5F /* SKATestResultValue.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006E219C9776D0008DF5F /* SKATestResultValue.m */; };
-		B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = B282672A19E3F579003A4172 /* SKTestResultsSharer.m */; };
+		B28006DD19C881E90008DF5F /* SKBMainViewTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DC19C881E90008DF5F /* SKBMainViewTabBarController.m */; };
+		B28006E019C970300008DF5F /* SKBRunTestViewMgrController.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006DF19C970300008DF5F /* SKBRunTestViewMgrController.m */; };
+		B28006E319C9776D0008DF5F /* SKBTestResultValue.m in Sources */ = {isa = PBXBuildFile; fileRef = B28006E219C9776D0008DF5F /* SKBTestResultValue.m */; };
+		B282672B19E3F579003A4172 /* SKBTestResultsSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = B282672A19E3F579003A4172 /* SKBTestResultsSharer.m */; };
 		B28437AF18C8728400B3495E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28437AE18C8728400B3495E /* CoreText.framework */; };
 		B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */ = {isa = PBXBuildFile; fileRef = B297CE7918E0541800964CD3 /* UIView+SKView.m */; };
 		B2AE68151883DA4D00D87FAE /* SKAAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE67F41883DA4D00D87FAE /* SKAAboutController.m */; };
@@ -134,13 +134,12 @@
 		B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */; };
 		B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */; };
 		B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */; };
-		B2FB033519B75D09007AA3C2 /* SKAActivationController2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */; };
-		B2FB033719B75D09007AA3C2 /* SKASimpleResultCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031C19B75D09007AA3C2 /* SKASimpleResultCell2.m */; };
-		B2FB033819B75D09007AA3C2 /* SKATestOverviewCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */; };
-		B2FB033919B75D09007AA3C2 /* SKATestResultSuperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */; };
-		B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */; };
+		B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031719B75D09007AA3C2 /* SKBActivationController.m */; };
+		B2FB033719B75D09007AA3C2 /* SKBSimpleResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031C19B75D09007AA3C2 /* SKBSimpleResultCell.m */; };
+		B2FB033819B75D09007AA3C2 /* SKBTestOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031E19B75D09007AA3C2 /* SKBTestOverviewCell.m */; };
+		B2FB033A19B75D09007AA3C2 /* SKBHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */; };
 		B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032519B75D09007AA3C2 /* SKBTermsView.m */; };
-		B2FB033D19B75D09007AA3C2 /* SKSettingsMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */; };
+		B2FB033D19B75D09007AA3C2 /* SKBSettingsMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032919B75D09007AA3C2 /* SKBSettingsMgr.m */; };
 		B2FB033E19B75D09007AA3C2 /* SKBSummaryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */; };
 		B2FB4389192DFFEC00DE371B /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB437E192DFFEC00DE371B /* libOCMock.a */; };
 		B2FB438C192E009400DE371B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEDD18FFC24F00323923 /* libz.dylib */; };
@@ -282,14 +281,14 @@
 		B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsTabViewController.m; sourceTree = "<group>"; };
 		B279124A18D88AF000E17EBF /* SKOperatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKOperatorsTests.m; sourceTree = "<group>"; };
 		B27B0D87181A7F58008D76D6 /* SKCoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoreTests.m; sourceTree = "<group>"; };
-		B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSBMainViewTabBarController.h; path = ../SKSBMainViewTabBarController.h; sourceTree = "<group>"; };
-		B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSBMainViewTabBarController.m; path = ../SKSBMainViewTabBarController.m; sourceTree = "<group>"; };
-		B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSBRunTestViewMgrController.h; sourceTree = "<group>"; };
-		B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSBRunTestViewMgrController.m; sourceTree = "<group>"; };
-		B28006E119C9776D0008DF5F /* SKATestResultValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestResultValue.h; sourceTree = "<group>"; };
-		B28006E219C9776D0008DF5F /* SKATestResultValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestResultValue.m; sourceTree = "<group>"; };
-		B282672919E3F579003A4172 /* SKTestResultsSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestResultsSharer.h; sourceTree = "<group>"; };
-		B282672A19E3F579003A4172 /* SKTestResultsSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTestResultsSharer.m; sourceTree = "<group>"; };
+		B28006DB19C881E90008DF5F /* SKBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKBMainViewTabBarController.h; path = ../SKBMainViewTabBarController.h; sourceTree = "<group>"; };
+		B28006DC19C881E90008DF5F /* SKBMainViewTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKBMainViewTabBarController.m; path = ../SKBMainViewTabBarController.m; sourceTree = "<group>"; };
+		B28006DE19C970300008DF5F /* SKBRunTestViewMgrController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBRunTestViewMgrController.h; sourceTree = "<group>"; };
+		B28006DF19C970300008DF5F /* SKBRunTestViewMgrController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBRunTestViewMgrController.m; sourceTree = "<group>"; };
+		B28006E119C9776D0008DF5F /* SKBTestResultValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTestResultValue.h; sourceTree = "<group>"; };
+		B28006E219C9776D0008DF5F /* SKBTestResultValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTestResultValue.m; sourceTree = "<group>"; };
+		B282672919E3F579003A4172 /* SKBTestResultsSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTestResultsSharer.h; sourceTree = "<group>"; };
+		B282672A19E3F579003A4172 /* SKBTestResultsSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTestResultsSharer.m; sourceTree = "<group>"; };
 		B28437AE18C8728400B3495E /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		B297CE7818E0541800964CD3 /* UIView+SKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SKView.h"; sourceTree = "<group>"; };
 		B297CE7918E0541800964CD3 /* UIView+SKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SKView.m"; sourceTree = "<group>"; };
@@ -475,20 +474,18 @@
 		B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewWithGradient.m; sourceTree = "<group>"; };
 		B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWelcomeView.h; sourceTree = "<group>"; };
 		B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWelcomeView.m; sourceTree = "<group>"; };
-		B2FB031619B75D09007AA3C2 /* SKAActivationController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAActivationController2.h; sourceTree = "<group>"; };
-		B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAActivationController2.m; sourceTree = "<group>"; };
-		B2FB031B19B75D09007AA3C2 /* SKASimpleResultCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKASimpleResultCell2.h; sourceTree = "<group>"; };
-		B2FB031C19B75D09007AA3C2 /* SKASimpleResultCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKASimpleResultCell2.m; sourceTree = "<group>"; };
-		B2FB031D19B75D09007AA3C2 /* SKATestOverviewCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestOverviewCell2.h; sourceTree = "<group>"; };
-		B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestOverviewCell2.m; sourceTree = "<group>"; };
-		B2FB031F19B75D09007AA3C2 /* SKATestResultSuperCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKATestResultSuperCell.h; sourceTree = "<group>"; };
-		B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKATestResultSuperCell.m; sourceTree = "<group>"; };
-		B2FB032219B75D09007AA3C2 /* SKHistoryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKHistoryViewMgr.h; sourceTree = "<group>"; };
-		B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHistoryViewMgr.m; sourceTree = "<group>"; };
+		B2FB031619B75D09007AA3C2 /* SKBActivationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBActivationController.h; sourceTree = "<group>"; };
+		B2FB031719B75D09007AA3C2 /* SKBActivationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBActivationController.m; sourceTree = "<group>"; };
+		B2FB031B19B75D09007AA3C2 /* SKBSimpleResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSimpleResultCell.h; sourceTree = "<group>"; };
+		B2FB031C19B75D09007AA3C2 /* SKBSimpleResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSimpleResultCell.m; sourceTree = "<group>"; };
+		B2FB031D19B75D09007AA3C2 /* SKBTestOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTestOverviewCell.h; sourceTree = "<group>"; };
+		B2FB031E19B75D09007AA3C2 /* SKBTestOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTestOverviewCell.m; sourceTree = "<group>"; };
+		B2FB032219B75D09007AA3C2 /* SKBHistoryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBHistoryViewMgr.h; sourceTree = "<group>"; };
+		B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBHistoryViewMgr.m; sourceTree = "<group>"; };
 		B2FB032419B75D09007AA3C2 /* SKBTermsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTermsView.h; sourceTree = "<group>"; };
 		B2FB032519B75D09007AA3C2 /* SKBTermsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTermsView.m; sourceTree = "<group>"; };
-		B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsMgr.h; sourceTree = "<group>"; };
-		B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsMgr.m; sourceTree = "<group>"; };
+		B2FB032819B75D09007AA3C2 /* SKBSettingsMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSettingsMgr.h; sourceTree = "<group>"; };
+		B2FB032919B75D09007AA3C2 /* SKBSettingsMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsMgr.m; sourceTree = "<group>"; };
 		B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSummaryViewMgr.h; sourceTree = "<group>"; };
 		B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSummaryViewMgr.m; sourceTree = "<group>"; };
 		B2FB437E192DFFEC00DE371B /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
@@ -577,10 +574,10 @@
 		B22E5ED719D9713800666F16 /* NewViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				B282672919E3F579003A4172 /* SKTestResultsSharer.h */,
-				B282672A19E3F579003A4172 /* SKTestResultsSharer.m */,
-				B28006DB19C881E90008DF5F /* SKSBMainViewTabBarController.h */,
-				B28006DC19C881E90008DF5F /* SKSBMainViewTabBarController.m */,
+				B282672919E3F579003A4172 /* SKBTestResultsSharer.h */,
+				B282672A19E3F579003A4172 /* SKBTestResultsSharer.m */,
+				B28006DB19C881E90008DF5F /* SKBMainViewTabBarController.h */,
+				B28006DC19C881E90008DF5F /* SKBMainViewTabBarController.m */,
 				B271658819EEA86D005FAECA /* SKBSettingsTabViewController.h */,
 				B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */,
 				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
@@ -589,8 +586,8 @@
 				B2FB032419B75D09007AA3C2 /* SKBTermsView.h */,
 				B2FB032519B75D09007AA3C2 /* SKBTermsView.m */,
 				B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */,
-				B28006DE19C970300008DF5F /* SKSBRunTestViewMgrController.h */,
-				B28006DF19C970300008DF5F /* SKSBRunTestViewMgrController.m */,
+				B28006DE19C970300008DF5F /* SKBRunTestViewMgrController.h */,
+				B28006DF19C970300008DF5F /* SKBRunTestViewMgrController.m */,
 				B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */,
 				B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */,
 				B22E5EDD19DAC40000666F16 /* SKBSummaryViewController.h */,
@@ -1049,8 +1046,8 @@
 			isa = PBXGroup;
 			children = (
 				B2FB02F919B75D09007AA3C2 /* Reusable */,
-				B2FB031619B75D09007AA3C2 /* SKAActivationController2.h */,
-				B2FB031719B75D09007AA3C2 /* SKAActivationController2.m */,
+				B2FB031619B75D09007AA3C2 /* SKBActivationController.h */,
+				B2FB031719B75D09007AA3C2 /* SKBActivationController.m */,
 				B2FB031A19B75D09007AA3C2 /* tabCells */,
 				B2FB032119B75D09007AA3C2 /* ViewManagers */,
 			);
@@ -1153,12 +1150,10 @@
 		B2FB031A19B75D09007AA3C2 /* tabCells */ = {
 			isa = PBXGroup;
 			children = (
-				B2FB031B19B75D09007AA3C2 /* SKASimpleResultCell2.h */,
-				B2FB031C19B75D09007AA3C2 /* SKASimpleResultCell2.m */,
-				B2FB031D19B75D09007AA3C2 /* SKATestOverviewCell2.h */,
-				B2FB031E19B75D09007AA3C2 /* SKATestOverviewCell2.m */,
-				B2FB031F19B75D09007AA3C2 /* SKATestResultSuperCell.h */,
-				B2FB032019B75D09007AA3C2 /* SKATestResultSuperCell.m */,
+				B2FB031B19B75D09007AA3C2 /* SKBSimpleResultCell.h */,
+				B2FB031C19B75D09007AA3C2 /* SKBSimpleResultCell.m */,
+				B2FB031D19B75D09007AA3C2 /* SKBTestOverviewCell.h */,
+				B2FB031E19B75D09007AA3C2 /* SKBTestOverviewCell.m */,
 				B22E5EE119DAEC7000666F16 /* SKBSummaryTableViewCell.h */,
 				B22E5EE219DAEC7000666F16 /* SKBSummaryTableViewCell.m */,
 			);
@@ -1168,14 +1163,14 @@
 		B2FB032119B75D09007AA3C2 /* ViewManagers */ = {
 			isa = PBXGroup;
 			children = (
-				B2FB032219B75D09007AA3C2 /* SKHistoryViewMgr.h */,
-				B2FB032319B75D09007AA3C2 /* SKHistoryViewMgr.m */,
-				B2FB032819B75D09007AA3C2 /* SKSettingsMgr.h */,
-				B2FB032919B75D09007AA3C2 /* SKSettingsMgr.m */,
+				B2FB032219B75D09007AA3C2 /* SKBHistoryViewMgr.h */,
+				B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */,
+				B2FB032819B75D09007AA3C2 /* SKBSettingsMgr.h */,
+				B2FB032919B75D09007AA3C2 /* SKBSettingsMgr.m */,
 				B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */,
 				B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */,
-				B28006E119C9776D0008DF5F /* SKATestResultValue.h */,
-				B28006E219C9776D0008DF5F /* SKATestResultValue.m */,
+				B28006E119C9776D0008DF5F /* SKBTestResultValue.h */,
+				B28006E219C9776D0008DF5F /* SKBTestResultValue.m */,
 				B22E5ED719D9713800666F16 /* NewViewControllers */,
 			);
 			path = ViewManagers;
@@ -1314,7 +1309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B22E88DD17C3682E005D9094 /* SKCore.m in Sources */,
-				B2FB033D19B75D09007AA3C2 /* SKSettingsMgr.m in Sources */,
+				B2FB033D19B75D09007AA3C2 /* SKBSettingsMgr.m in Sources */,
 				B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */,
 				B23B638419ACB7A8003F381C /* NSString+SKExtensions.m in Sources */,
 				B23B638119ACB3F6003F381C /* SKTestResults.m in Sources */,
@@ -1335,11 +1330,11 @@
 				B2FB033019B75D09007AA3C2 /* Graphing.m in Sources */,
 				B2FB033E19B75D09007AA3C2 /* SKBSummaryViewMgr.m in Sources */,
 				B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */,
-				B282672B19E3F579003A4172 /* SKTestResultsSharer.m in Sources */,
+				B282672B19E3F579003A4172 /* SKBTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */,
 				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
 				B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */,
-				B2FB033519B75D09007AA3C2 /* SKAActivationController2.m in Sources */,
+				B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */,
 				B221AEDC18FFC22500323923 /* ioapi.c in Sources */,
 				B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */,
 				B22E88F017C36875005D9094 /* FMDatabase.m in Sources */,
@@ -1347,9 +1342,8 @@
 				B221AEC918FFC12100323923 /* ZipArchive.m in Sources */,
 				B22E88F117C36875005D9094 /* FMDatabaseAdditions.m in Sources */,
 				B2AE68231883DA4D00D87FAE /* SKATransferTestCell.m in Sources */,
-				B2FB033719B75D09007AA3C2 /* SKASimpleResultCell2.m in Sources */,
+				B2FB033719B75D09007AA3C2 /* SKBSimpleResultCell.m in Sources */,
 				B22E88F217C36875005D9094 /* FMResultSet.m in Sources */,
-				B2FB033919B75D09007AA3C2 /* SKATestResultSuperCell.m in Sources */,
 				B2AE681C1883DA4D00D87FAE /* SKAInformationCell.m in Sources */,
 				B2AE68241883DA4D00D87FAE /* STKSpinnerView.m in Sources */,
 				B2038F431897D4F5005AC0BB /* SKAMainResultControllerSection1Cell.m in Sources */,
@@ -1378,25 +1372,25 @@
 				B2AE68421883DE6800D87FAE /* SKALatencyTest.m in Sources */,
 				B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */,
 				B2AE683E1883DE6800D87FAE /* SKAAutotest.m in Sources */,
-				B28006DD19C881E90008DF5F /* SKSBMainViewTabBarController.m in Sources */,
+				B28006DD19C881E90008DF5F /* SKBMainViewTabBarController.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,
 				B2AE681D1883DA4D00D87FAE /* SKALatencyTestCell.m in Sources */,
 				B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */,
 				B2AE68191883DA4D00D87FAE /* SKAGraphResultFooterCell.m in Sources */,
 				B2AE68411883DE6800D87FAE /* SKALatencyOperation.m in Sources */,
 				B22E893217C37C90005D9094 /* SKUDPDataGram.m in Sources */,
-				B2FB033819B75D09007AA3C2 /* SKATestOverviewCell2.m in Sources */,
+				B2FB033819B75D09007AA3C2 /* SKBTestOverviewCell.m in Sources */,
 				B22E893A17C391D0005D9094 /* SKTransferOperation.m in Sources */,
 				B2D1DE4B19E66F93003840BE /* SKBSplashVC.m in Sources */,
 				B221AEDB18FFC21E00323923 /* mztools.c in Sources */,
 				B2BE448917C7610F00C96D58 /* SKTest.m in Sources */,
 				B2AE681A1883DA4D00D87FAE /* SKAGraphViewCell.m in Sources */,
 				B221AED918FFC20700323923 /* zip.c in Sources */,
-				B28006E319C9776D0008DF5F /* SKATestResultValue.m in Sources */,
+				B28006E319C9776D0008DF5F /* SKBTestResultValue.m in Sources */,
 				B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */,
 				B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */,
 				B2B2B4BD18AB7A8500592FEF /* SKOperators.m in Sources */,
-				B2FB033A19B75D09007AA3C2 /* SKHistoryViewMgr.m in Sources */,
+				B2FB033A19B75D09007AA3C2 /* SKBHistoryViewMgr.m in Sources */,
 				B2342C6C1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m in Sources */,
 				B22E5EDF19DAC40000666F16 /* SKBHistoryViewController.m in Sources */,
 				B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */,
@@ -1404,7 +1398,7 @@
 				B218A02C17CCD3300048B3E0 /* SKLatencyTest.m in Sources */,
 				B2BAC53518A90ECE00A66A06 /* UIDevice+SKExtension.m in Sources */,
 				B218A02F17CCDE880048B3E0 /* SKLatencyOperation.m in Sources */,
-				B28006E019C970300008DF5F /* SKSBRunTestViewMgrController.m in Sources */,
+				B28006E019C970300008DF5F /* SKBRunTestViewMgrController.m in Sources */,
 				B218A04417CCF1550048B3E0 /* SKClosestTargetTest.m in Sources */,
 				B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */,
 				B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */,

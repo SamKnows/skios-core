@@ -1,5 +1,5 @@
 //
-//  SKSBMainViewTabBarController.h
+//  SKBMainViewTabBarController.h
 //  SKCore
 //
 
@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "UIViewWithGradient.h"
 #import "SKAppColourScheme.h"
-#import "SKHistoryViewMgr.h"
+#import "SKBHistoryViewMgr.h"
 #import "SKBSummaryViewMgr.h"
-#import "SKSettingsMgr.h"
+#import "SKBSettingsMgr.h"
 #import "SKBTermsView.h"
 #import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"
 
-@interface SKSBMainViewTabBarController : UITabBarController
+@interface SKBMainViewTabBarController : UITabBarController
 @end

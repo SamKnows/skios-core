@@ -1,14 +1,14 @@
 //
-//  SKTestResultsSharer.m
+//  SKBTestResultsSharer.m
 //  SKCore
 //
 //  Created by Pete Cole on 07/10/2014.
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "SKTestResultsSharer.h"
+#import "SKBTestResultsSharer.h"
 
-@interface SKTestResultsSharer()
+@interface SKBTestResultsSharer()
 @property (nonatomic, strong) cActionSheet* casShare;
 @property (nonatomic, strong) SKATestResults* selectedTest;
 
@@ -16,7 +16,7 @@
 @end
 
 
-@implementation SKTestResultsSharer
+@implementation SKBTestResultsSharer
 
 @synthesize selectedTest;
 

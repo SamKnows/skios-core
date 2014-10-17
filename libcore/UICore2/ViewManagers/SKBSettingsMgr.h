@@ -1,5 +1,5 @@
 //
-//  SKSettingsMgr.h
+//  SKBSettingsMgr.h
 //  SKCore
 //
 
@@ -17,7 +17,7 @@ enum {
     ALERT_WIPEDATA = 2,
 };
 
-@interface SKSettingsMgr : UIView <UIAlertViewDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
+@interface SKBSettingsMgr : UIView <UIAlertViewDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, weak) UIView* masterView;
 @property (nonatomic, weak) UIViewController* masterViewController;

@@ -265,8 +265,8 @@ static BOOL sbReloadTableAfterBack = NO;
   
   if (downloadCNT > 0)
   {
-    self.lDownloadAvg = [SKATestOverviewCell2 get3digitsNumber:downloadSUM / downloadCNT];
-    self.lDownloadBst = [SKATestOverviewCell2 get3digitsNumber:downloadBEST];
+    self.lDownloadAvg = [SKBTestOverviewCell get3digitsNumber:downloadSUM / downloadCNT];
+    self.lDownloadBst = [SKBTestOverviewCell get3digitsNumber:downloadBEST];
   }
   else
   {
@@ -276,8 +276,8 @@ static BOOL sbReloadTableAfterBack = NO;
   
   if (uploadCNT > 0)
   {
-    self.lUploadAvg = [SKATestOverviewCell2 get3digitsNumber:uploadSUM / uploadCNT];
-    self.lUploadBst = [SKATestOverviewCell2 get3digitsNumber:uploadBEST];
+    self.lUploadAvg = [SKBTestOverviewCell get3digitsNumber:uploadSUM / uploadCNT];
+    self.lUploadBst = [SKBTestOverviewCell get3digitsNumber:uploadBEST];
   }
   else
   {
