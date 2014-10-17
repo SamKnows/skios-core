@@ -46,7 +46,7 @@
   [super viewDidLoad];
   
   self.lTitle.text = sSKCoreGetLocalisedString(@"Storyboard_Activation_Title");
-  self.lTitle.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.lTitle.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.lTitle.layer.cornerRadius = 3;
   self.lTitle.layer.borderWidth = 0.5;
   self.lTitle.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
@@ -54,14 +54,14 @@
   [self.view addSubview:self.lTitle];
   
   self.lActivating.text = sSKCoreGetLocalisedString(@"ACTV_Label_Activating");
-  self.lActivating.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.lActivating.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.lActivating.layer.cornerRadius = 3;
   self.lActivating.layer.borderWidth = 0.5;
   self.lActivating.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
   self.lActivating.clipsToBounds = YES;
   
   self.lDownloading.text = sSKCoreGetLocalisedString(@"ACTV_Label_Downloading");
-  self.lDownloading.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.lDownloading.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.lDownloading.layer.cornerRadius = 3;
   self.lDownloading.layer.borderWidth = 0.5;
   self.lDownloading.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;

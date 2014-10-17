@@ -30,6 +30,8 @@
 -(UIColor*)getMainColourPressTheStartButtonText; // [UIColor whiteColor]
 -(UIColor*)getMainColourStatusText;
 -(UIColor*)getGraphColourBackground;
+-(UIColor*)getPanelColourBackground; // [UIColor whiteColor]
+-(UIColor*)getTableCellColourText; // [UIColor whiteColor]
 
 
 -(UIColor*)getGraphColourTopLine;
@@ -65,7 +67,7 @@
 //+(UIColor*)sGetGraphColourFillColor;
 // Tab controll colours
 +(UIColor*)sGetTabColourActiveText;
-+(UIColor*)sGetTabColourActiveBackground;
++(UIColor*)sGetPanelColourBackground;
 +(UIColor*)sGetTabColourInactiveText;
 +(UIColor*)sGetTabColourInactiveBackground;
 // Main screen colours
@@ -83,6 +85,9 @@
 +(UIColor*)sGetMainColourDialMeasurementText; // [UIColor orangeColor]
 +(UIColor*)sGetMainColourPressTheStartButtonText; // [UIColor whiteColor]
 +(UIColor*)sGetMainColourStatusText; // [UIColor whiteColor]
+// Table Cells
++(UIColor*)sGetPanelColourBackground; // [UIColor whiteColor]
++(UIColor*)sGetTableCellColourText; // [UIColor whiteColor]
 
 
 // The app can call this static method, in order to provide a custom app colour scheme!

@@ -129,7 +129,7 @@
   UIFont* resultFont2 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
   
   self.vBackground = [[UIView alloc] initWithFrame:CGRectMake(GUI_MULTIPLIER * 5,GUI_MULTIPLIER * 3, GUI_MULTIPLIER * 310, GUI_MULTIPLIER * 90)];
-  self.vBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+  self.vBackground.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.vBackground.layer.cornerRadius = GUI_MULTIPLIER * 3;
   self.vBackground.layer.borderWidth = 0.5;
   self.vBackground.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;

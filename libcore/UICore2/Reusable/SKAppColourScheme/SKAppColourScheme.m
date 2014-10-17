@@ -48,9 +48,6 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetTabColourActiveText {
   return [UIColor purpleColor];
 }
-+(UIColor*)sGetTabColourActiveBackground {
-  return [UIColor purpleColor];
-}
 +(UIColor*)sGetTabColourInactiveText {
   return [UIColor purpleColor];
 }
@@ -102,6 +99,12 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [UIColor whiteColor];
 }
 
++(UIColor*)sGetPanelColourBackground {
+  return [[SKAppColourScheme sGetAppColourScheme] getPanelColourBackground ];
+}
++(UIColor*)sGetTableCellColourText {
+  return [[SKAppColourScheme sGetAppColourScheme] getTableCellColourText ];
+}
 
 
 
@@ -246,6 +249,12 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [UIColor whiteColor];
 }
 
+-(UIColor*)getPanelColourBackground {
+  return [UIColor colorWithWhite:0 alpha:0.2];
+}
+-(UIColor*)sGetTableCellColourText {
+  return [UIColor whiteColor];
+}
 
 
 
