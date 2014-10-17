@@ -1,10 +1,29 @@
-//
-//  TYMActivityIndicatorView.h
-//  TYMActivityIndicatorView
-//
-//  Created by Yiming Tang on 14-2-9.
-//  Copyright (c) 2014 Yiming Tang. All rights reserved.
-//
+/*
+TYMActivityIndicatorView.h
+TYMActivityIndicatorView
+
+Created by Yiming Tang on 14-2-9.
+Copyright (c) 2014 Yiming Tang. All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 
 #import <UIKit/UIKit.h>
 
@@ -47,11 +66,11 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 
 @property (nonatomic, strong) UIView* vCenterFillingStopped;
 @property (nonatomic, strong) UIView* vCenterFillingRunning;
+@property (nonatomic, strong) UILabel* mTopText;
+@property (nonatomic, strong) UILabel* mCenterText;
+@property (nonatomic, strong) UILabel* mUnitText;
+@property (nonatomic, strong) UILabel* mMeasurementText;
 @property (nonatomic, strong) UIButton* btButton;
-@property (nonatomic, strong) UILabel* lCurrentResult;
-@property (nonatomic, strong) UILabel* lUnit;
-@property (nonatomic, strong) UILabel* lMeasurement;
-@property (nonatomic, strong) UILabel* lTopInfo1;
 
 @property (nonatomic, strong) NSMutableArray* arrLabels;
 @property (nonatomic) float desiredAngle;
@@ -134,13 +153,13 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
  */
 - (BOOL)isAnimating;
 
--(void)setCurrentResult:(NSString*)currentResult;
+-(void)setCenterText:(NSString*)currentResult;
 -(void)setAngle:(float)angle; //In Degrees
 
 -(void)setUnitMeasurement:(NSString*)unit_ measurement:(NSString*)measurement_;
 -(void)layoutSubviews;
--(void)setTopInfo:(NSString*)topInfo_;
+-(void)setTopText:(NSString*)topInfo_;
 
--(void)displayReset:(NSString*)nextValue_;
+-(void)setCenterTextWithAnimation:(NSString*)nextValue_;
 
 @end

@@ -10,7 +10,6 @@
 #import "../Reusable/CActionSheet/cActionSheet.h"
 #import "SKBHistoryViewMgr.h"
 #import "../tabCells/SKBTestOverviewCell.h"
-#import "../Reusable/Graphing/Graphing.h"
 #import "SKTestResults.h"
 
 @interface SKBSummaryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate>

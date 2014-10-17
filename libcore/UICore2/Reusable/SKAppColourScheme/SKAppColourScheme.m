@@ -44,6 +44,68 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [[SKAppColourScheme sGetAppColourScheme] getWelcomeSplashTextColor];
 }
 
+// Tab controll colours
++(UIColor*)sGetTabColourActiveText {
+  return [UIColor purpleColor];
+}
++(UIColor*)sGetTabColourActiveBackground {
+  return [UIColor purpleColor];
+}
++(UIColor*)sGetTabColourInactiveText {
+  return [UIColor purpleColor];
+}
++(UIColor*)sGetTabColourInactiveBackground {
+  return [UIColor purpleColor];
+}
+// Main screen colours
++(UIColor*)sGetMainColourProgressFill {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourProgressFill];
+}
++(CGFloat)sGetMainAlphaProgressFill {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainAlphaProgressFill];
+}
++(UIColor*)sGetMainColourDialOuterTicksMeasuredValue {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialOuterTicksMeasuredValue];
+}
++(UIColor*)sGetMainColourDialOuterTicksDefault {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialOuterTicksDefault];
+}
++(UIColor*)sGetMainColourDialInnerTicks {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialInnerTicks];
+}
++(UIColor*)sGetMainColourDialInnerLabelText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialInnerLabelText];
+}
++(UIColor*)sGetMainColourDialArcRedZone {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialArcRedZone];
+}
++(UIColor*)sGetMainColourDialArcGreyZone {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialArcGreyZone];
+}
++(UIColor*)sGetMainColourDialTopText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialTopText];
+}
++(UIColor*)sGetMainColourDialCenterText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialCenterText];
+}
++(UIColor*)sGetMainColourDialUnitText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialUnitText];
+}
++(UIColor*)sGetMainColourDialMeasurementText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialMeasurementText];
+}
++(UIColor*)sGetMainColourPressTheStartButtonText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourPressTheStartButtonText];
+}
++(UIColor*)sGetMainColourStatusText {
+  // TODO
+  return [UIColor whiteColor];
+}
+
+
+
+
+
 +(UIColor*)sGetGraphColourBackground {
   return [[SKAppColourScheme sGetAppColourScheme] getGraphColourBackground];
 }
@@ -135,6 +197,63 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 -(UIColor*)getWelcomeSplashTextColor {
   return [SKAppColourScheme sGetSamKnowsWhite];
 }
+
+
+
+// Main screen colours
+-(UIColor*)getMainColourProgressFill {
+  return [UIColor colorFromHexString:@"#00000000"];
+}
+-(CGFloat)getMainAlphaProgressFill {
+  return 0.3;
+}
+-(UIColor*)getMainColourDialOuterTicksMeasuredValue {
+  return [UIColor redColor];
+}
+-(UIColor*)getMainColourDialOuterTicksDefault {
+  return[UIColor whiteColor];
+}
+-(UIColor*)getMainColourDialInnerTicks {
+  return [UIColor colorFromHexString:@"#9b9b9b"];
+}
+-(UIColor*)getMainColourDialInnerLabelText {
+  return [UIColor orangeColor];
+}
+-(UIColor*)getMainColourDialArcRedZone {
+  return [UIColor redColor];
+}
+-(UIColor*)getMainColourDialArcGreyZone {
+  return [UIColor lightGrayColor];
+}
+-(UIColor*)getMainColourDialTopText {
+  return [UIColor orangeColor];
+}
+-(UIColor*)getMainColourDialCenterText {
+  return[UIColor colorWithWhite:0.9 alpha:1];
+}
+-(UIColor*)getMainColourDialUnitText {
+  return [UIColor orangeColor];
+}
+-(UIColor*)getMainColourDialMeasurementText {
+  return [UIColor orangeColor];
+}
+-(UIColor*)getMainColourPressTheStartButtonText {
+  // TODO
+  return [UIColor whiteColor];
+}
+-(UIColor*)getMainColourStatusText {
+  // TODO
+  return [UIColor whiteColor];
+}
+
+
+
+
+
+
+
+
+
 
 -(UIColor*)getGraphColourBackground {
   return [SKAppColourScheme sGetSamKnowsBlue];

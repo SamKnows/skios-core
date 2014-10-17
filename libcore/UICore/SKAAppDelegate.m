@@ -1812,4 +1812,6 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
            SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
 }
 
+-(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController {
+}
 @end

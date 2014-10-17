@@ -90,9 +90,9 @@
 -(void)resetProgressView
 {
   self.vProgressView.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 0);
-  self.vProgressView.backgroundColor = [UIColor blackColor];
   self.vProgressView.hidden = NO;
-  self.vProgressView.alpha = 0.3;
+  self.vProgressView.backgroundColor = [SKAppColourScheme sGetMainColourProgressFill];
+  self.vProgressView.alpha = [SKAppColourScheme sGetMainAlphaProgressFill];
 }
 
 -(void)setProgressView:(float)time_
@@ -288,12 +288,13 @@
   [self.casStatusView initialize];
   
   //[self.tmActivityIndicator layoutSubviews];
-  [self.tmActivityIndicator displayReset:sSKCoreGetLocalisedString(@"Start")];
+  [self.tmActivityIndicator setCenterTextWithAnimation:sSKCoreGetLocalisedString(@"Start")];
   //[self.tmActivityIndicator setNeedsLayout];
   
   [self.casStatusView setText:sSKCoreGetLocalisedString(@"Ready to run") forever:YES];
-  //self.lClosest.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
-  self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button");
+  //self.mPressTheStartButtonLabel.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
+  self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button");
+  self.mPressTheStartButtonLabel.textColor = [SKAppColourScheme sGetMainColourPressTheStartButtonText];
   self.tvCurrentResults.hidden = YES;
   
   [self updateRadioType];
@@ -528,14 +529,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)updateRadioType
 {
   if ([[SKAAppDelegate getAppDelegate] getIsConnected] == NO) {
-    [self.tmActivityIndicator setTopInfo:sSKCoreGetLocalisedString(@"No connection")];
+    [self.tmActivityIndicator setTopText:sSKCoreGetLocalisedString(@"No connection")];
   } else {
     connectionStatus = [SKAAppDelegate getAppDelegate].connectionStatus;
     
     if (connectionStatus == WIFI) {
-      [self.tmActivityIndicator setTopInfo:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi")];
+      [self.tmActivityIndicator setTopText:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi")];
     } else {
-      [self.tmActivityIndicator setTopInfo:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
+      [self.tmActivityIndicator setTopText:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
     }
   }
 }
@@ -666,7 +667,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   [self showTargets];
   
-  [self.tmActivityIndicator displayReset:@""];
+  [self.tmActivityIndicator setCenterTextWithAnimation:@""];
   [self.tmActivityIndicator startAnimating];
   [UIView animateWithDuration:0.3 animations:^{
     
@@ -738,7 +739,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void)restoreButton
 {
   [self.tmActivityIndicator stopAnimating];
-  [self.tmActivityIndicator displayReset:sSKCoreGetLocalisedString(@"Start")];
+  [self.tmActivityIndicator setCenterTextWithAnimation:sSKCoreGetLocalisedString(@"Start")];
   [self.tmActivityIndicator setAngle:0];
   
   if ([self.appDelegate enableTestsSelection])
@@ -786,7 +787,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodClosestTargetTestDidStart
 {
-  [self.lClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
+  [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
   [self showTargets];
 }
 
@@ -797,7 +798,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 #endif // DEBUG
   [self stopTestFromAlertResponse:NO];
   [self setIsRunning:NO];
-  [self.lClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
+  [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
 }
 
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target
@@ -808,7 +809,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                        sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
                        [self.appDelegate.schedule getClosestTargetName:target]];
   
-  [self.lClosest setText:closest];
+  [self.mPressTheStartButtonLabel setText:closest];
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_TARGET].value = [self.appDelegate.schedule getClosestTargetName:target];
   
   [self.tvCurrentResults reloadData];
@@ -882,7 +883,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Latency / Loss testing") forever:YES];
     [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Ms") measurement:sSKCoreGetLocalisedString(@"Test_Latency")];
     if (((self.testTypes2Execute & CTTBM_DOWNLOAD) != 0) || ((self.testTypes2Execute & CTTBM_UPLOAD) != 0))
-      [self.tmActivityIndicator displayReset:@"0"];
+      [self.tmActivityIndicator setCenterTextWithAnimation:@"0"];
     
     [self.tmActivityIndicator.arrLabels removeAllObjects];
     [self.tmActivityIndicator.arrLabels addObject:@"0"];
@@ -908,7 +909,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     self.timeOfLastUIUpdate = CACurrentMediaTime();
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self.tmActivityIndicator setCurrentResult:[NSString stringWithFormat:@"%.00f", latencyAVG]];
+      [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.00f", latencyAVG]];
       
       if (latencyAVG <= 100.0)
         [self.tmActivityIndicator setAngle:45.0 * latencyAVG / 100.0];
@@ -936,7 +937,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 {
   dispatch_async(dispatch_get_main_queue(),
                  ^{
-                   [self.tmActivityIndicator displayReset:@"0.00"];
+                   [self.tmActivityIndicator setCenterTextWithAnimation:@"0.00"];
                    
                    if (isDownstream)
                    {
@@ -986,7 +987,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      self.timeOfLastUIUpdate = CACurrentMediaTime();
                      
                      dispatch_async(dispatch_get_main_queue(), ^{
-                       [self.tmActivityIndicator setCurrentResult:[NSString stringWithFormat:@"%.02f", bitrate1024Based]];
+                       [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.02f", bitrate1024Based]];
                        
                        if (isDownstream)
                        {
@@ -1085,7 +1086,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    }
                    else
                    {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell get3digitsNumber: bitrate1024Based];
+                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell get3digitsNumber: bitrate1024Based];
                      [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
                      progressUpload = 1;
                    }
@@ -1106,7 +1107,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    [UIView animateWithDuration:1.0 animations:^{
                      [self resetProgressView];
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
-                     self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
+                     self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
                     
                      if ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
                      {
@@ -1174,7 +1175,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   //TODO: If cancelled or error
   [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests canceled") forever:YES];
-  self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
+  self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
   
   [self setIsRunning:NO];
   [self setEndDataUsage];

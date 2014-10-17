@@ -55,7 +55,7 @@
 
 @property (atomic) double timeOfLastUIUpdate;
 
-@property (weak, nonatomic) IBOutlet UILabel *lClosest;
+@property (weak, nonatomic) IBOutlet UILabel *mPressTheStartButtonLabel;
 
 @property (weak, nonatomic) IBOutlet TYMActivityIndicatorView *tmActivityIndicator;
 @property (weak, nonatomic) IBOutlet UITableView *tvCurrentResults;

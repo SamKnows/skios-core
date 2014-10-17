@@ -15,7 +15,23 @@
 -(UIColor*)getOuterColor;
 -(UIColor*)getWelcomeSplashBackgroundColor;
 -(UIColor*)getWelcomeSplashTextColor;
+-(UIColor*)getMainColourProgressFill;
+-(CGFloat) getMainAlphaProgressFill;
+-(UIColor*)getMainColourDialOuterTicksMeasuredValue; //[UIColor redColor]
+-(UIColor*)getMainColourDialOuterTicksDefault; //[UIColor whiteColor]
+-(UIColor*)getMainColourDialInnerTicks; // [UIColor colorFromHexString:@"#9b9b9b"]
+-(UIColor*)getMainColourDialInnerLabelText; // [UIColor orangeColor]
+-(UIColor*)getMainColourDialArcRedZone; // [UIColor redColor]
+-(UIColor*)getMainColourDialArcGreyZone; // [UIColor lightGrayColor]
+-(UIColor*)getMainColourDialTopText; // [UIColor orangeColor]
+-(UIColor*)getMainColourDialCenterText; // [UIColor colorWithWhite:0.9 alpha:1]
+-(UIColor*)getMainColourDialUnitText; // [UIColor orangeColor]
+-(UIColor*)getMainColourDialMeasurementText; // [UIColor orangeColor]
+-(UIColor*)getMainColourPressTheStartButtonText; // [UIColor whiteColor]
+-(UIColor*)getMainColourStatusText;
 -(UIColor*)getGraphColourBackground;
+
+
 -(UIColor*)getGraphColourTopLine;
 -(UIColor*)getGraphColourTitleText;
 -(UIColor*)getGraphColourAxisMain;
@@ -31,22 +47,43 @@
 // It should be deprecated as soon as possible!
 +(float) sGet_GUI_MULTIPLIER;
 
++(UIColor*)sGetSamKnowsBlue;
++(UIColor*)sGetSamKnowsWhite;
+
 // The app must use the following static methods to get elements of the current colour scheme.
 +(UIColor*)sGetInnerColor;
 +(UIColor*)sGetOuterColor;
 +(UIColor*)sGetWelcomeSplashBackgroundColor;
 +(UIColor*)sGetWelcomeSplashTextColor;
 +(UIColor*)sGetGraphColourBackground;
-+(UIColor*)sGetGraphColourTopLine;
-+(UIColor*)sGetGraphColourTitleText;
-+(UIColor*)sGetGraphColourAxisMain;
-+(UIColor*)sGetGraphColourAxisTick;
-+(UIColor*)sGetGraphColourAxisLabelText;
-+(UIColor*)sGetGraphColourSideLineColor;
-+(UIColor*)sGetGraphColourFillColor;
+//+(UIColor*)sGetGraphColourTopLine;
+//+(UIColor*)sGetGraphColourTitleText;
+//+(UIColor*)sGetGraphColourAxisMain;
+//+(UIColor*)sGetGraphColourAxisTick;
+//+(UIColor*)sGetGraphColourAxisLabelText;
+//+(UIColor*)sGetGraphColourSideLineColor;
+//+(UIColor*)sGetGraphColourFillColor;
+// Tab controll colours
++(UIColor*)sGetTabColourActiveText;
++(UIColor*)sGetTabColourActiveBackground;
++(UIColor*)sGetTabColourInactiveText;
++(UIColor*)sGetTabColourInactiveBackground;
+// Main screen colours
++(UIColor*)sGetMainColourProgressFill; //[UIColor redColor]
++(CGFloat) sGetMainAlphaProgressFill; // 0.3
++(UIColor*)sGetMainColourDialOuterTicksMeasuredValue; //[UIColor redColor]
++(UIColor*)sGetMainColourDialOuterTicksDefault; //[UIColor whiteColor]
++(UIColor*)sGetMainColourDialInnerTicks; // [UIColor colorFromHexString:@"#9b9b9b"]
++(UIColor*)sGetMainColourDialInnerLabelText; // [UIColor orangeColor]
++(UIColor*)sGetMainColourDialArcRedZone; // [UIColor redColor]
++(UIColor*)sGetMainColourDialArcGreyZone; // [UIColor lightGrayColor]
++(UIColor*)sGetMainColourDialTopText; // [UIColor orangeColor]
++(UIColor*)sGetMainColourDialCenterText; // [UIColor colorWithWhite:0.9 alpha:1]
++(UIColor*)sGetMainColourDialUnitText; // [UIColor orangeColor]
++(UIColor*)sGetMainColourDialMeasurementText; // [UIColor orangeColor]
++(UIColor*)sGetMainColourPressTheStartButtonText; // [UIColor whiteColor]
++(UIColor*)sGetMainColourStatusText; // [UIColor whiteColor]
 
-+(UIColor*)sGetSamKnowsBlue;
-+(UIColor*)sGetSamKnowsWhite;
 
 // The app can call this static method, in order to provide a custom app colour scheme!
 +(void)sSetAppColourScheme:(NSObject<PSKAppColourScheme>*)theAppColourScheme;

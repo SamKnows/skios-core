@@ -34,7 +34,10 @@
       SK_ASSERT(false);
     }
   }
+ 
+  [[SKAAppDelegate getAppDelegate] overrideTabBarColoursOnStart:self];
 }
+
 
 -(void)viewWillAppear:(BOOL)animated
 {

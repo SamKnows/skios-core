@@ -38,7 +38,7 @@
   self.l1n.textAlignment = UITextAlignmentCenter;
   
   self.l1h.font = theFont;
-  self.l1h.textColor = [UIColor whiteColor];
+  self.l1h.textColor = [SKAppColourScheme sGetMainColourStatusText];
   self.l1h.textAlignment = UITextAlignmentCenter;
   
   self.v2.alpha = 0;
