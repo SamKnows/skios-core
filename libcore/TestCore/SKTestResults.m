@@ -45,7 +45,7 @@
     [[UIImage imageNamed:@"shareBackground"] drawInRect:CGRectMake(0, 0, C_SHARE_IMAGE_WIDTH, C_SHARE_IMAGE_HEIGHT)];
     
     UIImage* networkSymbol;
-    if ([testResults_.network_type isEqualToString:@"mobile"])
+    if ([testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
         networkSymbol = [UIImage imageNamed:@"sgsm.png"];
     else
         networkSymbol = [UIImage imageNamed:@"swifi.png"];
@@ -146,8 +146,8 @@
     
     NSString *networkName;
     
-    if ([testResults_.network_type isEqualToString:@"mobile"])
-        networkName = testResults_.carrier_name;
+    if ([testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
+        networkName = testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
     else
         networkName = @"wi-fi";
     
@@ -163,27 +163,16 @@
     return newImage;
 }
 
--(int)numberOfOptionalMetrics
-{
-    return  0;
-    
-    int n = 0;
-    
-    if (self.device.length > 0) n++;
-    if (self.os.length > 0) n++;
-    if (self.carrier_name.length > 0) n++;
-    if (self.country_code.length > 0) n++;
-    if (self.iso_country_code.length > 0) n++;
-    if (self.network_code.length > 0) n++;
-    if (self.network_type.length > 0 || self.radio_type.length > 0) n++;
-    
-    return n;
-}
-
 // MPC
 
 -(NSString*)getTextForSocialMedia:(NSString*)socialNetwork {
-    return [SKAAppDelegate sBuildSocialMediaMessageForCarrierName:self.carrier_name SocialNetwork:socialNetwork Upload:[SKGlobalMethods bitrateMbps1024BasedToString:self.uploadSpeed] Download:[SKGlobalMethods bitrateMbps1024BasedToString:self.downloadSpeed] ThisDataIsAveraged:NO];
+  NSString *carrierName = self.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
+  return [SKAAppDelegate
+          sBuildSocialMediaMessageForCarrierName:carrierName
+          SocialNetwork:socialNetwork
+          Upload:[SKGlobalMethods bitrateMbps1024BasedToString:self.uploadSpeed]
+          Download:[SKGlobalMethods bitrateMbps1024BasedToString:self.downloadSpeed]
+          ThisDataIsAveraged:NO];
 }
 
 @end

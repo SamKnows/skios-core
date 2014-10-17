@@ -41,7 +41,7 @@
     CGRect originalCellFrame;
     
     NSMutableArray* arrPassiveLabelsAndValues;
-    float y;
+    float mPassiveMetricsY;
 }
 
 @property (nonatomic, weak) UIView* masterView;

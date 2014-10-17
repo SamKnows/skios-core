@@ -20,6 +20,8 @@
   // This may NOT be allocated locally, or it can get auto-released before we've finished using it!
 @property SKBTestResultsSharer *mpSharer;
 @property NSNumber *mTestId;
+@property NSString *mTestPublicIp;
+@property NSString *mTestSubmissionId;
 @property int mNumberOfNonPassiveMetrics;
 @property int mNumberOfPassiveMetrics;
 @end
@@ -29,7 +31,6 @@
 @synthesize mTestResultsArray;
 @synthesize mpTestResult;
 @synthesize mpSharer;
-
 #pragma mark ProgressView
 
 -(void) viewDidLoad {
@@ -218,9 +219,18 @@
       NSString *theSubmissionId = values[@"submission_id"];
       SK_ASSERT(theSubmissionId != nil);
       
-      SK_ASSERT(false);
+      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP].value = thePublicIp;
+      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID].value = theSubmissionId;
+      
+      self.mTestPublicIp = thePublicIp;
+      self.mTestSubmissionId = theSubmissionId;
       
       [self.tvCurrentResults reloadData];
+      
+      // And tell the Results screen to update with the new metrics!
+      [[NSNotificationCenter defaultCenter]
+       postNotificationName:@"TestListNeedsUpdate"
+       object:self];
     }
   }
 }
@@ -496,7 +506,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }
 }
 
--(SKBTestResultValue*) getTheTestResultValueForTestIdentifier:(NSString*)inIdentifier {
+-(SKBTestResultValue*) getTheTestResultValueForTestIdentifierDoesNotHaveToExist:(NSString*)inIdentifier {
   for (SKBTestResultValue* theValue in mTestResultsArray) {
     if ([theValue.mNonlocalizedIdentifier isEqualToString:inIdentifier]) {
       return theValue;
@@ -506,8 +516,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     }
   }
   
-  SK_ASSERT(false);
   return nil;
+}
+
+-(SKBTestResultValue*) getTheTestResultValueForTestIdentifier:(NSString*)inIdentifier {
+  SKBTestResultValue* theResult = [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:inIdentifier];
+  SK_ASSERT(theResult != nil);
+  return theResult;
 }
 
 -(void)updateRadioType
@@ -794,7 +809,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                        [self.appDelegate.schedule getClosestTargetName:target]];
   
   [self.lClosest setText:closest];
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_TARGET].value = [self.appDelegate.schedule getClosestTargetName:target];
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_TARGET].value = [self.appDelegate.schedule getClosestTargetName:target];
   
   [self.tvCurrentResults reloadData];
   //TODO: Also on fail. Also for other fails.
@@ -1093,7 +1108,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
                      self.lClosest.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
                     
-                     if ([self.mpTestResult.network_type isEqualToString:@"mobile"])
+                     if ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
                      {
                        // Only show if NETWORK!
                        self.btShare.alpha = 1;
@@ -1302,12 +1317,21 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (tableView == self.tvCurrentResults) {
-    if ([[SKAAppDelegate getAppDelegate] getShowMetricsOnMainScreen] == NO) {
-      // Just the test results cell!
-      return 1;
-    } else {
-      //1 (for the test results cell) + one cell per metric!
-      return 1 + self.mNumberOfPassiveMetrics;
+    switch ([[SKAAppDelegate getAppDelegate] getShowMetricsOnMainScreen]) {
+      case SKBShowMetricsRule_ShowPassiveMetrics_Never:
+        return 1; // Just the main test result.
+      case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts:
+        return 1 + self.mNumberOfPassiveMetrics;
+      case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestSubmitted:
+        // TODO!
+        if (self.mTestPublicIp != nil  || self.mTestSubmissionId != nil)
+        {
+          return 1 + self.mNumberOfPassiveMetrics;
+        }
+        return 1;
+      default:
+        SK_ASSERT(false);
+        break;
     }
   }
  
@@ -1442,25 +1466,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 +(void)sAddPassiveMetricsToArray:(NSMutableArray*)testResultsArray
 {
-  SKBTestResultValue* tr0;
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_PHONE];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_OS];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_TARGET];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP];
-  [testResultsArray addObject:tr0];
-  tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
-  [testResultsArray addObject:tr0];
+  NSArray *passiveResultsArray = [[SKAAppDelegate getAppDelegate] getPassiveMetricsToDisplay];
+  
+  for (NSString *thePassiveMetric in passiveResultsArray) {
+    SKBTestResultValue* tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:thePassiveMetric];
+    [testResultsArray addObject:tr0];
+  }
 }
 
 +(NSMutableArray*)sGetNonPassiveMetricsInArray {
@@ -1495,27 +1506,27 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   mpTestResult.latency = -1;
   mpTestResult.loss = -1;
   mpTestResult.jitter = -1;
-  
-  mpTestResult.device = self.appDelegate.deviceModel;
-  mpTestResult.os = [[UIDevice currentDevice] systemVersion];
-  mpTestResult.carrier_name = self.appDelegate.carrierName;
-  mpTestResult.country_code = self.appDelegate.countryCode;
+  mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] = self.appDelegate.deviceModel;
+  mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_OS] = [[UIDevice currentDevice] systemVersion];
+  mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME] = self.appDelegate.carrierName;
+  mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY] = self.appDelegate.countryCode;
   //    mpTestResult.iso_country_code;
-  mpTestResult.network_code = self.appDelegate.networkCode;
+  mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK] = self.appDelegate.networkCode;
   
-  if ([self getIsConnected] == NO)
-    mpTestResult.network_type = @"";
+  if ([self getIsConnected] == NO) {
+    mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = @"";
+  }
   else
   {
     if (connectionStatus == WIFI)
     {
-      mpTestResult.network_type = @"network";
-      mpTestResult.radio_type = @"";
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = @"network";
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE] = @"";
     }
     else
     {
-      mpTestResult.network_type = @"mobile";
-      mpTestResult.radio_type = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = @"mobile";
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE] = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
     }
   }
   
@@ -1542,13 +1553,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST].value = nil;
   }
   
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME].value = self.appDelegate.carrierName;
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY].value = self.appDelegate.countryCode;
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK].value = self.appDelegate.networkCode;
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO].value = self.appDelegate.isoCode;
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_PHONE].value = self.appDelegate.deviceModel;
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_OS].value = [[UIDevice currentDevice] systemVersion];
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_TARGET].value = @"*";
+  // These values do NOT have to exist.
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME].value = self.appDelegate.carrierName;
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY].value = self.appDelegate.countryCode;
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK].value = self.appDelegate.networkCode;
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO].value = self.appDelegate.isoCode;
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_DEVICE].value = self.appDelegate.deviceModel;
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_OS].value = [[UIDevice currentDevice] systemVersion];
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_TARGET].value = @"*";
   
   showPassiveMetrics = YES;
   [self updateTableAnimated];

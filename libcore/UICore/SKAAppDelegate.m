@@ -1795,8 +1795,21 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return;
 }
 
--(BOOL) getShowMetricsOnMainScreen {
-  return YES;
+-(SKBShowMetricsRule) getShowMetricsOnMainScreen {
+  return SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts;
+}
+
+-(NSArray*)getPassiveMetricsToDisplay
+{
+  return @[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME,
+           SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY,
+           SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK,
+           SKB_TESTVALUERESULT_C_PM_CARRIER_ISO,
+           SKB_TESTVALUERESULT_C_PM_DEVICE,
+           SKB_TESTVALUERESULT_C_PM_OS,
+           SKB_TESTVALUERESULT_C_PM_TARGET,
+           SKB_TESTVALUERESULT_C_PM_PUBLIC_IP,
+           SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
 }
 
 @end

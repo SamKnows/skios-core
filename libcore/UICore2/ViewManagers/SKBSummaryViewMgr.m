@@ -609,6 +609,8 @@ static BOOL sbReloadTableAfterBack = NO;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+  // This is ALWAYS 5 - for the 5 tests we run.
+  // FUTURE: in app variants requiring less tests, we'd return a different number!
   return 5;
 }
 

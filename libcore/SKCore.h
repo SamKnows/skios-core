@@ -69,6 +69,7 @@ typedef enum {
 #import "./Tests/SKAAutotest.h"
 
 #import "./UICore2/Reusable/SKAppColourScheme/SKAppColourScheme.h"
+#import "./UICore2/ViewManagers/SKBTestResultValue.h"
 
 FOUNDATION_EXPORT NSString *const Prefs_Username;
 FOUNDATION_EXPORT NSString *const Prefs_UserId;

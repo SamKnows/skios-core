@@ -578,6 +578,12 @@
 				B282672A19E3F579003A4172 /* SKBTestResultsSharer.m */,
 				B28006DB19C881E90008DF5F /* SKBMainViewTabBarController.h */,
 				B28006DC19C881E90008DF5F /* SKBMainViewTabBarController.m */,
+				B28006DE19C970300008DF5F /* SKBRunTestViewMgrController.h */,
+				B28006DF19C970300008DF5F /* SKBRunTestViewMgrController.m */,
+				B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */,
+				B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */,
+				B22E5EDD19DAC40000666F16 /* SKBSummaryViewController.h */,
+				B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */,
 				B271658819EEA86D005FAECA /* SKBSettingsTabViewController.h */,
 				B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */,
 				B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */,
@@ -586,12 +592,6 @@
 				B2FB032419B75D09007AA3C2 /* SKBTermsView.h */,
 				B2FB032519B75D09007AA3C2 /* SKBTermsView.m */,
 				B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */,
-				B28006DE19C970300008DF5F /* SKBRunTestViewMgrController.h */,
-				B28006DF19C970300008DF5F /* SKBRunTestViewMgrController.m */,
-				B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */,
-				B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */,
-				B22E5EDD19DAC40000666F16 /* SKBSummaryViewController.h */,
-				B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */,
 			);
 			name = NewViewControllers;
 			sourceTree = "<group>";
@@ -1163,14 +1163,14 @@
 		B2FB032119B75D09007AA3C2 /* ViewManagers */ = {
 			isa = PBXGroup;
 			children = (
-				B2FB032219B75D09007AA3C2 /* SKBHistoryViewMgr.h */,
-				B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */,
-				B2FB032819B75D09007AA3C2 /* SKBSettingsMgr.h */,
-				B2FB032919B75D09007AA3C2 /* SKBSettingsMgr.m */,
-				B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */,
-				B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */,
 				B28006E119C9776D0008DF5F /* SKBTestResultValue.h */,
 				B28006E219C9776D0008DF5F /* SKBTestResultValue.m */,
+				B2FB032219B75D09007AA3C2 /* SKBHistoryViewMgr.h */,
+				B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */,
+				B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */,
+				B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */,
+				B2FB032819B75D09007AA3C2 /* SKBSettingsMgr.h */,
+				B2FB032919B75D09007AA3C2 /* SKBSettingsMgr.m */,
 				B22E5ED719D9713800666F16 /* NewViewControllers */,
 			);
 			path = ViewManagers;

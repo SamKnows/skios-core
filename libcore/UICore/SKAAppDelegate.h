@@ -33,6 +33,13 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 
 @class Reachability;
 
+typedef enum SKBShowMetricsRule
+{
+  SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts = 0,
+  SKBShowMetricsRule_ShowPassiveMetrics_Never = 1,
+  SKBShowMetricsRule_ShowPassiveMetrics_WhenTestSubmitted = 2
+} SKBShowMetricsRule;
+
 @interface SKAAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, SKAutotestManagerDelegate, UIActionSheetDelegate>
 {
     SKScheduler *schedule;
@@ -176,6 +183,7 @@ FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
 //
 // Optional method!
 -(void) setLogoImage:(UIImageView*)uiImage;
--(BOOL) getShowMetricsOnMainScreen;
+-(SKBShowMetricsRule) getShowMetricsOnMainScreen;
+-(NSArray*)getPassiveMetricsToDisplay;
 
 @end

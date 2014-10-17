@@ -321,7 +321,7 @@
   else
     self.lResultJitter.text = [NSString stringWithFormat:@"%.0f ms", testResult.jitter];
   
-  if ([testResult_.network_type isEqualToString:@"mobile"]) {
+  if ([testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"]) {
     self.ivNetworkType.image  = [UIImage imageNamed:@"sgsm.png"];
   } else {
     self.ivNetworkType.image = [UIImage imageNamed:@"swifi.png"];
