@@ -131,6 +131,22 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [[SKAppColourScheme sGetAppColourScheme] getGraphColourBottomAreaFill];
 }
 
++(UIColor*)sGetActionSheetBackgroundColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetBackgroundColour];
+}
++(UIColor*)sGetActionSheetOuterAreaColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetOuterAreaColour];
+}
++(UIColor*)sGetActionSheetInnerAreaBorderColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetInnerAreaBorderColour];
+}
++(UIColor*)sGetActionSheetTextColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetTextColour];
+}
++(UIColor*)sGetActionSheetButtonColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonColour];
+}
+
 +(float) sGet_GUI_MULTIPLIER {
   // TODO - this should be removed, so we work fully with storyboards,
   // in LANDSCAPE mode and with different layouts!
@@ -283,6 +299,29 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 
 -(UIColor*)getGraphColourBottomAreaFill {
   return [UIColor colorFromHexString:@"#6dadce"];
+}
+
+// Action sheet colours!
+
+// This is on TOP of the background gradient.
+-(UIColor*)getActionSheetBackgroundColour {
+  return [UIColor colorWithWhite:1 alpha:0.5];
+}
+
+-(UIColor*)getActionSheetOuterAreaColour {
+  return [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
+}
+
+-(UIColor*)getActionSheetInnerAreaBorderColour {
+  return [UIColor colorWithWhite:1 alpha:0.5];
+}
+
+-(UIColor*)getActionSheetButtonColour {
+  return [UIColor clearColor];
+}
+
+-(UIColor*)getActionSheetTextColour {
+  return [UIColor whiteColor];
 }
 
 //-(UIColor*)getGraphColourTitleText {

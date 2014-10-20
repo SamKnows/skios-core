@@ -29,7 +29,6 @@
 -(UIColor*)getMainColourDialMeasurementText; // [UIColor orangeColor]
 -(UIColor*)getMainColourPressTheStartButtonText; // [UIColor whiteColor]
 -(UIColor*)getMainColourStatusText;
--(UIColor*)getGraphColourBackground;
 -(UIColor*)getPanelColourBackground; // [UIColor whiteColor]
 -(UIColor*)getTableCellColourText; // [UIColor whiteColor]
 -(UIColor*)getResultColourText; // [UIColor whiteColor]
@@ -41,6 +40,12 @@
 -(UIColor*)getGraphColourVerticalGridLine;
 -(UIColor*)getGraphColourTopAreaFill;
 -(UIColor*)getGraphColourBottomAreaFill;
+
+-(UIColor*)getActionSheetBackgroundColour;
+-(UIColor*)getActionSheetOuterAreaColour;
+-(UIColor*)getActionSheetInnerAreaBorderColour;
+-(UIColor*)getActionSheetButtonColour;
+-(UIColor*)getActionSheetTextColour;
 @end
 
 @interface SKAppColourScheme : NSObject<PSKAppColourScheme>
@@ -94,7 +99,11 @@
 +(UIColor*)sGetResultColourText; // [UIColor whiteColor]
 +(UIColor*)sGetSummaryGetMenuPanelBackgroundColour;
 +(UIColor*)sGetSummaryGetCellBackgroundColour;
-
++(UIColor*)sGetActionSheetBackgroundColour;
++(UIColor*)sGetActionSheetOuterAreaColour;
++(UIColor*)sGetActionSheetInnerAreaBorderColour;
++(UIColor*)sGetActionSheetButtonColour;
++(UIColor*)sGetActionSheetTextColour;
 
 // The app can call this static method, in order to provide a custom app colour scheme!
 +(void)sSetAppColourScheme:(NSObject<PSKAppColourScheme>*)theAppColourScheme;
