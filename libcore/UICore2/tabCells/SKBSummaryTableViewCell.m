@@ -29,6 +29,12 @@
   self.leftAverageUnitsLabel.text = inLeftAverageUnits;
   self.rightBestValueLabel.text = inRightBestValue;
   self.rightBestUnitsLabel.text = inRightBestUnits;
+  
+  self.topTitleLabel.textColor = [SKAppColourScheme sGetResultColourText];
+  self.leftAverageValueLabel.textColor = [SKAppColourScheme sGetResultColourText];
+  self.leftAverageUnitsLabel.textColor = [SKAppColourScheme sGetResultColourText];
+  self.rightBestValueLabel.textColor = [SKAppColourScheme sGetResultColourText];
+  self.rightBestUnitsLabel.textColor = [SKAppColourScheme sGetResultColourText];
  
   //http://stackoverflow.com/questions/18878258/uitableviewcell-show-white-background-and-cannot-be-modified-on-ios7
   self.backgroundColor = [UIColor clearColor];

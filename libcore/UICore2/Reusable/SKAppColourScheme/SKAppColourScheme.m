@@ -105,6 +105,9 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetTableCellColourText {
   return [[SKAppColourScheme sGetAppColourScheme] getTableCellColourText ];
 }
++(UIColor*)sGetResultColourText {
+  return [[SKAppColourScheme sGetAppColourScheme] getResultColourText ];
+}
 
 
 
@@ -252,10 +255,13 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 -(UIColor*)getPanelColourBackground {
   return [UIColor colorWithWhite:0 alpha:0.2];
 }
--(UIColor*)sGetTableCellColourText {
+-(UIColor*)getTableCellColourText {
   return [UIColor whiteColor];
 }
 
+-(UIColor*)getResultColourText {
+  return [UIColor colorWithWhite:0.85 alpha:1];
+}
 
 
 

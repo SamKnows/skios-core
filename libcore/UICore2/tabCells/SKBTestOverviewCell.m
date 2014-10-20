@@ -200,26 +200,26 @@
   
   self.lResultDownload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 11, GUI_MULTIPLIER * 31, GUI_MULTIPLIER * 80, GUI_MULTIPLIER * 55)];
   self.lResultDownload.text = @"-";
-  self.lResultDownload.textColor = [UIColor colorWithWhite:0.85 alpha:1];
+  self.lResultDownload.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultDownload.font = resultFont1;
   [self.contentView addSubview:self.lResultDownload];
   
   self.lResultUpload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 105, GUI_MULTIPLIER * 31, GUI_MULTIPLIER * 82, GUI_MULTIPLIER * 55)];
   self.lResultUpload.text = @"-";
-  self.lResultUpload.textColor = [UIColor colorWithWhite:0.85 alpha:1];
+  self.lResultUpload.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultUpload.font = resultFont1;
   [self.contentView addSubview:self.lResultUpload];
   
   self.lResultLatency = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
   self.lResultLatency.text = @"-";
-  self.lResultLatency.textColor = [UIColor colorWithWhite:0.85 alpha:1];
+  self.lResultLatency.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultLatency.textAlignment = UITextAlignmentCenter;
   self.lResultLatency.font = resultFont2;
   [self.contentView addSubview:self.lResultLatency];
   
   self.lResultLoss = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
   self.lResultLoss.text = @"-";
-  self.lResultLoss.textColor = [UIColor colorWithWhite:0.85 alpha:1];
+  self.lResultLoss.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultLoss.textAlignment = UITextAlignmentCenter;
   self.lResultLoss.font = resultFont2;
   [self.contentView addSubview:self.lResultLoss];
@@ -228,7 +228,7 @@
   {
     self.lResultJitter = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
     self.lResultJitter.text = @"-";
-    self.lResultJitter.textColor = [UIColor colorWithWhite:0.85 alpha:1];
+    self.lResultJitter.textColor = [SKAppColourScheme sGetResultColourText];
     self.lResultJitter.textAlignment = UITextAlignmentCenter;
     self.lResultJitter.font = resultFont2;
     [self.contentView addSubview:self.lResultJitter];
