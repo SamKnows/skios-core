@@ -108,40 +108,27 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetResultColourText {
   return [[SKAppColourScheme sGetAppColourScheme] getResultColourText ];
 }
-
-
-
++(UIColor*)sGetSummaryGetMenuPanelBackgroundColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getSummaryGetMenuPanelBackgroundColour ];
+}
++(UIColor*)sGetSummaryGetCellBackgroundColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getSummaryGetCellBackgroundColour ];
+}
 
 +(UIColor*)sGetGraphColourBackground {
   return [[SKAppColourScheme sGetAppColourScheme] getGraphColourBackground];
 }
-
 +(UIColor*)sGetGraphColourTopLine {
   return [[SKAppColourScheme sGetAppColourScheme] getGraphColourTopLine];
 }
-
-+(UIColor*)sGetGraphColourTitleText {
-  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourTitleText];
++(UIColor*)sGetGraphColourVerticalGridLine {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourVerticalGridLine];
 }
-
-+(UIColor*)sGetGraphColourAxisMain {
-  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourAxisMain];
++(UIColor*)sGetGraphColourTopAreaFill {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourTopAreaFill];
 }
-
-+(UIColor*)sGetGraphColourAxisTick {
-  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourAxisTick];
-}
-
-+(UIColor*)sGetGraphColourAxisLabelText {
-  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourAxisLabelText];
-}
-
-+(UIColor*)sGetGraphColourSideLineColor {
-  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourSideLineColor];
-}
-
-+(UIColor*)sGetGraphColourFillColor {
-  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourFillColor];
++(UIColor*)sGetGraphColourBottomAreaFill {
+  return [[SKAppColourScheme sGetAppColourScheme] getGraphColourBottomAreaFill];
 }
 
 +(float) sGet_GUI_MULTIPLIER {
@@ -263,6 +250,12 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [UIColor colorWithWhite:0.85 alpha:1];
 }
 
+-(UIColor*)getSummaryGetMenuPanelBackgroundColour {
+  return [UIColor colorWithWhite:0 alpha:0.1];//[UIColor clearColor];
+}
+-(UIColor*)getSummaryGetCellBackgroundColour {
+  return [UIColor clearColor];
+}
 
 
 
@@ -275,32 +268,38 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 }
 
 // Graph colours!
+
 -(UIColor*)getGraphColourTopLine {
-  return [UIColor sSKCGetColor_cornflowerColor];
+  return [UIColor colorFromHexString:@"#2b6da3"];
 }
 
--(UIColor*)getGraphColourTitleText {
-  return [UIColor whiteColor];
+-(UIColor*)getGraphColourVerticalGridLine {
+  return [UIColor colorFromHexString:@"#cce5e5e5"];
 }
 
--(UIColor*)getGraphColourAxisMain {
-  return [UIColor lightGrayColor];
-}
-          
--(UIColor*)getGraphColourAxisTick {
-  return [UIColor lightGrayColor];
+-(UIColor*)getGraphColourTopAreaFill {
+  return [UIColor colorFromHexString:@"#b8d3e1"];
 }
 
--(UIColor*)getGraphColourAxisLabelText {
-  return [UIColor whiteColor];
+-(UIColor*)getGraphColourBottomAreaFill {
+  return [UIColor colorFromHexString:@"#6dadce"];
 }
 
--(UIColor*)getGraphColourSideLineColor {
-  return [UIColor orangeColor];
-}
+//-(UIColor*)getGraphColourTitleText {
+//  return [UIColor blackColor];
+//}
+//
+//-(UIColor*)getGraphColourAxisMain {
+//  return [UIColor clearColor];
+//}
+//          
+//-(UIColor*)getGraphColourAxisTick {
+//  return [UIColor clearColor];
+//}
+//
+//-(UIColor*)getGraphColourAxisLabelText {
+//  return [UIColor clearColor];
+//}
 
--(UIColor*)getGraphColourFillColor {
-  return [UIColor lightGrayColor];
-}
 
 @end

@@ -33,15 +33,14 @@
 -(UIColor*)getPanelColourBackground; // [UIColor whiteColor]
 -(UIColor*)getTableCellColourText; // [UIColor whiteColor]
 -(UIColor*)getResultColourText; // [UIColor whiteColor]
+-(UIColor*)getSummaryGetMenuPanelBackgroundColour;
+-(UIColor*)getSummaryGetCellBackgroundColour;
 
-
+-(UIColor*)getGraphColourBackground;
 -(UIColor*)getGraphColourTopLine;
--(UIColor*)getGraphColourTitleText;
--(UIColor*)getGraphColourAxisMain;
--(UIColor*)getGraphColourAxisTick;
--(UIColor*)getGraphColourAxisLabelText;
--(UIColor*)getGraphColourSideLineColor;
--(UIColor*)getGraphColourFillColor;
+-(UIColor*)getGraphColourVerticalGridLine;
+-(UIColor*)getGraphColourTopAreaFill;
+-(UIColor*)getGraphColourBottomAreaFill;
 @end
 
 @interface SKAppColourScheme : NSObject<PSKAppColourScheme>
@@ -58,7 +57,6 @@
 +(UIColor*)sGetOuterColor;
 +(UIColor*)sGetWelcomeSplashBackgroundColor;
 +(UIColor*)sGetWelcomeSplashTextColor;
-+(UIColor*)sGetGraphColourBackground;
 //+(UIColor*)sGetGraphColourTopLine;
 //+(UIColor*)sGetGraphColourTitleText;
 //+(UIColor*)sGetGraphColourAxisMain;
@@ -66,6 +64,11 @@
 //+(UIColor*)sGetGraphColourAxisLabelText;
 //+(UIColor*)sGetGraphColourSideLineColor;
 //+(UIColor*)sGetGraphColourFillColor;
++(UIColor*)sGetGraphColourBackground;
++(UIColor*)sGetGraphColourTopLine;
++(UIColor*)sGetGraphColourVerticalGridLine;
++(UIColor*)sGetGraphColourTopAreaFill;
++(UIColor*)sGetGraphColourBottomAreaFill;
 // Tab controll colours
 +(UIColor*)sGetTabColourActiveText;
 +(UIColor*)sGetTabColourInactiveText;
@@ -89,6 +92,8 @@
 +(UIColor*)sGetPanelColourBackground; // [UIColor whiteColor]
 +(UIColor*)sGetTableCellColourText; // [UIColor whiteColor]
 +(UIColor*)sGetResultColourText; // [UIColor whiteColor]
++(UIColor*)sGetSummaryGetMenuPanelBackgroundColour;
++(UIColor*)sGetSummaryGetCellBackgroundColour;
 
 
 // The app can call this static method, in order to provide a custom app colour scheme!

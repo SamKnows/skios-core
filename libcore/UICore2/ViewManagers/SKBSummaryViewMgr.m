@@ -32,7 +32,7 @@
   
   currentChartType= -1;
   
-  self.backgroundColor = [UIColor clearColor];
+  self.backgroundColor = [UIColor clearColor]; // #2B4195
   
   self.masterView = masterView_;
   
@@ -83,6 +83,11 @@ static BOOL sbReloadTableAfterBack = NO;
   self.vHeader.layer.cornerRadius = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 3;
   self.vHeader.layer.borderWidth = 0.5;
   self.vHeader.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
+  
+  self.btNetworkType.backgroundColor = [SKAppColourScheme sGetSummaryGetMenuPanelBackgroundColour];
+  self.btPeriod.backgroundColor = [SKAppColourScheme sGetSummaryGetMenuPanelBackgroundColour];
+  self.vHeader.backgroundColor = [SKAppColourScheme sGetSummaryGetMenuPanelBackgroundColour];
+  
   
   self.vChart.alpha = 0;
   self.vChart.backgroundColor = [SKAppColourScheme sGetGraphColourBackground];
@@ -639,6 +644,8 @@ static BOOL sbReloadTableAfterBack = NO;
 -(void) refreshCellAtIndex:(NSInteger)row {
   
   SKBSummaryTableViewCell *cell = (SKBSummaryTableViewCell*)[self.tvTests cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+  
+  cell.contentView.backgroundColor = [SKAppColourScheme sGetSummaryGetCellBackgroundColour];
   
   switch (row) {
     case 0:

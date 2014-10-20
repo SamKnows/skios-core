@@ -164,10 +164,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   
   // Set up line style etc.
   CPTMutableLineStyle *theLineStyle = [CPTMutableLineStyle new];
-  CPTColor *lineColor = [CPTColor colorWithComponentRed:(((float)0x2b)/255.0)
-                                                  green:(((float)0x6d)/255.0)
-                                                   blue:(((float)0xa3)/255.0)
-                                                  alpha:1.0];
+  CPTColor *lineColor = [CPTColor colorWithCGColor:[SKAppColourScheme sGetGraphColourTopLine].CGColor];// :(((float)0x2b)/255.0)
   
   theLineStyle.lineColor = lineColor; // [CPTColor greenColor]; // ]lightGrayColor];
   theLineStyle.lineWidth = 1.5f;
@@ -186,10 +183,9 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   
   CPTMutableLineStyle *majorGridLineStyle = [CPTMutableLineStyle lineStyle];
   majorGridLineStyle.lineWidth = 0.75;
-  CPTColor *gridLineColor = [CPTColor colorWithComponentRed:0.90
-                                                      green:0.90
-                                                       blue:0.90
-                                                      alpha:0.8];
+  //CPTColor *gridLineColor = [CPTColor colorWithCGColor:[UIColor colorFromHexString:@"#cce5e5e5"].CGColor];// :(((float)0x2b)/255.0)
+  CPTColor *gridLineColor = [CPTColor colorWithCGColor:[SKAppColourScheme sGetGraphColourVerticalGridLine].CGColor];// :(((float)0x2b)/255.0)
+  //CPTColor *gridLineColor = [CPTColor colorWithComponentRed:0.90 green:0.90 blue:0.90 alpha:0.8];
   majorGridLineStyle.lineColor = gridLineColor;
   majorGridLineStyle.dashPattern = CPTLinearBlendingMode;
 //  if (inDateFilter == DATERANGE_1w1m3m1y_ONE_DAY) {
@@ -397,16 +393,9 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   // Now define the plot gradient to use...
   //
   
-  CPTColor *areaColor = [CPTColor colorWithComponentRed:(((float)0xb8)/255.0)
-                                                  green:(((float)0xd3)/255.0)
-                                                   blue:(((float)0xe1)/255.0)
-                                                  alpha:1.0];
-  CPTColor *areaEndColor = [CPTColor colorWithComponentRed:(((float)0x6d)/255.0)
-                                                     green:(((float)0xad)/255.0)
-                                                      blue:(((float)0xce)/255.0)
-                                                     alpha:1.0];
+  CPTColor *areaColor = [CPTColor colorWithCGColor:[SKAppColourScheme sGetGraphColourTopAreaFill].CGColor];// :(((float)0x2b)/255.0)
+  CPTColor *areaEndColor = [CPTColor colorWithCGColor:[SKAppColourScheme sGetGraphColourBottomAreaFill].CGColor];// :(((float)0x2b)/255.0)
   
-  // CPTGradient *areaGradient = [CPTGradient gradientWithBeginningColor:areaColor endingColor:[CPTColor clearColor]];
   CPTGradient *areaGradient = [CPTGradient gradientWithBeginningColor:areaColor endingColor:areaEndColor];
   areaGradient.angle = -90.0f;
 //  if (inDateFilter == DATERANGE_1w1m3m1y_ONE_DAY) {
@@ -1171,10 +1160,10 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     CPTMutableTextStyle *newStyle = [axis.labelTextStyle mutableCopy];
     if ( (i % 4) == 0)
     {
-      NSLog (@"SHOW %d" ,i);
+      //NSLog (@"SHOW %d" ,i);
       newStyle.color = [CPTColor blackColor];
     } else {
-      NSLog (@"HIDE %d" ,i);
+      //NSLog (@"HIDE %d" ,i);
       newStyle.color = [CPTColor clearColor];
     }
     
