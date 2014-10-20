@@ -34,6 +34,7 @@
 -(UIColor*)getResultColourText; // [UIColor whiteColor]
 -(UIColor*)getSummaryGetMenuPanelBackgroundColour;
 -(UIColor*)getSummaryGetCellBackgroundColour;
+-(UIColor*)getSummaryGetTableSeparatorColour;
 
 -(UIColor*)getGraphColourBackground;
 -(UIColor*)getGraphColourTopLine;
@@ -99,6 +100,7 @@
 +(UIColor*)sGetResultColourText; // [UIColor whiteColor]
 +(UIColor*)sGetSummaryGetMenuPanelBackgroundColour;
 +(UIColor*)sGetSummaryGetCellBackgroundColour;
++(UIColor*)sGetSummaryGetTableSeparatorColour;
 +(UIColor*)sGetActionSheetBackgroundColour;
 +(UIColor*)sGetActionSheetOuterAreaColour;
 +(UIColor*)sGetActionSheetInnerAreaBorderColour;

@@ -114,6 +114,9 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetSummaryGetCellBackgroundColour {
   return [[SKAppColourScheme sGetAppColourScheme] getSummaryGetCellBackgroundColour ];
 }
++(UIColor*)sGetSummaryGetTableSeparatorColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getSummaryGetTableSeparatorColour ];
+}
 
 +(UIColor*)sGetGraphColourBackground {
   return [[SKAppColourScheme sGetAppColourScheme] getGraphColourBackground];
@@ -273,11 +276,9 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [UIColor clearColor];
 }
 
-
-
-
-
-
+-(UIColor*)getSummaryGetTableSeparatorColour {
+  return [UIColor clearColor];
+}
 
 -(UIColor*)getGraphColourBackground {
   return [SKAppColourScheme sGetSamKnowsBlue];

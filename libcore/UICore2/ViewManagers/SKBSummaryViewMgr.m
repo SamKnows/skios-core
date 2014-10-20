@@ -87,7 +87,8 @@ static BOOL sbReloadTableAfterBack = NO;
   self.btNetworkType.backgroundColor = [SKAppColourScheme sGetSummaryGetMenuPanelBackgroundColour];
   self.btPeriod.backgroundColor = [SKAppColourScheme sGetSummaryGetMenuPanelBackgroundColour];
   self.vHeader.backgroundColor = [SKAppColourScheme sGetSummaryGetMenuPanelBackgroundColour];
-  
+ 
+  self.tvTests.separatorColor = [SKAppColourScheme sGetSummaryGetTableSeparatorColour];
   
   self.vChart.alpha = 0;
   self.vChart.backgroundColor = [SKAppColourScheme sGetGraphColourBackground];
