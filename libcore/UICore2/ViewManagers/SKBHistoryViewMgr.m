@@ -442,14 +442,16 @@ static SKATestResults* testToShareExternal = nil;
   UILabel* label;
   if (text_.length > 0)
   {
-    label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 155, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
+    label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 85, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
+    label.adjustsFontSizeToFitWidth = YES;
     label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
     label.textColor = [SKAppColourScheme sGetMetricsTextColour];
     label.text = localizedLabelTextID_;
     [self addSubview:label];
     [arrPassiveLabelsAndValues addObject:label];
     
-    label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 120, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 210, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
+    label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 100, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 220, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
+    label.adjustsFontSizeToFitWidth = YES;
     label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
     label.textColor = [SKAppColourScheme sGetMetricsTextColour];
     label.text = text_;

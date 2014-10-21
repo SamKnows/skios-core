@@ -373,44 +373,52 @@ static BOOL sbReloadTableAfterBack = NO;
 
 -(void)viewTouched:(UIButton*)button_
 {
-    switch (button_.tag) {
-        case 0:
-            self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-            break;
-        case 1:
-            self.vUpload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-            break;
-        case 2:
-            self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-            break;
-        case 3:
-            self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-            break;
-        case 4:
-            self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-            break;
-    }
+  switch (button_.tag) {
+    case 0:
+      self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+      break;
+    case 1:
+      self.vUpload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+      break;
+    case 2:
+      self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+      break;
+    case 3:
+      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+        self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+      } else {
+        self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+      }
+      break;
+    case 4:
+      self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+      break;
+  }
 }
 
 -(void)viewUntouched:(UIButton*)button_
 {
-    switch (button_.tag) {
-        case 0:
-            self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-            break;
-        case 1:
-            self.vUpload.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-            break;
-        case 2:
-            self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-            break;
-        case 3:
-            self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-            break;
-        case 4:
-            self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
-            break;
-    }
+  switch (button_.tag) {
+    case 0:
+      self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+      break;
+    case 1:
+      self.vUpload.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+      break;
+    case 2:
+      self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+      break;
+    case 3:
+      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+        self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+      } else {
+        self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+      }
+      break;
+    case 4:
+      self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
+      break;
+  }
 }
 
 -(NSString*)getSelectedNetworkWord
@@ -540,7 +548,11 @@ static BOOL sbReloadTableAfterBack = NO;
       testType = @"latency";
       break;
     case 3:
-      testType = @"packetloss";
+      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+        testType = @"packetloss";
+      } else {
+        testType = @"jitter";
+      }
       break;
     case 4:
       testType = @"jitter";
@@ -615,9 +627,16 @@ static BOOL sbReloadTableAfterBack = NO;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  // This is ALWAYS 5 - for the 5 tests we run.
+  // This is at least 3, but up to 5.
   // FUTURE: in app variants requiring less tests, we'd return a different number!
-  return 5;
+  int rows = 3;
+  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+    rows++;
+  }
+  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+    rows++;
+  }
+  return rows;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -677,13 +696,24 @@ static BOOL sbReloadTableAfterBack = NO;
        ];
       break;
     case 3:
-      [cell prepareWithTopLeftImage:nil
-                       TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Loss")
-                   LeftAverageValue:self.lLossAvg
-                   LeftAverageUnits:self.lLossAvgUnit
-                     RightBestValue:self.lLossBst
-                     RightBestUnits:self.lLossBstUnit
-       ];
+      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+        [cell prepareWithTopLeftImage:nil
+                         TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Loss")
+                     LeftAverageValue:self.lLossAvg
+                     LeftAverageUnits:self.lLossAvgUnit
+                       RightBestValue:self.lLossBst
+                       RightBestUnits:self.lLossBstUnit
+         ];
+      } else {
+        [cell prepareWithTopLeftImage:nil
+                         TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Jitter")
+                     LeftAverageValue:self.lJitterAvg
+                     LeftAverageUnits:self.lJitterAvgUnit
+                       RightBestValue:self.lJitterBst
+                       RightBestUnits:self.lJitterBstUnit
+         ];
+      }
+      //if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
       break;
     case 4:
     default:
@@ -727,7 +757,11 @@ static BOOL sbReloadTableAfterBack = NO;
       currentChartType = 2;
       break;
     case 3:
-      currentChartType = 3;
+      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+        currentChartType = 3;
+      } else {
+        currentChartType = 4;
+      }
       break;
     case 4:
       currentChartType = 4;

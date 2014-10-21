@@ -1697,6 +1697,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+-(BOOL) getIsLossSupported {
+  return YES;
+}
+
 -(BOOL) alwaysRunAllTests {
   SK_ASSERT(false);
   return NO;

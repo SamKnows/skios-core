@@ -167,12 +167,15 @@
   self.lLatencyLabel.textAlignment = UITextAlignmentCenter;
   [self.contentView addSubview:self.lLatencyLabel];
   
-  self.lLossLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
-  self.lLossLabel.text = sSKCoreGetLocalisedString(@"Test_Loss");
-  self.lLossLabel.textColor = [UIColor whiteColor];
-  self.lLossLabel.font = labelFontLight;
-  self.lLossLabel.textAlignment = UITextAlignmentCenter;
-  [self.contentView addSubview:self.lLossLabel];
+  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported])
+  {
+    self.lLossLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
+    self.lLossLabel.text = sSKCoreGetLocalisedString(@"Test_Loss");
+    self.lLossLabel.textColor = [UIColor whiteColor];
+    self.lLossLabel.font = labelFontLight;
+    self.lLossLabel.textAlignment = UITextAlignmentCenter;
+    [self.contentView addSubview:self.lLossLabel];
+  }
   
   if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported])
   {
@@ -217,12 +220,14 @@
   self.lResultLatency.font = resultFont2;
   [self.contentView addSubview:self.lResultLatency];
   
-  self.lResultLoss = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
-  self.lResultLoss.text = @"-";
-  self.lResultLoss.textColor = [SKAppColourScheme sGetResultColourText];
-  self.lResultLoss.textAlignment = UITextAlignmentCenter;
-  self.lResultLoss.font = resultFont2;
-  [self.contentView addSubview:self.lResultLoss];
+  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+    self.lResultLoss = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
+    self.lResultLoss.text = @"-";
+    self.lResultLoss.textColor = [SKAppColourScheme sGetResultColourText];
+    self.lResultLoss.textAlignment = UITextAlignmentCenter;
+    self.lResultLoss.font = resultFont2;
+    [self.contentView addSubview:self.lResultLoss];
+  }
   
   if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported])
   {
@@ -267,11 +272,15 @@
   self.aiLatency = [[CActivityBlinking alloc] initWithFrame:self.lResultLatency.frame];
   [self.contentView addSubview:self.aiLatency];
   
-  self.aiLoss = [[CActivityBlinking alloc] initWithFrame:self.lResultLoss.frame];
-  [self.contentView addSubview:self.aiLoss];
+  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+    self.aiLoss = [[CActivityBlinking alloc] initWithFrame:self.lResultLoss.frame];
+    [self.contentView addSubview:self.aiLoss];
+  }
   
-  self.aiJitter = [[CActivityBlinking alloc] initWithFrame:self.lResultJitter.frame];
-  [self.contentView addSubview:self.aiJitter];
+  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+    self.aiJitter = [[CActivityBlinking alloc] initWithFrame:self.lResultJitter.frame];
+    [self.contentView addSubview:self.aiJitter];
+  }
 }
 
 -(void)initCell

@@ -138,6 +138,7 @@ typedef enum SKBShowMetricsRule
 -(BOOL)       getDoesAppSupportServerBasedUploadSpeedTesting;
 
 -(BOOL) getIsJitterSupported;
+-(BOOL) getIsLossSupported;
 -(BOOL) alwaysRunAllTests;
 -(BOOL) supportContinuousTesting;
 -(BOOL) supportOneDayResultView;

@@ -246,6 +246,15 @@
     // Actually, make smaller on iPad
     self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
   }
+  else if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+  {
+    CGSize result = [[UIScreen mainScreen] bounds].size;
+    if(result.height < 568)
+    {
+      // iPhone 4 or earlier!
+      self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
+    }
+  }
   self.mCenterText.textColor = [SKAppColourScheme  sGetMainColourDialCenterText];
   self.mCenterText.backgroundColor = [UIColor clearColor];
   self.mCenterText.adjustsFontSizeToFitWidth = YES;
@@ -289,6 +298,15 @@
   self.mUnitText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.mUnitText.textAlignment = NSTextAlignmentCenter;
   self.mUnitText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 25];
+  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+  {
+    CGSize result = [[UIScreen mainScreen] bounds].size;
+    if(result.height < 568)
+    {
+      // iPhone 4 or earlier!
+      self.mUnitText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 20];
+    }
+  }
   self.mUnitText.textColor = [SKAppColourScheme  sGetMainColourDialUnitText];
   [self addSubview:self.mUnitText];
   
