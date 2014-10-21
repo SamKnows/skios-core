@@ -280,7 +280,7 @@
   
   BOOL bRes;
   
-  if ([SKDatabase checkExistsTable:@"metrics" Column:@"public_ip"] == NO) {
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"Public_IP"] == NO) {
     
     // New column that was not always present in the old version of the application.
     
@@ -294,7 +294,7 @@
     SK_ASSERT(bRes);
   }
   
-  if ([SKDatabase checkExistsTable:@"metrics" Column:@"submission_id"] == NO) {
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"Submission_ID"] == NO) {
     
     // New column that was not always present in the old version of the application.
     
@@ -906,8 +906,8 @@ public static String convertConnectivityType(int type) {
     return;
   }
   
-  if ( ([metricColumn isEqualToString:@"public_ip"])  ||
-       ([metricColumn isEqualToString:@"submission_id"])
+  if ( ([metricColumn isEqualToString:@"Public_IP"])  ||
+       ([metricColumn isEqualToString:@"Submission_ID"])
       )
   {
     // Column is one we expect!

@@ -49,10 +49,10 @@
     [self.btCancel addTarget:self action:@selector(mainButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.btCancel.titleLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
     self.btCancel.titleLabel.alpha = 0.7;
-    self.btCancel.backgroundColor = [SKAppColourScheme sGetActionSheetButtonColour];
+    self.btCancel.backgroundColor = [SKAppColourScheme sGetActionSheetButton1Colour];
     
     [self.btCancel setTitle:mainButtonTitle_ forState:UIControlStateNormal];
-    [self.btCancel setTitleColor:[SKAppColourScheme sGetActionSheetTextColour] forState:UIControlStateNormal];
+    [self.btCancel setTitleColor:[SKAppColourScheme sGetActionSheetText1Colour] forState:UIControlStateNormal];
     [self.backgroundView addSubview:self.btCancel];
     
     self.arrOptions = [[NSMutableArray alloc] init];
@@ -238,14 +238,17 @@
 {
   switch (optionDefinition_.mDisplayState) {
     case -1:
+      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButton1Colour];
+      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetText1Colour];
+      break;
     case 0:
-      optionDefinition_.button.backgroundColor = [UIColor clearColor];
-      optionDefinition_.label.textColor = [UIColor whiteColor];
+      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButtonColour];
+      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetTextColour];
       break;
     case 1:
     default:
-      optionDefinition_.button.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-      optionDefinition_.label.textColor = [UIColor colorWithRed:44.0/255.0 green:66.0/255.0 blue:149.0/255.0 alpha:1];
+      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButton1Colour];
+      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetText1Colour];
       break;
   }
 }

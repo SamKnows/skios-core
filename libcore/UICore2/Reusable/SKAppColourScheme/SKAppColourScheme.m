@@ -143,11 +143,17 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetActionSheetInnerAreaBorderColour {
   return [[SKAppColourScheme sGetAppColourScheme] getActionSheetInnerAreaBorderColour];
 }
++(UIColor*)sGetActionSheetButtonColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonColour];
+}
++(UIColor*)sGetActionSheetButton1Colour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButton1Colour];
+}
 +(UIColor*)sGetActionSheetTextColour {
   return [[SKAppColourScheme sGetAppColourScheme] getActionSheetTextColour];
 }
-+(UIColor*)sGetActionSheetButtonColour {
-  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonColour];
++(UIColor*)sGetActionSheetText1Colour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetText1Colour];
 }
 +(UIColor*)sGetMetricsTextColour {
   return [[SKAppColourScheme sGetAppColourScheme] getMetricsTextColour];
@@ -330,9 +336,18 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [UIColor clearColor];
 }
 
+-(UIColor*)getActionSheetButton1Colour {
+  return [UIColor colorWithWhite:0.95 alpha:1];
+}
+
 -(UIColor*)getActionSheetTextColour {
   return [UIColor whiteColor];
 }
+
+-(UIColor*)getActionSheetText1Colour {
+  return [UIColor colorWithRed:44.0/255.0 green:66.0/255.0 blue:149.0/255.0 alpha:1];
+}
+
 
 -(UIColor*)getMetricsTextColour {
   return [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];

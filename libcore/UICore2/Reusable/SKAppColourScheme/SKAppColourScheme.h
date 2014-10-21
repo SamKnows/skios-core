@@ -46,7 +46,9 @@
 -(UIColor*)getActionSheetOuterAreaColour;
 -(UIColor*)getActionSheetInnerAreaBorderColour;
 -(UIColor*)getActionSheetButtonColour;
+-(UIColor*)getActionSheetButton1Colour;
 -(UIColor*)getActionSheetTextColour;
+-(UIColor*)getActionSheetText1Colour;
 -(UIColor*)getMetricsTextColour;
 
 -(UIColor*)getBlinkerBorderColour;
@@ -109,7 +111,9 @@
 +(UIColor*)sGetActionSheetOuterAreaColour;
 +(UIColor*)sGetActionSheetInnerAreaBorderColour;
 +(UIColor*)sGetActionSheetButtonColour;
++(UIColor*)sGetActionSheetButton1Colour;
 +(UIColor*)sGetActionSheetTextColour;
++(UIColor*)sGetActionSheetText1Colour;
 +(UIColor*)sGetMetricsTextColour;
 +(UIColor*)sGetBlinkerBorderColour;
 +(UIColor*)sGetBlinkerBackgroundColour;

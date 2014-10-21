@@ -377,21 +377,26 @@ static SKATestResults* testToShareExternal = nil;
   
   arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:0];
   
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Phone")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_OS] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"OS")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Name")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Country")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_ISO] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_ISO")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Network")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_PUBLIC_IP] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"public_ip")];
-  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"submission_id")];
+  NSArray *passiveResultsArray = [[SKAAppDelegate getAppDelegate] getPassiveMetricsToDisplay];
+  
+  for (NSString *thePassiveMetric in passiveResultsArray) {
+    [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[thePassiveMetric] withLocalizedLabelTextID:sSKCoreGetLocalisedString(thePassiveMetric)];
+  }
+  
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Phone")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_OS] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"OS")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Name")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Country")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_ISO] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_ISO")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Network")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_PUBLIC_IP] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Public_IP")];
+//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Submission_ID")];
   
   // Only allow MOBILE results to be shared!
   self.btShare.hidden = YES;
   [self sendSubviewToBack:self.btShare];
-  
+ 
   NSString *theNetworkType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
-  
   if (theNetworkType.length > 0)
   {
     NSString* networkType;
@@ -403,20 +408,33 @@ static SKATestResults* testToShareExternal = nil;
       // Only allow MOBILE results to be shared!
       self.btShare.hidden = NO;
       [self bringSubviewToFront:self.btShare];
-      
-      NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
-      
-      NSString *theRadio = [SKGlobalMethods getNetworkTypeLocalized:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE]];
-      if ([theRadio isEqualToString:sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown")]) {
-        networkType = mobileString;
-      } else {
-        networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
-      }
     }
-    
-    [self placeMetricsWithLocalizedText:networkType withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Network_Type")];
   }
-  [self placeMetricsWithLocalizedText:testResult_.target withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Target")];
+
+  if ([[SKAAppDelegate getAppDelegate] showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics]) {
+    
+    if (theNetworkType.length > 0)
+    {
+      NSString* networkType;
+      networkType = sSKCoreGetLocalisedString(@"Unknown");
+      if ([theNetworkType isEqualToString:@"network"]) {
+        networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
+      } else if ([theNetworkType isEqualToString:@"mobile"]) {
+        
+        NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
+        
+        NSString *theRadio = [SKGlobalMethods getNetworkTypeLocalized:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE]];
+        if ([theRadio isEqualToString:sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown")]) {
+          networkType = mobileString;
+        } else {
+          networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
+        }
+      }
+      
+      [self placeMetricsWithLocalizedText:networkType withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Network_Type")];
+    }
+    [self placeMetricsWithLocalizedText:testResult_.target withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Target")];
+  }
 }
 
 -(void)placeMetricsWithLocalizedText:(NSString*)text_ withLocalizedLabelTextID:(NSString*)localizedLabelTextID_

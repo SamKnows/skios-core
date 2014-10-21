@@ -46,7 +46,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
   if ( (self.parentViewController == nil) ||
-        (![[self.parentViewController.class description] containsString:@"SKBSettingsTabViewController"])
+        (![[self.parentViewController.class description] isEqualToString:@"SKBSettingsTabViewController"])
      )
   {
     // Not embedded!
@@ -74,7 +74,9 @@
   [super viewWillAppear:animated];
  
   UIViewController *parentViewController = self.parentViewController;
-  if ([[parentViewController.class description] containsString:@"SKBSettingsTabViewController"]) {
+  NSString *classDescription = [parentViewController.class description];
+  NSString *theClassDescription = [NSString stringWithString:classDescription];
+  if ([theClassDescription isEqualToString:@"SKBSettingsTabViewController"]) {
     // We're embedded - reveal the background when scrolling!
     [self.tableView setBackgroundView:nil];
     [self.tableView setBackgroundColor:[UIColor clearColor]];

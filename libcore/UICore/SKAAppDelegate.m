@@ -902,25 +902,25 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
            NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
 #endif // DEBUG
            if (testId != nil) {
-             // TODO: Write the data to the database, along with the
+             // Write the data to the database, along with the
              // other passive metrics associated with the test!
-             // TODO: Display this data in the OFCA app
+             // Notify the app, in case it is interested in showing it.
              NSString *thePublicIp = theObject[@"public_ip"];
              SK_ASSERT(thePublicIp != nil);
              NSString *theSubmissionId = theObject[@"submission_id"];
              SK_ASSERT(theSubmissionId != nil);
              
              [SKDatabase updateMetricForTestId:testId
-                                  MetricColumn:@"public_ip"
+                                  MetricColumn:@"Public_IP"
                                    MetricValue:thePublicIp];
              
              [SKDatabase updateMetricForTestId:testId
-                                  MetricColumn:@"submission_id"
+                                  MetricColumn:@"Submission_ID"
                                    MetricValue:theSubmissionId];
              
              // Send the notification - it is used ONLY if it matches THE CURRENT TEST ID!
              dispatch_async(dispatch_get_main_queue(), ^{
-               [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_submission_id" object:testId userInfo:@{@"test_id":testId, @"public_ip": thePublicIp, @"submission_id":theSubmissionId}];
+               [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_Submission_ID" object:testId userInfo:@{@"test_id":testId, @"Public_IP": thePublicIp, @"Submission_ID":theSubmissionId}];
              });
            }
            
@@ -1810,6 +1810,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
            SKB_TESTVALUERESULT_C_PM_TARGET,
            SKB_TESTVALUERESULT_C_PM_PUBLIC_IP,
            SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
+}
+
+-(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics {
+  return YES;
 }
 
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController {

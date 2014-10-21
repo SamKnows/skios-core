@@ -242,6 +242,10 @@
   self.mCenterText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.mCenterText.textAlignment = NSTextAlignmentCenter;
   self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 80];
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    // Actually, make smaller on iPad
+    self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
+  }
   self.mCenterText.textColor = [SKAppColourScheme  sGetMainColourDialCenterText];
   self.mCenterText.backgroundColor = [UIColor clearColor];
   self.mCenterText.adjustsFontSizeToFitWidth = YES;

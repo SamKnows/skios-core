@@ -8,6 +8,14 @@
 #import "SKTestResults.h"
 
 @implementation SKATestResults
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+      self.metricsDictionary = [NSMutableDictionary new];
+    }
+    return self;
+}
 
 +(void)placeText:(NSString*)text_ intoRect:(CGRect)rectangle_ withFont:(UIFont*)font_
 {

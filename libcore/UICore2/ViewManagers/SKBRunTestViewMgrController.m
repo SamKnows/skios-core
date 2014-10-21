@@ -163,7 +163,7 @@
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(SKB_public_ip_and_submission_id:)
-                                               name:@"SKB_public_ip_and_submission_id"
+                                               name:@"SKB_public_ip_and_Submission_ID"
                                              object:nil];
   
   [self prepareResultsArray];
@@ -214,9 +214,9 @@
       
       NSNumber *theTestId = values[@"test_id"];
       SK_ASSERT(theTestId != nil);
-      NSString *thePublicIp = values[@"public_ip"];
+      NSString *thePublicIp = values[@"Public_IP"];
       SK_ASSERT(thePublicIp != nil);
-      NSString *theSubmissionId = values[@"submission_id"];
+      NSString *theSubmissionId = values[@"Submission_ID"];
       SK_ASSERT(theSubmissionId != nil);
       
       [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP].value = thePublicIp;
@@ -1507,6 +1507,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   mpTestResult.latency = -1;
   mpTestResult.loss = -1;
   mpTestResult.jitter = -1;
+  
+  SK_ASSERT(mpTestResult.metricsDictionary != nil);
   mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] = self.appDelegate.deviceModel;
   mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_OS] = [[UIDevice currentDevice] systemVersion];
   mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME] = self.appDelegate.carrierName;

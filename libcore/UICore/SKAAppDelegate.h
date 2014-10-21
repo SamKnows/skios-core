@@ -185,6 +185,7 @@ typedef enum SKBShowMetricsRule
 -(void) setLogoImage:(UIImageView*)uiImage;
 -(SKBShowMetricsRule) getShowMetricsOnMainScreen;
 -(NSArray*)getPassiveMetricsToDisplay;
+-(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;
 
 @end
