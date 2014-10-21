@@ -426,14 +426,14 @@ static SKATestResults* testToShareExternal = nil;
   {
     label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 155, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
     label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
-    label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
+    label.textColor = [SKAppColourScheme sGetMetricsTextColour];
     label.text = localizedLabelTextID_;
     [self addSubview:label];
     [arrPassiveLabelsAndValues addObject:label];
     
     label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 120, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 210, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
     label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
-    label.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
+    label.textColor = [SKAppColourScheme sGetMetricsTextColour];
     label.text = text_;
     [self addSubview:label];
     [arrPassiveLabelsAndValues addObject:label];

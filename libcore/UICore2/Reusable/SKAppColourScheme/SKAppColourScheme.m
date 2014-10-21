@@ -149,6 +149,15 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetActionSheetButtonColour {
   return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonColour];
 }
++(UIColor*)sGetMetricsTextColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getMetricsTextColour];
+}
++(UIColor*)sGetBlinkerBorderColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getBlinkerBorderColour];
+}
++(UIColor*)sGetBlinkerBackgroundColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getBlinkerBackgroundColour];
+}
 
 +(float) sGet_GUI_MULTIPLIER {
   // TODO - this should be removed, so we work fully with storyboards,
@@ -323,6 +332,18 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 
 -(UIColor*)getActionSheetTextColour {
   return [UIColor whiteColor];
+}
+
+-(UIColor*)getMetricsTextColour {
+  return [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
+}
+
+-(UIColor*)getBlinkerBorderColour {
+  return [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+}
+
+-(UIColor*)getBlinkerBackgroundColour {
+ return [UIColor orangeColor];
 }
 
 //-(UIColor*)getGraphColourTitleText {

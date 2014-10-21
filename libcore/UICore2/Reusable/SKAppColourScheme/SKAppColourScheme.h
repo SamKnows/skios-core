@@ -47,6 +47,10 @@
 -(UIColor*)getActionSheetInnerAreaBorderColour;
 -(UIColor*)getActionSheetButtonColour;
 -(UIColor*)getActionSheetTextColour;
+-(UIColor*)getMetricsTextColour;
+
+-(UIColor*)getBlinkerBorderColour;
+-(UIColor*)getBlinkerBackgroundColour;
 @end
 
 @interface SKAppColourScheme : NSObject<PSKAppColourScheme>
@@ -106,6 +110,9 @@
 +(UIColor*)sGetActionSheetInnerAreaBorderColour;
 +(UIColor*)sGetActionSheetButtonColour;
 +(UIColor*)sGetActionSheetTextColour;
++(UIColor*)sGetMetricsTextColour;
++(UIColor*)sGetBlinkerBorderColour;
++(UIColor*)sGetBlinkerBackgroundColour;
 
 // The app can call this static method, in order to provide a custom app colour scheme!
 +(void)sSetAppColourScheme:(NSObject<PSKAppColourScheme>*)theAppColourScheme;

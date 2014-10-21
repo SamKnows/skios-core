@@ -15,8 +15,8 @@
 -(void)initCell
 {
   self.backgroundColor = [UIColor clearColor];
-  self.lMeasureName.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
-  self.lResult.textColor = [UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1];
+  self.lMeasureName.textColor = [SKAppColourScheme sGetMetricsTextColour];
+  self.lResult.textColor      = [SKAppColourScheme sGetMetricsTextColour];
 }
 
 -(void)setMetrics:(SKBTestResultValue*)metricsObject

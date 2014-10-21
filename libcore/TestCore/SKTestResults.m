@@ -152,7 +152,7 @@
         networkName = @"wi-fi";
     
     //    [[UIColor colorWithRed:0 green:129.0/255.0 blue:220.0/255.0 alpha:1] set];
-    [[UIColor colorWithRed:255.0/255.0 green:166.0/255.0 blue:26.0/255.0 alpha:1] set];
+    [[SKAppColourScheme sGetMetricsTextColour] set];
     
     labelFont = [UIFont fontWithName:@"DINCondensed-Bold" size:50];
     [SKATestResults placeText:networkName intoRect:CGRectMake(20, 350, C_SHARE_IMAGE_WIDTH / 4, 50) withFont:labelFont];
