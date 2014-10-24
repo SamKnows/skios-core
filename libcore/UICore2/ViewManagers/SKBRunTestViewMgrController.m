@@ -1025,7 +1025,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                        }
                        
                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
-                       NSLog(@"Bitrate: %f", bitrate1024Based);
+#ifdef DEBUG
+                       NSLog(@"DEBUG: Bitrate: %f", bitrate1024Based);
+#endif // DEBUG
                        
                        [self setProgressView:0];
                      });
