@@ -14,6 +14,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame;
+- (void)initialize;
 - (void)startAnimating;
 - (void)stopAnimating;
 

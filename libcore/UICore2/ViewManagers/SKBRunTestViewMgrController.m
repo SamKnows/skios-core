@@ -1397,7 +1397,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       
       if ([self getIsConnected] == NO)
       {
-        cell.ivNetworkType = nil;
+        cell.ivNetworkType.hidden = YES;
       }
       else {
         if (connectionStatus == WIFI) {
@@ -1406,6 +1406,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         else {
           cell.ivNetworkType.image = [UIImage imageNamed:@"sgsm"];
         }
+        cell.ivNetworkType.hidden = NO;
       }
       
       return cell;
