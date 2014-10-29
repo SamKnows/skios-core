@@ -166,6 +166,8 @@ typedef enum SKBShowMetricsRule
 // Returns YES if using WiFi...
 +(BOOL) getIsUsingWiFi;
 
+-(BOOL) isTwitterExportSupported;
+-(BOOL) isFacebookExportSupported;
 -(BOOL) isSocialMediaExportSupported;
 -(BOOL) isSocialMediaImageExportSupported;
 

@@ -1780,6 +1780,14 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+-(BOOL) isTwitterExportSupported {
+  return [self isSocialMediaExportSupported];
+}
+
+-(BOOL) isFacebookExportSupported {
+  return [self isSocialMediaExportSupported];
+}
+
 -(void) didFinishAppLaunching_NotActivatedYet {
   UIStoryboard *storyboard = [self.class getStoryboard];
   self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ActivationNavigationController"];
