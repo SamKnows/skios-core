@@ -44,5 +44,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *termsAndConditionsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lblAboutCaption;
 @property (weak, nonatomic) IBOutlet UILabel *lblAboutVersion;
+@property (weak, nonatomic) IBOutlet UILabel *lblAboutWebServer;
 
 @end

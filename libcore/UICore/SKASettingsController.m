@@ -41,6 +41,8 @@
   NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
   NSString *displayVersion = [NSString stringWithFormat:@"%@.%@", appVersion, bundleVersion];
   self.lblAboutVersion.text = displayVersion;
+  
+  self.lblAboutWebServer.text =sSKCoreGetLocalisedString(@"About_Web_Server");
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -346,6 +348,8 @@ enum {
     id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
     
     [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
+  } else if ([cell.reuseIdentifier isEqualToString:@"about_url"]) {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://speedtest3.ofca.gov.hk/about-sk.html"]];
   }
 }
 
