@@ -45,13 +45,20 @@
   
   [[SKAAppDelegate getAppDelegate] setLogoImage:self.optionalTopLeftLogoView];
   
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  if (![prefs objectForKey:Prefs_LastTestSelection])
-  {
-    self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
-    [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
+  self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
+  
+  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+    // Test selection not enabled
+  } else {
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if (![prefs objectForKey:Prefs_LastTestSelection])
+    {
+      self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
+      [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
+    }
+    self.testTypes2Execute = (int)[prefs integerForKey:Prefs_LastTestSelection];
   }
-  self.testTypes2Execute = (int)[prefs integerForKey:Prefs_LastTestSelection];
   
   [self intialiseViewOnMasterView];
   
@@ -120,6 +127,18 @@
 
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  
+  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+    // Test selection not enabled
+    // ... hide the test selection button
+    self.btSelectTests.hidden = YES;
+    
+    // ... Move the share button up to "replace" it?
+    // Don't do this for now, as it doesn't work right for some reason.
+//    CGRect frame = self.btSelectTests.frame;
+//    frame.size = self.btShare.frame.size;
+//    self.btShare.frame = frame;
+  }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
@@ -281,10 +300,6 @@
 
 -(void)View_OnLoadTweakControls
 {
-  //[self setIsRunning:NO];
-  
-  self.btSelectTests.hidden = ![self.appDelegate enableTestsSelection];
-  
   [self.casStatusView initialize];
   
   //[self.tmActivityIndicator layoutSubviews];
