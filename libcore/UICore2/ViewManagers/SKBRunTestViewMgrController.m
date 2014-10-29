@@ -79,7 +79,7 @@
   } else {
     self.warningLabelBeforeTableFirstShown.hidden = NO;
     self.warningLabelBeforeTableFirstShown.text = warningMessage;
-    self.warningLabelBeforeTableFirstShown.textColor = [UIColor whiteColor];
+    //self.warningLabelBeforeTableFirstShown.textColor = [UIColor whiteColor];
   }
 }
 
@@ -787,7 +787,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodClosestTargetTestDidStart
 {
-  [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
+  if ([[SKAAppDelegate getAppDelegate] getIsBestTargetDisplaySupported]) {
+    [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
+  } else {
+    // "Running Tests"
+    [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Multiple")];
+  }
   [self showTargets];
 }
 
@@ -805,11 +810,16 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 {
   [SKAAppDelegate setClosestTarget:target];
   
-  NSString *closest = [NSString stringWithFormat:@"%@ %@",
-                       sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
-                       [self.appDelegate.schedule getClosestTargetName:target]];
-  
-  [self.mPressTheStartButtonLabel setText:closest];
+  if ([[SKAAppDelegate getAppDelegate] getIsBestTargetDisplaySupported]) {
+    NSString *closest = [NSString stringWithFormat:@"%@ %@",
+                         sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
+                         [self.appDelegate.schedule getClosestTargetName:target]];
+    
+    [self.mPressTheStartButtonLabel setText:closest];
+  } else {
+    // "Running Tests"
+    [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Multiple")];
+  }
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_TARGET].value = [self.appDelegate.schedule getClosestTargetName:target];
   
   [self.tvCurrentResults reloadData];
@@ -1397,7 +1407,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       
       if ([self getIsConnected] == NO)
       {
-        cell.ivNetworkType.hidden = YES;
+        cell.ivNetworkType = nil;
       }
       else {
         if (connectionStatus == WIFI) {
@@ -1406,7 +1416,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         else {
           cell.ivNetworkType.image = [UIImage imageNamed:@"sgsm"];
         }
-        cell.ivNetworkType.hidden = NO;
       }
       
       return cell;

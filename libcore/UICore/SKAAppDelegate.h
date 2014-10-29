@@ -188,5 +188,6 @@ typedef enum SKBShowMetricsRule
 -(NSArray*)getPassiveMetricsToDisplay;
 -(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;
+-(BOOL) getIsBestTargetDisplaySupported;
 
 @end

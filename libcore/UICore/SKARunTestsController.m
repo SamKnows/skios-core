@@ -103,12 +103,14 @@
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target
 {
   [SKAAppDelegate setClosestTarget:target];
-  
-  NSString *closest = [NSString stringWithFormat:@"%@ %@",
-                       sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
-                       [appDelegate.schedule getClosestTargetName:target]];
-  
-  [self.lblClosest setText:closest];
+ 
+  if ([[SKAAppDelegate getAppDelegate] getIsBestTargetDisplaySupported]) {
+    NSString *closest = [NSString stringWithFormat:@"%@ %@",
+                         sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
+                         [appDelegate.schedule getClosestTargetName:target]];
+    
+    [self.lblClosest setText:closest];
+  }
 }
 
 // LATENCY //////////////////////////////////////////////////////
