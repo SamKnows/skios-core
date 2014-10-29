@@ -43,10 +43,13 @@
   self.bestLabel.alpha = 1.0;
 }
 
--(void) viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-
-  //[self.summeryManagerView.tDataCapValue becomeFirstResponder];
+-(void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  
+  // Update any results...
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:@"TestListNeedsUpdate"
+   object:self];
 }
 
 @end

@@ -571,6 +571,7 @@
 		B22E5ED719D9713800666F16 /* NewViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B2FB032119B75D09007AA3C2 /* ViewManagers */,
 				B282672919E3F579003A4172 /* SKBTestResultsSharer.h */,
 				B282672A19E3F579003A4172 /* SKBTestResultsSharer.m */,
 				B28006DB19C881E90008DF5F /* SKBMainViewTabBarController.h */,
@@ -591,6 +592,7 @@
 				B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */,
 			);
 			name = NewViewControllers;
+			path = ViewManagers;
 			sourceTree = "<group>";
 		};
 		B22E889E17C36789005D9094 = {
@@ -1046,7 +1048,7 @@
 				B2FB031619B75D09007AA3C2 /* SKBActivationController.h */,
 				B2FB031719B75D09007AA3C2 /* SKBActivationController.m */,
 				B2FB031A19B75D09007AA3C2 /* tabCells */,
-				B2FB032119B75D09007AA3C2 /* ViewManagers */,
+				B22E5ED719D9713800666F16 /* NewViewControllers */,
 			);
 			path = UICore2;
 			sourceTree = "<group>";
@@ -1158,9 +1160,8 @@
 				B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */,
 				B2FB032819B75D09007AA3C2 /* SKBSettingsMgr.h */,
 				B2FB032919B75D09007AA3C2 /* SKBSettingsMgr.m */,
-				B22E5ED719D9713800666F16 /* NewViewControllers */,
 			);
-			path = ViewManagers;
+			name = ViewManagers;
 			sourceTree = "<group>";
 		};
 		B2FB437C192DFFEC00DE371B /* OCMock */ = {
