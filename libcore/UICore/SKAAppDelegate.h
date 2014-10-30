@@ -162,7 +162,7 @@ typedef enum SKBShowMetricsRule
 
 // By default, throttle query is not supported.
 -(BOOL) isThrottleQuerySupported;
-
+  
 // Returns YES if using WiFi...
 +(BOOL) getIsUsingWiFi;
 

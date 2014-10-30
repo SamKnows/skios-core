@@ -62,15 +62,6 @@
   header.textLabel.textColor = [UIColor blackColor];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-  if (self.parentViewController == nil) {
-    // Not embedded!
-    return [super tableView:tableView heightForFooterInSection:section];
-  }
-  
-  return 0.01f;
-}
 
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
@@ -364,6 +355,78 @@ enum {
 {
   // In your own app, you could use the delegate to track whether the user sent or canceled the email by examining the value in the result parameter.
   [self dismissModalViewControllerAnimated:YES];
+}
+
+//
+// http://code-ninja.org/blog/2012/02/29/ios-quick-tip-programmatically-hiding-sections-of-a-uitableview-with-static-cells/
+//
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  if(section == 1)
+  {
+    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO)
+    {
+      // Hide it!
+      return 0;
+    }
+  }
+    
+  return [super tableView:tableView numberOfRowsInSection:section];
+}
+
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+  if(section == 1)
+  {
+    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+      return [[UIView alloc] initWithFrame:CGRectZero];
+    }
+  }
+  
+  return [super tableView:tableView viewForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+  if(section == 1)
+  {
+    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+      return 0.01f;
+    }
+  }
+  
+  return [super tableView:tableView heightForHeaderInSection:section];
+}
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+  if(section == 1)
+  {
+    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+      return 0.01f;
+    }
+  }
+  
+  if (self.parentViewController == nil) {
+    // Not embedded!
+    return [super tableView:tableView heightForFooterInSection:section];
+  }
+  
+  return 0.01f;
+}
+
+-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+  if(section == 1)
+  {
+    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+      return [[UIView alloc] initWithFrame:CGRectZero];
+    }
+  }
+  
+  return [super tableView:tableView viewForFooterInSection:section];
 }
 
 @end

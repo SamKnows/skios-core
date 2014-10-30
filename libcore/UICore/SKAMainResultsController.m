@@ -973,6 +973,10 @@ static TestType GRunTheTestWithThisType;
   if ([SKAAppDelegate getIsUsingWiFi]) {
     return NO;
   }
+  
+  if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+    return NO;
+  }
 
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
