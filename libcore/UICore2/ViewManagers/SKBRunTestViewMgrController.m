@@ -24,6 +24,7 @@
 @property NSString *mTestSubmissionId;
 @property int mNumberOfNonPassiveMetrics;
 @property int mNumberOfPassiveMetrics;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnShareSpacing;
 @end
 
 @implementation SKBRunTestViewMgrController
@@ -128,17 +129,18 @@
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   
-  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
-    // Test selection not enabled
-    // ... hide the test selection button
-    self.btSelectTests.hidden = YES;
-    
-    // ... Move the share button up to "replace" it?
-    // Don't do this for now, as it doesn't work right for some reason.
+//  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+//    // Test selection not enabled
+//    // ... hide the test selection button
+//    self.btSelectTests.hidden = YES;
+//    
+//    // ... Move the share button up to "replace" it?
+//    // Don't do this for now, as it doesn't work right for some reason.
 //    CGRect frame = self.btSelectTests.frame;
+//    [self.btShare removeConstraints:self.btShare.constraints];
 //    frame.size = self.btShare.frame.size;
 //    self.btShare.frame = frame;
-  }
+//  }
 }
 
 -(void) viewDidAppear:(BOOL)animated {
@@ -166,12 +168,21 @@
   
   self.networkType = [SKGlobalMethods getNetworkTypeString];
   self.appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
-  
-  //self.btShare = [[UIButton alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 12, 20, C_SHARE_BUTTON_WIDTH, C_SHARE_BUTTON_HEIGHT)];
-  //[self.btShare addTarget:self action:@selector(B_Share:) forControlEvents:UIControlEventTouchUpInside];
-  //[self.btShare setImage:[UIImage imageNamed:@"share-button"] forState:UIControlStateNormal];
+ 
+  // Start with the share button hidden.
   self.btShare.alpha = 0;
-  //[self.view addSubview:self.btShare];
+  
+  //NSLog(@"CONSTRAINTS: %@", self.btShare.constraints.description);
+  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+    // Test selection not enabled
+    // ... hide the test selection button
+    self.btSelectTests.hidden = YES;
+    
+    // ... Move the share button up to "replace" it!
+    self.btnShareSpacing.constant = +10 + self.btSelectTests.frame.origin.y - self.btShare.frame.origin.y;
+    
+    //self.btShare.alpha = 1; // Use this for debugging, to see where share button would be. me!
+  }
   
   dataStart = 0;
   dataEnd = 0;
