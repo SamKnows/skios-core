@@ -121,52 +121,32 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   return docPath;
 }
 
-#pragma mark - Location Manager delegate methods
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    self.hasLocation = NO;
-    
-    NSLog(@"%s %d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:@"Location Manager Fail %@", [error localizedDescription]]);
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-	didUpdateToLocation:(CLLocation *)newLocation
-		   fromLocation:(CLLocation *)oldLocation
-{
-  SK_ASSERT(locationManager != nil);
-
-  self.hasLocation = YES;
-  //self.locationTimeStamp = newLocation.timestamp;
-  
-  if (self.locationLatitude == newLocation.coordinate.latitude) {
-    if (self.locationLongitude == newLocation.coordinate.longitude) {
-      return;
-    }
-  }
-  self.locationLatitude = newLocation.coordinate.latitude;
-  self.locationLongitude = newLocation.coordinate.longitude;
-  self.locationDateAsTimeIntervalSince1970 = [SKGlobalMethods getTimeNowAsTimeIntervalSince1970];
-  
-  // Update the last known location. If the device restarts, with Location Services turned off,
-  // we can use this location for the 'last_location' field in the Submitted JSON.
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSMutableDictionary *loc = [NSMutableDictionary dictionary];
-  [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
-  [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
-  [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
-  [prefs setObject:loc forKey:Prefs_LastLocation];
-  [prefs synchronize];
-}
-
 //
 // Location monitoring!
 //
+
+#pragma mark - Location Manager delegate methods
+
 - (void)startLocationMonitoring
 {
+  SK_ASSERT([CLLocationManager locationServicesEnabled]);
+  
   locationManager = [[CLLocationManager alloc] init];
+  SK_ASSERT(locationManager != nil);
+  
   [locationManager setDelegate:self];
+  [locationManager setDistanceFilter:kCLHeadingFilterNone];
   [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+  //[locationManager setPausesLocationUpdatesAutomatically:NO];
+  
+  // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+  // http://stackoverflow.com/questions/24062509/ios-8-location-services-not-working
+  if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+    [locationManager requestWhenInUseAuthorization];
+  }
+  
+  [locationManager startUpdatingLocation];
+  [locationManager stopUpdatingLocation];
   [locationManager startUpdatingLocation];
 }
 
@@ -174,6 +154,46 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   if (locationManager != nil) {
     [locationManager stopUpdatingLocation];
     locationManager = nil;
+  }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+  SK_ASSERT(false);
+  
+  self.hasLocation = NO;
+  
+  NSLog(@"%s %d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:@"Location Manager Fail %@", [error localizedDescription]]);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations {
+  
+  SK_ASSERT(locationManager != nil);
+  
+  for (CLLocation * newLocation in locations) {
+    
+    self.hasLocation = YES;
+    //self.locationTimeStamp = newLocation.timestamp;
+    
+    if (self.locationLatitude == newLocation.coordinate.latitude) {
+      if (self.locationLongitude == newLocation.coordinate.longitude) {
+        continue;
+      }
+    }
+    self.locationLatitude = newLocation.coordinate.latitude;
+    self.locationLongitude = newLocation.coordinate.longitude;
+    self.locationDateAsTimeIntervalSince1970 = [SKGlobalMethods getTimeNowAsTimeIntervalSince1970];
+    
+    // Update the last known location. If the device restarts, with Location Services turned off,
+    // we can use this location for the 'last_location' field in the Submitted JSON.
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
+    [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
+    [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
+    [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
+    [prefs setObject:loc forKey:Prefs_LastLocation];
+    [prefs synchronize];
   }
 }
 

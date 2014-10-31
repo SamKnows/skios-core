@@ -55,11 +55,20 @@
     //[super tableView:tableView willDisplayHeaderView:view forSection:section];
     return;
   }
-  
-  // Text Color
-  UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-  header.contentView.backgroundColor = [UIColor colorFromHexString:@"#EBEBF1"]; // Sampled from real screen!
-  header.textLabel.textColor = [UIColor blackColor];
+ 
+#ifdef DEBUG
+  NSLog(@"willDisplayHeaderView, view=%@", view.description);
+#endif // DEBUG
+ 
+  // If we've overridden viewForHeaderInSection and just returned a simple UIView,
+  // that won't have a contentView selector. So, we must first check before
+  // trying to access the contentView property!
+  if ([view respondsToSelector:@selector(contentView)]) {
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.contentView.backgroundColor = [UIColor colorFromHexString:@"#EBEBF1"]; // Sampled from real screen!
+    header.textLabel.textColor = [UIColor blackColor];
+  }
 }
 
 
