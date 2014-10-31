@@ -11,10 +11,10 @@
 
 @interface SKBActivationController ()
 {
-    BOOL isRunning;
-    SKAAppDelegate *appDelegate;
-    SKAClosestTargetTest *targetTest;
-    UIBackgroundTaskIdentifier btid;
+  BOOL isRunning;
+  SKAAppDelegate *appDelegate;
+  SKAClosestTargetTest *targetTest;
+  UIBackgroundTaskIdentifier btid;
 }
 
 - (void)setTitleLabel;
@@ -33,12 +33,12 @@
 
 -(void)showActivated
 {
-//    self.lActivating.backgroundColor = [UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0];
+  //    self.lActivating.backgroundColor = [UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0];
 }
 
 -(void)showaDownloaded
 {
-//    self.lDownloading.backgroundColor = [UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0];
+  //    self.lDownloading.backgroundColor = [UIColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0];
 }
 
 - (void)viewDidLoad
@@ -94,11 +94,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-    
-    [self startBackgroundTask];
-    
-    [self tryToActivate];
+  [super viewDidAppear:animated];
+  
+  [self startBackgroundTask];
+  
+  [self tryToActivate];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -109,78 +109,94 @@
 
 - (void)setTitleLabel
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-    label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
-    
-    label.textColor = [UIColor blackColor];
-    
-    label.backgroundColor = [UIColor clearColor];
-    label.text = sSKCoreGetLocalisedString(@"ACTV_Title");
-    [label sizeToFit];
-    self.navigationItem.titleView = label;
+  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
+  label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+  
+  label.textColor = [UIColor blackColor];
+  
+  label.backgroundColor = [UIColor clearColor];
+  label.text = sSKCoreGetLocalisedString(@"ACTV_Title");
+  [label sizeToFit];
+  self.navigationItem.titleView = label;
 }
 
 #pragma mark - Actions
 
 - (IBAction)done:(id)sender
 {
-//    if ( (isRunning) ||
-//        ([self.spinnerActivating isAnimating] == YES) ||
-//        ([self.spinnerDownloading isAnimating] == YES) ||
-//        ([self.spinnerMain isAnimating] == YES)
-//        )
-//    {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                        message:sSKCoreGetLocalisedString(@"ACTV_Running")
-//                                                       delegate:nil
-//                                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
-//                                              otherButtonTitles: nil];
-//        [alert show];
-//        return;
-//    }
-//    
-//    [SKAAppDelegate resetUserInterfaceBackToRunTestsScreenFromViewController];
+  //    if ( (isRunning) ||
+  //        ([self.spinnerActivating isAnimating] == YES) ||
+  //        ([self.spinnerDownloading isAnimating] == YES) ||
+  //        ([self.spinnerMain isAnimating] == YES)
+  //        )
+  //    {
+  //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+  //                                                        message:sSKCoreGetLocalisedString(@"ACTV_Running")
+  //                                                       delegate:nil
+  //                                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+  //                                              otherButtonTitles: nil];
+  //        [alert show];
+  //        return;
+  //    }
+  //    
+  //    [SKAAppDelegate resetUserInterfaceBackToRunTestsScreenFromViewController];
 }
 
 #pragma mark - Background Task management
 
 - (void)startBackgroundTask
 {
-    btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        if (btid != UIBackgroundTaskInvalid)
-        {
-            [[UIApplication sharedApplication] endBackgroundTask:btid];
-            btid = UIBackgroundTaskInvalid;
-        }
-    }];
+  btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+    if (btid != UIBackgroundTaskInvalid)
+    {
+      [[UIApplication sharedApplication] endBackgroundTask:btid];
+      btid = UIBackgroundTaskInvalid;
+    }
+  }];
 }
 
 - (void)finishBackgroundTask
 {
-    if (btid != UIBackgroundTaskInvalid)
-    {
-        [[UIApplication sharedApplication] endBackgroundTask:btid];
-        btid = UIBackgroundTaskInvalid;
-    }
+  if (btid != UIBackgroundTaskInvalid)
+  {
+    [[UIApplication sharedApplication] endBackgroundTask:btid];
+    btid = UIBackgroundTaskInvalid;
+  }
 }
 
 #pragma mark - Activation Lifecycle
 
 - (void)tryToActivate
 {
-    isRunning = YES;
-    
-    [self.spinnerActivating stopAnimating];
-    [self.spinnerDownloading stopAnimating];
-    [self.spinnerMain stopAnimating];
-//    [self.imgviewActivate setHidden:YES];
-//    [self.imgviewDownload setHidden:YES];
-    
-    [self.spinnerMain startAnimating];
-    
-    [self getBaseServer];
-    
-    //[self getConfig];
+  isRunning = YES;
+  
+  [self.spinnerActivating stopAnimating];
+  [self.spinnerDownloading stopAnimating];
+  [self.spinnerMain stopAnimating];
+  //    [self.imgviewActivate setHidden:YES];
+  //    [self.imgviewDownload setHidden:YES];
+  
+  [self.spinnerMain startAnimating];
+  
+  [self getBaseServer];
+  
+  //[self getConfig];
+}
+
+-(void) activationErrorAlert {
+  SK_ASSERT([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported]);
+  UIAlertView *alert = [[UIAlertView alloc]
+                        initWithTitle:sSKCoreGetLocalisedString(@"Activation Error")
+                        message:sSKCoreGetLocalisedString(@"Please check your internet connection, and then try again.")
+                        delegate:nil
+                        cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                        otherButtonTitles:nil];
+  
+  [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
+    [self tryToActivate];
+  } cancelBlock:^(UIAlertView *inView) {
+    [self tryToActivate];
+  }];
 }
 
 // What happens:
@@ -216,224 +232,230 @@
                                                                                      NSData *data,
                                                                                      NSError *error)
    {
-     SK_ASSERT_NONSERROR(error);
-     
-     if (nil == error)
-     {
-       if (nil != data)
-       {
-         NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+     dispatch_async(dispatch_get_main_queue(), ^{
+       SK_ASSERT_NONSERROR(error);
+       
+       if (error == nil) {
          
-         if (nil != strData)
+         SK_ASSERT(data != nil);
+         
+         if (data != nil)
          {
-           NSString *server = [strData stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+           NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
            
-           NSString *final = [NSString stringWithFormat:@"%@%@", @"http://", server];
-           
-           if (nil != final)
+           if (nil != strData)
            {
-             // To get here, we succeeeded!
-             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-             [prefs setObject:final forKey:Prefs_TargetServer];
-             [prefs synchronize];
-             [self getConfig];
-             return;
+             NSString *server = [strData stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+             
+             NSString *final = [NSString stringWithFormat:@"%@%@", @"http://", server];
+             
+             if (nil != final)
+             {
+               // To get here, we succeeeded!
+               NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+               [prefs setObject:final forKey:Prefs_TargetServer];
+               [prefs synchronize];
+               [self getConfig];
+               return;
+             }
            }
          }
        }
-     }
-     
-     // TO get here, there is an ERROR!
-     [self activationError:@"getBaseServer"];
+       
+       // TO get here, there is an ERROR!
+       [self activationError:@"getBaseServer"];
+     });
    }];
 }
 
 - (void)getConfig
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinnerDownloading startAnimating];
-    });
-    
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSString *server = [prefs objectForKey:Prefs_TargetServer];
-    
-    NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, Config_Url];
-    NSURL *url = [NSURL URLWithString:strUrl];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:url];
-    [request setHTTPMethod:@"GET"];
-    [request setTimeoutInterval:20];
-    
-    NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
-    [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
-    
-    NSString *appVersionName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.spinnerDownloading startAnimating];
+  });
+  
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSString *server = [prefs objectForKey:Prefs_TargetServer];
+  
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, Config_Url];
+  NSURL *url = [NSURL URLWithString:strUrl];
+  
+  NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+  [request setURL:url];
+  [request setHTTPMethod:@"GET"];
+  [request setTimeoutInterval:20];
+  
+  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
+  
+  NSString *appVersionName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 #ifdef DEBUG
-    NSLog(@"DEBUG: app_version_name=%@", appVersionName);
+  NSLog(@"DEBUG: app_version_name=%@", appVersionName);
 #endif // DEBUG
-    
-    NSString *appVersionCode = [appVersionName stringByReplacingOccurrencesOfString:@"." withString:@""];
+  
+  NSString *appVersionCode = [appVersionName stringByReplacingOccurrencesOfString:@"." withString:@""];
 #ifdef DEBUG
-    NSLog(@"DEBUG: app_version_code=%@", appVersionCode);
+  NSLog(@"DEBUG: app_version_code=%@", appVersionCode);
 #endif // DEBUG
-    [request setValue:appVersionCode forHTTPHeaderField:@"X-App-Version"];
-    
-    NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
-    [idQueue setName:@"com.samknows.schedulequeue"];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:idQueue completionHandler:^(NSURLResponse *response,
-                                                                                       NSData *data,
-                                                                                       NSError *error)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^{
-             SK_ASSERT_NONSERROR(error);
-             
-             if (nil != error)
+  [request setValue:appVersionCode forHTTPHeaderField:@"X-App-Version"];
+  
+  NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
+  [idQueue setName:@"com.samknows.schedulequeue"];
+  
+  [NSURLConnection sendAsynchronousRequest:request queue:idQueue completionHandler:^(NSURLResponse *response,
+                                                                                     NSData *data,
+                                                                                     NSError *error)
+   {
+     dispatch_async(dispatch_get_main_queue(), ^{
+       SK_ASSERT_NONSERROR(error);
+       
+       if (nil != error)
+       {
+         [self activationError:[NSString stringWithFormat:@"getConfig : %@", [error localizedDescription]]];
+         return;
+       }
+       
+       if (nil == response)
+       {
+         [self activationError:@"getConfig : nil response"];
+         return;
+       }
+       
+       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+       
+       if (httpResponse.statusCode == 200)
+       {
+         if (nil != data)
+         {
+           NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+           
+           //NSLog(@"xml : ");
+           NSLog(@"%s %d %@", __FUNCTION__, __LINE__, xml);
+           
+           if (nil != xml)
+           {
+             if ([self saveScheduleXml:xml])
              {
-                 [self activationError:[NSString stringWithFormat:@"getConfig : %@", [error localizedDescription]]];
-                 return;
+               [self populateNewSchedule];
+               return;
              }
-             
-             if (nil == response)
-             {
-                 [self activationError:@"getConfig : nil response"];
-                 return;
-             }
-             
-             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-             
-             if (httpResponse.statusCode == 200)
-             {
-                 if (nil != data)
-                 {
-                     NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                     
-                     //NSLog(@"xml : ");
-                     NSLog(@"%s %d %@", __FUNCTION__, __LINE__, xml);
-                     
-                     if (nil != xml)
-                     {
-                         if ([self saveScheduleXml:xml])
-                         {
-                             [self populateNewSchedule];
-                             return;
-                         }
-                     }
-                 }
-             }
-             
-             [self activationError:@"getConfig"];
-         });
-     }];
+           }
+         }
+       }
+       
+       [self activationError:@"getConfig"];
+     });
+   }];
 }
 
 - (BOOL)saveScheduleXml:(NSString*)xml
 {
-    BOOL result = false;
-    
-    if (nil != xml)
+  BOOL result = false;
+  
+  if (nil != xml)
+  {
+    if ([xml length] > 0)
     {
-        if ([xml length] > 0)
-        {
-            NSString *filePath = [SKAAppDelegate schedulePath];
-            
-            NSError *error;
-            result = [xml writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-            
-            if (!result)
-            {
-                [self activationError:[NSString stringWithFormat:@"saveScheduleXml : %@", [error localizedDescription]]];
-            }
-        }
+      NSString *filePath = [SKAAppDelegate schedulePath];
+      
+      NSError *error;
+      result = [xml writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+      
+      if (!result)
+      {
+        [self activationError:[NSString stringWithFormat:@"saveScheduleXml : %@", [error localizedDescription]]];
+      }
     }
-    return result;
+  }
+  return result;
 }
 
 - (void)populateNewSchedule
 {
-    NSString *file = [SKAAppDelegate schedulePath];
+  NSString *file = [SKAAppDelegate schedulePath];
+  
+  if ([[NSFileManager defaultManager] fileExistsAtPath:file])
+  {
+    NSData *data = [NSData dataWithContentsOfFile:file];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:file])
+    if (nil != data)
     {
-        NSData *data = [NSData dataWithContentsOfFile:file];
+      SKScheduler *schedule = [[SKAScheduler alloc] initWithXmlData:data];
+      
+      if (nil != schedule)
+      {
+        appDelegate.schedule = schedule;
         
-        if (nil != data)
-        {
-            SKScheduler *schedule = [[SKAScheduler alloc] initWithXmlData:data];
-            
-            if (nil != schedule)
-            {
-                appDelegate.schedule = schedule;
-                
-                [SKAAppDelegate setIsActivated:YES];
-                
-                [self.spinnerMain stopAnimating];
-                [self.spinnerActivating stopAnimating];
-                [self.spinnerDownloading stopAnimating];
-                
-                [self showActivated];
-                [self showaDownloaded];
-                
-                
-                isRunning = NO;
-                
-                [[self delegate] hasCompleted];
-                
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        }
+        [SKAAppDelegate setIsActivated:YES];
+        
+        [self.spinnerMain stopAnimating];
+        [self.spinnerActivating stopAnimating];
+        [self.spinnerDownloading stopAnimating];
+        
+        [self showActivated];
+        [self showaDownloaded];
+        
+        
+        isRunning = NO;
+        
+        [[self delegate] hasCompleted];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+      }
     }
+  }
 }
 
 - (void)checkInitTests
 {
-    /*
-     if (![appDelegate.schedule hasValidInitTests]) {
-     SK_ASSERT(false);
-     } else {
-     int closestTargetTestCount = 0;
-     
-     int testCount = [appDelegate.schedule getInitTestCount];
-     for (int j=0; j<testCount; j++)
-     {
-     NSString *testName = [appDelegate.schedule getInitTestName:j];
-     
-     if (nil != testName)
-     {
-     if ([testName length] > 0)
-     {
-     if ([testName isEqualToString:@"closestTarget"])
-     {
-     // There might be more than one of these, I suppose - but I think we should know at debug time if that
-     // ever happens; as the decision to mark activation is completed (isRunning = NO) is dependent on
-     // the (only?!) clostestTarget test completing...
-     closestTargetTestCount++;
-     SK_ASSERT(closestTargetTestCount == 1);
-     [self runClosestTargetTest];
-     }
-     }
-     }
-     }
-     }
-     */
+  /*
+   if (![appDelegate.schedule hasValidInitTests]) {
+   SK_ASSERT(false);
+   } else {
+   int closestTargetTestCount = 0;
+   
+   int testCount = [appDelegate.schedule getInitTestCount];
+   for (int j=0; j<testCount; j++)
+   {
+   NSString *testName = [appDelegate.schedule getInitTestName:j];
+   
+   if (nil != testName)
+   {
+   if ([testName length] > 0)
+   {
+   if ([testName isEqualToString:@"closestTarget"])
+   {
+   // There might be more than one of these, I suppose - but I think we should know at debug time if that
+   // ever happens; as the decision to mark activation is completed (isRunning = NO) is dependent on
+   // the (only?!) clostestTarget test completing...
+   closestTargetTestCount++;
+   SK_ASSERT(closestTargetTestCount == 1);
+   [self runClosestTargetTest];
+   }
+   }
+   }
+   }
+   }
+   */
 }
 
 - (void)activationError:(NSString*)error
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSLog(@"Activation Error : %@", error);
-        
-        [self.spinnerActivating stopAnimating];
-        [self.spinnerDownloading stopAnimating];
-        [self.spinnerMain stopAnimating];
-
-//        [self.imgviewActivate setHidden:YES];
-//        [self.imgviewDownload setHidden:YES];
-        
-        isRunning = NO;
-    });
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    NSLog(@"Activation Error : %@", error);
+    
+    [self.spinnerActivating stopAnimating];
+    [self.spinnerDownloading stopAnimating];
+    [self.spinnerMain stopAnimating];
+    
+    //        [self.imgviewActivate setHidden:YES];
+    //        [self.imgviewDownload setHidden:YES];
+    
+    isRunning = NO;
+    
+    [self activationErrorAlert];
+  });
 }
 
 @end
