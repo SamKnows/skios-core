@@ -634,13 +634,6 @@
   }
 }
 
-- (void)viewDidUnload {
-  [self setViewBG:nil];
-  [super viewDidUnload];
-}
-
-
-
 //
 //
 //

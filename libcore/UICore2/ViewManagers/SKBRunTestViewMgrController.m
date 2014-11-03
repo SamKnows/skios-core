@@ -34,6 +34,7 @@
 @synthesize mpSharer;
 #pragma mark ProgressView
 
+
 -(void) viewDidLoad {
   [super viewDidLoad];
 
@@ -216,7 +217,7 @@
 
 - (void)dealloc
 {
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)SKAAutoTest_GeneratedTestId:(NSNotification*)notification

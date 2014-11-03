@@ -835,7 +835,9 @@
     [dict setObject:device              forKey:@"DEVICE"];
     [dict setObject:os                  forKey:@"OS"];
     [dict setObject:carrier_name        forKey:@"CARRIER_NAME"];
-    [dict setObject:country_code        forKey:@"COUNTRY_CODE"];
+    if (country_code != nil) {
+      [dict setObject:country_code        forKey:@"COUNTRY_CODE"];
+    }
     [dict setObject:iso_country_code    forKey:@"ISO_CODE"];
     [dict setObject:network_code        forKey:@"NETWORK_CODE"];
     if (network_type != nil) {

@@ -263,14 +263,22 @@
   
   // These are added to the passive METRICS
   NSMutableDictionary *locationDictionary = [self createLocationMetric];
-  locationDictionary[@"timestamp"] = results[@"timestamp"];
-  locationDictionary[@"datetime"] = results[@"datetime"];
+  if (results[@"timestamp"] != nil) {
+    locationDictionary[@"timestamp"] = results[@"timestamp"];
+  }
+  if (results[@"datetime"] != nil) {
+    locationDictionary[@"datetime"] = results[@"datetime"];
+  }
   
   [self.accumulatedNetworkTypeLocationMetrics  addObject:locationDictionary];
   
   NSMutableDictionary *networkTypeDictionary = [self createNetworkTypeMetric];
-  networkTypeDictionary[@"timestamp"] = results[@"timestamp"];
-  networkTypeDictionary[@"datetime"] = results[@"datetime"];
+  if (results[@"timestamp"] != nil) {
+    networkTypeDictionary[@"timestamp"] = results[@"timestamp"];
+  }
+  if (results[@"datetime"] != nil) {
+    networkTypeDictionary[@"datetime"] = results[@"datetime"];
+  }
   
   [self.accumulatedNetworkTypeLocationMetrics  addObject:networkTypeDictionary];
   

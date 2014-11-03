@@ -46,7 +46,8 @@ NSString * const kSKUIAlertViewCancelBlockKey = @"kSKUIAlertViewCancelBlockKey";
   return objc_getAssociatedObject(self, (__bridge const void *)(kSKUIAlertViewCancelBlockKey));
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+//-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex == self.cancelButtonIndex) {
     [self alertViewCancel:alertView];
   } else if (buttonIndex > 0) {

@@ -21,6 +21,11 @@
 
 @implementation SKBHistoryViewMgr
 
+- (void)dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_
 {
   self.mpSharer = [[SKBTestResultsSharer alloc] initWithViewController:masterViewController_];

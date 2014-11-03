@@ -11,6 +11,7 @@
 #import "SKATermsAndConditionsController.h"
 #import "SKAMainResultControllerSection1Cell.h"
 #import "SKAMainResultTestHeaderCell.h"
+#import "UIViewController+SKSafeSegue.h"
 
 // For simulating crashes!
 #import <HockeySDK/HockeySDK.h>
@@ -530,8 +531,8 @@ NSMutableArray *GArrayForResultsController;
 
 #pragma mark - Alert View Delegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   if (buttonIndex == alertView.cancelButtonIndex) {
     return;
   }
@@ -599,6 +600,11 @@ NSMutableArray *GArrayForResultsController;
   }
   
   // Present the mail composition interface.
+//  UIViewController *vc = [UIViewController sKGetTopMostController];
+//  SK_ASSERT(vc != nil);
+//  if (vc != nil) {
+//    fromThisViewController = vc;
+//  }
   [fromThisViewController presentModalViewController:picker animated:YES];
   // Can safely release the controller now.
   
@@ -678,8 +684,8 @@ NSMutableArray *GArrayForResultsController;
   }];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)index
-{
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)index {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)index {
   if (index == [actionSheet cancelButtonIndex]) {
     return;
   }

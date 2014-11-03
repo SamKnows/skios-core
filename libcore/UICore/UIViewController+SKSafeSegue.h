@@ -13,5 +13,6 @@
 -(void) SKSafePerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender;
 - (void)SKSafePushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (UIViewController *)SKSafePopViewControllerAnimated:(BOOL)animated;
++ (UIViewController*) sKGetTopMostController;
 
 @end

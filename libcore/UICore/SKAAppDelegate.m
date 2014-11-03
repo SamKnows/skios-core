@@ -1472,8 +1472,9 @@ static NSString *networkTypeSwitchValue = nil;
 static NSDictionary *GShowThisTextForSocialMediaExport = nil;
 static UIViewController *GpShowSocialExportOnViewController = nil;
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)range
-{
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)range {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)range {
+  
   if (range == actionSheet.cancelButtonIndex) {
     return;
   }

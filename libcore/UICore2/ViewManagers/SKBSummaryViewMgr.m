@@ -26,6 +26,11 @@
 #define C_BUTTON_BASE_ALPHA 0.1
 #define C_VIEWS_Y_FIRST 110
 
+- (void)dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)intialiseViewOnMasterView:(UIView*)masterView_
 {
   SK_ASSERT(self.vChart != nil);
