@@ -290,8 +290,10 @@
 {
   self.backgroundColor = [UIColor clearColor];
   
-  if (self.lDownloadLabel == nil)
+  if (self.lDownloadLabel == nil) {
     [self layoutCellActive];
+  }
+
 }
 
 -(void)setTest:(SKATestResults *)testResult_

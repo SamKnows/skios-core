@@ -246,6 +246,16 @@
 
 -(IBAction)B_ExportResults:(id)sender
 {
+  if (![MFMailComposeViewController canSendMail]) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Email not enabled")
+                                                    message:sSKCoreGetLocalisedString(@"In order to export results via email, you must first configure email on your device.")
+                                                   delegate:nil
+                                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                                          otherButtonTitles:nil];
+    [alert show];
+    return;
+  }
+  
   SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
   
   //TODO: Export body contains "FCC" word
@@ -306,63 +316,67 @@
 
 - (bool)launchEmailWithAttachment:(NSString *)PpMailAddress subject:(NSString *)PpSubject bodyText:(NSString *)PpBodyText fileToAttach:(NSString *)PFileToAttach attachWithName:(NSString *)inAttachWithName
 {
-    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-    picker.mailComposeDelegate = self;
+  if ([MFMailComposeViewController canSendMail] == NO) {
+    return false;
+  }
+  
+  MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+  picker.mailComposeDelegate = self;
+  
+  [picker setSubject:PpSubject];
+  [picker setMessageBody:PpBodyText isHTML:NO];
+  
+  /*
+   // Set up the recipients.
+   NSArray *toRecipients = [NSArray arrayWithObjects:@"first@example.com",
+   nil];
+   NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com",
+   @"third@example.com", nil];
+   NSArray *bccRecipients = [NSArray arrayWithObjects:@"four@example.com",
+   nil];
+   [picker setToRecipients:toRecipients];
+   [picker setCcRecipients:ccRecipients];
+   [picker setBccRecipients:bccRecipients];
+   */
+  
+  //  int lItems = (int)PFilesToAttach.count;
+  //  int i;
+  //  for (i = 0; i < lItems; i++)
+  {
+    //NSString *theFile = PFilesToAttach[i];
+    NSString *theFile = PFileToAttach;
+    SK_ASSERT(theFile != nil);
+    NSURL *url = [NSURL fileURLWithPath:theFile];
+    SK_ASSERT(url != nil);
+    NSString *extension = [url pathExtension];
     
-    [picker setSubject:PpSubject];
-    [picker setMessageBody:PpBodyText isHTML:NO];
+    NSString *nsMimeType = @"application/octet-stream";
     
-    /*
-     // Set up the recipients.
-     NSArray *toRecipients = [NSArray arrayWithObjects:@"first@example.com",
-     nil];
-     NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com",
-     @"third@example.com", nil];
-     NSArray *bccRecipients = [NSArray arrayWithObjects:@"four@example.com",
-     nil];
-     [picker setToRecipients:toRecipients];
-     [picker setCcRecipients:ccRecipients];
-     [picker setBccRecipients:bccRecipients];
-     */
-    
-    //  int lItems = (int)PFilesToAttach.count;
-    //  int i;
-    //  for (i = 0; i < lItems; i++)
-    {
-        //NSString *theFile = PFilesToAttach[i];
-        NSString *theFile = PFileToAttach;
-        SK_ASSERT(theFile != nil);
-        NSURL *url = [NSURL fileURLWithPath:theFile];
-        SK_ASSERT(url != nil);
-        NSString *extension = [url pathExtension];
-        
-        NSString *nsMimeType = @"application/octet-stream";
-        
-        if ([extension isEqualToString:@"zip"]) {
-            nsMimeType = @"application/zip";
-        }
-        
-        // Use an autorelease pool to avoid leaks!
-        @autoreleasepool {
-            
-            //NSData *myData = [NSData dataWithContentsOfFile:PFilesToAttach[i]];
-            NSData *myData = [NSData dataWithContentsOfFile:PFileToAttach];
-            
-            NSString *lpFileNameWithExtension = [[url pathComponents] lastObject];
-            
-            if (inAttachWithName != nil) {
-                lpFileNameWithExtension = inAttachWithName;
-            }
-            
-            [picker addAttachmentData:myData mimeType:nsMimeType fileName:lpFileNameWithExtension];
-        }
+    if ([extension isEqualToString:@"zip"]) {
+      nsMimeType = @"application/zip";
     }
     
-    // Present the mail composition interface.
-    [self.masterViewController presentModalViewController:picker animated:YES];
-    // Can safely release the controller now.
-    
-    return true;
+    // Use an autorelease pool to avoid leaks!
+    @autoreleasepool {
+      
+      //NSData *myData = [NSData dataWithContentsOfFile:PFilesToAttach[i]];
+      NSData *myData = [NSData dataWithContentsOfFile:PFileToAttach];
+      
+      NSString *lpFileNameWithExtension = [[url pathComponents] lastObject];
+      
+      if (inAttachWithName != nil) {
+        lpFileNameWithExtension = inAttachWithName;
+      }
+      
+      [picker addAttachmentData:myData mimeType:nsMimeType fileName:lpFileNameWithExtension];
+    }
+  }
+  
+  // Present the mail composition interface.
+  [self.masterViewController presentViewController:picker animated:YES completion:nil];
+  // Can safely release the controller now.
+  
+  return true;
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller

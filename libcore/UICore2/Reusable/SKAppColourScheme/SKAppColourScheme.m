@@ -168,11 +168,14 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(float) sGet_GUI_MULTIPLIER {
   // TODO - this should be removed, so we work fully with storyboards,
   // in LANDSCAPE mode and with different layouts!
-  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    return 768.0 / 320.0;
-  }
   
-  return 1.0;
+  float width = [UIScreen mainScreen].bounds.size.width;
+  return (width / 320);
+//  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//    return 768.0 / 320.0;
+//  }
+//  
+//  return 1.0;
 }
 
 //

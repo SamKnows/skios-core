@@ -19,6 +19,12 @@
   return self;
 }
 
+CGRect myScaledRectMake(float x, float y, float w, float h) {
+  float fScale = [SKAppColourScheme sGet_GUI_MULTIPLIER];
+  
+  return CGRectMake(x * fScale, y * fScale, w * fScale, h * fScale);
+}
+
 -(void)initializeWelcomeText
 {
   if (isInitialised) return;
@@ -26,7 +32,8 @@
   self.backgroundColor = [SKAppColourScheme sGetWelcomeSplashBackgroundColor];
   
   //NSString *cFontName = @"RobotoBold";
-  const CGFloat cFontSizeiPhone = 83;
+  CGFloat cFontSizeiPhone = 83;
+  cFontSizeiPhone *= [SKAppColourScheme sGet_GUI_MULTIPLIER];
   const CGFloat cFontSizeiPad = 200;
   
   UIColor *welcomeSplashTextColor = [SKAppColourScheme sGetWelcomeSplashTextColor];
@@ -36,56 +43,56 @@
     //UIFont *font = [UIFont fontWithName:cFontName size:cFontSizeiPhone];
     UIFont *font = [UIFont systemFontOfSize:cFontSizeiPhone];
     
-    self.l_S1 = [[UILabel alloc] initWithFrame:CGRectMake(17, 199, 100, 100)];
+    self.l_S1 = [[UILabel alloc] initWithFrame:myScaledRectMake(17, 199, 100, 100)];
     self.l_S1.font = font;
     self.l_S1.textColor = welcomeSplashTextColor;
     self.l_S1.text = @"S";
     self.l_S1.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_S1];
     
-    self.l_A = [[UILabel alloc] initWithFrame:CGRectMake(65, 199, 100, 100)];
+    self.l_A = [[UILabel alloc] initWithFrame:myScaledRectMake(65, 199, 100, 100)];
     self.l_A.font = font;
     self.l_A.textColor = welcomeSplashTextColor;
     self.l_A.text = @"a";
     self.l_A.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_A];
     
-    self.l_M = [[UILabel alloc] initWithFrame:CGRectMake(120, 199, 100, 100)];
+    self.l_M = [[UILabel alloc] initWithFrame:myScaledRectMake(120, 199, 100, 100)];
     self.l_M.font = font;
     self.l_M.textColor = welcomeSplashTextColor;
     self.l_M.text = @"m";
     self.l_M.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_M];
     
-    self.l_K = [[UILabel alloc] initWithFrame:CGRectMake(17, 265, 100, 100)];
+    self.l_K = [[UILabel alloc] initWithFrame:myScaledRectMake(17, 265, 100, 100)];
     self.l_K.font = font;
     self.l_K.textColor = welcomeSplashTextColor;
     self.l_K.text = @"K";
     self.l_K.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_K];
     
-    self.l_N = [[UILabel alloc] initWithFrame:CGRectMake(65, 265, 100, 100)];
+    self.l_N = [[UILabel alloc] initWithFrame:myScaledRectMake(65, 265, 100, 100)];
     self.l_N.font = font;
     self.l_N.textColor = welcomeSplashTextColor;
     self.l_N.text = @"n";
     self.l_N.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_N];
     
-    self.l_O = [[UILabel alloc] initWithFrame:CGRectMake(110, 265, 100, 100)];
+    self.l_O = [[UILabel alloc] initWithFrame:myScaledRectMake(110, 265, 100, 100)];
     self.l_O.font = font;
     self.l_O.textColor = welcomeSplashTextColor;
     self.l_O.text = @"o";
     self.l_O.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_O];
     
-    self.l_W = [[UILabel alloc] initWithFrame:CGRectMake(167, 265, 100, 100)];
+    self.l_W = [[UILabel alloc] initWithFrame:myScaledRectMake(167, 265, 100, 100)];
     self.l_W.font = font;
     self.l_W.textColor = welcomeSplashTextColor;
     self.l_W.text = @"w";
     self.l_W.textAlignment = UITextAlignmentCenter;
     [self addSubview:self.l_W];
     
-    self.l_S2 = [[UILabel alloc] initWithFrame:CGRectMake(220, 265, 100, 100)];
+    self.l_S2 = [[UILabel alloc] initWithFrame:myScaledRectMake(220, 265, 100, 100)];
     self.l_S2.font = font;
     self.l_S2.textColor = welcomeSplashTextColor;
     self.l_S2.text = @"s";
@@ -190,14 +197,14 @@
 {
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
   {
-    self.l_S1.frame = CGRectMake(17, 199, 100, 100);
-    self.l_A.frame = CGRectMake(65, 199, 100, 100);
-    self.l_M.frame = CGRectMake(120, 199, 100, 100);
-    self.l_K.frame = CGRectMake(17, 265, 100, 100);
-    self.l_N.frame = CGRectMake(65, 265, 100, 100);
-    self.l_O.frame = CGRectMake(110, 265, 100, 100);
-    self.l_W.frame = CGRectMake(167, 265, 100, 100);
-    self.l_S2.frame = CGRectMake(220, 265, 100, 100);
+    self.l_S1.frame = myScaledRectMake(17, 199, 100, 100);
+    self.l_A.frame = myScaledRectMake(65, 199, 100, 100);
+    self.l_M.frame = myScaledRectMake(120, 199, 100, 100);
+    self.l_K.frame = myScaledRectMake(17, 265, 100, 100);
+    self.l_N.frame = myScaledRectMake(65, 265, 100, 100);
+    self.l_O.frame = myScaledRectMake(110, 265, 100, 100);
+    self.l_W.frame = myScaledRectMake(167, 265, 100, 100);
+    self.l_S2.frame = myScaledRectMake(220, 265, 100, 100);
   }
   else
   {

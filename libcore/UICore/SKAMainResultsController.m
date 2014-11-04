@@ -11,6 +11,7 @@
 #import "SKATermsAndConditionsController.h"
 #import "SKAMainResultControllerSection1Cell.h"
 #import "SKAMainResultTestHeaderCell.h"
+#import "SKASettingsController.h"
 #import "UIViewController+SKSafeSegue.h"
 
 // For simulating crashes!
@@ -546,6 +547,12 @@ NSMutableArray *GArrayForResultsController;
 
 + (bool)sLaunchEmailWithAttachment:(NSString *)PpMailAddress subject:(NSString *)PpSubject bodyText:(NSString *)PpBodyText fileToAttach:(NSString *)PFileToAttach attachWithName:(NSString *)inAttachWithName FromThisViewController:(UIViewController*)fromThisViewController WithThisMailDelegate:(id<MFMailComposeViewControllerDelegate>)withThisDelegate
 {
+  // Defend against weird problem we sometimes see on HockeyApp...
+  // Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'Application tried to present a nil modal view controller on target <SKASettingsController: 0x....>.'
+  if ([MFMailComposeViewController canSendMail] == NO) {
+    return false;
+  }
+  
   MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
   picker.mailComposeDelegate = withThisDelegate;
   
@@ -605,7 +612,7 @@ NSMutableArray *GArrayForResultsController;
 //  if (vc != nil) {
 //    fromThisViewController = vc;
 //  }
-  [fromThisViewController presentModalViewController:picker animated:YES];
+  [fromThisViewController presentViewController:picker animated:YES completion:nil];
   // Can safely release the controller now.
   
   return true;
@@ -623,7 +630,15 @@ NSMutableArray *GArrayForResultsController;
 
 + (void)sMenuSelectedExportResults:(id<MFMailComposeViewControllerDelegate>)thisMailDelegate fromThisVC:(UIViewController *)fromThisVC
 {
-  SK_ASSERT ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]);
+  if (![MFMailComposeViewController canSendMail]) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Email not enabled")
+                                                    message:sSKCoreGetLocalisedString(@"In order to export results via email, you must first configure email on your device.")
+                                                   delegate:nil
+                                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                                          otherButtonTitles:nil];
+    [alert show];
+    return;
+  }
   
   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Export_Title")
                                                   message:sSKCoreGetLocalisedString(@"Export_Body")

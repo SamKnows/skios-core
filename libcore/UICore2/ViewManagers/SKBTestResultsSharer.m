@@ -42,7 +42,11 @@
   if ([[SKAAppDelegate getAppDelegate] isTwitterExportSupported]) {
     [self.casShare addOption:@"Twitter" withImage:[UIImage imageNamed:@"share-twitter"] andTag:C_SHARE_TWITTER];
   }
-  [self.casShare addOption:@"Email" withImage:[UIImage imageNamed:@"share-mail"] andTag:C_SHARE_MAIL];
+  
+  if ([MFMailComposeViewController canSendMail]) {
+    [self.casShare addOption:@"Email" withImage:[UIImage imageNamed:@"share-mail"] andTag:C_SHARE_MAIL];
+  }
+  
   [self.casShare addOption:@"Save" withImage:[UIImage imageNamed:@"share-save"] andTag:C_SHARE_SAVE];
   
   [self.casShare expand];

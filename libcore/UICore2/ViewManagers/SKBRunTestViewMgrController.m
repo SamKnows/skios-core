@@ -142,6 +142,9 @@
 //    frame.size = self.btShare.frame.size;
 //    self.btShare.frame = frame;
 //  }
+//  CGRect theFrame = self.frame;
+//  theFrame.size.width = 375;
+//  self.frame = theFrame;
 }
 
 -(void) viewDidAppear:(BOOL)animated {
