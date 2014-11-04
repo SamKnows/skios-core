@@ -23,6 +23,7 @@
 @property NSString *mTestPublicIp;
 @property NSString *mTestSubmissionId;
 @property int mNumberOfNonPassiveMetrics;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidthConstraint;
 @property int mNumberOfPassiveMetrics;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnShareSpacing;
 @end
@@ -186,6 +187,10 @@
     self.btnShareSpacing.constant = +10 + self.btSelectTests.frame.origin.y - self.btShare.frame.origin.y;
     
     //self.btShare.alpha = 1; // Use this for debugging, to see where share button would be. me!
+  }
+
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    self.iconWidthConstraint.constant = 120;
   }
   
   dataStart = 0;

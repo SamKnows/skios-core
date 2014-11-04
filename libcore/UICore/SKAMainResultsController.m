@@ -632,7 +632,7 @@ NSMutableArray *GArrayForResultsController;
 {
   if (![MFMailComposeViewController canSendMail]) {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Email not enabled")
-                                                    message:sSKCoreGetLocalisedString(@"In order to export results via email, you must first configure email on your device.")
+                                                    message:sSKCoreGetLocalisedString(@"In order to send emails, you must first configure email on your device.")
                                                    delegate:nil
                                           cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
                                           otherButtonTitles:nil];
