@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lMeasureName;
 @property (weak, nonatomic) IBOutlet UILabel *lResult;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *measureNameWidthConstraint;
 
 @property (strong, nonatomic) SKBTestResultValue* cellMetrics;
 
