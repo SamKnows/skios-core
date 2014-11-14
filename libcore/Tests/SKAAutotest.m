@@ -247,6 +247,12 @@
 
 - (void)writeJSON_TestResultsDictionary:(NSDictionary*)results
 {
+  // if results is nil, that historically would result in an assertion when adding to tests
+  // at the end of the function. This was seen historically, and should be detected at runtime.
+  // Note that the code now checks that results is not nil before trying to add it to the
+  // tests array.
+  SK_ASSERT(results != nil);
+  
   NSMutableArray *tests;
   
   if ([jsonDictionary objectForKey:@"tests"] == nil)
@@ -282,7 +288,9 @@
   
   [self.accumulatedNetworkTypeLocationMetrics  addObject:networkTypeDictionary];
   
-  [tests addObject:results];
+  if (results != nil) {
+    [tests addObject:results];
+  }
   
   [jsonDictionary setObject:tests forKey:@"tests"];
 }
