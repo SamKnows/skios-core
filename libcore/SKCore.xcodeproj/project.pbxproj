@@ -67,6 +67,9 @@
 		B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */; };
 		B2672B0C180BEC92004280CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0B180BEC92004280CB /* CoreGraphics.framework */; };
 		B2672B0E180BED06004280CB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0D180BED06004280CB /* QuartzCore.framework */; };
+		B2697B251A2329FD0077C360 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B241A2329FD0077C360 /* AssetsLibrary.framework */; };
+		B2697B271A232A050077C360 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B261A232A050077C360 /* MobileCoreServices.framework */; };
+		B2697B291A232A0E0077C360 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B281A232A0E0077C360 /* QuickLook.framework */; };
 		B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */; };
 		B279124B18D88AF000E17EBF /* SKOperatorsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B279124A18D88AF000E17EBF /* SKOperatorsTests.m */; };
 		B27B0D88181A7F58008D76D6 /* SKCoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B27B0D87181A7F58008D76D6 /* SKCoreTests.m */; };
@@ -276,6 +279,9 @@
 		B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncUdpSocket.m; path = GCD/GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		B2672B0B180BEC92004280CB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B2672B0D180BED06004280CB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B2697B241A2329FD0077C360 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		B2697B261A232A050077C360 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		B2697B281A232A0E0077C360 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		B271658819EEA86D005FAECA /* SKBSettingsTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSettingsTabViewController.h; sourceTree = "<group>"; };
 		B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsTabViewController.m; sourceTree = "<group>"; };
 		B279124A18D88AF000E17EBF /* SKOperatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKOperatorsTests.m; sourceTree = "<group>"; };
@@ -499,6 +505,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2697B291A232A0E0077C360 /* QuickLook.framework in Frameworks */,
+				B2697B271A232A050077C360 /* MobileCoreServices.framework in Frameworks */,
+				B2697B251A2329FD0077C360 /* AssetsLibrary.framework in Frameworks */,
 				B221AEE518FFE24800323923 /* MessageUI.framework in Frameworks */,
 				B2B075E118D6F09100FFAE12 /* Accelerate.framework in Frameworks */,
 				B2B075DF18D6F08B00FFAE12 /* QuartzCore.framework in Frameworks */,
@@ -619,6 +628,9 @@
 		B22E88A917C36789005D9094 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B2697B281A232A0E0077C360 /* QuickLook.framework */,
+				B2697B261A232A050077C360 /* MobileCoreServices.framework */,
+				B2697B241A2329FD0077C360 /* AssetsLibrary.framework */,
 				B221AEE418FFE24800323923 /* MessageUI.framework */,
 				B221AEDD18FFC24F00323923 /* libz.dylib */,
 				B2B076FF18D73DED00FFAE12 /* XCTest.framework */,
