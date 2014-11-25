@@ -45,9 +45,11 @@
   [cActionSheet formatView:self.btPeriod];
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
-  [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
-  
   currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
+  
+  // Ensure that the correct, localized text is shown.
+  [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL WithState:1];
+  [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK WithState:1];
   
   // Set table to clear background colour!
   // http://stackoverflow.com/questions/18878258/uitableviewcell-show-white-background-and-cannot-be-modified-on-ios7
@@ -136,59 +138,73 @@ static BOOL sbReloadTableAfterBack = NO;
     
 }
 
+-(void)selectedNetworkTypeOption:(int)optionTag WithState:(int)state
+{
+  currentFilterNetworkType = optionTag;
+  
+  switch (optionTag) {
+    case C_FILTER_NETWORKTYPE_WIFI:
+      [[SKAAppDelegate getAppDelegate] switchNetworkTypeToWiFi];
+      [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_NETWORKTYPE_GSM:
+      [[SKAAppDelegate getAppDelegate] switchNetworkTypeToMobile];
+      [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_NETWORKTYPE_ALL:
+      [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
+      [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
+      break;
+    default:
+      break;
+  }
+  [self loadData];
+}
+
+-(void)selectedTimePeriodOption:(int)optionTag WithState:(int)state
+{
+  currentFilterPeriod = optionTag;
+  
+  switch (optionTag) {
+    case C_FILTER_PERIOD_1DAY:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1day") forState:UIControlStateNormal];
+      currentFilterPeriod = C_FILTER_PERIOD_1DAY;
+      break;
+    case C_FILTER_PERIOD_1WEEK:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
+      currentFilterPeriod = C_FILTER_PERIOD_1WEEK;
+      break;
+    case C_FILTER_PERIOD_1MONTH:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1month") forState:UIControlStateNormal];
+      currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
+      break;
+    case C_FILTER_PERIOD_3MONTHS:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_3months") forState:UIControlStateNormal];
+      currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
+      break;
+    case C_FILTER_PERIOD_1YEAR:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1year") forState:UIControlStateNormal];
+      currentFilterPeriod = C_FILTER_PERIOD_1YEAR;
+      break;
+    default:
+      break;
+  }
+  [self loadData];
+}
+
 -(void)selectedOption:(int)optionTag from:(cActionSheet *)sender WithState:(int)state
 {
+  SK_ASSERT(sender != nil);
+  
   if (sender == self.casNetworkType)
   {
-    currentFilterNetworkType = optionTag;
-    
-    switch (optionTag) {
-      case C_FILTER_NETWORKTYPE_WIFI:
-       [[SKAAppDelegate getAppDelegate] switchNetworkTypeToWiFi];
-        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_NETWORKTYPE_GSM:
-        [[SKAAppDelegate getAppDelegate] switchNetworkTypeToMobile];
-        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_NETWORKTYPE_ALL:
-        [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
-        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
-        break;
-      default:
-        break;
-    }
-    [self loadData];
+    [self selectedNetworkTypeOption:optionTag WithState:1];
   }
   else if (sender == self.casPeriod)
   {
-    currentFilterPeriod = optionTag;
-    
-    switch (optionTag) {
-      case C_FILTER_PERIOD_1DAY:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1day") forState:UIControlStateNormal];
-        currentFilterPeriod = C_FILTER_PERIOD_1DAY;
-        break;
-      case C_FILTER_PERIOD_1WEEK:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
-        currentFilterPeriod = C_FILTER_PERIOD_1WEEK;
-        break;
-      case C_FILTER_PERIOD_1MONTH:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1month") forState:UIControlStateNormal];
-        currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
-        break;
-      case C_FILTER_PERIOD_3MONTHS:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_3months") forState:UIControlStateNormal];
-        currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
-        break;
-      case C_FILTER_PERIOD_1YEAR:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1year") forState:UIControlStateNormal];
-        currentFilterPeriod = C_FILTER_PERIOD_1YEAR;
-        break;
-      default:
-        break;
-    }
-    [self loadData];
+    [self selectedTimePeriodOption:optionTag WithState:1];
+  } else {
+    SK_ASSERT(false);
   }
 }
 

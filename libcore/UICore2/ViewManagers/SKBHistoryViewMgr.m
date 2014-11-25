@@ -50,8 +50,10 @@
   
   // Ensure that the back button is properly sized!
   //self.backButtonHeightConstraint.constant = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 100;
-  
-  [self selectedOption:C_FILTER_NETWORKTYPE_ALL from:self.casNetworkType WithState:1];
+ 
+  // Ensure that the localized text is shown.
+  [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL WithState:1];
+  [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK WithState:1];
   
   [self loadData];
   
@@ -224,48 +226,61 @@
   [self.casPeriod expand];
 }
 
+-(void)selectedNetworkTypeOption:(int)optionTag WithState:(int)state {
+  
+  currentFilterNetworkType = optionTag;
+  
+  switch (optionTag) {
+    case C_FILTER_NETWORKTYPE_WIFI:
+      [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_NETWORKTYPE_GSM:
+      [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_NETWORKTYPE_ALL:
+      [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
+      break;
+    default:
+      break;
+  }
+  [self loadData];
+}
+
+-(void)selectedTimePeriodOption:(int)optionTag WithState:(int)state {
+  currentFilterPeriod = optionTag;
+  
+  switch (optionTag) {
+    case C_FILTER_PERIOD_1WEEK:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_PERIOD_1MONTH:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1month") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_PERIOD_3MONTHS:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_3months") forState:UIControlStateNormal];
+      break;
+    case C_FILTER_PERIOD_1YEAR:
+      [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1year") forState:UIControlStateNormal];
+      break;
+    default:
+      break;
+  }
+  [self loadData];
+}
+
 -(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state {
   
-  if (sender == self.casNetworkType)
-  {
-    currentFilterNetworkType = optionTag;
+  SK_ASSERT(sender != nil);
+  
+  if (sender == self.casNetworkType) {
+    [self selectedNetworkTypeOption:optionTag WithState:state];
     
-    switch (optionTag) {
-      case C_FILTER_NETWORKTYPE_WIFI:
-        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_NETWORKTYPE_GSM:
-        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_NETWORKTYPE_ALL:
-        [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
-        break;
-      default:
-        break;
-    }
-    [self loadData];
-  }
-  else if (sender == self.casPeriod)
-  {
-    currentFilterPeriod = optionTag;
+  } else if (sender == self.casPeriod) {
+    [self selectedTimePeriodOption:optionTag WithState:state];
     
-    switch (optionTag) {
-      case C_FILTER_PERIOD_1WEEK:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_PERIOD_1MONTH:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1month") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_PERIOD_3MONTHS:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_3months") forState:UIControlStateNormal];
-        break;
-      case C_FILTER_PERIOD_1YEAR:
-        [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1year") forState:UIControlStateNormal];
-        break;
-      default:
-        break;
-    }
-    [self loadData];
+  } else {
+    SK_ASSERT(false);
+    
   }
 }
 

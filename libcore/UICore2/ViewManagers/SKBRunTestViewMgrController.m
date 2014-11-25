@@ -986,7 +986,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    
                    if (isDownstream)
                    {
-                     [self.casStatusView setText:@"Download testing" forever:YES];
+                     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Download testing") forever:YES];
                      [self.tmActivityIndicator.arrLabels removeAllObjects];
                      [self.tmActivityIndicator.arrLabels addObject:@"0"];
                      [self.tmActivityIndicator.arrLabels addObject:@"1"];
@@ -1000,7 +1000,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    }
                    else
                    {
-                     [self.casStatusView setText:@"Upload testing" forever:YES];
+                     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Upload testing") forever:YES];
                      [self.tmActivityIndicator.arrLabels removeAllObjects];
                      [self.tmActivityIndicator.arrLabels addObject:@"0"];
                      [self.tmActivityIndicator.arrLabels addObject:@"0.5"];
