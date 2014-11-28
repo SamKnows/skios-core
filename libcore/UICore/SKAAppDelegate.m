@@ -1712,6 +1712,9 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+-(BOOL) getIsFooterSupported {
+  return NO;
+}
 
 -(BOOL) getIsJitterSupported {
   SK_ASSERT(false);

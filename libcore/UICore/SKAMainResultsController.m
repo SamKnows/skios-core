@@ -13,6 +13,7 @@
 #import "SKAMainResultTestHeaderCell.h"
 #import "SKASettingsController.h"
 #import "UIViewController+SKSafeSegue.h"
+#import "SKAFooterCell.h"
 
 // For simulating crashes!
 #import <HockeySDK/HockeySDK.h>
@@ -42,6 +43,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 }
 
 @property BOOL mbContinuousTesting;
+@property int mSectionIndexForFooter; // -1 if not used!
 
 - (void)range;
 - (void)addSwipeGesture;
@@ -65,6 +67,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 @implementation SKAMainResultsController
 
 @synthesize mbContinuousTesting;
+@synthesize mSectionIndexForFooter; // -1 if not used!
 //@synthesize btnRun;
 //@synthesize btnRange;
 @synthesize lblMain;
@@ -116,12 +119,14 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   
   mSections = lRows;
   
+  mSectionIndexForFooter = -1;
+  if ([[SKAAppDelegate getAppDelegate] getIsFooterSupported] == YES) {
+    mSectionIndexForFooter = mSections;
+    SK_ASSERT(mSectionIndexForFooter > 0);
+  }
+  
   // Jitter is reported, as well!!
   return lRows;
-}
-
--(int) getSections {
-  return mSections;
 }
 
 -(int) getResultsRows {
@@ -147,7 +152,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   
   [self calculateSections];
  
-  int sections = [self getSections];
+  int sections = mSections;
   for (int j=0; j < sections; j++)
   {
     mySections[j] = NO;
@@ -1147,6 +1152,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   {
     return 48.0f;
   }
+  else if (section == mSectionIndexForFooter) {
+    return 60.0F;
+  }
   else
   {
     if (row == 0)
@@ -1320,6 +1328,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   
   int retCount = 0;
   
+  SK_ASSERT(section != mSectionIndexForFooter);
+  
   switch (section)
   {
     case 2:
@@ -1381,7 +1391,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-  return [self getSections];
+  int result = mSections;
+  
+  if (mSectionIndexForFooter != -1) {
+    return result + 1;
+  }
+  
+  return result;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -1397,6 +1413,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     return 1;
   }
   
+  if (section == mSectionIndexForFooter) {
+    return 1;
+  }
+  
   if (mySections[section]) {
     return 2;
   } else {
@@ -1404,7 +1424,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+//  return [NSString stringWithFormat:@"Section %d", (int)section];
+//}
+
+- (UITableViewCell *)tableView:(UITableView *)inTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   int row = (int)indexPath.row;
   int section = (int)indexPath.section;
@@ -1448,6 +1472,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     cell.textLabel.text = [self getDateRangeText];
     
     return cell;
+  } else if (section == mSectionIndexForFooter) {
+    static NSString *CellIdentifier = @"SKAFooterCell";
+    SKAFooterCell *cell = (SKAFooterCell*)[self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+      cell = (SKAFooterCell*)[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    return cell;
   }
   else
   {
@@ -1470,6 +1501,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
       
       return cell;
     }
+
     else
     {
       static NSString *CellIdentifier = @"GraphViewCell";
@@ -1507,6 +1539,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   
   if (section == 0)
   {
+    return;
+  }
+  
+  if (section == mSectionIndexForFooter) {
     return;
   }
   

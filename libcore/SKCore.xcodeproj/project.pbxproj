@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B2038F431897D4F5005AC0BB /* SKAMainResultControllerSection1Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2038F421897D4F5005AC0BB /* SKAMainResultControllerSection1Cell.m */; };
 		B2038F461897D70B005AC0BB /* SKAMainResultTestHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2038F451897D70B005AC0BB /* SKAMainResultTestHeaderCell.m */; };
+		B20BCEB71A28873400A45AD4 /* SKAFooterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B20BCEB61A28873400A45AD4 /* SKAFooterCell.m */; };
 		B218A02C17CCD3300048B3E0 /* SKLatencyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B218A02B17CCD3300048B3E0 /* SKLatencyTest.m */; };
 		B218A02F17CCDE880048B3E0 /* SKLatencyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B218A02D17CCDE870048B3E0 /* SKLatencyOperation.m */; };
 		B218A04417CCF1550048B3E0 /* SKClosestTargetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B218A04217CCF1550048B3E0 /* SKClosestTargetTest.m */; };
@@ -175,6 +176,8 @@
 		B2038F421897D4F5005AC0BB /* SKAMainResultControllerSection1Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAMainResultControllerSection1Cell.m; sourceTree = "<group>"; };
 		B2038F441897D70B005AC0BB /* SKAMainResultTestHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAMainResultTestHeaderCell.h; sourceTree = "<group>"; };
 		B2038F451897D70B005AC0BB /* SKAMainResultTestHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAMainResultTestHeaderCell.m; sourceTree = "<group>"; };
+		B20BCEB51A28873400A45AD4 /* SKAFooterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAFooterCell.h; sourceTree = "<group>"; };
+		B20BCEB61A28873400A45AD4 /* SKAFooterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAFooterCell.m; sourceTree = "<group>"; };
 		B218A02B17CCD3300048B3E0 /* SKLatencyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLatencyTest.m; sourceTree = "<group>"; };
 		B218A02D17CCDE870048B3E0 /* SKLatencyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLatencyOperation.m; sourceTree = "<group>"; };
 		B218A02E17CCDE870048B3E0 /* SKLatencyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLatencyOperation.h; sourceTree = "<group>"; };
@@ -868,6 +871,8 @@
 				B2AE67F61883DA4D00D87FAE /* SKAActivationController.m */,
 				B2AE67F71883DA4D00D87FAE /* SKAArchivedResultsController.h */,
 				B2AE67F81883DA4D00D87FAE /* SKAArchivedResultsController.m */,
+				B20BCEB51A28873400A45AD4 /* SKAFooterCell.h */,
+				B20BCEB61A28873400A45AD4 /* SKAFooterCell.m */,
 				B2AE67F91883DA4D00D87FAE /* SKAGraphResultCell.h */,
 				B2AE67FA1883DA4D00D87FAE /* SKAGraphResultCell.m */,
 				B2AE67FB1883DA4D00D87FAE /* SKAGraphResultFooterCell.h */,
@@ -1364,6 +1369,7 @@
 				B221AEDA18FFC21600323923 /* unzip.c in Sources */,
 				B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */,
 				B22E892C17C37339005D9094 /* AsyncUdpSocket.m in Sources */,
+				B20BCEB71A28873400A45AD4 /* SKAFooterCell.m in Sources */,
 				B2FB032E19B75D09007AA3C2 /* cAnimatedStatusView.m in Sources */,
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,

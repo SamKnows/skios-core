@@ -137,6 +137,7 @@ typedef enum SKBShowMetricsRule
 -(NSString *) getBaseUrlString;
 -(BOOL)       getDoesAppSupportServerBasedUploadSpeedTesting;
 
+-(BOOL) getIsFooterSupported;
 -(BOOL) getIsJitterSupported;
 -(BOOL) getIsLossSupported;
 -(BOOL) alwaysRunAllTests;
