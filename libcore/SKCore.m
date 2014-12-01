@@ -90,13 +90,32 @@ static SKCore *sbCore = nil;
 
 @end
 
+#define currentLanguageBundle [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[[NSLocale preferredLanguages] objectAtIndex:0] ofType:@"lproj"]]
+
 NSString*sSKCoreGetLocalisedString(NSString*theString)
 {
   // Allow the string to be looked-up from the app.
   NSString *theResult = NSLocalizedString(theString, nil);
   // If the app doesn't override, use the internal default!
   if ([theResult isEqualToString:theString]) {
-    theResult = NSLocalizedStringFromTable(theString, @"libcore", nil);
+    theResult = NSLocalizedStringFromTableInBundle(theString, @"libcore", currentLanguageBundle, @"");
+    //NSLog(@"theResult=%@", theResult3);
+    
+    NSString *preferredLang = [[NSLocale preferredLanguages] objectAtIndex:0];
+    NSLog(@"preferredLang=%@", preferredLang);
+    NSString *localeCode = [[NSLocale currentLocale] localeIdentifier];
+    NSLog(@"LOCALE=%@", localeCode);
+//    theResult = NSLocalizedStringFromTable(theString, @"libcore", nil);
+//    NSLog(@"theResult=%@", theResult);
+//#ifdef DEBUG
+//    NSBundle *thisBundle = [NSBundle mainBundle];
+//    NSString *theResult2 = [thisBundle localizedStringForKey:theString value:@"No translation" table:@"libcore"];
+//    NSLog(@"theResult2=%@", theResult2);
+//    //SK_ASSERT([theResult2 isEqualToString:theResult]);
+//    
+//    NSString *theResult3 = NSLocalizedStringFromTableInBundle(theString, @"libcore", currentLanguageBundle, @"");
+//    NSLog(@"theResult3=%@", theResult3);
+//#endif // DEBUG
   }
   return theResult;
 }
