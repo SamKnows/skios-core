@@ -349,7 +349,7 @@ enum {
     
     [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
   } else if ([cell.reuseIdentifier isEqualToString:@"about_url"]) {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://speedtest3.ofca.gov.hk/about-sk.html"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://speedtest.ofca.gov.hk/about-sk.html"]];
   }
 }
 
