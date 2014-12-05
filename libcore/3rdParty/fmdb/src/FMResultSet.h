@@ -72,7 +72,7 @@
 
 // returns one of NSNumber, NSString, NSData, or NSNull
 - (id)objectForColumnName:(NSString*)columnName;
-- (id)objectForColumnIndex:(int)columnIdx;
+- (id)objectForColumnIndexReturnsNullNotNil:(int)columnIdx;
 
 /*
 If you are going to use this data after you iterate over the next row, or after you close the

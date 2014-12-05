@@ -325,7 +325,7 @@
     return [self UTF8StringForColumnIndex:[self columnIndexForName:columnName]];
 }
 
-- (id)objectForColumnIndex:(int)columnIdx {
+- (id)objectForColumnIndexReturnsNullNotNil:(int)columnIdx {
     int columnType = sqlite3_column_type(statement.statement, columnIdx);
     
     id returnValue = nil;
@@ -352,7 +352,7 @@
 }
 
 - (id)objectForColumnName:(NSString*)columnName {
-    return [self objectForColumnIndex:[self columnIndexForName:columnName]];
+    return [self objectForColumnIndexReturnsNullNotNil:[self columnIndexForName:columnName]];
 }
 
 // returns autoreleased NSString containing the name of the column in the result set

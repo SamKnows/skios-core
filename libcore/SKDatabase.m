@@ -1324,62 +1324,62 @@ public static String convertConnectivityType(int type) {
     testResult.testDateTime = [NSDate dateWithTimeIntervalSince1970:[rs doubleForColumnIndex:1]];
     testResult.target = [rs stringForColumnIndex:2];
     
-    if ([rs objectForColumnIndex:3] == [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:3] == [NSNull null])
       testResult.downloadSpeed = -1;
     else
       testResult.downloadSpeed = [rs doubleForColumnIndex:3];
     
-    if ([rs objectForColumnIndex:4] == [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:4] == [NSNull null])
       testResult.uploadSpeed = -1;
     else
       testResult.uploadSpeed = [rs doubleForColumnIndex:4];
     
-    if ([rs objectForColumnIndex:5] == [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:5] == [NSNull null])
       testResult.latency = -1;
     else
       testResult.latency = [rs doubleForColumnIndex:5];
     
-    if ([rs objectForColumnIndex:6] == [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:6] == [NSNull null])
       testResult.loss = -1;
     else {
       testResult.loss = [rs doubleForColumnIndex:6];
     }
     
-    if ([rs objectForColumnIndex:7] == [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:7] == [NSNull null])
       testResult.jitter = -1;
     else
       testResult.jitter = [rs doubleForColumnIndex:7];
     
     NSMutableDictionary *metricsDictionary = [NSMutableDictionary new];
-    if ([rs objectForColumnIndex:8] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:8] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:8] forKey:SKB_TESTVALUERESULT_C_PM_DEVICE];
     }
-    if ([rs objectForColumnIndex:9] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:9] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:9] forKey:SKB_TESTVALUERESULT_C_PM_OS];
     }
-    if ([rs objectForColumnIndex:10] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:10] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:10] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
     }
-    if ([rs objectForColumnIndex:11] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:11] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:11] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
     }
-    if ([rs objectForColumnIndex:12] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:12] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:12] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO];
     }
-    if ([rs objectForColumnIndex:13] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:13] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:13] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
     }
-    if ([rs objectForColumnIndex:14] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:14] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:14] forKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
     }
-    if ([rs objectForColumnIndex:15] != [NSNull null]) {
+    if ([rs objectForColumnIndexReturnsNullNotNil:15] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:15] forKey:SKB_TESTVALUERESULT_C_PM_RADIO_TYPE];
     }
-    if ([rs objectForColumnIndex:16] != [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:16] != [NSNull null])
     {
       [metricsDictionary setObject:[rs stringForColumnIndex:16] forKey:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP];
     }
-    if ([rs objectForColumnIndex:17] != [NSNull null])
+    if ([rs objectForColumnIndexReturnsNullNotNil:17] != [NSNull null])
     {
       [metricsDictionary setObject:[rs stringForColumnIndex:17] forKey:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
     }
@@ -1558,7 +1558,7 @@ public static String convertConnectivityType(int type) {
     bFound = YES;
     //NSString *day = [rs stringForColumn:0];
     //theMaxDate = [rs dateForColumn:0];
-    NSNumber *day = [rs objectForColumnIndex:0];
+    NSNumber *day = [rs objectForColumnIndexReturnsNullNotNil:0];
 
     if (day == (NSNumber*)[NSNull null]) {
       // Nothing found!

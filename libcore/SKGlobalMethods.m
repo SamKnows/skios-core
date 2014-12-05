@@ -558,7 +558,14 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     return @"";
   }
   
-  return [carrier mobileCountryCode];
+  NSString *result = [carrier mobileCountryCode];
+  
+  if (result == nil)
+  {
+    return @"";
+  }
+  
+  return result;
 }
 
 +(NSString*)getCarrierNetworkCode {
@@ -576,7 +583,14 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     return @"";
   }
   
-  return [carrier mobileNetworkCode];
+  NSString *result = [carrier mobileNetworkCode];
+  
+  if (result == nil)
+  {
+    return @"";
+  }
+  
+  return result;
 }
 
 +(NSString*)getSimOperatorCodeMCCAndMNC {

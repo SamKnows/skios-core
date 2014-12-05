@@ -102,9 +102,13 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
     //NSLog(@"theResult=%@", theResult3);
     
     NSString *preferredLang = [[NSLocale preferredLanguages] objectAtIndex:0];
-    NSLog(@"preferredLang=%@", preferredLang);
+#ifdef DEBUG
+    NSLog(@"DEBUG: preferredLang=%@", preferredLang);
+#endif // DEBUG
     NSString *localeCode = [[NSLocale currentLocale] localeIdentifier];
-    NSLog(@"LOCALE=%@", localeCode);
+#ifdef DEBUG
+    NSLog(@"DEBUG: LOCALE=%@", localeCode);
+#endif // DEBUG
 //    theResult = NSLocalizedStringFromTable(theString, @"libcore", nil);
 //    NSLog(@"theResult=%@", theResult);
 //#ifdef DEBUG
