@@ -121,5 +121,10 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
 //    NSLog(@"theResult3=%@", theResult3);
 //#endif // DEBUG
   }
+  
+  if (theResult == nil) {
+    SK_ASSERT(false);
+    return @"";
+  }
   return theResult;
 }

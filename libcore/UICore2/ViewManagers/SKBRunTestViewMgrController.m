@@ -1576,7 +1576,18 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     else
     {
       mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = @"mobile";
-      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE] = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
+      NSString *radioType = [SKGlobalMethods getNetworkType];
+      if (radioType == nil) {
+        SK_ASSERT(false);
+        radioType = @"";
+      } else {
+        NSString *radioType2 = [SKGlobalMethods getNetworkTypeLocalized:radioType];
+        if (radioType2 == nil) {
+          SK_ASSERT(false);
+          radioType = radioType2;
+        }
+      }
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE] = radioType;
     }
   }
   
