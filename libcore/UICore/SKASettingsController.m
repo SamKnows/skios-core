@@ -57,7 +57,7 @@
   }
  
 #ifdef DEBUG
-  NSLog(@"willDisplayHeaderView, view=%@", view.description);
+  NSLog(@"DEBUG: willDisplayHeaderView, view=%@", view.description);
 #endif // DEBUG
  
   // If we've overridden viewForHeaderInSection and just returned a simple UIView,

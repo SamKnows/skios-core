@@ -90,36 +90,63 @@ static SKCore *sbCore = nil;
 
 @end
 
-#define currentLanguageBundle [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:[[NSLocale preferredLanguages] objectAtIndex:0] ofType:@"lproj"]]
+NSBundle *getCurrentLanguageBundle(NSString *localeIdentifier) {
+  
+  // THis gets e.g. en_US, en_GB, pt_BR, pt, zh_HANS, zh_HANT etc.
+  
+  NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
+  if (bundle != nil) {
+    // Found match for e.g. en_GB
+    return bundle;
+  }
+  
+  // Split into e.g. [en, GB] and just use the en part.
+  NSArray *stringArray = [localeIdentifier componentsSeparatedByString: @"_"];
+  localeIdentifier = stringArray[0];
+  bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
+  if (bundle != nil) {
+#ifdef DEBUG
+    NSLog(@"DEBUG: localeIdentifier#2=%@", localeIdentifier);
+#endif // DEBUG
+    return bundle;
+  }
+  
+  // Nothing found - default to English.
+  localeIdentifier = @"en";
+  bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
+  SK_ASSERT(bundle != nil);
+  return bundle;
+}
 
 NSString*sSKCoreGetLocalisedString(NSString*theString)
 {
+  // As iOS 8 mis re-reports the locale (e.g. returning en_GB when on a device configured
+  // to use zh-Hant), base the locale on the "first preferred language" instead - which
+  // always seems to return the correct value.
+  // This returns e.g. en-GB, zh-Hans, zh-Hant etc.
+  NSString *language =  [[NSLocale preferredLanguages] objectAtIndex:0];
+#ifdef DEBUG
+  NSLog(@"DEBUG: preferredLang=%@", language);
+#endif // DEBUG
+  
+//#ifdef DEBUG
+//  NSString *localeIdentifierIgnore = [[NSLocale currentLocale] localeIdentifier];
+//  NSLog(@"DEBUG: localeIdentifierIgnore =%@", localeIdentifierIgnore);
+//#endif // DEBUG
+  NSString *localeIdentifier = language;
+#ifdef DEBUG
+  NSLog(@"DEBUG: localeIdentifier=%@", localeIdentifier);
+#endif // DEBUG
+  
   // Allow the string to be looked-up from the app.
   NSString *theResult = NSLocalizedString(theString, nil);
   // If the app doesn't override, use the internal default!
   if ([theResult isEqualToString:theString]) {
-    theResult = NSLocalizedStringFromTableInBundle(theString, @"libcore", currentLanguageBundle, @"");
+    NSString *theResult2 = NSLocalizedStringFromTableInBundle(theString, @"libcore", getCurrentLanguageBundle(localeIdentifier), @"");
     //NSLog(@"theResult=%@", theResult3);
-    
-    NSString *preferredLang = [[NSLocale preferredLanguages] objectAtIndex:0];
-#ifdef DEBUG
-    NSLog(@"DEBUG: preferredLang=%@", preferredLang);
-#endif // DEBUG
-    NSString *localeCode = [[NSLocale currentLocale] localeIdentifier];
-#ifdef DEBUG
-    NSLog(@"DEBUG: LOCALE=%@", localeCode);
-#endif // DEBUG
-//    theResult = NSLocalizedStringFromTable(theString, @"libcore", nil);
-//    NSLog(@"theResult=%@", theResult);
-//#ifdef DEBUG
-//    NSBundle *thisBundle = [NSBundle mainBundle];
-//    NSString *theResult2 = [thisBundle localizedStringForKey:theString value:@"No translation" table:@"libcore"];
-//    NSLog(@"theResult2=%@", theResult2);
-//    //SK_ASSERT([theResult2 isEqualToString:theResult]);
-//    
-//    NSString *theResult3 = NSLocalizedStringFromTableInBundle(theString, @"libcore", currentLanguageBundle, @"");
-//    NSLog(@"theResult3=%@", theResult3);
-//#endif // DEBUG
+    if (theResult2 != nil) {
+      theResult = theResult2;
+    }
   }
   
   if (theResult == nil) {
