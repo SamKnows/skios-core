@@ -169,7 +169,7 @@ typedef void (^TMyCallback)(NSString*responseString, int responseCode);
   
     ssize_t bytes = 0;
     @synchronized(self) {
-      int flags = MSG_DONTWAIT | SO_NOSIGPIPE;
+      int flags = MSG_DONTWAIT;
       //read(self.mSocketFd, buffer, sizeof(buffer));
       bytes = recv(self.mSocketFd, buffer, sizeof(buffer), flags);
     }
