@@ -411,6 +411,8 @@ static BOOL sbTestIsRunning = NO;
       {
         NSLog(@"********* creating httpTransfer test, isDownload=%d", (int)isDownload);
         [self createHttpTest:config isDownload:isDownload file:file target:target];
+        int sendDataChunkSize = [[config paramObjectForKey:@"sendDataChunk"] intValue];
+        [self.httpTest setSendDataChunkSize:sendDataChunkSize];
         [self.httpTest setTestIndex:testIndex];
         [self.httpTest setNetworkType:[config getNetworkType]];
         [self.httpTest setDisplayName:[config displayName]];
@@ -465,6 +467,8 @@ static BOOL sbTestIsRunning = NO;
         [self.httpTest setPort:[[config paramObjectForKey:@"port"] intValue]];
         [self.httpTest setFile:file];
         [self.httpTest setIsDownstream:isDownload];
+        int sendDataChunkSize = [[config paramObjectForKey:@"sendDataChunk"] intValue];
+        [self.httpTest setSendDataChunkSize:sendDataChunkSize];
         [self.httpTest setWarmupMaxTime:[[config paramObjectForKey:@"warmupmaxtime"] doubleValue]];
         [self.httpTest setWarmupMaxBytes:[[config paramObjectForKey:@"warmupmaxbytes"] doubleValue]];
         [self.httpTest setTransferMaxTimeMicroseconds:[[config paramObjectForKey:@"transfermaxtime"] doubleValue]];

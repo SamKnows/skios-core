@@ -150,9 +150,9 @@ typedef void (^TMyCallback)(NSString*responseString, int responseCode);
 }
 
 -(void) cancel {
-  [super cancel];
-  
-  
+  @synchronized(self) {
+    [super cancel];
+  }
 }
 
 -(void) main {
@@ -166,10 +166,13 @@ typedef void (^TMyCallback)(NSString*responseString, int responseCode);
     }
     
     char buffer[4000];
-    
-    int flags = MSG_DONTWAIT;
-    //read(self.mSocketFd, buffer, sizeof(buffer));
-    ssize_t bytes = recv(self.mSocketFd, buffer, sizeof(buffer), flags);
+  
+    ssize_t bytes = 0;
+    @synchronized(self) {
+      int flags = MSG_DONTWAIT | SO_NOSIGPIPE;
+      //read(self.mSocketFd, buffer, sizeof(buffer));
+      bytes = recv(self.mSocketFd, buffer, sizeof(buffer), flags);
+    }
     
     if (bytes < 0) {
       // Is this an error?
@@ -233,7 +236,11 @@ typedef void (^TMyCallback)(NSString*responseString, int responseCode);
 #pragma mark - Interface
 
 // Define the block size to force/use, in bytes.
-const int cBlockDataLength = 32768;
+//const int cDefaultBlockDataLength = 32768;
+// Experimentation shows that using too small a value, leads to under-reporting.
+// Experimentation shows that using too large a value (relative to the total amount of data to send)
+// leads to over-reporting.
+const int cDefaultBlockDataLength = 250000;
 
 @interface SKTransferOperation ()
 {
@@ -637,7 +644,7 @@ const int cBlockDataLength = 32768;
         server->h_length);
   serv_addr.sin_port = htons(port);
   
-  int buff_size = 0;
+//  int buff_size = 0;
   int sockerr = 0;
   socklen_t socklen = 0;
 
@@ -648,13 +655,22 @@ const int cBlockDataLength = 32768;
 //#endif // _DEBUG
   
 //  buff_size = cBlockDataLength / 2;
-  buff_size = cBlockDataLength/2;
-  socklen = sizeof(buff_size);
-  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+  int useBlockSize = cDefaultBlockDataLength;
+  if (self.mpParentHttpTest.sendDataChunkSize > 0) {
+    //useBlockSize = self.mpParentHttpTest.sendDataChunkSize;
+  }
+  
+//  buff_size = useBlockSize/2;
+//  socklen = sizeof(buff_size);
+//  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
   
   int timeout = HTTP_UPLOAD_TIMEOUT;
   socklen = sizeof(timeout);
   sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&timeout,socklen);
+  
+  // http://stackoverflow.com/questions/15486979/ios-multithreaded-sockets-under-libupnp-hanging-on-send
+  int set = 1;
+  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_NOSIGPIPE,(const void*)&set,sizeof(set));
   
   /* Now connect to the server */
   if (connect(sockfd,(const struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0)
@@ -759,6 +775,9 @@ const int cBlockDataLength = 32768;
       }
       
       if ((responseCode != 100) && (responseCode != 200)) {
+#ifdef DEBUG
+        NSLog(@"DEBUG: reponseCode=%d", responseCode);
+#endif // DEBUG
         SK_ASSERT(false);
         [self connection:nil didFailWithError:nil];
       } else {
@@ -859,7 +878,7 @@ const int cBlockDataLength = 32768;
   int totalBytesWritten = 0;
   int totalBytesExpectedToWrite = lengthBytes;
  
-  NSMutableData *blockData = [[NSMutableData alloc] initWithLength:cBlockDataLength];
+  NSMutableData *blockData = [[NSMutableData alloc] initWithLength:useBlockSize];
  
   // Keep running this loop, until the read thread tells us to stop!
   int numberOfCalls = 0;
@@ -872,7 +891,7 @@ const int cBlockDataLength = 32768;
         break;
       }
       
-      bytesWritten = write(sockfd, [blockData bytes], cBlockDataLength);
+      bytesWritten = write(sockfd, [blockData bytes], useBlockSize);
     }
     
     NSDate *end = [NSDate date];
@@ -892,11 +911,20 @@ const int cBlockDataLength = 32768;
       bytesWritten = 0;
       
       int theErrNo = errno;
-      NSLog(@"theErrNo1=%d", theErrNo);
+#ifdef DEBUG
+      NSLog(@"DEBUG: theErrNo1=%d", theErrNo);
+#endif // DEBUG
       if ( (theErrNo == EAGAIN) || (theErrNo == ENOSPC) )
       {
         // OK to continue!
       } else {
+        // e.g. 32 - broken pipe!
+#ifdef DEBUG
+        if (theErrNo == EPIPE) {
+          NSLog(@"DEBUG: ERROR: broken pipe!");
+        }
+#endif // DEBUG
+        SK_ASSERT(false);
         // Kill the read thread - this will close the socket in the block callback.
         if (readThread != nil) {
           [readThread cancel];
@@ -905,7 +933,7 @@ const int cBlockDataLength = 32768;
         break;
       }
     }
-    SK_ASSERT(bytesWritten <= cBlockDataLength);
+    SK_ASSERT(bytesWritten <= useBlockSize);
     
     //[asyncSocket writeData:blockData withTimeout:1.0 tag:0];
     totalBytesWritten += bytesWritten; // blockDataLength;
