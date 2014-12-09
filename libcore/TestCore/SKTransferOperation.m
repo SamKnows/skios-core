@@ -241,6 +241,7 @@ typedef void (^TMyCallback)(NSString*responseString, int responseCode);
 // Experimentation shows that using too large a value (relative to the total amount of data to send)
 // leads to over-reporting.
 const int cDefaultBlockDataLength = 250000;
+const unsigned char spBlockData[cDefaultBlockDataLength];
 
 @interface SKTransferOperation ()
 {
@@ -551,7 +552,6 @@ const int cDefaultBlockDataLength = 250000;
     //[runLoop run];
     self.shouldKeepRunning = YES;
     NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-    //while (shouldKeepRunning && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
     for (;;) {
       if ([self isCancelled]) {
         break;
@@ -599,12 +599,11 @@ const int cDefaultBlockDataLength = 250000;
   urlRequest = [[NSMutableURLRequest alloc] initWithURL:nsUrl
                                             cachePolicy:NSURLRequestReloadIgnoringCacheData
                                         timeoutInterval:HTTP_DOWNLOAD_TIMEOUT];
- 
+  
   if (urlRequest != nil) {
     [self runUrlRequest];
   }
 }
-
 
 -(void) startUploadTest {
 #ifdef DEBUG
@@ -620,10 +619,10 @@ const int cDefaultBlockDataLength = 250000;
     return;
   }
   
-//  [SKIPHelper hostIPAddress:target];
-//  struct hostent *host = gethostbyname([[self target] UTF8String]);
-//  struct in_addr **list = (struct in_addr **)host->h_addr_list;
-//  NSLog(@"ADDRESS: %@", [NSString stringWithCString:inet_ntoa(*list[0]) encoding:NSUTF8StringEncoding]);
+  //  [SKIPHelper hostIPAddress:target];
+  //  struct hostent *host = gethostbyname([[self target] UTF8String]);
+  //  struct in_addr **list = (struct in_addr **)host->h_addr_list;
+  //  NSLog(@"ADDRESS: %@", [NSString stringWithCString:inet_ntoa(*list[0]) encoding:NSUTF8StringEncoding]);
   
   /* Create a socket point */
   __block int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -644,25 +643,25 @@ const int cDefaultBlockDataLength = 250000;
         server->h_length);
   serv_addr.sin_port = htons(port);
   
-//  int buff_size = 0;
+  //  int buff_size = 0;
   int sockerr = 0;
   socklen_t socklen = 0;
-
-//  socklen = sizeof(buff_size);
-//  sockerr = getsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(char*)&buff_size,&socklen);
-//#ifdef _DEBUG
-//  NSLog(@"DEBUG: sock buf size was %d\n",buff_size);
-//#endif // _DEBUG
   
-//  buff_size = cBlockDataLength / 2;
-  int useBlockSize = cDefaultBlockDataLength;
+  //  socklen = sizeof(buff_size);
+  //  sockerr = getsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(char*)&buff_size,&socklen);
+  //#ifdef _DEBUG
+  //  NSLog(@"DEBUG: sock buf size was %d\n",buff_size);
+  //#endif // _DEBUG
+  
+  //  buff_size = cBlockDataLength / 2;
+  const int useBlockSize = cDefaultBlockDataLength;
   if (self.mpParentHttpTest.sendDataChunkSize > 0) {
     //useBlockSize = self.mpParentHttpTest.sendDataChunkSize;
   }
   
-//  buff_size = useBlockSize/2;
-//  socklen = sizeof(buff_size);
-//  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+  //  buff_size = useBlockSize/2;
+  //  socklen = sizeof(buff_size);
+  //  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
   
   int timeout = HTTP_UPLOAD_TIMEOUT;
   socklen = sizeof(timeout);
@@ -687,7 +686,7 @@ const int cDefaultBlockDataLength = 250000;
     
     return;
   }
-
+  
   // Experimentation shows a *much* better settling-down on upload speed,
   // if we force a 32K send buffer size in bytes, rather than relying
   // on the default send buffer size.
@@ -711,22 +710,22 @@ const int cDefaultBlockDataLength = 250000;
   }
   
   NSMutableString *requestStr =
-   //[NSMutableString stringWithFormat:@"POST /?CONTROL=1&UNITID=1&SESSIONID=281541010&NUM_CONNECTIONS=%d&CONNECTION=%d&AGGREGATE_WARMUP=0&RESULTS_INTERVAL_PERIOD=10&RESULT_NUM_INTERVALS=1&TEST_DATA_CAP=4294967295&TRANSFER_MAX_SIZE=%d&WARMUP_SAMPLE_TIME=5000&NUM_WARMUP_SAMPLES=1&MAX_WARMUP_SIZE=4294967295&MAX_WARMUP_SAMPLES=1&WARMUP_FAIL_ON_MAX=0&WARMUP_TOLERANCE=5 HTTP/1.1\r\n",
-   [NSMutableString stringWithFormat:@"POST /?CONTROL=1&UNITID=1&SESSIONID=%u&NUM_CONNECTIONS=%d&CONNECTION=%d&AGGREGATE_WARMUP=0&RESULTS_INTERVAL_PERIOD=10&RESULT_NUM_INTERVALS=1&TEST_DATA_CAP=4294967295&TRANSFER_MAX_SIZE=%d&WARMUP_SAMPLE_TIME=%ld&NUM_WARMUP_SAMPLES=1&MAX_WARMUP_SIZE=%d&MAX_WARMUP_SAMPLES=1&WARMUP_FAIL_ON_MAX=0&WARMUP_TOLERANCE=5 HTTP/1.1\r\n",
-    self.mSESSIONID_ForServerUploadTest,
-    nThreads,         // NUM_CONNECTIONS=%d
-    self.threadId,    // CONNECTION=%d
-    transferMaxBytes, // TRANSFER_MAX_SIZE=%d
-    (long)millisecondsWarmupSampleTime,
-    warmupMaxBytes    // MAX_WARMUP_SIZE=%d
-    ];
+  //[NSMutableString stringWithFormat:@"POST /?CONTROL=1&UNITID=1&SESSIONID=281541010&NUM_CONNECTIONS=%d&CONNECTION=%d&AGGREGATE_WARMUP=0&RESULTS_INTERVAL_PERIOD=10&RESULT_NUM_INTERVALS=1&TEST_DATA_CAP=4294967295&TRANSFER_MAX_SIZE=%d&WARMUP_SAMPLE_TIME=5000&NUM_WARMUP_SAMPLES=1&MAX_WARMUP_SIZE=4294967295&MAX_WARMUP_SAMPLES=1&WARMUP_FAIL_ON_MAX=0&WARMUP_TOLERANCE=5 HTTP/1.1\r\n",
+  [NSMutableString stringWithFormat:@"POST /?CONTROL=1&UNITID=1&SESSIONID=%u&NUM_CONNECTIONS=%d&CONNECTION=%d&AGGREGATE_WARMUP=0&RESULTS_INTERVAL_PERIOD=10&RESULT_NUM_INTERVALS=1&TEST_DATA_CAP=4294967295&TRANSFER_MAX_SIZE=%d&WARMUP_SAMPLE_TIME=%ld&NUM_WARMUP_SAMPLES=1&MAX_WARMUP_SIZE=%d&MAX_WARMUP_SAMPLES=1&WARMUP_FAIL_ON_MAX=0&WARMUP_TOLERANCE=5 HTTP/1.1\r\n",
+   self.mSESSIONID_ForServerUploadTest,
+   nThreads,         // NUM_CONNECTIONS=%d
+   self.threadId,    // CONNECTION=%d
+   transferMaxBytes, // TRANSFER_MAX_SIZE=%d
+   (long)millisecondsWarmupSampleTime,
+   warmupMaxBytes    // MAX_WARMUP_SIZE=%d
+   ];
   [requestStr appendString:[NSString stringWithFormat:@"Host: %@\r\n", target]];
   [requestStr appendString:@"Accept: */*\r\n"];
   [requestStr appendString:@"Content-Length: 4294967295\r\n"];
   [requestStr appendString:@"Content-Type: application/x-www-form-urlencoded\r\n"];
   [requestStr appendString:@"Expect: 100-continue\r\n"];
   [requestStr appendString:@"\r\n"];
-
+  
 #ifdef DEBUG
   NSLog(@"DEBUG: requestStr=>>>\n%@\n<<<", requestStr);
 #endif // DEBUG
@@ -877,9 +876,7 @@ const int cDefaultBlockDataLength = 250000;
   
   int totalBytesWritten = 0;
   int totalBytesExpectedToWrite = lengthBytes;
- 
-  NSMutableData *blockData = [[NSMutableData alloc] initWithLength:useBlockSize];
- 
+  
   // Keep running this loop, until the read thread tells us to stop!
   int numberOfCalls = 0;
   for (;;) {
@@ -891,11 +888,11 @@ const int cDefaultBlockDataLength = 250000;
         break;
       }
       
-      bytesWritten = write(sockfd, [blockData bytes], useBlockSize);
+      bytesWritten = write(sockfd, spBlockData, useBlockSize);
     }
     
     NSDate *end = [NSDate date];
-   
+    
     if (bytesWritten > 0) {
       
       if (self.status == WARMING) {
@@ -906,7 +903,7 @@ const int cDefaultBlockDataLength = 250000;
         [SKHttpTest sAddDebugTimingWithDescription:@"testit" ThreadIndex:threadId Time:(NSTimeInterval)[end timeIntervalSinceDate:start] CurrentSpeed:bytesPerSecondRealTimeUpload];
       }
     }
-  
+    
     if (bytesWritten < 0) {
       bytesWritten = 0;
       
@@ -937,7 +934,7 @@ const int cDefaultBlockDataLength = 250000;
     
     //[asyncSocket writeData:blockData withTimeout:1.0 tag:0];
     totalBytesWritten += bytesWritten; // blockDataLength;
-  
+    
     // This is a DUMMY call... 
     [self connection:nil didSendBodyData:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
     if (bytesWritten == 0) {
@@ -1004,7 +1001,7 @@ const int cDefaultBlockDataLength = 250000;
 #ifdef DEBUG
     NSLog(@"DEBUG: Best result is from the BUILT-IN MEASUREMENT, bitrateMpbs1024Based=%d", (int)bitrateMpbs1024Based);
 #endif // DEBUG
-   
+    
     int theTransferBytes;
     NSUInteger theTotalBytes;
     SKTimeIntervalMicroseconds theTransferTimeMicroseconds;
