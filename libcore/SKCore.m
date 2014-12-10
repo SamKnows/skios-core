@@ -128,6 +128,12 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
 #ifdef DEBUG
   NSLog(@"DEBUG: preferredLang=%@", language);
 #endif // DEBUG
+  if ([language isEqualToString:@"zh-HK"]) {
+#ifdef DEBUG
+    NSLog(@"DEBUG: warning: preferred language is HK! %@", language);
+#endif // DEBUG
+    language = @"zh-Hant";
+  }
   
 //#ifdef DEBUG
 //  NSString *localeIdentifierIgnore = [[NSLocale currentLocale] localeIdentifier];
