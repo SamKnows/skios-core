@@ -105,13 +105,15 @@
   self.vProgressView.alpha = [SKAppColourScheme sGetMainAlphaProgressFill];
 }
 
--(void)setProgressView:(float)time_
+-(void)setProgressView:(float)timeignored
 {
   float totalProgress;
   
-  if (!isRunning) return;
+  if (!isRunning) {
+    return;
+  }
   
-  if (time_ <= 0) time_ = C_GUI_UPDATE_INTERVAL;
+//  if (timeignored <= 0) timeignored = C_GUI_UPDATE_INTERVAL;
   
   if (self.numberOfTests2Execute != 0)
   {
@@ -1584,6 +1586,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         NSString *radioType2 = [SKGlobalMethods getNetworkTypeLocalized:radioType];
         if (radioType2 == nil) {
           SK_ASSERT(false);
+          radioType = @"";
+        } else {
           radioType = radioType2;
         }
       }

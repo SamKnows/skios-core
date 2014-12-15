@@ -663,13 +663,19 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   //  socklen = sizeof(buff_size);
   //  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
   
-  int timeout = HTTP_UPLOAD_TIMEOUT;
-  socklen = sizeof(timeout);
-  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&timeout,socklen);
+  int timeoutSeconds = HTTP_UPLOAD_TIMEOUT;
+  //socklen = sizeof(timeout);
+  struct timeval tv;
+  memset(&tv, 0, sizeof(tv));
+  tv.tv_sec  = timeoutSeconds;
+  tv.tv_usec = 0;
+  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+  SK_ASSERT(sockerr == 0);
   
   // http://stackoverflow.com/questions/15486979/ios-multithreaded-sockets-under-libupnp-hanging-on-send
   int set = 1;
   sockerr = setsockopt(sockfd,SOL_SOCKET,SO_NOSIGPIPE,(const void*)&set,sizeof(set));
+  SK_ASSERT(sockerr == 0);
   
   /* Now connect to the server */
   if (connect(sockfd,(const struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0)
@@ -805,7 +811,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
         
         double finalBytesPerSecond = 0.0;
         double finalBytesMilliseconds = 0.0;
-        double finalBytes = 0.0;
+        //double finalBytes = 0.0;
         
         NSArray *items = [responseString componentsSeparatedByString:@"\n"];
         if (items.count == 0) {
@@ -836,8 +842,8 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
                   SK_ASSERT(bytesPerSecond > 0);
                   
                   finalBytesPerSecond = bytesPerSecond;
-                  finalBytesMilliseconds = seconds * 1000.0;
-                  finalBytes = bytesThusFar;
+//                  finalBytesMilliseconds = seconds * 1000.0;
+//                  finalBytes = bytesThusFar;
                 }
               }
             }

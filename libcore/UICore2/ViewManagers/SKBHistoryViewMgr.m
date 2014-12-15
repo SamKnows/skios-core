@@ -419,10 +419,9 @@ static SKATestResults* testToShareExternal = nil;
   NSString *theNetworkType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
   if (theNetworkType.length > 0)
   {
-    NSString* networkType;
-    networkType = sSKCoreGetLocalisedString(@"Unknown");
+//    NSString* networkType = sSKCoreGetLocalisedString(@"Unknown");
     if ([theNetworkType isEqualToString:@"network"]) {
-      networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
+//      networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
     } else if ([theNetworkType isEqualToString:@"mobile"]) {
       
       // Only allow MOBILE results to be shared!
@@ -435,8 +434,7 @@ static SKATestResults* testToShareExternal = nil;
     
     if (theNetworkType.length > 0)
     {
-      NSString* networkType;
-      networkType = sSKCoreGetLocalisedString(@"Unknown");
+      NSString* networkType = sSKCoreGetLocalisedString(@"Unknown");
       if ([theNetworkType isEqualToString:@"network"]) {
         networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
       } else if ([theNetworkType isEqualToString:@"mobile"]) {

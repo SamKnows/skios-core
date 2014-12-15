@@ -92,7 +92,7 @@
 -(void)drawRect:(CGRect)rect
 {
   NSString* labelText;
-  float angleForDots;
+  //float angleForDots;
   
   [super drawRect:rect];
   CGContextRef context = UIGraphicsGetCurrentContext();
@@ -105,15 +105,15 @@
     CGPoint mainCenter = CGPointMake(self.bounds.origin.x + self.bounds.size.width/2, self.bounds.origin.y + self.bounds.size.width/2);
     float radiusOuter = self.bounds.size.width/ 2  ;
     float radiusInner = self.bounds.size.width/ 2  - (self.frame.size.width / 23);
-    CGPoint smallCircleCenter;
-    CGRect smallCircleRect;
+    //CGPoint smallCircleCenter;
+    //CGRect smallCircleRect;
     
     CGContextSaveGState(context);
     
     for (int i = 0; i <= 60; i++) {
       
       angle = i * (M_PI / 40);
-      angleForDots = M_PI + M_PI_2 + M_PI_4 - i * (M_PI / 40);
+      // angleForDots = M_PI + M_PI_2 + M_PI_4 - i * (M_PI / 40);
       
       if (i % 10 == 0)
       {
@@ -127,8 +127,8 @@
         else
           CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
         
-        smallCircleCenter = CGPointMake(mainCenter.x + radiusInner * sin(angleForDots), mainCenter.y + radiusInner * cos(angleForDots));
-        smallCircleRect = CGRectMake(smallCircleCenter.x - 1.5, smallCircleCenter.y - 1.5, 3, 3);
+        //smallCircleCenter = CGPointMake(mainCenter.x + radiusInner * sin(angleForDots), mainCenter.y + radiusInner * cos(angleForDots));
+        //smallCircleRect = CGRectMake(smallCircleCenter.x - 1.5, smallCircleCenter.y - 1.5, 3, 3);
         // CGContextAddEllipseInRect(context, smallCircleRect);
         CGContextStrokePath(context);
         angle += 3 * M_PI_4;
@@ -263,21 +263,21 @@
   
   _activityIndicatorViewStyle = activityIndicatorViewStyle;
   
-  NSString *backgroundImageName;
-  NSString *indicatorImageName;
-  switch (_activityIndicatorViewStyle) {
-    case TYMActivityIndicatorViewStyleNormal:
-      backgroundImageName = @"TYMActivityIndicatorView.bundle/spbackground";
-      indicatorImageName = @"TYMActivityIndicatorView.bundle/spprogress";
-      break;
-    case TYMActivityIndicatorViewStyleLarge:
-      backgroundImageName = @"TYMActivityIndicatorView.bundle/background-large";
-      indicatorImageName = @"TYMActivityIndicatorView.bundle/spinner-large";
-      break;
-  }
-  
-  backgroundImageName = @"background-large";
-  indicatorImageName = @"spinner-large";
+//  NSString *backgroundImageName;
+//  NSString *indicatorImageName;
+//  switch (_activityIndicatorViewStyle) {
+//    case TYMActivityIndicatorViewStyleNormal:
+//      backgroundImageName = @"TYMActivityIndicatorView.bundle/spbackground";
+//      indicatorImageName = @"TYMActivityIndicatorView.bundle/spprogress";
+//      break;
+//    case TYMActivityIndicatorViewStyleLarge:
+//      backgroundImageName = @"TYMActivityIndicatorView.bundle/background-large";
+//      indicatorImageName = @"TYMActivityIndicatorView.bundle/spinner-large";
+//      break;
+//  }
+//  
+//  backgroundImageName = @"background-large";
+//  indicatorImageName = @"spinner-large";
   
   //    _backgroundImage = [UIImage imageNamed:backgroundImageName];
   //    _indicatorImage = [UIImage imageNamed:indicatorImageName];
