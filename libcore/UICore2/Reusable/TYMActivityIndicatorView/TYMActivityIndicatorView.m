@@ -467,7 +467,7 @@
 {
   if (!self.animating) return;
   
-  NSMutableArray* arrTmp = self.arrLabels;
+ // NSMutableArray* arrTmp = self.arrLabels;
   
   self.arrLabels = nil;
   //    self.btButton.userInteractionEnabled = NO;
@@ -501,7 +501,7 @@
   
   [self setNeedsDisplay];
   
-  self.arrLabels = arrTmp;
+ // self.arrLabels = arrTmp;
 }
 
 -(void)handleTimer

@@ -73,7 +73,7 @@
 -(void)setTest:(SKATestResults*)testResult;
 
 -(UIView*)getView;
-+(NSString*)get3digitsNumber:(float)number_;
++(NSString*)sGet3DigitsNumber:(float)number_;
 
 -(void)layoutCellActive;
 

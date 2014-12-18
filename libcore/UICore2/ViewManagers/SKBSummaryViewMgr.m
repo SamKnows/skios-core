@@ -292,8 +292,8 @@ static BOOL sbReloadTableAfterBack = NO;
   
   if (downloadCNT > 0)
   {
-    self.lDownloadAvg = [SKBTestOverviewCell get3digitsNumber:downloadSUM / downloadCNT];
-    self.lDownloadBst = [SKBTestOverviewCell get3digitsNumber:downloadBEST];
+    self.lDownloadAvg = [SKBTestOverviewCell sGet3DigitsNumber:downloadSUM / downloadCNT];
+    self.lDownloadBst = [SKBTestOverviewCell sGet3DigitsNumber:downloadBEST];
   }
   else
   {
@@ -303,8 +303,8 @@ static BOOL sbReloadTableAfterBack = NO;
   
   if (uploadCNT > 0)
   {
-    self.lUploadAvg = [SKBTestOverviewCell get3digitsNumber:uploadSUM / uploadCNT];
-    self.lUploadBst = [SKBTestOverviewCell get3digitsNumber:uploadBEST];
+    self.lUploadAvg = [SKBTestOverviewCell sGet3DigitsNumber:uploadSUM / uploadCNT];
+    self.lUploadBst = [SKBTestOverviewCell sGet3DigitsNumber:uploadBEST];
   }
   else
   {

@@ -1129,13 +1129,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    
                    if (isDownstream) //Download test
                    {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell get3digitsNumber: bitrate1024Based];
+                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
                      [SKBHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
                      progressDownload = 1;
                    }
                    else
                    {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell get3digitsNumber: bitrate1024Based];
+                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
                      [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
                      progressUpload = 1;
                    }

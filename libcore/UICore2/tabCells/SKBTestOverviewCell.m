@@ -313,12 +313,12 @@
   if (testResult_.downloadSpeed < 0)
     self.lResultDownload.text = @"-";
   else
-    self.lResultDownload.text = [SKBTestOverviewCell get3digitsNumber:testResult_.downloadSpeed];
+    self.lResultDownload.text = [SKBTestOverviewCell sGet3DigitsNumber:testResult_.downloadSpeed];
   
   if (testResult.uploadSpeed < 0)
     self.lResultUpload.text = @"-";
   else
-    self.lResultUpload.text = [SKBTestOverviewCell get3digitsNumber:testResult.uploadSpeed];
+    self.lResultUpload.text = [SKBTestOverviewCell sGet3DigitsNumber:testResult.uploadSpeed];
   
   if (testResult.latency < 0)
     self.lResultLatency.text = @"-";
@@ -352,8 +352,11 @@
   return self.contentView;
 }
 
-+(NSString*)get3digitsNumber:(float)number_
++(NSString*)sGet3DigitsNumber:(float)number_
 {
+//  number_ = 1999.978F;
+//  number_ = 0.978F;
+//  number_ = 10.978F;
   if (number_ < 10) return [NSString stringWithFormat:@"%.02f", number_];
   else if (number_ < 100) return [NSString stringWithFormat:@"%.01f", number_];
   else return [NSString stringWithFormat:@"%.00f", number_];
