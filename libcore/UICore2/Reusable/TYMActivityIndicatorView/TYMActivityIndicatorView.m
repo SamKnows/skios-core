@@ -468,8 +468,9 @@
   if (!self.animating) return;
   
  // NSMutableArray* arrTmp = self.arrLabels;
+
+  [self.arrLabels removeAllObjects];
   
-  self.arrLabels = nil;
   //    self.btButton.userInteractionEnabled = NO;
   
   [UIView animateWithDuration:0.2 animations:^{
