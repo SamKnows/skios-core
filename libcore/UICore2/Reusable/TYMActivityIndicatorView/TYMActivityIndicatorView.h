@@ -72,6 +72,8 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 @property (nonatomic, strong) UILabel* mMeasurementText;
 @property (nonatomic, strong) UIButton* btButton;
 
+@property (nonatomic, strong) NSMutableArray* arrSegmentMinValues;
+@property (nonatomic, strong) NSMutableArray* arrSegmentMaxValues;
 @property (nonatomic, strong) NSMutableArray* arrLabels;
 @property (nonatomic) float desiredAngle;
 @property (nonatomic) float realAngle;
@@ -154,12 +156,14 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 - (BOOL)isAnimating;
 
 -(void)setCenterText:(NSString*)currentResult;
--(void)setAngle:(float)angle; //In Degrees
+-(void)setAngleByValue:(float)value;
 
 -(void)setUnitMeasurement:(NSString*)unit_ measurement:(NSString*)measurement_;
 -(void)layoutSubviews;
 -(void)setTopText:(NSString*)topInfo_;
 
 -(void)setCenterTextWithAnimation:(NSString*)nextValue_;
+
+-(void)setSixSegmentMaxValues:(NSArray*)arrayOfSixValues;
 
 @end

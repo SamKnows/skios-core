@@ -777,7 +777,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 {
   [self.tmActivityIndicator stopAnimating];
   [self.tmActivityIndicator setCenterTextWithAnimation:sSKCoreGetLocalisedString(@"Start")];
-  [self.tmActivityIndicator setAngle:0];
+  [self.tmActivityIndicator setAngleByValue:0];
   
   if ([self.appDelegate enableTestsSelection])
     [UIView animateWithDuration:0.3 animations:^{
@@ -879,7 +879,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   double packetLoss = latencyTest.packetLoss;
   double jitter = latencyTest.jitter;
   
-  [self.tmActivityIndicator setAngle:0];
+  [self.tmActivityIndicator setAngleByValue:0];
   
   [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST].value = [NSString stringWithFormat:@"%.0f ms", latency];
   [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST].value = [NSString stringWithFormat:@"%.0f %%", packetLoss];
@@ -929,17 +929,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Latency / Loss testing") forever:YES];
     [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Ms") measurement:sSKCoreGetLocalisedString(@"Test_Latency")];
-    if (((self.testTypes2Execute & CTTBM_DOWNLOAD) != 0) || ((self.testTypes2Execute & CTTBM_UPLOAD) != 0))
+    if (((self.testTypes2Execute & CTTBM_DOWNLOAD) != 0) || ((self.testTypes2Execute & CTTBM_UPLOAD) != 0)) {
       [self.tmActivityIndicator setCenterTextWithAnimation:@"0"];
+    }
     
-    [self.tmActivityIndicator.arrLabels removeAllObjects];
-    [self.tmActivityIndicator.arrLabels addObject:@"0"];
-    [self.tmActivityIndicator.arrLabels addObject:@"100"];
-    [self.tmActivityIndicator.arrLabels addObject:@"200"];
-    [self.tmActivityIndicator.arrLabels addObject:@"300"];
-    [self.tmActivityIndicator.arrLabels addObject:@"400"];
-    [self.tmActivityIndicator.arrLabels addObject:@"500"];
-    [self.tmActivityIndicator.arrLabels addObject:@"600"];    });
+    [self.tmActivityIndicator setSixSegmentMaxValues:@[@100.0, @200.0, @300.5, @400.0, @500.0, @600.0]];
+  });
 }
 
 - (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency_
@@ -957,21 +952,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
       [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.00f", latencyAVG]];
-      
-      if (latencyAVG <= 100.0)
-        [self.tmActivityIndicator setAngle:45.0 * latencyAVG / 100.0];
-      else if (latencyAVG <= 200.0)
-        [self.tmActivityIndicator setAngle:45.0 + 45.0 * (latencyAVG - 100.0) / 100.0];
-      else if (latencyAVG <= 300.0)
-        [self.tmActivityIndicator setAngle:90.0 + 45.0 * (latencyAVG - 200.0) / 100.0];
-      else if (latencyAVG <= 400.0)
-        [self.tmActivityIndicator setAngle:135.0 + 45.0 * (latencyAVG - 300.0) / 100.0];
-      else if (latencyAVG <= 500.0)
-        [self.tmActivityIndicator setAngle:180.0 + 45.0 * (latencyAVG - 400.0) / 100.0];
-      else if (latencyAVG <= 600.0)
-        [self.tmActivityIndicator setAngle:225.0 + 45.0 * (latencyAVG - 500.0) / 100.0];
-      else
-        [self.tmActivityIndicator setAngle:270.0];
+      [self.tmActivityIndicator setAngleByValue:latencyAVG];
       
       [self setProgressView:0];
     });
@@ -989,28 +970,19 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    if (isDownstream)
                    {
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Download testing") forever:YES];
-                     [self.tmActivityIndicator.arrLabels removeAllObjects];
-                     [self.tmActivityIndicator.arrLabels addObject:@"0"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"1"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"2"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"5"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"10"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"30"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"100"];
+                     
+                     NSArray *valueArray = [[SKAAppDelegate getAppDelegate] getDownloadSixSegmentMaxValues];
+                     [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
                      
                      [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Download")];
                    }
                    else
                    {
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Upload testing") forever:YES];
-                     [self.tmActivityIndicator.arrLabels removeAllObjects];
-                     [self.tmActivityIndicator.arrLabels addObject:@"0"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"0.5"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"1"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"1.5"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"2"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"5"];
-                     [self.tmActivityIndicator.arrLabels addObject:@"10"];
+                     
+                     NSArray *valueArray = [[SKAAppDelegate getAppDelegate] getDownloadSixSegmentMaxValues];
+                     [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
+                     
                      [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Upload")];
                    }
                  });
@@ -1036,40 +1008,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      dispatch_async(dispatch_get_main_queue(), ^{
                        [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.02f", bitrate1024Based]];
                        
-                       if (isDownstream)
-                       {
-                         if (bitrate1024Based <= 1)
-                           [self.tmActivityIndicator setAngle:45.0 * bitrate1024Based];
-                         else if (bitrate1024Based <= 2)
-                           [self.tmActivityIndicator setAngle:45.0 + 45.0 * (bitrate1024Based - 1)];
-                         else if (bitrate1024Based <= 5)
-                           [self.tmActivityIndicator setAngle:90.0 + 45.0 * (bitrate1024Based - 2) / 3.0];
-                         else if (bitrate1024Based <= 10)
-                           [self.tmActivityIndicator setAngle:135.0 + 45.0 * (bitrate1024Based - 5) / 5.0];
-                         else if (bitrate1024Based <= 30)
-                           [self.tmActivityIndicator setAngle:180.0 + 45.0 * (bitrate1024Based - 10) / 20.0];
-                         else if (bitrate1024Based <= 100)
-                           [self.tmActivityIndicator setAngle:225.0 + 45.0 * (bitrate1024Based - 30) / 70.0];
-                         else
-                           [self.tmActivityIndicator setAngle:270.0];
-                       }
-                       else
-                       {
-                         if (bitrate1024Based <= 0.5)
-                           [self.tmActivityIndicator setAngle:45.0 * bitrate1024Based / 0.5];
-                         else if (bitrate1024Based <= 1)
-                           [self.tmActivityIndicator setAngle:45.0 + 45.0 * (bitrate1024Based - 0.5)];
-                         else if (bitrate1024Based <= 1.5)
-                           [self.tmActivityIndicator setAngle:90.0 + 45.0 * (bitrate1024Based - 1) / 0.5];
-                         else if (bitrate1024Based <= 2)
-                           [self.tmActivityIndicator setAngle:135.0 + 45.0 * (bitrate1024Based - 1.5) / 0.5];
-                         else if (bitrate1024Based <= 5)
-                           [self.tmActivityIndicator setAngle:180.0 + 45.0 * (bitrate1024Based - 2) / 3.0];
-                         else if (bitrate1024Based <= 10)
-                           [self.tmActivityIndicator setAngle:225.0 + 45.0 * (bitrate1024Based - 5) / 5.0];
-                         else
-                           [self.tmActivityIndicator setAngle:270.0];
-                       }
+                       [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
                        
                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
 #ifdef DEBUG
@@ -1125,7 +1064,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                  ^{
                    BOOL isDownstream = httpTest.isDownstream;
                    
-                   [self.tmActivityIndicator setAngle:0];
+                   [self.tmActivityIndicator setAngleByValue:0];
                    
                    if (isDownstream) //Download test
                    {

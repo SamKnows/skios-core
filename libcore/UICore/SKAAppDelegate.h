@@ -193,4 +193,7 @@ typedef enum SKBShowMetricsRule
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;
 -(BOOL) getIsBestTargetDisplaySupported;
 
+-(NSArray*)getDownloadSixSegmentMaxValues;
+-(NSArray*)getUploadSixSegmentMaxValues;
+
 @end

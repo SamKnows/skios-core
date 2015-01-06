@@ -1858,4 +1858,13 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 -(BOOL) getIsBestTargetDisplaySupported {
   return YES;
 }
+
+-(NSArray*)getDownloadSixSegmentMaxValues {
+  return @[@1.0, @2.0, @5.0, @10.0, @30.0, @100.0];
+}
+
+-(NSArray*)getUploadSixSegmentMaxValues {
+  return @[@0.5, @1.0, @1.5, @2.0, @5.0, @10.0];
+}
+
 @end

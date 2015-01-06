@@ -235,6 +235,8 @@
 
 - (void)setActivityIndicatorViewStyle:(TYMActivityIndicatorViewStyle)activityIndicatorViewStyle
 {
+  self.arrSegmentMinValues = [[NSMutableArray alloc] init];
+  self.arrSegmentMaxValues = [[NSMutableArray alloc] init];
   self.arrLabels = [[NSMutableArray alloc] init];
   //    [self.arrLabels addObject:@"*"];
   
@@ -557,8 +559,52 @@
 
 -(void)setAngle:(float)angle_
 {
+  SK_ASSERT(angle_ >= 0.0F);
+  SK_ASSERT(angle_ <= 270.0F);
+  
   if (angle_ > 270) angle_ = 271;
   self.desiredAngle = angle_;
+}
+
+-(void)setAngleByValue:(float)value
+{
+  const float anglePerSegment = 45.0F;
+  
+  double useAngle = 0.0F;
+  
+  int index = 0;
+  int items = (int)self.arrSegmentMaxValues.count;
+  SK_ASSERT(items == 6);
+  
+  float maxAngleFound = 0.0F;
+  float maxValueFound = 0.0F;
+  
+  for (index = 0; index < items; index++) {
+    float thisSegmentStartsAtAngle = anglePerSegment * ((float)index);
+    maxAngleFound = fmax(maxAngleFound, thisSegmentStartsAtAngle);
+    
+    NSNumber *segmentMinFloatValue = self.arrSegmentMinValues[index];
+    NSNumber *segmentMaxFloatValue = self.arrSegmentMaxValues[index];
+    
+    maxValueFound = fmax(maxValueFound, segmentMaxFloatValue.floatValue);
+    
+    SK_ASSERT(value >= segmentMinFloatValue.floatValue);
+    
+    if (value <= segmentMaxFloatValue.floatValue) {
+      // Use this segment!
+      useAngle = thisSegmentStartsAtAngle + (anglePerSegment * (value - segmentMinFloatValue.floatValue) / (segmentMaxFloatValue.floatValue - segmentMinFloatValue.floatValue));
+      break;
+    }
+   
+    // Keep looking!
+  }
+ 
+  if (value >= maxValueFound) {
+    useAngle = maxAngleFound + anglePerSegment;
+    SK_ASSERT(useAngle == 270.0);
+  }
+  
+  [self setAngle:useAngle];
 }
 
 -(void)setCenterTextWithAnimation:(NSString*)nextValue_
@@ -585,5 +631,34 @@
     self.mMeasurementText.alpha = 1;
   } completion:^(BOOL finished) {
   }];
+}
+
+-(void)setSixSegmentMaxValues:(NSArray*)arrayOfSixValues {
+  SK_ASSERT(arrayOfSixValues.count == 6);
+  
+  self.arrSegmentMinValues = [[NSMutableArray alloc] init];
+  self.arrSegmentMaxValues = [[NSMutableArray alloc] init];
+  self.arrLabels = [[NSMutableArray alloc] init];
+  
+  [self.arrLabels addObject:@"0"];
+  
+  NSNumber *lastMaxValue = @0.0F;
+  
+  for (NSNumber *value in arrayOfSixValues) {
+    [self.arrSegmentMinValues addObject:lastMaxValue];
+    [self.arrSegmentMaxValues addObject:value];
+    
+    lastMaxValue = value;
+   
+    double doubleValue = value.doubleValue;
+    double fractionalPart = doubleValue - ((double)value.integerValue);
+    if (fractionalPart > 0.4) {
+      // Something like 0.5, 1.5 etc.
+      [self.arrLabels addObject:[NSString stringWithFormat:@"%.1f", doubleValue]];
+    } else {
+      [self.arrLabels addObject:[NSString stringWithFormat:@"%ld", (long)value.integerValue]];
+    }
+  }
+  
 }
 @end
