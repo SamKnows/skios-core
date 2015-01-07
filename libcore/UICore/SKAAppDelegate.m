@@ -129,31 +129,35 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)startLocationMonitoring
 {
-  SK_ASSERT([CLLocationManager locationServicesEnabled]);
-  
-  locationManager = [[CLLocationManager alloc] init];
-  SK_ASSERT(locationManager != nil);
-  
-  [locationManager setDelegate:self];
-  [locationManager setDistanceFilter:kCLHeadingFilterNone];
-  [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-  //[locationManager setPausesLocationUpdatesAutomatically:NO];
-  
-  // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-  // http://stackoverflow.com/questions/24062509/ios-8-location-services-not-working
-  if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-    [locationManager requestWhenInUseAuthorization];
+  @synchronized (self.class) {
+    SK_ASSERT([CLLocationManager locationServicesEnabled]);
+    
+    locationManager = [[CLLocationManager alloc] init];
+    SK_ASSERT(locationManager != nil);
+    
+    [locationManager setDelegate:self];
+    [locationManager setDistanceFilter:kCLHeadingFilterNone];
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    //[locationManager setPausesLocationUpdatesAutomatically:NO];
+    
+    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+    // http://stackoverflow.com/questions/24062509/ios-8-location-services-not-working
+    if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+      [locationManager requestWhenInUseAuthorization];
+    }
+    
+    [locationManager startUpdatingLocation];
+    [locationManager stopUpdatingLocation];
+    [locationManager startUpdatingLocation];
   }
-  
-  [locationManager startUpdatingLocation];
-  [locationManager stopUpdatingLocation];
-  [locationManager startUpdatingLocation];
 }
 
 -(void)stopLocationMonitoring {
-  if (locationManager != nil) {
-    [locationManager stopUpdatingLocation];
-    locationManager = nil;
+  @synchronized (self.class) {
+    if (locationManager != nil) {
+      [locationManager stopUpdatingLocation];
+      locationManager = nil;
+    }
   }
 }
 
