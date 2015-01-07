@@ -933,7 +933,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       [self.tmActivityIndicator setCenterTextWithAnimation:@"0"];
     }
     
-    [self.tmActivityIndicator setSixSegmentMaxValues:@[@100.0, @200.0, @300.5, @400.0, @500.0, @600.0]];
+    [self.tmActivityIndicator setSixSegmentMaxValues:@[@100.0, @200.0, @300, @400.0, @500.0, @600.0]];
   });
 }
 

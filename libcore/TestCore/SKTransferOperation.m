@@ -605,6 +605,9 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   }
 }
 
+// We SHARE the body data, to save memory footprint - otherwise, we can run out of memory on e.g. iPhone 4S
+//static NSData *sbBodyData = nil;
+
 -(void) startUploadTest {
 #ifdef DEBUG
   NSLog(@"DEBUG startUploadTest: %@ - isUpstream", [self description]);
@@ -700,11 +703,34 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   // When forcing value in bytes, you must actually divide by two!
   // https://code.google.com/p/android/issues/detail?id=13898
   //desideredSendBufferSize = 65536 / 2; // (2 ^ 16) / 2
+ 
+//  @synchronized (self.class) {
+//    NSURL *fileUrl = [[NSURL alloc] initFileURLWithPath:file];
+//    NSFileManager *man = [NSFileManager defaultManager];
+//    NSDictionary *attrs = [man attributesOfItemAtPath:file error: nil];
+//    UInt32 fileSizeBytes = [attrs fileSize];
+//    UInt32 dataSizeBytes = 0;
+//    
+//    //The file data is read only when the size is different than requested
+//    if (sbBodyData != nil)
+//    {
+//      dataSizeBytes  = sbBodyData.length;
+//    }
+//    
+//    if ( (sbBodyData == nil) ||
+//        (dataSizeBytes != fileSizeBytes)
+//        )
+//    {
+//      sbBodyData = [[NSData alloc] initWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
+//    }
+//  }
   
-  NSURL *fileUrl = [[NSURL alloc] initFileURLWithPath:file];
-  NSData *bodyData = [[NSData alloc] initWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
-  
-  int lengthBytes = (int)bodyData.length;
+//  int lengthBytes = (int)sbBodyData.length;
+//  NSURL *fileUrl = [[NSURL alloc] initFileURLWithPath:file];
+  NSFileManager *man = [NSFileManager defaultManager];
+  NSDictionary *attrs = [man attributesOfItemAtPath:file error: nil];
+  int lengthBytes = (int) [attrs fileSize];
+  SK_ASSERT(lengthBytes > 0);
   
   // Use the correct parameters in the header... INCLUDING THE UNIT ID!
   // c.f. instructions at the top of this file.
@@ -739,8 +765,8 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
   ssize_t bytesWritten = write(sockfd, [requestData bytes], requestData.length);
   if (bytesWritten < 0) {
-    int theErrNo = errno;
 #ifdef DEBUG
+    int theErrNo = errno;
     NSLog(@"DEBUG: theErrNo3=%d", theErrNo);
 #endif // DEBUG
     SK_ASSERT(false);
