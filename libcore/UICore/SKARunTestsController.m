@@ -390,6 +390,23 @@
   [self.spinnerMain stopAnimating];
   testsComplete = YES;
   
+  if ([appDelegate getIsConnected] == NO) {
+    // On test stopped - if not connected, display an alert.
+    // This covers e.g. if we lost connection and tests stopped automatically.
+    // It will also stop a test re-running in the event of continuous testing.
+    
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:nil
+                               message:sSKCoreGetLocalisedString(@"Offline_message")
+                              delegate:nil
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                     otherButtonTitles: nil];
+    
+    [alert show];
+    
+    return;
+  }
+  
   if (self.continuousTesting) {
     if (fromAlertResponse == NO) {
       // Stopped the test automatically for some reason - start the test going again!

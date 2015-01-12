@@ -9,7 +9,7 @@
 /* General Strings */
 
 "Done"              = "Done";
-"Offline_message"   = "The internet connection appears to be offline. Please connect and try again";
+"Offline_message"   = "The internet connection appears to be offline. Please connect and try again.";
 "Data_Might_Be_Exceeded"     = "Data Cap Might Be Exceeded";
 "Data_Exceeded"     = "Data Cap Exceeded";
 "Data_Exceed_Msg"   = "Do you wish to continue anyway?";
