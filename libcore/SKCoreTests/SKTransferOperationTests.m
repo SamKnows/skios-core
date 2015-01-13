@@ -7,8 +7,9 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
+#import "SKTransferOperation.h"
 
-@interface SKTransferOperationTests : XCTestCase<SKTransferOperationDelegate>
+@interface SKTransferOperationTests : XCTestCase // <SKTransferOperationDelegate>
 
 @property TransferStatus mLastTransferStatus;
 @property int mDelegateCalledCount;
@@ -146,10 +147,10 @@
 {
   SKAHttpTest * httpTest = [self createHttpTestInstance];
   
-  SKTransferOperation *syncTransferOperation = [[SKTransferOperation alloc] initWithTarget:@"target" port:1 file:@"file" isDownstream:NO nThreads:7 threadId:123 ParentHttpTest:httpTest asyncFlag:NO];
+  SKTransferOperation *syncTransferOperation = [[SKTransferOperation alloc] initWithTarget:@"target" port:1 file:@"file" isDownstream:NO nThreads:7 threadId:123 SESSIONID:0 ParentHttpTest:httpTest asyncFlag:NO];
   XCTAssertFalse([syncTransferOperation getAsyncFlag], @"syncTransferOperation - async flag set to false");
   
-  SKTransferOperation *asyncTransferOperation = [[SKTransferOperation alloc] initWithTarget:@"target" port:1 file:@"file" isDownstream:NO nThreads:7 threadId:123 ParentHttpTest:httpTest asyncFlag:YES];
+  SKTransferOperation *asyncTransferOperation = [[SKTransferOperation alloc] initWithTarget:@"target" port:1 file:@"file" isDownstream:NO nThreads:7 threadId:123 SESSIONID:0 ParentHttpTest:httpTest asyncFlag:YES];
   XCTAssertTrue([asyncTransferOperation getAsyncFlag], @"asyncTransferOperation - async flag set to true");
   
   // http://stackoverflow.com/questions/12308297/some-of-my-unit-tests-tests-are-not-finishing-in-xcode-4-4
@@ -205,7 +206,7 @@
   SKAHttpTest * httpTest = [self createHttpTestInstance];
   
   // Send warm-up bytes for no more than 1 second!
-  SKTransferOperation *transferOperation = [[SKTransferOperation alloc] initWithTarget:target port:port file:testFilePath isDownstream:NO nThreads:1 threadId:1 ParentHttpTest:httpTest asyncFlag:YES];
+  SKTransferOperation *transferOperation = [[SKTransferOperation alloc] initWithTarget:target port:port file:testFilePath isDownstream:NO nThreads:1 threadId:1 SESSIONID:0 ParentHttpTest:httpTest asyncFlag:YES];
   
   // Create an operation queue, add the operation, and wait until all finished;
   // that allows us to track the full operation.
@@ -303,7 +304,7 @@
  
   SKAHttpTest * httpTest = [self createHttpTestInstance];
   
-  SKTransferOperation *transferOperation = [[SKTransferOperation alloc] initWithTarget:target port:port file:testFilePath isDownstream:NO nThreads:1 threadId:1 ParentHttpTest:httpTest asyncFlag:YES];
+  SKTransferOperation *transferOperation = [[SKTransferOperation alloc] initWithTarget:target port:port file:testFilePath isDownstream:NO nThreads:1 threadId:1 SESSIONID:0  ParentHttpTest:httpTest asyncFlag:YES];
   
   // As we're in "Test Mode", we must call the start method directly; and call any delegate methods
   // we want to provoke immediately!

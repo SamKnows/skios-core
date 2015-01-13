@@ -15,7 +15,7 @@
 
 typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED, FINISHED, IDLE } TransferStatus;
 
-@protocol SKTransferOperationDelegate;
+//@protocol SKTransferOperationDelegate;
 @class SKAutotest;
 @class SKHttpTest;
 

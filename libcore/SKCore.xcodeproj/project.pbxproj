@@ -80,6 +80,9 @@
 		B282672B19E3F579003A4172 /* SKBTestResultsSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = B282672A19E3F579003A4172 /* SKBTestResultsSharer.m */; };
 		B28437AF18C8728400B3495E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28437AE18C8728400B3495E /* CoreText.framework */; };
 		B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */ = {isa = PBXBuildFile; fileRef = B297CE7918E0541800964CD3 /* UIView+SKView.m */; };
+		B29C68311A651665002761DB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B241A2329FD0077C360 /* AssetsLibrary.framework */; };
+		B29C68321A65166C002761DB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B261A232A050077C360 /* MobileCoreServices.framework */; };
+		B29C68331A651699002761DB /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B281A232A0E0077C360 /* QuickLook.framework */; };
 		B2AE68151883DA4D00D87FAE /* SKAAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE67F41883DA4D00D87FAE /* SKAAboutController.m */; };
 		B2AE68161883DA4D00D87FAE /* SKAActivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE67F61883DA4D00D87FAE /* SKAActivationController.m */; };
 		B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE67F81883DA4D00D87FAE /* SKAArchivedResultsController.m */; };
@@ -526,6 +529,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B29C68331A651699002761DB /* QuickLook.framework in Frameworks */,
+				B29C68321A65166C002761DB /* MobileCoreServices.framework in Frameworks */,
+				B29C68311A651665002761DB /* AssetsLibrary.framework in Frameworks */,
 				B2FB438D192E00AE00DE371B /* MessageUI.framework in Frameworks */,
 				B2FB438C192E009400DE371B /* libz.dylib in Frameworks */,
 				B2B0770018D73DED00FFAE12 /* XCTest.framework in Frameworks */,
@@ -1561,6 +1567,7 @@
 		B22E88D017C3678A005D9094 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(SRCROOT)/../HockeySDK-iOS/HockeySDK.embeddedframework",
@@ -1591,6 +1598,7 @@
 		B22E88D117C3678A005D9094 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(SRCROOT)/../HockeySDK-iOS/HockeySDK.embeddedframework",
