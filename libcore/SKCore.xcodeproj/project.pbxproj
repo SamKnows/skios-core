@@ -1519,7 +1519,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../core-plot/framework",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../core-plot/build/Release-universal",
@@ -1546,7 +1546,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../core-plot/framework",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../core-plot/build/Release-universal",
@@ -1575,6 +1575,7 @@
 					"\"$(SRCROOT)/../OCMock/iOS\"",
 				);
 				INFOPLIST_FILE = "SKCoreTests/SKCoreTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../OCMock/iOS\"",
@@ -1604,6 +1605,7 @@
 					"\"$(SRCROOT)/../OCMock/iOS\"",
 				);
 				INFOPLIST_FILE = "SKCoreTests/SKCoreTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../OCMock/iOS\"",
