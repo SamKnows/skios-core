@@ -335,6 +335,24 @@ enum {
     alert.tag = ALERT_WIPEDATA;
     [alert show];
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
+    SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+    if ([appDelegate getIsConnected] == NO) {
+      // If not connected, display an alert, and do not try to activate.
+      // This covers e.g. if we lost connection and tests stopped automatically.
+      // It will also stop a test re-running in the event of continuous testing.
+      
+      UIAlertView *alert =
+      [[UIAlertView alloc] initWithTitle:nil
+                                 message:sSKCoreGetLocalisedString(@"Offline_message")
+                                delegate:nil
+                       cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                       otherButtonTitles: nil];
+      
+      [alert show];
+      
+      return;
+    }
+
     [SKAAppDelegate setIsActivated:NO];
    
     //UIViewController *doSequeFrom = nil;
