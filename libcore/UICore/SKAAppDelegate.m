@@ -409,9 +409,10 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 + (void)setHasAgreed:(BOOL)value
 {
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:[NSNumber numberWithBool:value] forKey:Prefs_Agreed];
-    [prefs synchronize];
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  [prefs setObject:[SKCore getToday] forKey:Prefs_DataDate];
+  [prefs setObject:[NSNumber numberWithBool:value] forKey:Prefs_Agreed];
+  [prefs synchronize];
 }
 
 - (BOOL)hasAgreed

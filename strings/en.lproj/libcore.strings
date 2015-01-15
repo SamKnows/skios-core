@@ -209,6 +209,7 @@
 "MenuAlert_No"      = "No";
 "MenuAlert_Cancel"  = "Cancel";
 "MenuAlert_OK"  = "OK";
+"I Agree" = "I Agree";
 "Export_Title"  = "Export archived results?";
 "Export_Body"  = "Do you want to use email to export a zip file of archived results in JSON format?";
 "Export_NoItems_Title" = "Unable to export";

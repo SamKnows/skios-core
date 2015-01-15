@@ -209,6 +209,7 @@
 "MenuAlert_No"      = "否";
 "MenuAlert_Cancel"  = "取消";
 "MenuAlert_OK"  = "确定";
+"I Agree" = "I Agree";
 "Export_Title"  = "汇出已存档结果?";
 "Export_Body"  = "你是否希望使用电邮汇出 JSON 格式的已存档结果?";
 "Export_NoItems_Title" = "无法汇出";
