@@ -9,6 +9,7 @@
 #import "SKBSettingsViewController.h"
 
 #import "SKBSettingsMgr.h"
+#import "SKBActivationController.h"
 
 @interface SKBSettingsViewController ()
 
@@ -30,6 +31,19 @@
   [super viewDidAppear:animated];
 
   //[self.settingsManagerView.tDataCapValue becomeFirstResponder];
+}
+
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  if ([segue.identifier isEqualToString:@"segueToActivateFromSettings"]) {
+    SKBActivationController *vc = (SKBActivationController*)segue.destinationViewController;
+    
+    vc.hidesBackButton = NO;
+  } else if ([segue.identifier isEqualToString:@"segueFromSettingsToTerms"]) {
+    // Nothing to do...
+  } else {
+    SK_ASSERT(false);
+  }
 }
 
 @end

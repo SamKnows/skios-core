@@ -93,11 +93,12 @@
        ([self.spinnerMain isAnimating] == YES)
      )
   {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:sSKCoreGetLocalisedString(@"ACTV_Running")
-                                                   delegate:nil
-                                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
-                                          otherButtonTitles: nil];
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:nil
+                               message:sSKCoreGetLocalisedString(@"ACTV_Running")
+                              delegate:nil
+                     cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
+                     otherButtonTitles: nil];
     [alert show];
     return;
   }

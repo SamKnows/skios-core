@@ -23,6 +23,7 @@
 		B221AEE318FFDFFA00323923 /* UIAlertView+SKExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B221AEE218FFDFFA00323923 /* UIAlertView+SKExtensions.m */; };
 		B221AEE518FFE24800323923 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
 		B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2246C7917CF691700E1DC79 /* SKAutotest.m */; };
+		B224BE2F1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m in Sources */ = {isa = PBXBuildFile; fileRef = B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */; };
 		B22E5ED619D96CFF00666F16 /* SKBSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */; };
 		B22E5EDA19D9715B00666F16 /* SKBTermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */; };
 		B22E5EDF19DAC40000666F16 /* SKBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */; };
@@ -206,6 +207,8 @@
 		B221AEE218FFDFFA00323923 /* UIAlertView+SKExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+SKExtensions.m"; sourceTree = "<group>"; };
 		B221AEE418FFE24800323923 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		B2246C7917CF691700E1DC79 /* SKAutotest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAutotest.m; sourceTree = "<group>"; };
+		B224BE2D1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKATermsAndConditionsWithButtonController.h; path = UICore2/ViewManagers/SKATermsAndConditionsWithButtonController.h; sourceTree = SOURCE_ROOT; };
+		B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKATermsAndConditionsWithButtonController.m; path = UICore2/ViewManagers/SKATermsAndConditionsWithButtonController.m; sourceTree = SOURCE_ROOT; };
 		B22E5ED419D96CFF00666F16 /* SKBSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSettingsViewController.h; sourceTree = "<group>"; };
 		B22E5ED519D96CFF00666F16 /* SKBSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsViewController.m; sourceTree = "<group>"; };
 		B22E5ED819D9715B00666F16 /* SKBTermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTermsViewController.h; sourceTree = "<group>"; };
@@ -905,6 +908,8 @@
 				B2AE680C1883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.m */,
 				B2AE680D1883DA4D00D87FAE /* SKATermsAndConditionsController.h */,
 				B2AE680E1883DA4D00D87FAE /* SKATermsAndConditionsController.m */,
+				B224BE2D1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.h */,
+				B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */,
 				B2AE680F1883DA4D00D87FAE /* SKATransferTestCell.h */,
 				B2AE68101883DA4D00D87FAE /* SKATransferTestCell.m */,
 				B2AE68111883DA4D00D87FAE /* STKSpinnerView.h */,
@@ -1324,6 +1329,7 @@
 				B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */,
 				B23B638419ACB7A8003F381C /* NSString+SKExtensions.m in Sources */,
 				B23B638119ACB3F6003F381C /* SKTestResults.m in Sources */,
+				B224BE2F1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m in Sources */,
 				B22E5EE319DAEC7000666F16 /* SKBSummaryTableViewCell.m in Sources */,
 				B22E88DE17C3682E005D9094 /* SKDatabase.m in Sources */,
 				B2AE68161883DA4D00D87FAE /* SKAActivationController.m in Sources */,

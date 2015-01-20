@@ -38,16 +38,24 @@
   [super viewDidAppear:animated];
   
   [self.vWelcomeView startAnimationOnCompletion:^{
-    
-    [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVC" sender:self];
-//    
+
+  SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+  if ( ([appDelegate getNewAppShowInitialTermsAndConditions] == YES) &&
+       ([appDelegate hasNewAppAgreed] == NO)
+     )
+  {
+    [self performSegueWithIdentifier:@"segueFromSplashVCToTerms" sender:self];
+  } else {
+    [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVCToMain" sender:self];
+  }
+//
 //    [UIView animateWithDuration:0.3 animations:^{
 //      
 //      self.vWelcomeView.alpha = 0;
 //      
 //    } completion:^(BOOL finished) {
 //      
-//      [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVC" sender:self];
+//      [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVCToMain" sender:self];
 //      
 //    }];
   }];

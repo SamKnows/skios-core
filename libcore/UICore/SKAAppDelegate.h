@@ -95,6 +95,7 @@ typedef enum SKBShowMetricsRule
 
 
 - (BOOL)hasAgreed;
+- (BOOL)hasNewAppAgreed;
 - (BOOL)isActivated;
 - (BOOL)getIsConnected;
 
@@ -157,6 +158,11 @@ typedef enum SKBShowMetricsRule
 // Not all variants need to start with a T&C screen!
 -(BOOL) showInitialTermsAndConditions;
 
+// The New app might show T&C at start, but this is handled differently to the way the old app does it.
+// Note that for the NewApp, the showInitialTermsAndConditions *must* return NO.
+-(BOOL) getIsThisTheNewApp;
+-(BOOL) getNewAppShowInitialTermsAndConditions;
+  
 // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants;
 // the default is NO.
 -(BOOL) getShouldUploadDeviceId;
@@ -195,5 +201,7 @@ typedef enum SKBShowMetricsRule
 
 -(NSArray*)getDownloadSixSegmentMaxValues;
 -(NSArray*)getUploadSixSegmentMaxValues;
+
++(void) sResetUserInterfaceBackToMainScreen;
 
 @end

@@ -45,6 +45,8 @@
 {
   [super viewDidLoad];
   
+  [self.navigationItem setHidesBackButton:self.hidesBackButton];
+  
   self.lTitle.text = sSKCoreGetLocalisedString(@"Storyboard_Activation_Title");
   self.lTitle.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.lTitle.layer.cornerRadius = 3;
@@ -400,7 +402,13 @@
         
         [[self delegate] hasCompleted];
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        if (self.hidesBackButton == NO) {
+          // The "back button" is hidden.
+          [self.navigationController popViewControllerAnimated:YES];
+        } else {
+          // Automatically return to the main screen!
+          [SKAAppDelegate sResetUserInterfaceBackToMainScreen];
+        }
       }
     }
   }

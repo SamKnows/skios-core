@@ -13,6 +13,7 @@
 
 @interface SKBActivationController : UIViewController
 
+@property  BOOL hidesBackButton;
 @property (weak, nonatomic) IBOutlet UILabel *lTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lActivating;
 @property (weak, nonatomic) IBOutlet UILabel *lDownloading;
@@ -22,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinnerMain;
 
 @property (atomic, strong) id <SKAActivationDelegate> delegate;
-@property (nonatomic, assign) BOOL hidesBackButton;
 
 - (IBAction)done:(id)sender;
 

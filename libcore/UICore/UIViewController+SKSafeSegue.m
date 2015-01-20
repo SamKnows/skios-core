@@ -18,7 +18,7 @@
     [self performSegueWithIdentifier:identifier sender:sender];
   } else {
     if ([self.class isSubclassOfClass:UITabBarController.class]) {
-      // e.g. from Noatikl tab bar controller...
+      // e.g. from tab bar controller...
       UITabBarController *theTBC = (UITabBarController*)self;
       UIViewController *selectedVC = theTBC.selectedViewController;
       NSLog(@"Class is %@", [selectedVC description]);

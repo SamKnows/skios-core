@@ -19,8 +19,8 @@ NSString *const Config_Url = @"/mobile/getconfig";
 
 NSString *const Schedule_Xml = @"SCHEDULE.xml";
 
-NSString *const Prefs_Agreed = @"PREFS_AGREED";
-NSString *const Prefs_Activated = @"PREFS_ACTIVATED";
+NSString *const Prefs_Agreed = @"PREFS_AGREED_V2";
+NSString *const Prefs_Activated = @"PREFS_ACTIVATED_V2";
 NSString *const Prefs_TargetServer = @"PREFS_TARGET_SERVER";
 
 NSString *const Prefs_DataDate = @"PREFS_DATA_DATE";
@@ -233,9 +233,17 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   if (![prefs objectForKey:Prefs_Agreed])
   {
     BOOL defaultValue = NO;
-    if ([self showInitialTermsAndConditions] == NO)
-    {
-      defaultValue = YES;
+    SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+    if ([appDelegate getIsThisTheNewApp] == YES) {
+      if ([appDelegate getNewAppShowInitialTermsAndConditions] == NO)
+      {
+        defaultValue = YES;
+      }
+    } else {
+      if ([self showInitialTermsAndConditions] == NO)
+      {
+        defaultValue = YES;
+      }
     }
     [prefs setObject:[NSNumber numberWithBool:defaultValue] forKey:Prefs_Agreed];
   }
@@ -418,6 +426,28 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 - (BOOL)hasAgreed
 {
   if ([self showInitialTermsAndConditions] == NO) {
+    // For such apps, always act as though the user has agreed to T&C...
+    return YES;
+  }
+  
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  
+  if ([prefs objectForKey:Prefs_Agreed])
+  {
+    NSNumber *num = [prefs objectForKey:Prefs_Agreed];
+    if (nil != num)
+    {
+      return [num boolValue];
+    }
+  }
+  
+  return NO;
+}
+
+
+- (BOOL)hasNewAppAgreed
+{
+  if ([self getNewAppShowInitialTermsAndConditions] == NO) {
     // For such apps, always act as though the user has agreed to T&C...
     return YES;
   }
@@ -1113,15 +1143,6 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   return storyboard;
 }
 
-+(void) resetUserInterfaceBackToRunTestsScreenFromViewController { // :(UIViewController*)fromViewController {
-  UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
-  UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationController"];
-  
-  SKAAppDelegate *instance;
-  UIApplication *application = [UIApplication sharedApplication];
-  instance = (SKAAppDelegate*)application.delegate;
-  instance.window.rootViewController = nc;
-}
 
 +(NSDate*)getStartDateForThisRange:(DATERANGE_1w1m3m1y)range {
   NSDate *previousDate = nil;
@@ -1764,6 +1785,15 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return YES;
 }
 
+-(BOOL) getIsThisTheNewApp {
+  return NO;
+}
+
+// The New app might show T&C at start, but this is handled differently to the way the old app does it.
+-(BOOL) getNewAppShowInitialTermsAndConditions {
+  return NO;
+}
+
 // Some versions of the app can disable the datacap
 -(BOOL) canDisableDataCap {
   return NO;
@@ -1872,4 +1902,24 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return @[@0.5, @1.0, @1.5, @2.0, @5.0, @10.0];
 }
 
+
++(void) sResetUserInterfaceBackToMainScreen  {
+  UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
+  UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationControllerTAndCAgreed"];
+  
+  SKAAppDelegate *instance;
+  UIApplication *application = [UIApplication sharedApplication];
+  instance = (SKAAppDelegate*)application.delegate;
+  instance.window.rootViewController = nc;
+}
+
++(void) resetUserInterfaceBackToRunTestsScreenFromViewController { // :(UIViewController*)fromViewController {
+  UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
+  UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationController"];
+  
+  SKAAppDelegate *instance;
+  UIApplication *application = [UIApplication sharedApplication];
+  instance = (SKAAppDelegate*)application.delegate;
+  instance.window.rootViewController = nc;
+}
 @end

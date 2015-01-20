@@ -9,6 +9,7 @@
 #import "SKBRunTestViewMgrController.h"
 #import "UIWelcomeView.h"
 #import "SKBTestResultsSharer.h"
+#import "SKBActivationController.h"
 
 #include <math.h>
 
@@ -155,7 +156,7 @@
   
   if ([[SKAAppDelegate getAppDelegate] isActivated] == NO)
   {
-    [self SKSafePerformSegueWithIdentifier:@"segueActivate" sender:self];
+    [self SKSafePerformSegueWithIdentifier:@"segueFromRunTestToActivate" sender:self];
     return;
   }
 }
@@ -1589,6 +1590,17 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   SK_ASSERT(mpTestResult != nil);
   mpSharer = [[SKBTestResultsSharer alloc] initWithViewController:self];
   [mpSharer shareTest:mpTestResult];
+}
+
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  if ([segue.identifier isEqualToString:@"segueFromRunTestToActivate"]) {
+    SKBActivationController *vc = (SKBActivationController*)segue.destinationViewController;
+    
+    vc.hidesBackButton = NO;
+  } else {
+    SK_ASSERT(false);
+  }
 }
 
 @end
