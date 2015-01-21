@@ -259,9 +259,15 @@
       SK_ASSERT(thePublicIp != nil);
       NSString *theSubmissionId = values[@"Submission_ID"];
       SK_ASSERT(theSubmissionId != nil);
-      
-      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP].value = thePublicIp;
-      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID].value = theSubmissionId;
+     
+      SKBTestResultValue *publicIPResult = [self getTheTestResultValueForTestIdentifierBenign:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP];
+      if (publicIPResult != nil) {
+        publicIPResult.value = thePublicIp;
+      }
+      SKBTestResultValue *submisionIDResult = [self getTheTestResultValueForTestIdentifierBenign:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
+      if (submisionIDResult != nil) {
+        submisionIDResult.value = theSubmissionId;
+      }
       
       self.mTestPublicIp = thePublicIp;
       self.mTestSubmissionId = theSubmissionId;
@@ -560,6 +566,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(SKBTestResultValue*) getTheTestResultValueForTestIdentifier:(NSString*)inIdentifier {
   SKBTestResultValue* theResult = [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:inIdentifier];
   SK_ASSERT(theResult != nil);
+  return theResult;
+}
+
+-(SKBTestResultValue*) getTheTestResultValueForTestIdentifierBenign:(NSString*)inIdentifier {
+  SKBTestResultValue* theResult = [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:inIdentifier];
   return theResult;
 }
 
