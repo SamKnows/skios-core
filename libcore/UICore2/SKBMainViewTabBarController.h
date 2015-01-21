@@ -11,7 +11,6 @@
 #import "SKAppColourScheme.h"
 #import "SKBHistoryViewMgr.h"
 #import "SKBSummaryViewMgr.h"
-#import "SKBSettingsMgr.h"
 #import "SKBTermsView.h"
 #import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"
 

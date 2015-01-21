@@ -192,9 +192,8 @@
     //self.btShare.alpha = 1; // Use this for debugging, to see where share button would be. me!
   }
 
-  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    self.iconWidthConstraint.constant = 120;
-  }
+  // The width of the top left icon, can be customized for different app variants!
+  self.iconWidthConstraint.constant = [[SKAAppDelegate getAppDelegate] getNewAppTopLeftIconWidth];
   
   dataStart = 0;
   dataEnd = 0;

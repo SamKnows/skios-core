@@ -1922,4 +1922,17 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   instance = (SKAAppDelegate*)application.delegate;
   instance.window.rootViewController = nc;
 }
+
+// The width of the top left icon, can be customized for different app variants!
+-(CGFloat) getNewAppTopLeftIconWidth {
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    return 120.0;
+  }
+  
+  return 60.0;
+}
+
+-(NSString*) getNewAppUrlForHelpAbout {
+  return nil;
+}
 @end

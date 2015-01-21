@@ -367,7 +367,15 @@ enum {
     
     [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
   } else if ([cell.reuseIdentifier isEqualToString:@"about_url"]) {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://speedtest.ofca.gov.hk/about-sk.html"]];
+    
+    NSString *theUrlString = [[SKAAppDelegate getAppDelegate] getNewAppUrlForHelpAbout];
+    if (theUrlString != nil) {
+      // View a specific URL!
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theUrlString]];
+    } else {
+      // Just show the default "About" screen.
+      [self performSegueWithIdentifier:@"segueFromSettingsToAbout" sender:self];
+    }
   }
 }
 
@@ -381,7 +389,7 @@ enum {
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
   // In your own app, you could use the delegate to track whether the user sent or canceled the email by examining the value in the result parameter.
-  [self dismissModalViewControllerAnimated:YES];
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 //

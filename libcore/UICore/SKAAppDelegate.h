@@ -204,4 +204,11 @@ typedef enum SKBShowMetricsRule
 
 +(void) sResetUserInterfaceBackToMainScreen;
 
+// The width of the top left icon, can be customized for different app variants!
+-(CGFloat) getNewAppTopLeftIconWidth;
+
+// Use this to override the "new app" behaviour which otherwise would show the about screen.
+// Returns nil if the about screen should be shown instead.
+-(NSString*) getNewAppUrlForHelpAbout;
+
 @end
