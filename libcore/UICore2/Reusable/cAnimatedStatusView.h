@@ -1,5 +1,5 @@
 //
-//  cAnimatedStatusView.h
+//  CAnimatedStatusView.h
 //  SKCore
 //
 
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface cAnimatedStatusView : UIView
+@interface CAnimatedStatusView : UIView
 
 @property (weak, nonatomic) IBOutlet UILabel* l1h;
 @property (weak, nonatomic) IBOutlet UILabel* l1n;

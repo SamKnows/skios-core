@@ -7,18 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "../Reusable/TYMActivityIndicatorView/TYMActivityIndicatorView.h"
+#import "../Reusable/CGaugeView/CGaugeView.h"
 #import "../tabCells/SKBSimpleResultCell.h"
 #import "../tabCells/SKBTestOverviewCell.h"
-#import "cActionSheet.h"
-#import "cAnimatedStatusView.h"
+#import "CActionSheet.h"
+#import "CAnimatedStatusView.h"
 #import "SKBHistoryViewMgr.h"
 #import "SKTestResults.h"
 
 @class SKBTestResultValue;
 @class UIWelcomeView;
 
-@interface SKBRunTestViewMgrController : UIViewController <pTYMAOwner, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SKBRunTestViewMgrController : UIViewController <CGaugeViewOwnerProtocol, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     bool isRunning;
     int testCells2Show;
@@ -49,15 +49,15 @@
 }
 
 @property NSMutableArray* mTestResultsArray;
-@property (nonatomic, strong) cActionSheet* casTestTypes;
-@property (weak, nonatomic) IBOutlet cAnimatedStatusView *casStatusView;
-@property (nonatomic, strong) cActionSheet* casShare;
+@property (nonatomic, strong) CActionSheet* casTestTypes;
+@property (weak, nonatomic) IBOutlet CAnimatedStatusView *casStatusView;
+@property (nonatomic, strong) CActionSheet* casShare;
 
 @property (atomic) double timeOfLastUIUpdate;
 
 @property (weak, nonatomic) IBOutlet UILabel *mPressTheStartButtonLabel;
 
-@property (weak, nonatomic) IBOutlet TYMActivityIndicatorView *tmActivityIndicator;
+@property (weak, nonatomic) IBOutlet CGaugeView *tmActivityIndicator;
 @property (weak, nonatomic) IBOutlet UITableView *tvCurrentResults;
 @property (weak, nonatomic) IBOutlet UILabel *warningLabelBeforeTableFirstShown;
 @property (weak, nonatomic) IBOutlet UIView *vProgressView;

@@ -41,8 +41,8 @@
   
   self.masterView = masterView_;
   
-  [cActionSheet formatView:self.btNetworkType];
-  [cActionSheet formatView:self.btPeriod];
+  [CActionSheet formatView:self.btNetworkType];
+  [CActionSheet formatView:self.btPeriod];
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
   currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
@@ -216,7 +216,7 @@ static NSUInteger s1YearButtonIndex = 0;
     
     if (!self.casNetworkType)
     {
-        self.casNetworkType = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+        self.casNetworkType = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
         [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
         [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
         [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
@@ -230,7 +230,7 @@ static NSUInteger s1YearButtonIndex = 0;
     
     if (!self.casPeriod)
     {
-        self.casPeriod = [[cActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+        self.casPeriod = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
         [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1day") withImage:nil andTag:C_FILTER_PERIOD_1DAY];
         [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1week") withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
         [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1month") withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
@@ -242,7 +242,7 @@ static NSUInteger s1YearButtonIndex = 0;
 }
 
 
--(void)selectedOption:(int)optionTag from:(cActionSheet *)sender WithState:(int)state
+-(void)selectedOption:(int)optionTag from:(CActionSheet *)sender WithState:(int)state
 {
   SK_ASSERT(sender != nil);
   

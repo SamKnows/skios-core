@@ -9,7 +9,7 @@
 #import "SKBTestResultsSharer.h"
 
 @interface SKBTestResultsSharer()
-@property (nonatomic, strong) cActionSheet* casShare;
+@property (nonatomic, strong) CActionSheet* casShare;
 @property (nonatomic, strong) SKATestResults* selectedTest;
 
 @property (nonatomic, strong) UIViewController* masterViewController;
@@ -33,7 +33,7 @@
 {
   selectedTest = testResult;
   
-  self.casShare = [[cActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+  self.casShare = [[CActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
   
   if ([[SKAAppDelegate getAppDelegate] isFacebookExportSupported]) {
     [self.casShare addOption:@"Facebook" withImage:[UIImage imageNamed:@"share-facebook"] andTag:C_SHARE_FACEBOOK];
@@ -52,7 +52,7 @@
   [self.casShare expand];
 }
 
--(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state {
+-(void)selectedOption:(int)optionTag from:(CActionSheet*)sender WithState:(int)state {
   
   if (sender == self.casShare)
   {

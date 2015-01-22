@@ -1,6 +1,6 @@
 /*
- TYMActivityIndicatorView.m
- TYMActivityIndicatorView
+ CGaugeView.m
+ CGaugeView
  
  Created by Yiming Tang on 14-2-9.
  Copyright (c) 2014 Yiming Tang. All rights reserved.
@@ -25,10 +25,10 @@
  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#import "TYMActivityIndicatorView.h"
+#import "CGaugeView.h"
 #import "../SKAppColourScheme/SKAppColourScheme.h"
 
-@interface TYMActivityIndicatorView ()
+@interface CGaugeView ()
 
 @property (nonatomic, assign) BOOL animating;
 @property (nonatomic, strong) UIImageView *indicatorImageView;
@@ -36,7 +36,7 @@
 
 @end
 
-@implementation TYMActivityIndicatorView
+@implementation CGaugeView
 
 #pragma mark - Accessors
 
@@ -235,7 +235,7 @@
   self.mTopText.text = topInfo_;
 }
 
-- (void)setActivityIndicatorViewStyle:(TYMActivityIndicatorViewStyle)activityIndicatorViewStyle
+- (void)setActivityIndicatorViewStyle:(CGaugeViewStyle)activityIndicatorViewStyle
 {
   self.arrSegmentMinValues = [[NSMutableArray alloc] init];
   self.arrSegmentMaxValues = [[NSMutableArray alloc] init];
@@ -266,25 +266,6 @@
   [self addSubview:self.mCenterText];
   
   _activityIndicatorViewStyle = activityIndicatorViewStyle;
-  
-//  NSString *backgroundImageName;
-//  NSString *indicatorImageName;
-//  switch (_activityIndicatorViewStyle) {
-//    case TYMActivityIndicatorViewStyleNormal:
-//      backgroundImageName = @"TYMActivityIndicatorView.bundle/spbackground";
-//      indicatorImageName = @"TYMActivityIndicatorView.bundle/spprogress";
-//      break;
-//    case TYMActivityIndicatorViewStyleLarge:
-//      backgroundImageName = @"TYMActivityIndicatorView.bundle/background-large";
-//      indicatorImageName = @"TYMActivityIndicatorView.bundle/spinner-large";
-//      break;
-//  }
-//  
-//  backgroundImageName = @"background-large";
-//  indicatorImageName = @"spinner-large";
-  
-  //    _backgroundImage = [UIImage imageNamed:backgroundImageName];
-  //    _indicatorImage = [UIImage imageNamed:indicatorImageName];
   
   self.backgroundImageView.image = _backgroundImage;
   self.indicatorImageView.image = _indicatorImage;
@@ -390,7 +371,7 @@
   return self;
 }
 
-- (id)initWithActivityIndicatorStyle:(TYMActivityIndicatorViewStyle)style
+- (id)initWithActivityIndicatorStyle:(CGaugeViewStyle)style
 {
   if ((self = [self initWithFrame:CGRectZero])) {
     self.activityIndicatorViewStyle = style;

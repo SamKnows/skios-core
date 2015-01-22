@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "../Reusable/CActionSheet/cActionSheet.h"
+#import "../Reusable/CActionSheet/CActionSheet.h"
 #import "SKBHistoryViewMgr.h"
 #import "../tabCells/SKBTestOverviewCell.h"
 #import "SKTestResults.h"
@@ -46,9 +46,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *btPeriod;
 
 // These are used ONLY if the non-standard action sheet is used
-@property (nonatomic, strong) cActionSheet* casNetworkType;
-@property (nonatomic, strong) cActionSheet* casPeriod;
-//@property (nonatomic, strong) cActionSheet* casShare;
+@property (nonatomic, strong) CActionSheet* casNetworkType;
+@property (nonatomic, strong) CActionSheet* casPeriod;
+//@property (nonatomic, strong) CActionSheet* casShare;
 
 @property NSString *lDownloadName;
 @property NSString *lDownloadAvgUnit;

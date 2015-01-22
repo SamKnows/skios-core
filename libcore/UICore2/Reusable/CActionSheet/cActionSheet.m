@@ -1,11 +1,11 @@
 //
-//  cActionSheet.m
-//  FCCMckp001
+//  CActionSheet.m
+//  UICore
 //
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "cActionSheet.h"
+#import "CActionSheet.h"
 
 @interface cOptionDefinition()
 @property (nonatomic)  int mDisplayState; //<0 - not relevant, 0 - off, 1 - on
@@ -15,7 +15,7 @@
 
 @end
 
-@implementation cActionSheet
+@implementation CActionSheet
 
 -(id)initOnView:(UIView*)parView withDelegate:(id<pActionSheetDelegate>)dlgt mainTitle:(NSString*)mainButtonTitle_
 {
@@ -222,7 +222,7 @@
   option.mDisplayState = state_;
   [self formatButton:option];
   
-  [cActionSheet formatView:option.button];
+  [CActionSheet formatView:option.button];
   
   option.imageView = [[UIImageView alloc] init];
   option.imageView.image = optionImage;

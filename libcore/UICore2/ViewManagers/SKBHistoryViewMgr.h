@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 //#import <MessageUI/MFMailComposeViewController.h>
-//#import "cActionSheet.h"
+//#import "CActionSheet.h"
 #import "../tabCells/SKBTestOverviewCell.h"
 
 @class SKATestResults;
@@ -42,8 +42,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tvTests;
 @property (weak, nonatomic) IBOutlet UIButton *btBack;
 
-//@property (nonatomic, strong) cActionSheet* casNetworkType;
-//@property (nonatomic, strong) cActionSheet* casPeriod;
+//@property (nonatomic, strong) CActionSheet* casNetworkType;
+//@property (nonatomic, strong) CActionSheet* casPeriod;
 
 +(SKATestResults *) sCreateNewTstToShareExternal;
 +(SKATestResults *) sGetTstToShareExternal;

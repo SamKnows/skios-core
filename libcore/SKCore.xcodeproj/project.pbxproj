@@ -132,12 +132,12 @@
 		B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2E16BD7181A5D4500B907DE /* SKGraphForResultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */; };
 		B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */; };
-		B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */; };
+		B2FB032C19B75D09007AA3C2 /* CActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FC19B75D09007AA3C2 /* CActionSheet.m */; };
 		B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */; };
-		B2FB032E19B75D09007AA3C2 /* cAnimatedStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */; };
+		B2FB032E19B75D09007AA3C2 /* CAnimatedStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030119B75D09007AA3C2 /* CAnimatedStatusView.m */; };
 		B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030419B75D09007AA3C2 /* SKAppColourScheme.m */; };
 		B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030A19B75D09007AA3C2 /* IPHelper.m */; };
-		B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */; };
+		B2FB033219B75D09007AA3C2 /* CGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* CGaugeView.m */; };
 		B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */; };
 		B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */; };
 		B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031719B75D09007AA3C2 /* SKBActivationController.m */; };
@@ -464,20 +464,19 @@
 		B2DC501D18C75DA100E69F36 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResultsTests.m; sourceTree = "<group>"; };
 		B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHttpTest.m; sourceTree = "<group>"; };
-		B2FB02FB19B75D09007AA3C2 /* cActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cActionSheet.h; sourceTree = "<group>"; };
-		B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cActionSheet.m; sourceTree = "<group>"; };
+		B2FB02FB19B75D09007AA3C2 /* CActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionSheet.h; sourceTree = "<group>"; };
+		B2FB02FC19B75D09007AA3C2 /* CActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CActionSheet.m; sourceTree = "<group>"; };
 		B2FB02FE19B75D09007AA3C2 /* CActivityBlinking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActivityBlinking.h; sourceTree = "<group>"; };
 		B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CActivityBlinking.m; sourceTree = "<group>"; };
-		B2FB030019B75D09007AA3C2 /* cAnimatedStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cAnimatedStatusView.h; sourceTree = "<group>"; };
-		B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cAnimatedStatusView.m; sourceTree = "<group>"; };
+		B2FB030019B75D09007AA3C2 /* CAnimatedStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnimatedStatusView.h; sourceTree = "<group>"; };
+		B2FB030119B75D09007AA3C2 /* CAnimatedStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAnimatedStatusView.m; sourceTree = "<group>"; };
 		B2FB030319B75D09007AA3C2 /* SKAppColourScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAppColourScheme.h; sourceTree = "<group>"; };
 		B2FB030419B75D09007AA3C2 /* SKAppColourScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppColourScheme.m; sourceTree = "<group>"; };
 		B2FB030919B75D09007AA3C2 /* IPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPHelper.h; sourceTree = "<group>"; };
 		B2FB030A19B75D09007AA3C2 /* IPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPHelper.m; sourceTree = "<group>"; };
 		B2FB030C19B75D09007AA3C2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		B2FB030D19B75D09007AA3C2 /* TYMActivityIndicatorView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TYMActivityIndicatorView.bundle; sourceTree = "<group>"; };
-		B2FB030E19B75D09007AA3C2 /* TYMActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYMActivityIndicatorView.h; sourceTree = "<group>"; };
-		B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYMActivityIndicatorView.m; sourceTree = "<group>"; };
+		B2FB030E19B75D09007AA3C2 /* CGaugeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGaugeView.h; sourceTree = "<group>"; };
+		B2FB030F19B75D09007AA3C2 /* CGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGaugeView.m; sourceTree = "<group>"; };
 		B2FB031119B75D09007AA3C2 /* UIViewWithGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewWithGradient.h; sourceTree = "<group>"; };
 		B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewWithGradient.m; sourceTree = "<group>"; };
 		B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWelcomeView.h; sourceTree = "<group>"; };
@@ -1078,11 +1077,11 @@
 			children = (
 				B2FB02FA19B75D09007AA3C2 /* CActionSheet */,
 				B2FB02FD19B75D09007AA3C2 /* CActivityBlinking */,
-				B2FB030019B75D09007AA3C2 /* cAnimatedStatusView.h */,
-				B2FB030119B75D09007AA3C2 /* cAnimatedStatusView.m */,
+				B2FB030019B75D09007AA3C2 /* CAnimatedStatusView.h */,
+				B2FB030119B75D09007AA3C2 /* CAnimatedStatusView.m */,
 				B2FB030219B75D09007AA3C2 /* SKAppColourScheme */,
 				B2FB030819B75D09007AA3C2 /* IPHelper */,
-				B2FB030B19B75D09007AA3C2 /* TYMActivityIndicatorView */,
+				B2FB030B19B75D09007AA3C2 /* CGaugeView */,
 				B2FB031019B75D09007AA3C2 /* UIViewWithGradient */,
 				B2FB031319B75D09007AA3C2 /* WelcomeView */,
 			);
@@ -1092,8 +1091,8 @@
 		B2FB02FA19B75D09007AA3C2 /* CActionSheet */ = {
 			isa = PBXGroup;
 			children = (
-				B2FB02FB19B75D09007AA3C2 /* cActionSheet.h */,
-				B2FB02FC19B75D09007AA3C2 /* cActionSheet.m */,
+				B2FB02FB19B75D09007AA3C2 /* CActionSheet.h */,
+				B2FB02FC19B75D09007AA3C2 /* CActionSheet.m */,
 			);
 			path = CActionSheet;
 			sourceTree = "<group>";
@@ -1125,15 +1124,14 @@
 			path = IPHelper;
 			sourceTree = "<group>";
 		};
-		B2FB030B19B75D09007AA3C2 /* TYMActivityIndicatorView */ = {
+		B2FB030B19B75D09007AA3C2 /* CGaugeView */ = {
 			isa = PBXGroup;
 			children = (
 				B2FB030C19B75D09007AA3C2 /* LICENSE */,
-				B2FB030D19B75D09007AA3C2 /* TYMActivityIndicatorView.bundle */,
-				B2FB030E19B75D09007AA3C2 /* TYMActivityIndicatorView.h */,
-				B2FB030F19B75D09007AA3C2 /* TYMActivityIndicatorView.m */,
+				B2FB030E19B75D09007AA3C2 /* CGaugeView.h */,
+				B2FB030F19B75D09007AA3C2 /* CGaugeView.m */,
 			);
-			path = TYMActivityIndicatorView;
+			path = CGaugeView;
 			sourceTree = "<group>";
 		};
 		B2FB031019B75D09007AA3C2 /* UIViewWithGradient */ = {
@@ -1334,7 +1332,7 @@
 				B2AE68211883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.m in Sources */,
 				B2AE68201883DA4D00D87FAE /* SKASettingsController.m in Sources */,
 				B2FB033E19B75D09007AA3C2 /* SKBSummaryViewMgr.m in Sources */,
-				B2FB032C19B75D09007AA3C2 /* cActionSheet.m in Sources */,
+				B2FB032C19B75D09007AA3C2 /* CActionSheet.m in Sources */,
 				B282672B19E3F579003A4172 /* SKBTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */,
 				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
@@ -1371,7 +1369,7 @@
 				B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */,
 				B22E892C17C37339005D9094 /* AsyncUdpSocket.m in Sources */,
 				B20BCEB71A28873400A45AD4 /* SKAFooterCell.m in Sources */,
-				B2FB032E19B75D09007AA3C2 /* cAnimatedStatusView.m in Sources */,
+				B2FB032E19B75D09007AA3C2 /* CAnimatedStatusView.m in Sources */,
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
@@ -1381,7 +1379,7 @@
 				B28006DD19C881E90008DF5F /* SKBMainViewTabBarController.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,
 				B2AE681D1883DA4D00D87FAE /* SKALatencyTestCell.m in Sources */,
-				B2FB033219B75D09007AA3C2 /* TYMActivityIndicatorView.m in Sources */,
+				B2FB033219B75D09007AA3C2 /* CGaugeView.m in Sources */,
 				B2AE68191883DA4D00D87FAE /* SKAGraphResultFooterCell.m in Sources */,
 				B2AE68411883DE6800D87FAE /* SKALatencyOperation.m in Sources */,
 				B22E893217C37C90005D9094 /* SKUDPDataGram.m in Sources */,

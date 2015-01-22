@@ -1,6 +1,6 @@
 /*
-TYMActivityIndicatorView.h
-TYMActivityIndicatorView
+CGaugeView.h
+CGaugeView
 
 Created by Yiming Tang on 14-2-9.
 Copyright (c) 2014 Yiming Tang. All rights reserved.
@@ -29,7 +29,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #define C_ARCH_THICK_WIDTH  (self.frame.size.width / 30)
 
-@protocol pTYMAOwner <NSObject>
+@protocol CGaugeViewOwnerProtocol <NSObject>
 @required
     -(void)buttonPressed;
 @end
@@ -37,11 +37,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /**
  Activity indicator type.
  */
-typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
+typedef NS_ENUM(NSInteger, CGaugeViewStyle) {
     /** A large activity indicator view. About 157 * 157 in size. */
-    TYMActivityIndicatorViewStyleLarge,
+    CGaugeViewStyleLarge,
     /** A normal activity indicator view. About 37 * 37 in size */
-    TYMActivityIndicatorViewStyleNormal,
+    CGaugeViewStyleNormal,
 };
 
 /**
@@ -51,14 +51,14 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 #define C_ANGLE_STEP (360.0/80.0)
 
 //IB_DESIGNABLE
-@interface TYMActivityIndicatorView : UIView
+@interface CGaugeView : UIView
 {
     int mode;
     int currentpixel;
     int direction; //==0 right !=0 left
 }
 
-@property (nonatomic, weak) id<pTYMAOwner> activityOwner;
+@property (nonatomic, weak) id<CGaugeViewOwnerProtocol> activityOwner;
 
 ///-----------------
 /// @name Properties
@@ -122,9 +122,9 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 @property (nonatomic, assign) CGFloat minProgressUnit UI_APPEARANCE_SELECTOR;
 
 /**
- The activity indicator view style. Default is `TYMActivityIndicatorViewStyleNormal`.
+ The activity indicator view style. Default is `CGaugeViewStyleNormal`.
  */
-@property (nonatomic, assign) TYMActivityIndicatorViewStyle activityIndicatorViewStyle;
+@property (nonatomic, assign) CGaugeViewStyle activityIndicatorViewStyle;
 
 ///-------------------
 /// @name Initializing
@@ -133,7 +133,7 @@ typedef NS_ENUM(NSInteger, TYMActivityIndicatorViewStyle) {
 /**
  Initialize a indicator view with built-in sizes and resources according to the specific style.
  */
-- (id)initWithActivityIndicatorStyle:(TYMActivityIndicatorViewStyle)style;
+- (id)initWithActivityIndicatorStyle:(CGaugeViewStyle)style;
 
 
 ///-----------------------------

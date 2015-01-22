@@ -1,6 +1,6 @@
 //
-//  cActionSheet.h
-//  FCCMckp001
+//  CActionSheet.h
+//  UICore
 //
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
@@ -9,15 +9,15 @@
 #import "../UIViewWithGradient/UIViewWithGradient.h"
 #import "../SKAppColourScheme/SKAppColourScheme.h"
 
-@class cActionSheet;
+@class CActionSheet;
 
 @protocol pActionSheetDelegate <NSObject>
 
--(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state;
+-(void)selectedOption:(int)optionTag from:(CActionSheet*)sender WithState:(int)state;
 
 @end
 
-@interface cActionSheet : NSObject
+@interface CActionSheet : NSObject
 
 @property (nonatomic, strong) NSMutableArray* arrOptions;
 

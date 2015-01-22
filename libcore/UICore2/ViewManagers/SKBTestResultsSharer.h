@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 //#import <MessageUI/MFMailComposeViewController.h>
-#import "cActionSheet.h"
+#import "CActionSheet.h"
 #import "SKTestResults.h"
 
 #define C_SHARE_FACEBOOK    1

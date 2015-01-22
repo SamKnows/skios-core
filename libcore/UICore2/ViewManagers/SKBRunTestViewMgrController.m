@@ -168,7 +168,7 @@
   
   showPassiveMetrics = NO;
   self.vProgressView.hidden = YES;
-  [self.tmActivityIndicator setActivityIndicatorViewStyle:TYMActivityIndicatorViewStyleLarge];
+  [self.tmActivityIndicator setActivityIndicatorViewStyle:CGaugeViewStyleLarge];
   self.tmActivityIndicator.hidesWhenStopped = NO;
   
   //[self.tmActivityIndicator sizeToFit];
@@ -596,7 +596,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 //#if TARGET_IPHONE_SIMULATOR
 //int sbSimulatorFakeConnectionToggle = 0;
 //#endif // TARGET_IPHONE_SIMULATOR
--(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state {
+-(void)selectedOption:(int)optionTag from:(CActionSheet*)sender WithState:(int)state {
   
   if ([self.appDelegate enableTestsSelection] == NO)
   {
@@ -1587,7 +1587,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (IBAction)B_SelectTests:(id)sender {
   
- self.casTestTypes = [[cActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")];
+ self.casTestTypes = [[CActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")];
  [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Download") withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
  [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Upload") withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
  [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Latency / Loss / Jitter") withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];

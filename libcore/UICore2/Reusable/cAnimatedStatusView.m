@@ -1,18 +1,18 @@
 //
-//  cAnimatedStatusView.m
+//  CAnimatedStatusView.m
 //  SKCore
 //
 
 //  Copyright (c) 2014 SamKnows. All rights reserved.
 //
 
-#import "cAnimatedStatusView.h"
+#import "CAnimatedStatusView.h"
 
-@interface cAnimatedStatusView()
+@interface CAnimatedStatusView()
 @property (nonatomic) int activeLabel;
 @end
 
-@implementation cAnimatedStatusView
+@implementation CAnimatedStatusView
 
 - (id)initWithFrame:(CGRect)frame
 {
