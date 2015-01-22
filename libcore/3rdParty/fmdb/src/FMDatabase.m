@@ -104,7 +104,9 @@
                 triedFinalizingOpenStatements = YES;
                 sqlite3_stmt *pStmt;
                 while ((pStmt = sqlite3_next_stmt(db, 0x00)) !=0) {
-                    NSLog(@"Closing leaked statement");
+#ifdef DEBUG
+                    NSLog(@"DEBUG: Closing leaked statement");
+#endif // DEBUG
                     sqlite3_finalize(pStmt);
                 }
             }

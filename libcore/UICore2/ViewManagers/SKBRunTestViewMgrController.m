@@ -483,8 +483,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   if (appDelegate.connectionStatus == NONE)
   {
-    
-    NSLog(@"------------------ conn status");
+#ifdef DEBUG
+    NSLog(@"DEBUG: setConnectionStatus");
+#endif // DEBUG
     
     if (nil != autoTest)
     {
@@ -496,8 +497,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     [self cancelCurrentTests];
     [self.tmActivityIndicator stopAnimating];
   }
-  else
-    NSLog(@"Connection !!!!!");
+  else {
+#ifdef DEBUG
+    NSLog(@"DEBUG: Connection !!!!!");
+#endif // DEBUG
+  }
 }
 
 -(void) selfRunTestAfterUserApprovedToDataCapChecks {
@@ -1023,7 +1027,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                        
                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
 #ifdef DEBUG
-                       NSLog(@"DEBUG: Bitrate: %f", bitrate1024Based);
+                       //NSLog(@"DEBUG: Bitrate: %f", bitrate1024Based);
 #endif // DEBUG
                        
                        [self setProgressView:0];

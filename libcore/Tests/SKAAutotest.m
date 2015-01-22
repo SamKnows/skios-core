@@ -220,7 +220,7 @@
   [jsonDictionary setObject:timeZone forKey:@"timezone"];
  
 #ifdef DEBUG
-  NSLog(@"jsonDictionary=%@", [jsonDictionary description]);
+  NSLog(@"DEBUG: jsonDictionary=%@", [jsonDictionary description]);
 #endif // DEBUG
 }
 
@@ -600,7 +600,8 @@
   
   NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 #ifdef DEBUG
-  NSLog(@"DEBUG: jsonStr=...\n%@", jsonStr);
+  //NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
+  NSLog(@"DEBUG: doSaveAndUploadJson...");
 #endif // DEBUG
   
   [self.autotestManagerDelegate amdDoSaveJSON:jsonStr];

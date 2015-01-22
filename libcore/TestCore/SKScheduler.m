@@ -917,7 +917,9 @@
 
 - (void)dealloc
 {
-  NSLog(@"SKScheduler Dealloc");
+#ifdef DEBUG
+  NSLog(@"DEBUG: SKScheduler - dealloc");
+#endif // DEBUG
   
 //  [[NSNotificationCenter defaultCenter]
 //   removeObserver:self

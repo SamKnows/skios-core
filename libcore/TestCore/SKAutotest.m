@@ -409,7 +409,9 @@ static BOOL sbTestIsRunning = NO;
     {
       if (self.httpTest == nil)
       {
-        NSLog(@"********* creating httpTransfer test, isDownload=%d", (int)isDownload);
+#ifdef DEBUG
+        NSLog(@"DEBUG: ********* creating httpTransfer test, isDownload=%d", (int)isDownload);
+#endif // DEBUG
         [self createHttpTest:config isDownload:isDownload file:file target:target];
         int sendDataChunkSize = [[config paramObjectForKey:@"sendDataChunk"] intValue];
         [self.httpTest setSendDataChunkSize:sendDataChunkSize];
@@ -419,7 +421,9 @@ static BOOL sbTestIsRunning = NO;
         
         if ([self.httpTest isReady])
         {
-          NSLog(@"********* test is ready");
+#ifdef DEBUG
+          NSLog(@"DEBUG: ********* test is ready");
+#endif // DEBUG
           if (self.isCancelled)
           {
             SK_ASSERT(false);
@@ -431,17 +435,23 @@ static BOOL sbTestIsRunning = NO;
             if (![NSThread isMainThread])
             {
               dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"********* test is starting via delegate... routing async to main thread");
+#ifdef DEBUG
+                NSLog(@"DEBUG: ********* test is starting via delegate... routing async to main thread");
+#endif // DEBUG
                 [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
               });
             }
             else
             {
-              NSLog(@"********* test is starting via delegate... on this main thread");
+#ifdef DEBUG
+              NSLog(@"DEBUG: ********* test is starting via delegate... on this main thread");
+#endif // DEBUG
               [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
             }
             
-            NSLog(@"********* test is starting!");
+#ifdef DEBUG
+            NSLog(@"DEBUG: ********* test is starting!");
+#endif // DEBUG
             [self.httpTest startTest];
           }
         }
@@ -454,14 +464,20 @@ static BOOL sbTestIsRunning = NO;
       }
       else
       {
-        NSLog(@"********* test already exists...");
+#ifdef DEBUG
+        NSLog(@"DEBUG: ********* test already exists...");
+#endif // DEBUG
         if ([self.httpTest isRunning])
         {
-          NSLog(@"********* stopping the test that already exists...");
+#ifdef DEBUG
+          NSLog(@"DEBUG: ********* stopping the test that already exists...");
+#endif // DEBUG
           [self.httpTest stopTest];
         }
         
-        NSLog(@"********* preparing the test...");
+#ifdef DEBUG
+        NSLog(@"DEBUG: ********* preparing the test...");
+#endif // DEBUG
         [self.httpTest prepareForTest];
         [self.httpTest setTarget:target];
         [self.httpTest setPort:[[config paramObjectForKey:@"port"] intValue]];
@@ -481,23 +497,31 @@ static BOOL sbTestIsRunning = NO;
         
         if ([self.httpTest isReady])
         {
-          NSLog(@"********* test is ready...");
+#ifdef DEBUG
+          NSLog(@"DEBUG: ********* test is ready...");
+#endif // DEBUG
           if (!self.isCancelled)
           {
             if (![NSThread isMainThread])
             {
               dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"********* test is ready on async main thread...");
+#ifdef DEBUG
+                NSLog(@"DEBUG: ********* test is ready on async main thread...");
+#endif // DEBUG
                 [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
               });
             }
             else
             {
-              NSLog(@"********* test is ready on main thread...");
+#ifdef DEBUG
+              NSLog(@"DEBUG: ********* test is ready on main thread...");
+#endif // DEBUG
               [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
             }
             
-            NSLog(@"********* test is starting!");
+#ifdef DEBUG
+            NSLog(@"DEBUG: ********* test is starting!");
+#endif // DEBUG
             [self.httpTest startTest];
           }
           else

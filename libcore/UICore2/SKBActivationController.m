@@ -324,7 +324,8 @@
        }
        
        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-       
+      
+       BOOL bValid = NO;
        if (httpResponse.statusCode == 200)
        {
          if (nil != data)
@@ -332,10 +333,13 @@
            NSString *xml = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
            
            //NSLog(@"xml : ");
-           NSLog(@"%s %d %@", __FUNCTION__, __LINE__, xml);
+#ifdef DEBUG
+           //NSLog(@"DEBUG:%s %d, xml=%@", __FUNCTION__, __LINE__, xml);
+#endif // DEBUG
            
            if (nil != xml)
            {
+             bValid = YES;
              if ([self saveScheduleXml:xml])
              {
                [self populateNewSchedule];
@@ -343,6 +347,13 @@
              }
            }
          }
+       }
+       
+       if (bValid == NO) {
+#ifdef DEBUG
+         NSLog(@"DEBUG: bValid == NO, httpResponse.statusCode=%ld", (long)httpResponse.statusCode);
+         SK_ASSERT(false);
+#endif // DEBUG
        }
        
        [self activationError:@"getConfig"];

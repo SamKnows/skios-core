@@ -910,7 +910,8 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   
 #ifdef DEBUG
   NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-  NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
+  //NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
+  NSLog(@"DEBUG: postResultsJsonToServer ...");
 #endif // DEBUG
   
   NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
@@ -1275,10 +1276,19 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   return [self.class getUploadFilePath];
 }
 
+#if TARGET_IPHONE_SIMULATOR
+#ifdef DEBUG
+static BOOL sbDebugWarningMessageShownYet = NO;
+#endif // DEBUG
+#endif // TARGET_IPHONE_SIMULATOR
+
 +(BOOL) getIsUsingWiFi {
 #if TARGET_IPHONE_SIMULATOR
 #ifdef DEBUG
-  NSLog(@"DEBUG: warning - on simulator, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
+  if (sbDebugWarningMessageShownYet == NO) {
+    sbDebugWarningMessageShownYet = YES;
+    NSLog(@"DEBUG: warning - on simulator, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
+  }
   return NO;
 #endif  // DEBUG
 #else // TARGET_IPHONE_SIMULATOR

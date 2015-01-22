@@ -106,7 +106,7 @@ NSBundle *getCurrentLanguageBundle(NSString *localeIdentifier) {
   bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
   if (bundle != nil) {
 #ifdef DEBUG
-    NSLog(@"DEBUG: localeIdentifier#2=%@", localeIdentifier);
+    //NSLog(@"DEBUG: localeIdentifier#2=%@", localeIdentifier);
 #endif // DEBUG
     return bundle;
   }
@@ -126,11 +126,11 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
   // This returns e.g. en-GB, zh-Hans, zh-Hant etc.
   NSString *language =  [[NSLocale preferredLanguages] objectAtIndex:0];
 #ifdef DEBUG
-  NSLog(@"DEBUG: preferredLang=%@", language);
+  //NSLog(@"DEBUG: preferredLang=%@", language);
 #endif // DEBUG
   if ([language isEqualToString:@"zh-HK"]) {
 #ifdef DEBUG
-    NSLog(@"DEBUG: warning: preferred language is HK! %@", language);
+    //NSLog(@"DEBUG: warning: preferred language is HK! %@", language);
 #endif // DEBUG
     language = @"zh-Hant";
   }
@@ -141,7 +141,7 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
 //#endif // DEBUG
   NSString *localeIdentifier = language;
 #ifdef DEBUG
-  NSLog(@"DEBUG: localeIdentifier=%@", localeIdentifier);
+  //NSLog(@"DEBUG: localeIdentifier=%@", localeIdentifier);
 #endif // DEBUG
   
   // Allow the string to be looked-up from the app.

@@ -347,7 +347,9 @@
   bRes = [db close];
   SK_ASSERT(bRes);
   
-  NSLog(@"Updated DB");
+#ifdef DEBUG
+  NSLog(@"DEBUG: Updated DB");
+#endif // DEBUG
 }
 
 + (NSNumber*)storeBatchTestMapData:(double)latitude longitude:(double)longitude target:(NSString*)target
