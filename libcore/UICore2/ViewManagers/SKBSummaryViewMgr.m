@@ -48,8 +48,8 @@
   currentFilterPeriod = C_FILTER_PERIOD_1MONTH;
   
   // Ensure that the correct, localized text is shown.
-  [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL WithState:1];
-  [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK WithState:1];
+  [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL];
+  [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK];
   
   // Set table to clear background colour!
   // http://stackoverflow.com/questions/18878258/uitableviewcell-show-white-background-and-cannot-be-modified-on-ios7
@@ -104,6 +104,114 @@ static BOOL sbReloadTableAfterBack = NO;
   //self.vChart.backgroundColor = [UIColor greenColor];
 }
 
+// If you want the alerts to work in the iOS-standard manner, then use this option!
+// Otherwise, they display in the ugly "New App" style.
+//#define USE_IOS_STANDARD_ALERT 1
+
+#ifdef USE_IOS_STANDARD_ALERT
+
+#pragma mark UIActionSheetDelegate (begin)
+
+#define ACTIONSHEET_NETWORK 0
+#define ACTIONSHEET_PERIOD  1
+
+static NSUInteger sWiFiButtonIndex = 0;
+static NSUInteger sMobileButtonIndex = 0;
+static NSUInteger sAllButtonIndex = 0;
+
+static NSUInteger s1WeekButtonIndex = 0;
+static NSUInteger s1MonthButtonIndex = 0;
+static NSUInteger s3MonthButtonIndex = 0;
+static NSUInteger s1YearButtonIndex = 0;
+
+// Called when a button is clicked. The view will be automatically dismissed after this call returns
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+  if (buttonIndex == actionSheet.cancelButtonIndex) {
+    return;
+  }
+  
+  //NSString *theButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+  
+  switch (actionSheet.tag) {
+    case ACTIONSHEET_NETWORK:
+      if (buttonIndex == sWiFiButtonIndex) {
+        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_WIFI];
+      } else if (buttonIndex == sMobileButtonIndex) {
+        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_GSM];
+      } else if (buttonIndex == sAllButtonIndex) {
+        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL];
+      } else {
+        SK_ASSERT(false);
+      }
+      break;
+    case ACTIONSHEET_PERIOD:
+      if (buttonIndex == s1WeekButtonIndex) {
+        [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK];
+      } else if (buttonIndex == s1MonthButtonIndex) {
+        [self selectedTimePeriodOption:C_FILTER_PERIOD_1MONTH];
+      } else if (buttonIndex == s3MonthButtonIndex) {
+        [self selectedTimePeriodOption:C_FILTER_PERIOD_3MONTHS];
+      } else if (buttonIndex == s1YearButtonIndex) {
+        [self selectedTimePeriodOption:C_FILTER_PERIOD_1YEAR];
+      } else {
+        SK_ASSERT(false);
+      }
+      break;
+    default:
+      SK_ASSERT(false);
+      break;
+  }
+}
+#pragma mark UIActionSheetDelegate (end)
+
+-(NSString*)getStringBasedOn:(NSString*)basedOn WithTickAtIfTrue:(BOOL) value {
+  
+  basedOn = sSKCoreGetLocalisedString(basedOn);
+  
+  if (value == NO) {
+    return basedOn;
+  }
+ 
+  // Add a tick at the end!
+  return [NSString stringWithFormat:@"%@ \u2713", basedOn];
+  //return [NSString stringWithFormat:@"%@ \u2713 �", basedOn];
+  // ANTENNA WITH BARS
+  // Unicode: U+1F4F6 (U+D83D U+DCF6), UTF-8: F0 9F 93 B6
+}
+
+
+- (IBAction)B_NetworkType:(id)sender {
+  
+  UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") destructiveButtonTitle:nil  otherButtonTitles:nil];
+  alert.tag = ACTIONSHEET_NETWORK;
+  
+  // TODO - what about WiFi/Mobile icons, if any, via Unicode?
+  
+  // Note tha the CANCEL BUTTON has index ZERO!
+  
+  sWiFiButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_WiFi" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+  
+  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_GSM)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+  
+  sAllButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_All" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+  
+  [alert showInView:self];
+}
+
+- (IBAction)B_Period:(id)sender {
+  UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") destructiveButtonTitle:nil  otherButtonTitles:nil];
+  
+  alert.tag = ACTIONSHEET_PERIOD;
+  
+  s1WeekButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"time_period_1week" WithTickAtIfTrue:(currentFilterPeriod == C_FILTER_PERIOD_1WEEK)]];
+  s1MonthButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"time_period_1month" WithTickAtIfTrue:(currentFilterPeriod == C_FILTER_PERIOD_1MONTH)]];
+  s3MonthButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"time_period_3months" WithTickAtIfTrue:(currentFilterPeriod == C_FILTER_PERIOD_3MONTHS)]];
+  s1YearButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"time_period_1year" WithTickAtIfTrue:(currentFilterPeriod == C_FILTER_PERIOD_1YEAR)]];
+  
+  [alert showInView:self];
+}
+#else  // USE_IOS_STANDARD_ALERT
 - (IBAction)B_NetworkType:(id)sender {
     
     if (!self.casNetworkType)
@@ -133,14 +241,29 @@ static BOOL sbReloadTableAfterBack = NO;
     [self.casPeriod expand];
 }
 
--(void)selectedMainButtonFrom:(cActionSheet *)sender
+
+-(void)selectedOption:(int)optionTag from:(cActionSheet *)sender WithState:(int)state
 {
-    
+  SK_ASSERT(sender != nil);
+  
+  if (sender == self.casNetworkType)
+  {
+    [self selectedNetworkTypeOption:(C_FILTER_NETWORKTYPE)optionTag];
+  }
+  else if (sender == self.casPeriod)
+  {
+    [self selectedTimePeriodOption:(C_FILTER_PERIOD)optionTag];
+  } else {
+    SK_ASSERT(false);
+  }
 }
 
--(void)selectedNetworkTypeOption:(int)optionTag WithState:(int)state
+#endif // USE_IOS_STANDARD_ALERT
+
+
+-(void)selectedNetworkTypeOption:(C_FILTER_NETWORKTYPE)optionTag
 {
-  currentFilterNetworkType = optionTag;
+  currentFilterNetworkType = (int)optionTag;
   
   switch (optionTag) {
     case C_FILTER_NETWORKTYPE_WIFI:
@@ -156,14 +279,15 @@ static BOOL sbReloadTableAfterBack = NO;
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
       break;
     default:
+      SK_ASSERT(false);
       break;
   }
   [self loadData];
 }
 
--(void)selectedTimePeriodOption:(int)optionTag WithState:(int)state
+-(void)selectedTimePeriodOption:(C_FILTER_PERIOD)optionTag
 {
-  currentFilterPeriod = optionTag;
+  currentFilterPeriod = (int)optionTag;
   
   switch (optionTag) {
     case C_FILTER_PERIOD_1DAY:
@@ -187,25 +311,10 @@ static BOOL sbReloadTableAfterBack = NO;
       currentFilterPeriod = C_FILTER_PERIOD_1YEAR;
       break;
     default:
+      SK_ASSERT(false);
       break;
   }
   [self loadData];
-}
-
--(void)selectedOption:(int)optionTag from:(cActionSheet *)sender WithState:(int)state
-{
-  SK_ASSERT(sender != nil);
-  
-  if (sender == self.casNetworkType)
-  {
-    [self selectedNetworkTypeOption:optionTag WithState:1];
-  }
-  else if (sender == self.casPeriod)
-  {
-    [self selectedTimePeriodOption:optionTag WithState:1];
-  } else {
-    SK_ASSERT(false);
-  }
 }
 
 -(void)loadData

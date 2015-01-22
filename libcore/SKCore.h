@@ -87,6 +87,20 @@ FOUNDATION_EXPORT NSString *const Prefs_ViewableUnitId;
 // This should be called, always, when the app first starts-up!
 +(SKCore*) getInstance;
 
+typedef enum C_FILTER_NETWORKTYPE_T {
+  C_FILTER_NETWORKTYPE_WIFI = 0,
+  C_FILTER_NETWORKTYPE_GSM  = 1,
+  C_FILTER_NETWORKTYPE_ALL  = 2
+} C_FILTER_NETWORKTYPE;
+
+typedef enum C_FILTER_PERIOD_T {
+  C_FILTER_PERIOD_1DAY    = 0,
+  C_FILTER_PERIOD_1WEEK   = 1,
+  C_FILTER_PERIOD_1MONTH  = 2,
+  C_FILTER_PERIOD_3MONTHS = 3,
+  C_FILTER_PERIOD_1YEAR   = 4
+} C_FILTER_PERIOD;
+
 @end
 
 NSString*sSKCoreGetLocalisedString(NSString*theString);

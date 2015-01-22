@@ -12,32 +12,32 @@
 #import "../tabCells/SKBTestOverviewCell.h"
 #import "SKTestResults.h"
 
-@interface SKBSummaryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate>
+@interface SKBSummaryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, pActionSheetDelegate, UIActionSheetDelegate>
 {
-    NSMutableArray *arrTestsList;
-    NSDate* previousDate;
-    NSDate* dateTo;
-    
-    int currentFilterNetworkType;
-    int currentFilterPeriod;
-    
-    int currentChartType;
-    
-    float downloadSUM;
-    int downloadCNT;
-    float downloadBEST;
-    float uploadSUM;
-    int uploadCNT;
-    float uploadBEST;
-    float latencySUM;
-    int latencyCNT;
-    float latencyBEST;
-    float lossSUM;
-    int lossCNT;
-    float lossBEST;
-    float jitterSUM;
-    int jitterCNT;
-    float jitterBEST;
+  NSMutableArray *arrTestsList;
+  NSDate* previousDate;
+  NSDate* dateTo;
+  
+  C_FILTER_NETWORKTYPE currentFilterNetworkType;
+  C_FILTER_PERIOD      currentFilterPeriod;
+  
+  int currentChartType;
+  
+  float downloadSUM;
+  int downloadCNT;
+  float downloadBEST;
+  float uploadSUM;
+  int uploadCNT;
+  float uploadBEST;
+  float latencySUM;
+  int latencyCNT;
+  float latencyBEST;
+  float lossSUM;
+  int lossCNT;
+  float lossBEST;
+  float jitterSUM;
+  int jitterCNT;
+  float jitterBEST;
 }
 
 @property (nonatomic, weak) UIView* masterView;
@@ -45,9 +45,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *btNetworkType;
 @property (weak, nonatomic) IBOutlet UIButton *btPeriod;
 
+// These are used ONLY if the non-standard action sheet is used
 @property (nonatomic, strong) cActionSheet* casNetworkType;
 @property (nonatomic, strong) cActionSheet* casPeriod;
-@property (nonatomic, strong) cActionSheet* casShare;
+//@property (nonatomic, strong) cActionSheet* casShare;
 
 @property NSString *lDownloadName;
 @property NSString *lDownloadAvgUnit;

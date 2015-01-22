@@ -1595,10 +1595,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   [self.casTestTypes expand];
 }
 
--(void)selectedMainButtonFrom:(cActionSheet *)sender
-{
-}
-
 - (IBAction)B_Share:(id)sender
 {
   SK_ASSERT(mpTestResult != nil);

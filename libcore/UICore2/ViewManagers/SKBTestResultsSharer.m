@@ -93,10 +93,6 @@
   }
 }
 
--(void)selectedMainButtonFrom:(cActionSheet*)sender {
-}
-
-
 - (void)sendMailWithImage:(UIImage *)image
 {
   if ([MFMailComposeViewController canSendMail])

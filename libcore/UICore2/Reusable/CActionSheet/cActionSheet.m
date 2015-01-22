@@ -132,7 +132,6 @@
         self.masterView.alpha = 0;
     } completion:^(BOOL finished) {
         self.masterView.hidden = YES;
-        [self.delegate selectedMainButtonFrom:self];
     }];
 }
 

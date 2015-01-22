@@ -14,7 +14,6 @@
 @protocol pActionSheetDelegate <NSObject>
 
 -(void)selectedOption:(int)optionTag from:(cActionSheet*)sender WithState:(int)state;
--(void)selectedMainButtonFrom:(cActionSheet*)sender;
 
 @end
 
