@@ -49,6 +49,7 @@
   
   self.lTitle.text = sSKCoreGetLocalisedString(@"Storyboard_Activation_Title");
   self.lTitle.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
+  self.lTitle.textColor = [UIColor whiteColor];
   self.lTitle.layer.cornerRadius = 3;
   self.lTitle.layer.borderWidth = 0.5;
   self.lTitle.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;

@@ -122,10 +122,12 @@
       {
         CGContextBeginPath(context);
         CGContextSetLineWidth(context, 3.0);
-        if (i <= 60 * self.realAngle / 270)
-          CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-        else
+        if (i <= 60 * self.realAngle / 270) {
+          CGContextSetStrokeColorWithColor(context, [SKAppColourScheme sGetMainColourDialArcRedZone].CGColor);
+        }
+        else {
           CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+        }
         
         //smallCircleCenter = CGPointMake(mainCenter.x + radiusInner * sin(angleForDots), mainCenter.y + radiusInner * cos(angleForDots));
         //smallCircleRect = CGRectMake(smallCircleCenter.x - 1.5, smallCircleCenter.y - 1.5, 3, 3);
@@ -184,7 +186,7 @@
 {
   if (!_vCenterFillingRunning) {
     _vCenterFillingRunning = [[UIView alloc] initWithFrame:self.bounds];
-    _vCenterFillingRunning.backgroundColor = [UIColor redColor];
+    _vCenterFillingRunning.backgroundColor = [SKAppColourScheme sGetMainColourDialArcRedZone];
     _vCenterFillingRunning.alpha = 0;
     _vCenterFillingRunning.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _vCenterFillingRunning.layer.cornerRadius = self.bounds.size.width / 2;
