@@ -45,10 +45,10 @@
 -(UIColor*)getActionSheetBackgroundColour;
 -(UIColor*)getActionSheetOuterAreaColour;
 -(UIColor*)getActionSheetInnerAreaBorderColour;
--(UIColor*)getActionSheetButtonColour;
--(UIColor*)getActionSheetButton1Colour;
--(UIColor*)getActionSheetTextColour;
--(UIColor*)getActionSheetText1Colour;
+-(UIColor*)getActionSheetButtonSelectedColour;
+-(UIColor*)getActionSheetButtonTextSelectedColour;
+-(UIColor*)getActionSheetButtonNotSelectedColour;
+-(UIColor*)getActionSheetButtonTextNotSelectedColour;
 -(UIColor*)getMetricsTextColour;
 
 -(UIColor*)getBlinkerBorderColour;
@@ -110,10 +110,10 @@
 +(UIColor*)sGetActionSheetBackgroundColour;
 +(UIColor*)sGetActionSheetOuterAreaColour;
 +(UIColor*)sGetActionSheetInnerAreaBorderColour;
-+(UIColor*)sGetActionSheetButtonColour;
-+(UIColor*)sGetActionSheetButton1Colour;
-+(UIColor*)sGetActionSheetTextColour;
-+(UIColor*)sGetActionSheetText1Colour;
++(UIColor*)sGetActionSheetButtonSelectedColour;
++(UIColor*)sGetActionSheetButtonNotSelectedColour;
++(UIColor*)sGetActionSheetButtonTextSelectedColour;
++(UIColor*)sGetActionSheetButtonTextNotSelectedColour;
 +(UIColor*)sGetMetricsTextColour;
 +(UIColor*)sGetBlinkerBorderColour;
 +(UIColor*)sGetBlinkerBackgroundColour;

@@ -7,20 +7,25 @@
 
 #import "CActionSheet.h"
 
-@interface cOptionDefinition()
-@property (nonatomic)  int mDisplayState; //<0 - not relevant, 0 - off, 1 - on
+@interface COptionDefinition()
+@property (nonatomic)  CAOptionState mDisplayState;
 @end
 
-@implementation cOptionDefinition
+@implementation COptionDefinition
 
+@end
+
+@interface CActionSheet()
+@property BOOL mMultiselectionEnabled;
 @end
 
 @implementation CActionSheet
 
--(id)initOnView:(UIView*)parView withDelegate:(id<pActionSheetDelegate>)dlgt mainTitle:(NSString*)mainButtonTitle_
+-(id)initOnView:(UIView*)parView withDelegate:(id<pActionSheetDelegate>)dlgt mainTitle:(NSString*)mainButtonTitle_ WithMultiSelection:(BOOL)withMultiSelection
 {
   if (self = [super init])
   {
+    self.mMultiselectionEnabled = withMultiSelection;
     self.delegate = dlgt;
     self.parentView = parView;
     self.masterView = [[UIView alloc] initWithFrame:CGRectMake(parView.bounds.origin.x, parView.bounds.origin.y, parView.bounds.size.width, parView.bounds.size.height)];
@@ -49,11 +54,11 @@
     [self.btCancel addTarget:self action:@selector(mainButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.btCancel.titleLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
     //self.btCancel.titleLabel.alpha = 0.7;
-    self.btCancel.titleLabel.textColor = [SKAppColourScheme sGetActionSheetTextColour];
-    self.btCancel.backgroundColor = [SKAppColourScheme sGetActionSheetButton1Colour];
+    self.btCancel.titleLabel.textColor = [SKAppColourScheme sGetActionSheetButtonTextSelectedColour];
+    self.btCancel.backgroundColor = [SKAppColourScheme sGetActionSheetButtonSelectedColour];
     
     [self.btCancel setTitle:mainButtonTitle_ forState:UIControlStateNormal];
-    [self.btCancel setTitleColor:[SKAppColourScheme sGetActionSheetText1Colour] forState:UIControlStateNormal];
+    [self.btCancel setTitleColor:[SKAppColourScheme sGetActionSheetButtonTextSelectedColour] forState:UIControlStateNormal];
     [self.backgroundView addSubview:self.btCancel];
     
     self.arrOptions = [[NSMutableArray alloc] init];
@@ -84,7 +89,7 @@
     self.masterView.hidden = NO;
     self.btCancel.alpha = 0;
     
-    for (cOptionDefinition *option in self.arrOptions) {
+    for (COptionDefinition *option in self.arrOptions) {
         option.label.alpha = 0;
         option.imageView.alpha = 0;
         option.button.alpha = 0;
@@ -102,7 +107,7 @@
             
             int optionNumber;
             optionNumber = 0;
-            for (cOptionDefinition *option in self.arrOptions) {
+            for (COptionDefinition *option in self.arrOptions) {
                 option.label.frame = CGRectMake(0 + C_BUTTON_INSET_X, optionsStartY + optionNumber * (optHeight + optSpaceV), rectEndBackground.size.width - C_BUTTON_INSET_X - C_BUTTON_INSET_X, optHeight);
                 option.button.frame = option.label.frame;
                 
@@ -116,7 +121,7 @@
             
             [UIView animateWithDuration:0.2 animations:^{
                 self.btCancel.alpha = 1;
-                for (cOptionDefinition *option in self.arrOptions) {
+                for (COptionDefinition *option in self.arrOptions) {
                     option.label.alpha = 1;
                     option.imageView.alpha = 1;
                     option.button.alpha = 1;
@@ -142,11 +147,11 @@
     view_.layer.cornerRadius = 3;
 }
 
--(cOptionDefinition*)optionForButton:(UIButton*)button_
+-(COptionDefinition*)optionForButton:(UIButton*)button_
 {
-    cOptionDefinition* option = nil;
+    COptionDefinition* option = nil;
     for (int i = 0; i < self.arrOptions.count; i++) {
-        if (((cOptionDefinition*)self.arrOptions[i]).button == button_)
+        if (((COptionDefinition*)self.arrOptions[i]).button == button_)
         {
             option = self.arrOptions[i];
             i = (int)self.arrOptions.count;
@@ -158,24 +163,40 @@
 
 -(void)optionButtonPressed:(UIButton*)sender
 {
-    cOptionDefinition* option = [self optionForButton:sender];
-
-    if (option.mDisplayState < 0)
+  COptionDefinition* option = [self optionForButton:sender];
+  
+  if (self.mMultiselectionEnabled == NO)
+  {
+    option.mDisplayState = CAOptionState_SELECTED;
+    option.label.text = option.title;
+    [self formatButton:option];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+      self.masterView.alpha = 0;
+    } completion:^(BOOL finished) {
+      self.masterView.hidden = YES;
+      [self.delegate selectedOption:(int)sender.tag from:self WithState:option.mDisplayState];
+      [self formatButton:option];
+    }];
+  }
+  else
+  {
+    if (option.mDisplayState == CAOptionState_NOTSELECTED)
     {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.masterView.alpha = 0;
-        } completion:^(BOOL finished) {
-            self.masterView.hidden = YES;
-            [self.delegate selectedOption:(int)sender.tag from:self WithState:option.mDisplayState];
-            [self formatButton:option];
-        }];
+      option.mDisplayState = CAOptionState_SELECTED;
+      // \u2713 is the "tick" character!
+      option.label.text = [self getStringBasedOn:option.title WithTickAtIfTrue:YES];
     }
-    else
-    {
-        option.mDisplayState = 1 - option.mDisplayState;
-        [self formatButton:option];
-        [self.delegate selectedOption:(int)sender.tag from:self WithState:(int)option.mDisplayState];
+    else {
+      option.mDisplayState = CAOptionState_NOTSELECTED;
+      // \u2713 is the "tick" character!
+      option.label.text = option.title;
     }
+    
+    
+    [self formatButton:option];
+    [self.delegate selectedOption:(int)sender.tag from:self WithState:(int)option.mDisplayState];
+  }
 }
 
 -(void)optionTouched:(UIButton*)sender
@@ -188,28 +209,40 @@
     [self formatButton:[self optionForButton:sender]];
 }
 
--(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag
-{
-    [self addOption:optionTitle withImage:optionImage andTag:optionTag andState:-1];
+//-(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag
+//{
+//    [self addOption:optionTitle withImage:optionImage andTag:optionTag andState:-1];
+//}
+
+-(NSString*)getStringBasedOn:(NSString*)basedOn WithTickAtIfTrue:(BOOL) value {
+  
+  //basedOn = sSKCoreGetLocalisedString(basedOn);
+  
+  if (value == NO) {
+    return basedOn;
+  }
+  
+  return [NSString stringWithFormat:@"%@ \u2713", basedOn];
 }
 
--(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag andState:(int)state_
+-(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag AndSelected:(BOOL)selected
 {
-  SK_ASSERT(state_ == -1 || state_ == 0 || state_ == 1);
-  cOptionDefinition* option;
+  COptionDefinition* option;
   
-  option = [[cOptionDefinition alloc] init];
+  option = [[COptionDefinition alloc] init];
+  option.mDisplayState = selected ? CAOptionState_SELECTED : CAOptionState_NOTSELECTED;
+  
   option.title = optionTitle;
   option.image = optionImage;
   option.tag = optionTag;
   option.label = [[UILabel alloc] init];
-  option.label.text = optionTitle;
+  
+  // \u2713 is the "tick" character!
+  option.label.text = [self getStringBasedOn:optionTitle WithTickAtIfTrue:selected];
+  
   option.label.textAlignment = NSTextAlignmentCenter;
-  option.label.backgroundColor = [SKAppColourScheme sGetActionSheetButtonColour];
-  option.label.textColor = [SKAppColourScheme sGetActionSheetTextColour];
   //option.label.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
   option.label.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
-  option.mDisplayState = state_;
   
   option.button = [[UIButton alloc] init];
   [option.button addTarget:self action:@selector(optionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -219,7 +252,9 @@
   
   option.button.tag = optionTag;
   
-  option.mDisplayState = state_;
+  //option.label.backgroundColor = [SKAppColourScheme sGetActionSheetButtonSelectedColour];
+  //option.label.textColor = [SKAppColourScheme sGetActionSheetButtonSelectedColour];
+  // This call will supply the settings for label.backgroundColor and label.textColour... depending on state.
   [self formatButton:option];
   
   [CActionSheet formatView:option.button];
@@ -234,21 +269,21 @@
   [self.arrOptions addObject:option];
 }
 
--(void)formatButton:(cOptionDefinition*)optionDefinition_
+-(void)formatButton:(COptionDefinition*)optionDefinition_
 {
+  //optionDefinition_.button.backgroundColor = [UIColor clearColor];
+  
   switch (optionDefinition_.mDisplayState) {
-    case -1:
-      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButton1Colour];
-      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetText1Colour];
+    case CAOptionState_SELECTED:
+      optionDefinition_.button.backgroundColor = [SKAppColourScheme sGetActionSheetButtonSelectedColour];
+      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButtonSelectedColour];
+      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetButtonTextSelectedColour];
       break;
-    case 0:
-      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButtonColour];
-      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetTextColour];
-      break;
-    case 1:
+      
     default:
-      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButton1Colour];
-      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetText1Colour];
+      optionDefinition_.button.backgroundColor = [SKAppColourScheme sGetActionSheetButtonNotSelectedColour];
+      optionDefinition_.label.backgroundColor = [SKAppColourScheme sGetActionSheetButtonNotSelectedColour];
+      optionDefinition_.label.textColor = [SKAppColourScheme sGetActionSheetButtonTextNotSelectedColour];
       break;
   }
 }

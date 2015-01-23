@@ -1587,10 +1587,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (IBAction)B_SelectTests:(id)sender {
   
- self.casTestTypes = [[CActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")];
- [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Download") withImage:nil andTag:C_DOWNLOAD_TEST andState:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
- [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Upload") withImage:nil andTag:C_UPLOAD_TEST andState:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
- [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Latency / Loss / Jitter") withImage:nil andTag:C_LATENCY_TEST andState:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
+ self.casTestTypes = [[CActionSheet alloc] initOnView:self.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK") WithMultiSelection:YES];
+  [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Download") withImage:nil andTag:C_DOWNLOAD_TEST AndSelected:((self.testTypes2Execute & CTTBM_DOWNLOAD) == CTTBM_DOWNLOAD)];
+ [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Test_Upload") withImage:nil andTag:C_UPLOAD_TEST AndSelected:((self.testTypes2Execute & CTTBM_UPLOAD) == CTTBM_UPLOAD)];
+ [self.casTestTypes addOption:sSKCoreGetLocalisedString(@"Latency / Loss / Jitter") withImage:nil andTag:C_LATENCY_TEST AndSelected:((self.testTypes2Execute & CTTBM_LATENCYLOSSJITTER) == CTTBM_LATENCYLOSSJITTER)];
   
   [self.casTestTypes expand];
 }

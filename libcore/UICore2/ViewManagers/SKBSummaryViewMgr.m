@@ -213,32 +213,32 @@ static NSUInteger s1YearButtonIndex = 0;
 }
 #else  // USE_IOS_STANDARD_ALERT
 - (IBAction)B_NetworkType:(id)sender {
-    
-    if (!self.casNetworkType)
-    {
-        self.casNetworkType = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
-        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM];
-        [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL];
-    }
-    
-    [self.casNetworkType expand];
-    
+  
+  //if (!self.casNetworkType)
+  {
+    self.casNetworkType = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") WithMultiSelection:NO];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_GSM)];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)];
+  }
+  
+  [self.casNetworkType expand];
+  
 }
 
 - (IBAction)B_Period:(id)sender {
-    
-    if (!self.casPeriod)
-    {
-        self.casPeriod = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
-        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1day") withImage:nil andTag:C_FILTER_PERIOD_1DAY];
-        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1week") withImage:nil andTag:C_FILTER_PERIOD_1WEEK];
-        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1month") withImage:nil andTag:C_FILTER_PERIOD_1MONTH];
-        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_3months") withImage:nil andTag:C_FILTER_PERIOD_3MONTHS];
-        [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1year") withImage:nil andTag:C_FILTER_PERIOD_1YEAR];
-    }
-    
-    [self.casPeriod expand];
+  
+  //if (!self.casPeriod)
+  {
+    self.casPeriod = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") WithMultiSelection:NO];
+    [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1day") withImage:nil andTag:C_FILTER_PERIOD_1DAY AndSelected:(currentFilterPeriod == C_FILTER_PERIOD_1DAY)];
+    [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1week") withImage:nil andTag:C_FILTER_PERIOD_1WEEK AndSelected:(currentFilterPeriod == C_FILTER_PERIOD_1WEEK)];
+    [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1month") withImage:nil andTag:C_FILTER_PERIOD_1MONTH AndSelected:(currentFilterPeriod == C_FILTER_PERIOD_1MONTH)];
+    [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_3months") withImage:nil andTag:C_FILTER_PERIOD_3MONTHS AndSelected:(currentFilterPeriod == C_FILTER_PERIOD_3MONTHS)];
+    [self.casPeriod addOption:sSKCoreGetLocalisedString(@"time_period_1year") withImage:nil andTag:C_FILTER_PERIOD_1YEAR AndSelected:(currentFilterPeriod == C_FILTER_PERIOD_1YEAR)];
+  }
+  
+  [self.casPeriod expand];
 }
 
 

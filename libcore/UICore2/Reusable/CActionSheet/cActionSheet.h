@@ -17,6 +17,14 @@
 
 @end
 
+// <0 - not relevant, 0 - off, 1 - on
+typedef enum CAOptionState_t {
+  //CAOptionState_NOTSELECTED = -1,
+  CAOptionState_NOTSELECTED = 0,
+  CAOptionState_SELECTED
+  //CAOptionState_SELECTED_MULTIPOSSIBLE = 2
+} CAOptionState;
+
 @interface CActionSheet : NSObject
 
 @property (nonatomic, strong) NSMutableArray* arrOptions;
@@ -30,14 +38,15 @@
 
 +(void)formatView:(UIView*)view_;
 
--(id)initOnView:(UIView*)parView withDelegate:(id<pActionSheetDelegate>)dlgt mainTitle:(NSString*)mainButtonTitle_;
+-(id)initOnView:(UIView*)parView withDelegate:(id<pActionSheetDelegate>)dlgt mainTitle:(NSString*)mainButtonTitle_ WithMultiSelection:(BOOL)withMultiSelection;
 -(void)expand;
--(void)addOption:(NSString*)optionTitle withImage:(UIImage*)optionImage andTag:(int)optionTag;
--(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag andState:(int)state_;
+//-(void)addOption:(NSString*)optionTitle withImage:(UIImage*)optionImage andTag:(int)optionTag;
+//-(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag andState:(CAOptionState)state_;
+-(void)addOption:(NSString *)optionTitle withImage:(UIImage *)optionImage andTag:(int)optionTag AndSelected:(BOOL)selected;
 
 @end
 
-@interface cOptionDefinition : NSObject
+@interface COptionDefinition : NSObject
 
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) UIImage* image;

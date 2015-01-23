@@ -143,17 +143,21 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetActionSheetInnerAreaBorderColour {
   return [[SKAppColourScheme sGetAppColourScheme] getActionSheetInnerAreaBorderColour];
 }
-+(UIColor*)sGetActionSheetButtonColour {
-  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonColour];
+
+// This is used if selected...
++(UIColor*)sGetActionSheetButtonSelectedColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonSelectedColour];
 }
-+(UIColor*)sGetActionSheetButton1Colour {
-  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButton1Colour];
++(UIColor*)sGetActionSheetButtonTextSelectedColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonTextSelectedColour];
 }
-+(UIColor*)sGetActionSheetTextColour {
-  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetTextColour];
+
+// This is used if not selected, and also for the "Cancel" button...
++(UIColor*)sGetActionSheetButtonNotSelectedColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonNotSelectedColour];
 }
-+(UIColor*)sGetActionSheetText1Colour {
-  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetText1Colour];
++(UIColor*)sGetActionSheetButtonTextNotSelectedColour {
+  return [[SKAppColourScheme sGetAppColourScheme] getActionSheetButtonTextNotSelectedColour];
 }
 +(UIColor*)sGetMetricsTextColour {
   return [[SKAppColourScheme sGetAppColourScheme] getMetricsTextColour];
@@ -335,19 +339,21 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [UIColor colorWithWhite:1 alpha:0.5];
 }
 
--(UIColor*)getActionSheetButtonColour {
+-(UIColor*)getActionSheetButtonSelectedColour {
   return [UIColor clearColor];
 }
 
--(UIColor*)getActionSheetButton1Colour {
-  return [UIColor colorWithWhite:0.95 alpha:1];
-}
-
--(UIColor*)getActionSheetTextColour {
+-(UIColor*)getActionSheetButtonTextSelectedColour {
   return [UIColor whiteColor];
 }
 
--(UIColor*)getActionSheetText1Colour {
+-(UIColor*)getActionSheetButtonNotSelectedColour {
+  return [UIColor clearColor];
+  //return [UIColor colorWithWhite:0.95 alpha:1];
+  //return [UIColor redColor];
+}
+
+-(UIColor*)getActionSheetButtonTextNotSelectedColour {
   return [UIColor colorWithRed:44.0/255.0 green:66.0/255.0 blue:149.0/255.0 alpha:1];
 }
 

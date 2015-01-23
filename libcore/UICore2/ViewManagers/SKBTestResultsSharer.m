@@ -33,21 +33,21 @@
 {
   selectedTest = testResult;
   
-  self.casShare = [[CActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
+  self.casShare = [[CActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") WithMultiSelection:NO];
   
   if ([[SKAAppDelegate getAppDelegate] isFacebookExportSupported]) {
-    [self.casShare addOption:@"Facebook" withImage:[UIImage imageNamed:@"share-facebook"] andTag:C_SHARE_FACEBOOK];
+    [self.casShare addOption:@"Facebook" withImage:[UIImage imageNamed:@"share-facebook"] andTag:C_SHARE_FACEBOOK AndSelected:NO];
   }
   
   if ([[SKAAppDelegate getAppDelegate] isTwitterExportSupported]) {
-    [self.casShare addOption:@"Twitter" withImage:[UIImage imageNamed:@"share-twitter"] andTag:C_SHARE_TWITTER];
+    [self.casShare addOption:@"Twitter" withImage:[UIImage imageNamed:@"share-twitter"] andTag:C_SHARE_TWITTER AndSelected:NO];
   }
   
   if ([MFMailComposeViewController canSendMail]) {
-    [self.casShare addOption:@"Email" withImage:[UIImage imageNamed:@"share-mail"] andTag:C_SHARE_MAIL];
+    [self.casShare addOption:@"Email" withImage:[UIImage imageNamed:@"share-mail"] andTag:C_SHARE_MAIL AndSelected:NO];
   }
   
-  [self.casShare addOption:@"Save" withImage:[UIImage imageNamed:@"share-save"] andTag:C_SHARE_SAVE];
+  [self.casShare addOption:@"Save" withImage:[UIImage imageNamed:@"share-save"] andTag:C_SHARE_SAVE AndSelected:NO];
   
   [self.casShare expand];
 }
