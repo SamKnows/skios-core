@@ -27,11 +27,11 @@
 - (IBAction)done:(id)sender;
 
 @end
-
-#pragma mark - Delegate
-
-@protocol SKAActivationDelegate
-
-- (void)hasCompleted;
-
-@end
+//
+//#pragma mark - Delegate
+//
+//@protocol SKAActivationDelegate
+//
+//- (void)hasCompleted;
+//
+//@end

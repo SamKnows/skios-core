@@ -7,6 +7,7 @@
 //
 
 #import "SKBActivationController.h"
+#import "SKAActivationController.h"
 #import "Reusable/SKAppColourScheme/SKAppColourScheme.h"
 
 @interface SKBActivationController ()
