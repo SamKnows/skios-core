@@ -284,6 +284,9 @@
   NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, Config_Url];
   NSURL *url = [NSURL URLWithString:strUrl];
   
+  // It so happens that the current system only ever uses this one path!
+  SK_ASSERT([strUrl isEqualToString:@"http://dcs-mobile-fcc.samknows.com/mobile/getconfig"]);
+  
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
   [request setURL:url];
   [request setHTTPMethod:@"GET"];
