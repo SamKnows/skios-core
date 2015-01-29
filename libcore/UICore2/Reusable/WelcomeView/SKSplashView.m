@@ -31,43 +31,8 @@
   self.backgroundColor = [SKAppColourScheme sGetWelcomeSplashBackgroundColor];
 }
 
-CGFloat getGuiMultiplier() {
-  CGFloat width = [UIScreen mainScreen].bounds.size.width;
-  CGFloat guiMultiplier = (width / 320.0);
-  return guiMultiplier;
-}
-  
--(void) prepareLetterForAnimation:(NSString*)inText  wordFrame:(CGRect)wordFrame {
-  UILabel *theLabel = [[UILabel alloc] initWithFrame:wordFrame];
-  theLabel.text = inText;
-  theLabel.textColor = [UIColor whiteColor];
-  theLabel.textAlignment = NSTextAlignmentCenter;
-  theLabel.font = [UIFont systemFontOfSize:scaleWidthHeightTo(83.0)];
-  //theLabel.adjustsFontSizeToFitWidth = true
-  [self addSubview:theLabel];
-    
-  [mLetterLabels addObject:theLabel];
-}
-  
-CGFloat scaleWidthHeightTo(CGFloat value) {
-    //return value * Singleton.guiMultiplier
-  return value * getGuiMultiplier();
-}
-
 -(void) prepareForAnimation {
-  self.mLetterLabels = [NSMutableArray new];
-  
-  CGPoint center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-  
-  // Initial positioning and sizing is Critical... to work well on iPhone, iPad variants...
-  [self prepareLetterForAnimation:@"S" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(140),center.y-scaleWidthHeightTo(100),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"a" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(90),center.y-scaleWidthHeightTo(100),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"m" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(30),center.y-scaleWidthHeightTo(100),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"K" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(140),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"n" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(90),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"o" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(45),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"w" wordFrame:CGRectMake(center.x+scaleWidthHeightTo(10),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
-  [self prepareLetterForAnimation:@"s" wordFrame:CGRectMake(center.x+scaleWidthHeightTo(65),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  self.mLetterLabels = [[SKAAppDelegate getAppDelegate] getSplashLabelArray:self];
 }
   
 -(void) animatePhase3:(UIView*)l_ delay:(CGFloat)delay_ completionBlock_:(void (^)())completionBlock_ {

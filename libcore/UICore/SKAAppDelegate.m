@@ -1945,4 +1945,54 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 -(NSString*) getNewAppUrlForHelpAbout {
   return nil;
 }
+
+
+//
+// Splash screen (begin)
+//
+-(UILabel*) prepareLetterForAnimation:(UIView*)onView inArray:(NSMutableArray*)inArray inText:(NSString*)inText  wordFrame:(CGRect)wordFrame {
+  UILabel *theLabel = [[UILabel alloc] initWithFrame:wordFrame];
+  theLabel.text = inText;
+  theLabel.textColor = [UIColor whiteColor];
+  theLabel.textAlignment = NSTextAlignmentCenter;
+  theLabel.font = [UIFont systemFontOfSize:scaleWidthHeightTo(83.0)];
+  //theLabel.adjustsFontSizeToFitWidth = true
+  [onView addSubview:theLabel];
+  
+  [inArray addObject:theLabel];
+  return theLabel;
+}
+
+CGFloat getGuiMultiplier() {
+  CGFloat width = [UIScreen mainScreen].bounds.size.width;
+  CGFloat guiMultiplier = (width / 320.0);
+  return guiMultiplier;
+}
+
+CGFloat scaleWidthHeightTo(CGFloat value) {
+  //return value * Singleton.guiMultiplier
+  return value * getGuiMultiplier();
+}
+
+-(NSMutableArray *) getSplashLabelArray:(UIView*)onView {
+  NSMutableArray *mLetterLabels = [NSMutableArray new];
+  
+  CGPoint center = CGPointMake(onView.frame.size.width/2, onView.frame.size.height/2);
+  
+  // Initial positioning and sizing is Critical... to work well on iPhone, iPad variants...
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"S" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(140),center.y-scaleWidthHeightTo(100),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"a" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(90),center.y-scaleWidthHeightTo(100),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"m" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(30),center.y-scaleWidthHeightTo(100),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"K" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(140),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"n" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(90),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"o" wordFrame:CGRectMake(center.x-scaleWidthHeightTo(45),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"w" wordFrame:CGRectMake(center.x+scaleWidthHeightTo(10),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  [self prepareLetterForAnimation:onView inArray:mLetterLabels inText:@"s" wordFrame:CGRectMake(center.x+scaleWidthHeightTo(65),center.y-scaleWidthHeightTo(20),scaleWidthHeightTo(80),scaleWidthHeightTo(80))];
+  
+  return mLetterLabels;
+}
+
+//
+// Splash screen (end)
+//
 @end

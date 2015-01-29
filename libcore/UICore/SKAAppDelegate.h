@@ -11,6 +11,9 @@
 #import "UIColor+Colours.h"
 #import "UIView+SKView.h"
 
+#ifndef SKAAPPDELEGATE_H
+#define SKAAPPDELEGATE_H 1
+
 // Make this BIG ENOUGH!
 #define FILE_SIZE 52430000
 
@@ -211,4 +214,17 @@ typedef enum SKBShowMetricsRule
 // Returns nil if the about screen should be shown instead.
 -(NSString*) getNewAppUrlForHelpAbout;
 
+// Splash screen (begin)
+-(UIColor*) getSplashBackgroundColour;
+-(UILabel*) prepareLetterForAnimation:(UIView*)onView inArray:(NSMutableArray*)inArray inText:(NSString*)inText  wordFrame:(CGRect)wordFrame;
+-(NSMutableArray *) getSplashLabelArray:(UIView*)onView;
+// Splash screen (end)
+
 @end
+  
+// Splash screen (begin)
+CGFloat getGuiMultiplier();
+CGFloat scaleWidthHeightTo(CGFloat value);
+// Splash screen (end)
+
+#endif // SKAAPPDELEGATE_H 1
