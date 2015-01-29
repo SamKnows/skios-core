@@ -12,7 +12,7 @@
 #import "SKBHistoryViewMgr.h"
 #import "SKBSummaryViewMgr.h"
 #import "SKBTermsView.h"
-#import "../UICore2/Reusable/WelcomeView/UIWelcomeView.h"
+#import "../UICore2/Reusable/WelcomeView/SKSplashView.h"
 
 @interface SKBMainViewTabBarController : UITabBarController
 @end

@@ -63,6 +63,7 @@
 		B23B638419ACB7A8003F381C /* NSString+SKExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23B638319ACB7A8003F381C /* NSString+SKExtensions.m */; };
 		B24140C517C3C30900ECAE8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C417C3C30900ECAE8C /* UIKit.framework */; };
 		B24140C717C3C36100ECAE8C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
+		B248E3E81A7A69B6009BC956 /* SKSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B248E3E61A7A67E3009BC956 /* SKSplashView.m */; };
 		B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */ = {isa = PBXBuildFile; fileRef = B249885B1806E2FE00DB57C1 /* SKGraphForResults.m */; };
 		B25001D8188FC9D5004287B1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D5188FC9D5004287B1 /* GCDAsyncSocket.m */; };
 		B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */; };
@@ -139,7 +140,6 @@
 		B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030A19B75D09007AA3C2 /* IPHelper.m */; };
 		B2FB033219B75D09007AA3C2 /* CGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* CGaugeView.m */; };
 		B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */; };
-		B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */; };
 		B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031719B75D09007AA3C2 /* SKBActivationController.m */; };
 		B2FB033719B75D09007AA3C2 /* SKBSimpleResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031C19B75D09007AA3C2 /* SKBSimpleResultCell.m */; };
 		B2FB033819B75D09007AA3C2 /* SKBTestOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031E19B75D09007AA3C2 /* SKBTestOverviewCell.m */; };
@@ -276,6 +276,7 @@
 		B23B638319ACB7A8003F381C /* NSString+SKExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SKExtensions.m"; sourceTree = "<group>"; };
 		B24140C417C3C30900ECAE8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B248E3E61A7A67E3009BC956 /* SKSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSplashView.m; sourceTree = "<group>"; };
 		B249885A1806E2FE00DB57C1 /* SKGraphForResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKGraphForResults.h; sourceTree = "<group>"; };
 		B249885B1806E2FE00DB57C1 /* SKGraphForResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResults.m; sourceTree = "<group>"; };
 		B25001D4188FC9D5004287B1 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
@@ -479,8 +480,7 @@
 		B2FB030F19B75D09007AA3C2 /* CGaugeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGaugeView.m; sourceTree = "<group>"; };
 		B2FB031119B75D09007AA3C2 /* UIViewWithGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewWithGradient.h; sourceTree = "<group>"; };
 		B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewWithGradient.m; sourceTree = "<group>"; };
-		B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWelcomeView.h; sourceTree = "<group>"; };
-		B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWelcomeView.m; sourceTree = "<group>"; };
+		B2FB031419B75D09007AA3C2 /* SKSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSplashView.h; sourceTree = "<group>"; };
 		B2FB031619B75D09007AA3C2 /* SKBActivationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBActivationController.h; sourceTree = "<group>"; };
 		B2FB031719B75D09007AA3C2 /* SKBActivationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBActivationController.m; sourceTree = "<group>"; };
 		B2FB031B19B75D09007AA3C2 /* SKBSimpleResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSimpleResultCell.h; sourceTree = "<group>"; };
@@ -1146,8 +1146,8 @@
 		B2FB031319B75D09007AA3C2 /* WelcomeView */ = {
 			isa = PBXGroup;
 			children = (
-				B2FB031419B75D09007AA3C2 /* UIWelcomeView.h */,
-				B2FB031519B75D09007AA3C2 /* UIWelcomeView.m */,
+				B2FB031419B75D09007AA3C2 /* SKSplashView.h */,
+				B248E3E61A7A67E3009BC956 /* SKSplashView.m */,
 				B2D1DE4919E66F93003840BE /* SKBSplashVC.h */,
 				B2D1DE4A19E66F93003840BE /* SKBSplashVC.m */,
 			);
@@ -1322,6 +1322,7 @@
 				B2AE68161883DA4D00D87FAE /* SKAActivationController.m in Sources */,
 				B2AE68281883DBC900D87FAE /* SKAAppDelegate.m in Sources */,
 				B22E88DF17C3682E005D9094 /* SKDebugAssert.m in Sources */,
+				B248E3E81A7A69B6009BC956 /* SKSplashView.m in Sources */,
 				B2AE68181883DA4D00D87FAE /* SKAGraphResultCell.m in Sources */,
 				B25001D8188FC9D5004287B1 /* GCDAsyncSocket.m in Sources */,
 				B2038F461897D70B005AC0BB /* SKAMainResultTestHeaderCell.m in Sources */,
@@ -1339,7 +1340,6 @@
 				B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */,
 				B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */,
 				B221AEDC18FFC22500323923 /* ioapi.c in Sources */,
-				B2FB033419B75D09007AA3C2 /* UIWelcomeView.m in Sources */,
 				B22E88F017C36875005D9094 /* FMDatabase.m in Sources */,
 				B2AE68431883DE6800D87FAE /* SKAScheduler.m in Sources */,
 				B221AEC918FFC12100323923 /* ZipArchive.m in Sources */,

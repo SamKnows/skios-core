@@ -8,13 +8,13 @@
 
 #import "SKBSplashVC.h"
 
-#import "UIWelcomeView.h"
+#import "SKSplashView.h"
 #import "UIViewWithGradient.h"
 #import "SKAppColourScheme.h"
 
 @interface SKBSplashVC ()
 
-@property (weak, nonatomic) IBOutlet UIWelcomeView *vWelcomeView;
+@property (weak, nonatomic) IBOutlet SKSplashView *vWelcomeView;
 
 @end
 

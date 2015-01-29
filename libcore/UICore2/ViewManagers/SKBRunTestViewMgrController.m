@@ -7,7 +7,7 @@
 //
 
 #import "SKBRunTestViewMgrController.h"
-#import "UIWelcomeView.h"
+#import "SKSplashView.h"
 #import "SKBTestResultsSharer.h"
 #import "SKBActivationController.h"
 

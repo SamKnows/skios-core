@@ -16,7 +16,7 @@
 #import "SKTestResults.h"
 
 @class SKBTestResultValue;
-@class UIWelcomeView;
+@class SKSplashView;
 
 @interface SKBRunTestViewMgrController : UIViewController <CGaugeViewOwnerProtocol, SKAutotestObserverDelegate, pActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 {
