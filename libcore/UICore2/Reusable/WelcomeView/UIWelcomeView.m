@@ -8,6 +8,21 @@
 
 #import "UIWelcomeView.h"
 
+@interface UIWelcomeView()
+@property BOOL isInitialised;
+
+@property (nonatomic, strong) UILabel* l_S1;
+@property (nonatomic, strong) UILabel* l_A;
+@property (nonatomic, strong) UILabel* l_M;
+
+@property (nonatomic, strong) UILabel* l_K;
+@property (nonatomic, strong) UILabel* l_N;
+@property (nonatomic, strong) UILabel* l_O;
+@property (nonatomic, strong) UILabel* l_W;
+@property (nonatomic, strong) UILabel* l_S2;
+
+@end
+
 @implementation UIWelcomeView
 
 - (id)initWithFrame:(CGRect)frame
@@ -27,7 +42,9 @@ CGRect myScaledRectMake(float x, float y, float w, float h) {
 
 -(void)initializeWelcomeText
 {
-  if (isInitialised) return;
+  if (self.isInitialised) {
+    return;
+  }
   
   self.backgroundColor = [SKAppColourScheme sGetWelcomeSplashBackgroundColor];
   
@@ -161,7 +178,7 @@ CGRect myScaledRectMake(float x, float y, float w, float h) {
     [self addSubview:self.l_S2];
   }
   
-  isInitialised = YES;
+  self.isInitialised = YES;
 }
 
 -(void)animateLetter:(UILabel*)l_ withDelay:(float)delay_ onCompletion: (void (^)())completionBlock_
@@ -193,7 +210,7 @@ CGRect myScaledRectMake(float x, float y, float w, float h) {
                    }];
 }
 
--(void)startAnimationOnCompletion:(void (^)())completionBlock_
+-(void)callWhenViewControllerResized:(void (^)())completionBlock_
 {
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
   {

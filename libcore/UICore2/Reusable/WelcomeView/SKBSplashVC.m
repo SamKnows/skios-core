@@ -37,7 +37,7 @@
 -(void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   
-  [self.vWelcomeView startAnimationOnCompletion:^{
+  [self.vWelcomeView callWhenViewControllerResized:^{
 
   SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
   if ( ([appDelegate getNewAppShowInitialTermsAndConditions] == YES) &&
