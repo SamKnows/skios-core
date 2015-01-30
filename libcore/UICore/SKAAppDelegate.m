@@ -1094,14 +1094,16 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
     [self populateSchedule];
   }
   
-  if (![self hasAgreed]) {
-    // Not yet agreed to T&C - start (modally) with the T&C navigation controller, instead!
-    UIStoryboard *storyboard = [self.class getStoryboard];
-    self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsNavigationController"];
-  } else if (![self isActivated]) {
-    [self didFinishAppLaunching_NotActivatedYet];
-  }
+  if ([self getIsThisTheNewApp] == NO) {
     
+    if (![self hasAgreed]) {
+      // Not yet agreed to T&C - start (modally) with the T&C navigation controller, instead!
+      UIStoryboard *storyboard = [self.class getStoryboard];
+      self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsNavigationController"];
+    } else if (![self isActivated]) {
+      [self didFinishAppLaunching_NotActivatedYet];
+    }
+  }
   
   [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
   

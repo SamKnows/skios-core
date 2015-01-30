@@ -26,7 +26,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_
+- (void)initialiseViewOnMasterViewController:(UIViewController*)masterViewController_
 {
   self.mpSharer = [[SKBTestResultsSharer alloc] initWithViewController:masterViewController_];
   

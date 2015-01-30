@@ -52,7 +52,7 @@
 - (IBAction)B_Back:(id)sender;
 - (IBAction)B_Share:(id)sender;
 
--(void)intialiseViewOnMasterViewController:(UIViewController*)masterViewController_;
+-(void)initialiseViewOnMasterViewController:(UIViewController*)masterViewController_;
 -(void)setColoursAndShowHideElements;
 -(void)performLayout;
 

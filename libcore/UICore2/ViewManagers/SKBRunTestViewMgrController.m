@@ -43,9 +43,9 @@
   // Calculate how many passive metrics we have!
   
   NSMutableArray* nonPassiveMetricArrayTemp = [SKBRunTestViewMgrController sGetNonPassiveMetricsInArray];
-  self.mNumberOfNonPassiveMetrics = nonPassiveMetricArrayTemp.count;
+  self.mNumberOfNonPassiveMetrics = (int)nonPassiveMetricArrayTemp.count;
   NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray];
-  self.mNumberOfPassiveMetrics = passiveMetricArrayTemp.count;
+  self.mNumberOfPassiveMetrics = (int)passiveMetricArrayTemp.count;
   
   [[SKAAppDelegate getAppDelegate] setLogoImage:self.optionalTopLeftLogoView];
   
@@ -64,7 +64,7 @@
     self.testTypes2Execute = (int)[prefs integerForKey:Prefs_LastTestSelection];
   }
   
-  [self intialiseViewOnMasterView];
+  [self initialiseViewOnMasterView];
   
   // The main background view...
   //self.view.backgroundColor = [UIColor clearColor];
@@ -161,7 +161,7 @@
   }
 }
 
-- (void)intialiseViewOnMasterView
+- (void)initialiseViewOnMasterView
 {
   self.tvCurrentResults.delegate = self;
   self.tvCurrentResults.dataSource = self;

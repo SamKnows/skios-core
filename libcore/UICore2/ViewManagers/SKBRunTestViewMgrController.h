@@ -87,7 +87,7 @@
 -(BOOL) getIsConnected;
 
 -(IBAction)B_SelectTests:(id)sender;
--(void)intialiseViewOnMasterView;
+-(void)initialiseViewOnMasterView;
 
 //
 // Added for storyboard rework...

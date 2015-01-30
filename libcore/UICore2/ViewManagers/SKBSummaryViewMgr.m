@@ -31,7 +31,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)intialiseViewOnMasterView:(UIView*)masterView_
+- (void)initialiseViewOnMasterView:(UIView*)masterView_
 {
   SK_ASSERT(self.vChart != nil);
   
