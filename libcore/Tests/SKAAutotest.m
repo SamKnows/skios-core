@@ -556,7 +556,7 @@
   return YES;
 }
 
-- (void)doSaveAndUploadJson
+- (void)privateDoSaveAndUploadJson
 {
   // See the comment for "checkTestId", which is used to create the testId.
   // "Only set this once, after at least one test has completed successfully
@@ -604,8 +604,45 @@
   NSLog(@"DEBUG: doSaveAndUploadJson...");
 #endif // DEBUG
   
-  [self.autotestManagerDelegate amdDoSaveJSON:jsonStr];
+  [self privateDoSaveJSON:jsonStr];
   [self.autotestManagerDelegate amdDoUploadJSON];
+}
+
+- (void) privateDoSaveJSON:(NSString*)jsonString {
+  
+  // 1. Write to JSON file for upload
+  {
+    NSString *path = [SKAAppDelegate getNewJSONFilePath];
+    NSError *error = nil;
+    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
+    {
+      //NSLog(@"Wrote JSON Successfully");
+    }
+    else
+    {
+#ifdef DEBUG
+      NSLog(@"Error writing JSON : %@", error.localizedDescription);
+      SK_ASSERT(false);
+#endif // DEBUG
+    }
+  }
+  
+  // 2. Write to JSON file for archive (for subsequent export!)
+  {
+    NSString *path = [SKAAppDelegate getNewJSONArchiveFilePath];
+    NSError *error = nil;
+    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
+    {
+      NSLog(@"Wrote Archive JSON Successfully");
+    }
+    else
+    {
+#ifdef DEBUG
+      NSLog(@"Error writing archive JSON : %@", error.localizedDescription);
+      SK_ASSERT(false);
+#endif // DEBUG
+    }
+  }
 }
 
 - (void)runNextTest:(int)testIndex
@@ -715,7 +752,7 @@
       }
      
       // This method saves & uploads the JSON, if at least one Test completed!
-      [self doSaveAndUploadJson];
+      [self privateDoSaveAndUploadJson];
     }
   }
   else

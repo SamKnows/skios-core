@@ -138,7 +138,6 @@ typedef enum
 -(BOOL)         amdGetIsConnected;
 -(NSInteger)    amdGetConnectionStatus;
 -(NSString*)    amdGetFileUploadPath;
--(void)         amdDoSaveJSON:(NSString*)jsonString;
 -(void)         amdDoUploadJSON;
 -(void)         amdDoCreateUploadFile;
 -(void)         amdDoUpdateDataUsage:(int)bytes;

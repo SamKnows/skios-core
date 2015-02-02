@@ -698,42 +698,6 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 }
 
 
-- (void) amdDoSaveJSON:(NSString*)jsonString {
- 
-  // 1. Write to JSON file for upload
-  {
-    NSString *path = [SKAAppDelegate getNewJSONFilePath];
-    NSError *error = nil;
-    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
-    {
-      //NSLog(@"Wrote JSON Successfully");
-    }
-    else
-    {
-#ifdef DEBUG
-      NSLog(@"Error writing JSON : %@", error.localizedDescription);
-      SK_ASSERT(false);
-#endif // DEBUG
-    }
-  }
-  
-  // 2. Write to JSON file for archive (for subsequent export!)
-  {
-    NSString *path = [SKAAppDelegate getNewJSONArchiveFilePath];
-    NSError *error = nil;
-    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
-    {
-      NSLog(@"Wrote Archive JSON Successfully");
-    }
-    else
-    {
-#ifdef DEBUG
-      NSLog(@"Error writing archive JSON : %@", error.localizedDescription);
-      SK_ASSERT(false);
-#endif // DEBUG
-    }
-  }
-}
 
 +(BOOL) exportArchivedJSONFilesToZip:(int*)RpFiles {
   

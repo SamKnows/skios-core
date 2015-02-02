@@ -220,6 +220,8 @@ typedef enum SKBShowMetricsRule
 -(NSMutableArray *) getSplashLabelArray:(UIView*)onView;
 // Splash screen (end)
 
++ (NSString*)getNewJSONFilePath;
++ (NSString*)getNewJSONArchiveFilePath;
 @end
   
 // Splash screen (begin)
