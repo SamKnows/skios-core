@@ -114,6 +114,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   
   if (self)
   {
+    SK_ASSERT ([((NSObject*)_delegate) conformsToProtocol:@protocol(SKHttpTestDelegate)]);
+    
     self.mServerUploadTestBitrates = [NSMutableArray new];
     
     port = _port;

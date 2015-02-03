@@ -59,6 +59,11 @@
 {
   self = [super init];
   
+  SK_ASSERT ([((NSObject*)_delegate) conformsToProtocol:@protocol(SKClosestTargetDelegate)]);
+ 
+  // The supplied inNumDatagrams is ALWAYS zero in our current XML schema!
+  SK_ASSERT(inNumDatagrams == 0);
+  
   if (self)
   {
     if ((inNumDatagrams >= NUMBEROFPACKETSMIN) || (inNumDatagrams >= NUMBEROFPACKETSMAX)) {

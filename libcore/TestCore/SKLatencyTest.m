@@ -63,6 +63,8 @@
   
   if (self)
   {
+    SK_ASSERT ([((NSObject*)_delegate) conformsToProtocol:@protocol(SKLatencyTestDelegate)]);
+    
     target = _target;
     port = _port;
     numDatagrams = _numDatagrams;

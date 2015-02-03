@@ -30,7 +30,6 @@
 }
 
 -(void) setLabelText:(NSString*)inLabelText DetailText:(NSString*)inDetailText {
-  //NSLog(@"doSomething, textLabel=%@, detailTextLabel=%@\n", textLabel.text, detailTextLabel.text);
   textLabel.text = inLabelText;
   detailTextLabel.text = inDetailText;
 }

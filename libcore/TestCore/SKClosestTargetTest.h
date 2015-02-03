@@ -7,7 +7,20 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SKClosestTargetDelegate;
+#pragma mark - Delegate
+
+@protocol SKClosestTargetDelegate <NSObject>
+
+- (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency;
+- (void)ctdTestDidFail;
+- (void)ctdDidSendPacket:(NSUInteger)bytes;
+
+//### HG
+- (void)ctdDidStartTargetTesting;
+- (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId;
+
+@end
+
 @class SKAutotest;
 
 @interface SKClosestTargetTest : SKTest <SKLatencyOperationDelegate>
@@ -90,16 +103,3 @@
 
 @end
 
-#pragma mark - Delegate
-
-@protocol SKClosestTargetDelegate <NSObject>
-
-- (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency;
-- (void)ctdTestDidFail;
-- (void)ctdDidSendPacket:(NSUInteger)bytes;
-
-//### HG
-- (void)ctdDidStartTargetTesting;
-- (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId;
-
-@end
