@@ -383,8 +383,6 @@
 
 - (void)layoutSubviews
 {
-  [super layoutSubviews];
-  
   CGSize size = self.bounds.size;
   
   //    CGSize backgroundImageSize = self.backgroundImageView.image.size;
@@ -416,6 +414,10 @@
   self.mMeasurementText.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.77, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 20);
   
   self.btButton.frame = self.indicatorImageView.frame;
+
+  // Make this call last!
+  // http://stackoverflow.com/questions/24731552/assertion-failure-in-myclass-layoutsublayersoflayer
+  [super layoutSubviews];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

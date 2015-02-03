@@ -127,28 +127,30 @@
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];
-    
-    CGRect bounds = [self bounds];
-    float wt = [self wellThickness];
-    CGRect outer = CGRectInset([self bounds], wt / 2.0, wt / 2.0);
-    CGRect inner = CGRectInset([self bounds], wt, wt);
-    
-    UIBezierPath *innerPath = [UIBezierPath bezierPathWithOvalInRect:inner];
-    UIBezierPath *outerPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CGRectGetMidX(outer), CGRectGetMidY(outer))
-                                                             radius:[self radius]
-                                                         startAngle:-M_PI_2 endAngle:(2.0 * M_PI - M_PI_2) clockwise:YES];
-    [[self wellLayer] setPath:[outerPath CGPath]];
-    [[self spinLayer] setPath:[outerPath CGPath]];
-        
-    [[self imageLayer] setFrame:bounds];
-    [[self maskLayer] setFrame:bounds];
-    [[self spinLayer] setFrame:bounds];
-
-    UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [[UIScreen mainScreen] scale]);
-    [innerPath fill];
-    [[self maskLayer] setContents:(id)[UIGraphicsGetImageFromCurrentImageContext() CGImage]];
-    UIGraphicsEndImageContext();
+  CGRect bounds = [self bounds];
+  float wt = [self wellThickness];
+  CGRect outer = CGRectInset([self bounds], wt / 2.0, wt / 2.0);
+  CGRect inner = CGRectInset([self bounds], wt, wt);
+  
+  UIBezierPath *innerPath = [UIBezierPath bezierPathWithOvalInRect:inner];
+  UIBezierPath *outerPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(CGRectGetMidX(outer), CGRectGetMidY(outer))
+                                                           radius:[self radius]
+                                                       startAngle:-M_PI_2 endAngle:(2.0 * M_PI - M_PI_2) clockwise:YES];
+  [[self wellLayer] setPath:[outerPath CGPath]];
+  [[self spinLayer] setPath:[outerPath CGPath]];
+  
+  [[self imageLayer] setFrame:bounds];
+  [[self maskLayer] setFrame:bounds];
+  [[self spinLayer] setFrame:bounds];
+  
+  UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [[UIScreen mainScreen] scale]);
+  [innerPath fill];
+  [[self maskLayer] setContents:(id)[UIGraphicsGetImageFromCurrentImageContext() CGImage]];
+  UIGraphicsEndImageContext();
+  
+  // Make this call last!
+  // http://stackoverflow.com/questions/24731552/assertion-failure-in-myclass-layoutsublayersoflayer
+  [super layoutSubviews];
 }
 
 
