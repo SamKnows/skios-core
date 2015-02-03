@@ -405,7 +405,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
         
         if (nil != data)
         {
-            SKScheduler *sch = [[SKAScheduler alloc] initWithXmlData:data];
+            SKScheduler *sch = [[SKScheduler alloc] initWithXmlData:data];
             
             if (nil != sch)
             {

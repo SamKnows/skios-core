@@ -20,7 +20,7 @@
 #define NUMBEROFTARGETSMAX  50
 #define NUMBEROFTARGETSMIN  2
 
-@interface SKClosestTargetTest ()
+@interface SKClosestTargetTest () <SKLatencyTestDelegate>
 
 @property int threadCounter;
 
@@ -89,7 +89,6 @@
   return self;
 }
 
-// Must be overridden!
 +(SKLatencyOperation*) createLatencyOperationWithTarget:(NSString*)_target
                                                    port:(int)_port
                                            numDatagrams:(int)_numDatagrams
@@ -101,8 +100,17 @@
                                                 TheTest:(SKTest*)inTheTest
                                LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 {
-  SK_ASSERT(false);
-  return nil;
+  return [[SKLatencyOperation alloc] initWithTarget:_target
+                                                port:_port
+                                        numDatagrams:_numDatagrams
+                                     interPacketTime:_interPacketTime
+                                        delayTimeout:_delayTimeout
+                                          percentile:_percentile
+                                    maxExecutionTime:_maxExecutionTime
+                                            threadId:_threadId
+                                             TheTest:inTheTest
+                            LatencyOperationDelegate:_delegate];
+
 }
 
 //
@@ -397,11 +405,7 @@ const int cQueryCountPerServer = 3;
   {
     NSString *target = [targets objectAtIndex:m];
     
-    Class theActualClass = [self class];
-#ifdef DEBUG
-    NSLog(@"DEBUG: theActualClass=%@", [theActualClass description]);
-#endif // DEBUG
-    SKLatencyOperation *operation = [theActualClass createLatencyOperationWithTarget:target
+    SKLatencyOperation *operation = [SKClosestTargetTest createLatencyOperationWithTarget:target
                                                                                 port:port 
                                                                         numDatagrams:numDatagrams 
                                                                      interPacketTime:interPacketTime 

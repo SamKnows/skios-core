@@ -30,7 +30,7 @@
     
     //    id <SKARunTestsDelegate> delegate;
     
-    SKAAutotest *autoTest;
+    SKAutotest *autoTest;
     //    NSMutableArray *resultsArray;
     
     UIBackgroundTaskIdentifier btid;

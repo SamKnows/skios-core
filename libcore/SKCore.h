@@ -61,13 +61,6 @@ typedef enum {
 #import "./UICore/UIViewController+SKSafeSegue.h"
 #import "./UICore/NSString+SKExtensions.h"
 
-#import "./Tests/SKAHttpTest.h"
-#import "./Tests/SKALatencyOperation.h"
-#import "./Tests/SKALatencyTest.h"
-#import "./Tests/SKAClosestTargetTest.h"
-#import "./Tests/SKAScheduler.h"
-#import "./Tests/SKAAutotest.h"
-
 #import "./UICore2/Reusable/SKAppColourScheme/SKAppColourScheme.h"
 #import "./UICore2/ViewManagers/SKBTestResultValue.h"
 

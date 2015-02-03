@@ -166,8 +166,16 @@
                                                 TheTest:(SKTest*)inTheTest
                                LatencyOperationDelegate:(id <SKLatencyOperationDelegate>)_delegate
 {
-  SK_ASSERT(false);
-  return nil;
+  return [[SKLatencyOperation alloc] initWithTarget:_target
+                                                port:_port
+                                        numDatagrams:_numDatagrams
+                                     interPacketTime:_interPacketTime
+                                        delayTimeout:_delayTimeout
+                                          percentile:_percentile
+                                    maxExecutionTime:_maxExecutionTime
+                                            threadId:_threadId
+                                             TheTest:inTheTest
+                            LatencyOperationDelegate:_delegate];
 }
 
 - (void)startTest

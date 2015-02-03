@@ -14,7 +14,7 @@
 {
   BOOL isRunning;
   SKAAppDelegate *appDelegate;
-  SKAClosestTargetTest *targetTest;
+  SKClosestTargetTest *targetTest;
   UIBackgroundTaskIdentifier btid;
 }
 
@@ -398,7 +398,7 @@
     
     if (nil != data)
     {
-      SKScheduler *schedule = [[SKAScheduler alloc] initWithXmlData:data];
+      SKScheduler *schedule = [[SKScheduler alloc] initWithXmlData:data];
       
       if (nil != schedule)
       {

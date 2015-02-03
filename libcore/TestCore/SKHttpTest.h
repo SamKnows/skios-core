@@ -78,6 +78,8 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 @property NSTimeInterval testWarmupStartTime;
 @property NSTimeInterval testWarmupEndTime;
 
+@property (atomic, strong) NSMutableDictionary *outputResultsDictionary;
+
 // The following are shared ACROSS ALL THREADS...
 // ... and therefore are accessed (in a synchronized way) by the SKTransferOperation instances...
 @property BOOL mbMoveToTransferring;
@@ -100,8 +102,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
      TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicroseconds
     transferMaxBytes:(double)_transferMaxBytes
             nThreads:(int)_nThreads
-            HttpTestDelegate:(id <SKHttpTestDelegate>)_delegate
-   runAsynchronously:(BOOL)_runAsynchronously;
+    HttpTestDelegate:(id <SKHttpTestDelegate>)_delegate;
 -(void) prepareForTest;
 
 #pragma mark - Public Methods

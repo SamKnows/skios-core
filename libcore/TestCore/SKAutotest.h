@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class SKThrottledQueryResult;
 @protocol SKAutotestManagerDelegate;
 @protocol SKAutotestObserverDelegate;
 
@@ -58,9 +59,24 @@ typedef enum
 
 @property (nonatomic, strong) NSString* selectedTarget;
 
+@property SKThrottledQueryResult *mpThrottledQueryResult;
+@property NSString *mpThrottleResponse;
+@property NSMutableDictionary *jsonDictionary;
+@property NSMutableDictionary *cpuCondition;
+@property NSMutableArray *accumulatedNetworkTypeLocationMetrics;
+@property BOOL mbIsContinuousTesting;
+
 //
 // Methods
 //
+
+
+#define kSKAAutoTest_UDPFailedSkipTests @"kSKAAutoTest_UDPFailedSkipTests"
+#define kSKAAutoTest_GeneratedTestId @"kSKAAutoTest_GeneratedTestId"
+
+// NEW api methods...
+-(id) initAndRunWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType IsContinuousTesting:(BOOL)isContinuousTesting;
+-(id) initAndRunWithAutotestManagerDelegateWithBitmask:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate autotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate TestsToExecuteBitmask:(int)tests2execute isContinuousTesting:(BOOL)isContinuousTesting;
 
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)testType  IsContinuousTesting:(BOOL)isContinuousTesting;
 

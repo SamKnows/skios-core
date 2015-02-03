@@ -102,12 +102,6 @@
 		B2AE68241883DA4D00D87FAE /* STKSpinnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68121883DA4D00D87FAE /* STKSpinnerView.m */; };
 		B2AE68251883DA4D00D87FAE /* UIColor+Colours.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68141883DA4D00D87FAE /* UIColor+Colours.m */; };
 		B2AE68281883DBC900D87FAE /* SKAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68271883DBC900D87FAE /* SKAAppDelegate.m */; };
-		B2AE683E1883DE6800D87FAE /* SKAAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68331883DE6800D87FAE /* SKAAutotest.m */; };
-		B2AE683F1883DE6800D87FAE /* SKAClosestTargetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68351883DE6800D87FAE /* SKAClosestTargetTest.m */; };
-		B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68371883DE6800D87FAE /* SKAHttpTest.m */; };
-		B2AE68411883DE6800D87FAE /* SKALatencyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE68391883DE6800D87FAE /* SKALatencyOperation.m */; };
-		B2AE68421883DE6800D87FAE /* SKALatencyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE683B1883DE6800D87FAE /* SKALatencyTest.m */; };
-		B2AE68431883DE6800D87FAE /* SKAScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AE683D1883DE6800D87FAE /* SKAScheduler.m */; };
 		B2AE68451883DE7E00D87FAE /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AE68441883DE7E00D87FAE /* Social.framework */; };
 		B2AE68B418842B1F00D87FAE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AE68B318842B1F00D87FAE /* CoreLocation.framework */; };
 		B2AF51EF17CF35FF00815146 /* SKTransferOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2AF51EE17CF35FF00815146 /* SKTransferOperationTests.m */; };
@@ -339,18 +333,6 @@
 		B2AE68141883DA4D00D87FAE /* UIColor+Colours.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Colours.m"; sourceTree = "<group>"; };
 		B2AE68261883DBC900D87FAE /* SKAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAAppDelegate.h; sourceTree = "<group>"; };
 		B2AE68271883DBC900D87FAE /* SKAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAAppDelegate.m; sourceTree = "<group>"; };
-		B2AE68321883DE6800D87FAE /* SKAAutotest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAAutotest.h; sourceTree = "<group>"; };
-		B2AE68331883DE6800D87FAE /* SKAAutotest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAAutotest.m; sourceTree = "<group>"; };
-		B2AE68341883DE6800D87FAE /* SKAClosestTargetTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAClosestTargetTest.h; sourceTree = "<group>"; };
-		B2AE68351883DE6800D87FAE /* SKAClosestTargetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAClosestTargetTest.m; sourceTree = "<group>"; };
-		B2AE68361883DE6800D87FAE /* SKAHttpTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAHttpTest.h; sourceTree = "<group>"; };
-		B2AE68371883DE6800D87FAE /* SKAHttpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAHttpTest.m; sourceTree = "<group>"; };
-		B2AE68381883DE6800D87FAE /* SKALatencyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKALatencyOperation.h; sourceTree = "<group>"; };
-		B2AE68391883DE6800D87FAE /* SKALatencyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKALatencyOperation.m; sourceTree = "<group>"; };
-		B2AE683A1883DE6800D87FAE /* SKALatencyTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKALatencyTest.h; sourceTree = "<group>"; };
-		B2AE683B1883DE6800D87FAE /* SKALatencyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKALatencyTest.m; sourceTree = "<group>"; };
-		B2AE683C1883DE6800D87FAE /* SKAScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAScheduler.h; sourceTree = "<group>"; };
-		B2AE683D1883DE6800D87FAE /* SKAScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAScheduler.m; sourceTree = "<group>"; };
 		B2AE68441883DE7E00D87FAE /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		B2AE68B318842B1F00D87FAE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B2AF51EE17CF35FF00815146 /* SKTransferOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTransferOperationTests.m; sourceTree = "<group>"; };
@@ -681,7 +663,6 @@
 				B2B2B4BC18AB7A8500592FEF /* SKOperators.m */,
 				B2B2B4BE18AB98F800592FEF /* SKNSURLAsyncQuery.h */,
 				B2B2B4BF18AB98F800592FEF /* SKNSURLAsyncQuery.m */,
-				B2AE68311883DE6800D87FAE /* Tests */,
 				B2AE67F21883DA4D00D87FAE /* UICore */,
 				B2FB02F819B75D09007AA3C2 /* UICore2 */,
 				B22E88E217C36875005D9094 /* 3rdParty */,
@@ -917,25 +898,6 @@
 				B23B638319ACB7A8003F381C /* NSString+SKExtensions.m */,
 			);
 			path = UICore;
-			sourceTree = "<group>";
-		};
-		B2AE68311883DE6800D87FAE /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				B2AE68321883DE6800D87FAE /* SKAAutotest.h */,
-				B2AE68331883DE6800D87FAE /* SKAAutotest.m */,
-				B2AE68341883DE6800D87FAE /* SKAClosestTargetTest.h */,
-				B2AE68351883DE6800D87FAE /* SKAClosestTargetTest.m */,
-				B2AE68361883DE6800D87FAE /* SKAHttpTest.h */,
-				B2AE68371883DE6800D87FAE /* SKAHttpTest.m */,
-				B2AE68381883DE6800D87FAE /* SKALatencyOperation.h */,
-				B2AE68391883DE6800D87FAE /* SKALatencyOperation.m */,
-				B2AE683A1883DE6800D87FAE /* SKALatencyTest.h */,
-				B2AE683B1883DE6800D87FAE /* SKALatencyTest.m */,
-				B2AE683C1883DE6800D87FAE /* SKAScheduler.h */,
-				B2AE683D1883DE6800D87FAE /* SKAScheduler.m */,
-			);
-			path = Tests;
 			sourceTree = "<group>";
 		};
 		B2AF51F217CF3F3000815146 /* Test XML */ = {
@@ -1336,12 +1298,10 @@
 				B2FB032C19B75D09007AA3C2 /* CActionSheet.m in Sources */,
 				B282672B19E3F579003A4172 /* SKBTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */,
-				B2AE68401883DE6800D87FAE /* SKAHttpTest.m in Sources */,
 				B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */,
 				B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */,
 				B221AEDC18FFC22500323923 /* ioapi.c in Sources */,
 				B22E88F017C36875005D9094 /* FMDatabase.m in Sources */,
-				B2AE68431883DE6800D87FAE /* SKAScheduler.m in Sources */,
 				B221AEC918FFC12100323923 /* ZipArchive.m in Sources */,
 				B22E88F117C36875005D9094 /* FMDatabaseAdditions.m in Sources */,
 				B2AE68231883DA4D00D87FAE /* SKATransferTestCell.m in Sources */,
@@ -1361,7 +1321,6 @@
 				B22E891F17C37189005D9094 /* Reachability.m in Sources */,
 				B2AE681E1883DA4D00D87FAE /* SKAMainResultsController.m in Sources */,
 				B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */,
-				B2AE683F1883DE6800D87FAE /* SKAClosestTargetTest.m in Sources */,
 				B221AEE318FFDFFA00323923 /* UIAlertView+SKExtensions.m in Sources */,
 				B22E892317C371DD005D9094 /* UIDeviceHardware.m in Sources */,
 				B22E892817C37243005D9094 /* SMXMLDocument.m in Sources */,
@@ -1373,15 +1332,12 @@
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
-				B2AE68421883DE6800D87FAE /* SKALatencyTest.m in Sources */,
 				B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */,
-				B2AE683E1883DE6800D87FAE /* SKAAutotest.m in Sources */,
 				B28006DD19C881E90008DF5F /* SKBMainViewTabBarController.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,
 				B2AE681D1883DA4D00D87FAE /* SKALatencyTestCell.m in Sources */,
 				B2FB033219B75D09007AA3C2 /* CGaugeView.m in Sources */,
 				B2AE68191883DA4D00D87FAE /* SKAGraphResultFooterCell.m in Sources */,
-				B2AE68411883DE6800D87FAE /* SKALatencyOperation.m in Sources */,
 				B22E893217C37C90005D9094 /* SKUDPDataGram.m in Sources */,
 				B2FB033819B75D09007AA3C2 /* SKBTestOverviewCell.m in Sources */,
 				B22E893A17C391D0005D9094 /* SKTransferOperation.m in Sources */,

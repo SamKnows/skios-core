@@ -13,7 +13,7 @@
 
 @interface SKARunTestsController ()
 {
-  SKAAutotest *autoTest;
+  SKAutotest *autoTest;
   NSMutableArray *resultsArray;
   
   UIBackgroundTaskIdentifier btid;
@@ -841,7 +841,7 @@
         autoTest = nil;
       }
       
-      autoTest = [[SKAAutotest alloc] initAndRunWithAutotestManagerDelegate:appDelegate AndAutotestObserverDelegate:self AndTestType:self.testType IsContinuousTesting:self.continuousTesting];
+      autoTest = [[SKAutotest alloc] initAndRunWithAutotestManagerDelegate:appDelegate AndAutotestObserverDelegate:self AndTestType:self.testType IsContinuousTesting:self.continuousTesting];
     });
   }
   

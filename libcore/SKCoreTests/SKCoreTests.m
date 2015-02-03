@@ -125,7 +125,7 @@ static NSUInteger GLatencyOperation_DidFail_CallCount;
 const int cTheThreadId = 123;
 
 - (SKLatencyOperation *)createLatencyOperationInstance {
-  SKALatencyOperation *latencyOperation = [[SKALatencyOperation alloc]
+  SKLatencyOperation *latencyOperation = [[SKLatencyOperation alloc]
                                            initWithTarget:@"localhost"
                                            port:0
                                            numDatagrams:4

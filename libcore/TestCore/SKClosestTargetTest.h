@@ -23,7 +23,7 @@
 
 @class SKAutotest;
 
-@interface SKClosestTargetTest : SKTest <SKLatencyOperationDelegate>
+@interface SKClosestTargetTest : SKTest
 {
   // Test Parameters
   int port;
@@ -86,18 +86,6 @@
 - (void)stopTest;
 
 - (BOOL)isReady;
-
-// Must be overridden!
-+(SKLatencyOperation*) createLatencyOperationWithTarget:(NSString*)_target
-                                                   port:(int)_port
-                                           numDatagrams:(int)_numDatagrams
-                                        interPacketTime:(double)_interPacketTime
-                                           delayTimeout:(double)_delayTimeout
-                                             percentile:(long)_percentile
-                                       maxExecutionTime:(double)_maxExecutionTime
-                                               threadId:(int)_threadId
-                                                TheTest:(SKTest*)inTheTest
-                               LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate;
 
 -(void) setSKAutotest:(SKAutotest*)skAutotest;
 

@@ -56,7 +56,7 @@ static bool  GbShouldHttpQueriesSucceed = true;
 
 @end
 
-@interface SKTest_HttpLatencyTestingForClosestTargetTests : XCTestCase
+@interface SKTest_HttpLatencyTestingForClosestTargetTests : XCTestCase<SKClosestTargetDelegate>
 
 @end
 
@@ -102,12 +102,15 @@ static bool  GbShouldHttpQueriesSucceed = true;
   SK_ASSERT(false);
 }
 
+- (void)ctdDidStartTargetTesting {}
+- (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId {}
+
 #pragma mark SKClosestTargetDelegate (end)
 
 -(void)doTestLatencyOperationSuccess:(NSArray*)testTargets {
  
-  SKClosestTargetTest *closestTargetTest = [[SKAClosestTargetTest alloc]
-                                            initWithTargets:testTargets ClosestTargetDelegate:self NumDatagrams:4];
+  SKClosestTargetTest *closestTargetTest = [[SKClosestTargetTest alloc]
+                                            initWithTargets:testTargets ClosestTargetDelegate:self NumDatagrams:0];
   
   // Test that the methods work as expected.
   [closestTargetTest tryHttpClosestTargetTestIfUdpTestFails];
@@ -146,8 +149,8 @@ static bool  GbShouldHttpQueriesSucceed = true;
   
   GbShouldHttpQueriesSucceed = false;
   
-  SKClosestTargetTest *closestTargetTest = [[SKAClosestTargetTest alloc]
-                                            initWithTargets:testTargets ClosestTargetDelegate:self NumDatagrams:4];
+  SKClosestTargetTest *closestTargetTest = [[SKClosestTargetTest alloc]
+                                            initWithTargets:testTargets ClosestTargetDelegate:self NumDatagrams:0];
   
   // Test that the methods work as expected.
   [closestTargetTest tryHttpClosestTargetTestIfUdpTestFails];
@@ -165,5 +168,6 @@ static bool  GbShouldHttpQueriesSucceed = true;
   NSArray *testTargets = @[@"http://target1", @"http://target2", @"http://target3"];
   [self doTestLatencyOperationFail:testTargets];
 }
+
 
 @end

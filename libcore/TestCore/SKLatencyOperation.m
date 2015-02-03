@@ -83,6 +83,9 @@
 //- (void)udpUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId_;
 //- (void)udpUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId_;
 
+@property SKTest *theTest;
+@property NSMutableDictionary *outputResultsDictionary;
+
 @end
 
 @implementation SKLatencyOperation
@@ -118,6 +121,9 @@
 @synthesize keepAwakeSocketOperationQueue;
 @synthesize keepAwakeSocketOperation;
 
+@synthesize theTest;
+@synthesize outputResultsDictionary;
+
 #pragma mark - Init
 
 - (id)initWithTarget:(NSString*)_target
@@ -152,6 +158,13 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
     
     [self initVariables];
     
+    outputResultsDictionary = [[NSMutableDictionary alloc] init];
+    theTest = inTheTest;
+    
+    if (![inTheTest.class isSubclassOfClass:[SKTest class]]) {
+      SK_ASSERT(false);
+      return nil;
+    }
 #ifdef DEBUG
     NSLog(@"DEBUG: created NSOperationQueue (SKLatencyOperation): %@", [self description]);
 #endif // DEBUG
@@ -310,6 +323,11 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   // try to clear-up the caches!
   // http://stackoverflow.com/questions/17668617/sensitive-data-stored-in-cache-db-wal-file
   [[NSURLCache sharedURLCache] removeAllCachedResponses];
+  
+  if (nil != outputResultsDictionary)
+  {
+    outputResultsDictionary = nil;
+  }
 }
 
 - (void)dealloc
@@ -563,11 +581,6 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   testOK = NO;
   [self outputResults];
   [self doSendLodTestDidFail:threadId];
-}
-
-- (void)outputResults
-{
-  SK_ASSERT(false);
 }
 
 - (void)getStats {
@@ -1159,5 +1172,61 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 }
 
 
+#pragma mark - Dealloc
+
+- (void)outputResults
+{
+  [outputResultsDictionary removeAllObjects];
+  
+  //    "type": "JUDPLATENCY"
+  //    "datetime": "Fri Jan 25 15:36:07 GMT 2013",
+  //    "lost_packets": "1",
+  //    "received_packets": "53",
+  //    "rtt_avg": "255144",
+  //    "rtt_max": "1488525",
+  //    "rtt_min": "68023",
+  //    "rtt_stddev": "243171",
+  //    "success": "true",
+  //    "target": "n1-the1.samknows.com",
+  //    "target_ipaddress": "46.17.56.234",
+  //    "timestamp": "1359128167"
+  
+  [outputResultsDictionary setObject:@"JUDPLATENCY"
+                              forKey:@"type"];
+  
+  [outputResultsDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", totalPacketsLost]
+                              forKey:@"lost_packets"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", totalPacketsReceived]
+                              forKey:@"received_packets"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(averagePacketTime * ONE_MILLION)]
+                              forKey:@"rtt_avg"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(maximumTripTime * ONE_MILLION)]
+                              forKey:@"rtt_max"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(minimumTripTime * ONE_MILLION)]
+                              forKey:@"rtt_min"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(standardDeviation * ONE_MILLION)]
+                              forKey:@"rtt_stddev"];
+  
+  [outputResultsDictionary setObject:testOK ? @"true" : @"false"
+                              forKey:@"success"];
+  
+  [outputResultsDictionary setObject:target
+                              forKey:@"target"];
+  
+  [outputResultsDictionary setObject:[SKIPHelper hostIPAddress:target]
+                              forKey:@"target_ipaddress"];
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)([[SKCore getToday] timeIntervalSince1970])]
+                              forKey:@"timestamp"];
+  
+  theTest.outputResultsDictionary = outputResultsDictionary;
+}
 
 @end
