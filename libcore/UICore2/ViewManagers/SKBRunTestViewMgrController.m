@@ -56,12 +56,12 @@
   } else {
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    if (![prefs objectForKey:Prefs_LastTestSelection])
+    if (![prefs objectForKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]])
     {
       self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
-      [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
+      [prefs setInteger:self.testTypes2Execute forKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]];
     }
-    self.testTypes2Execute = (int)[prefs integerForKey:Prefs_LastTestSelection];
+    self.testTypes2Execute = (int)[prefs integerForKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]];
   }
   
   [self initialiseViewOnMasterView];
@@ -354,9 +354,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:Prefs_DataUsage] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:Prefs_DataCapValueBytes] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   // For all selected tests, add-up the expected amount of data to use.
   // And if data consumed + expected data > dataAllowed, present a warning to the user!
@@ -450,9 +450,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:Prefs_DataUsage] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:Prefs_DataCapValueBytes] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   if (dataUsed > dataAllowed)
   {
@@ -640,7 +640,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
  
   // And save the updated preferences!
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setInteger:self.testTypes2Execute forKey:Prefs_LastTestSelection];
+  [prefs setInteger:self.testTypes2Execute forKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]];
   [prefs synchronize];
 }
 
@@ -1199,14 +1199,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   dataStart = 0;
   
-  if ([prefs valueForKey:Prefs_DataUsage])
+  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_DataUsage];
+    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     dataStart = [num longLongValue];
   }
   else
   {
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:Prefs_DataUsage];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -1217,9 +1217,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   dataEnd = 0;
   
-  if ([prefs valueForKey:Prefs_DataUsage])
+  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_DataUsage];
+    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     dataEnd = [num longLongValue];
   }
   

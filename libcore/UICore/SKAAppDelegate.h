@@ -14,26 +14,6 @@
 #ifndef SKAAPPDELEGATE_H
 #define SKAAPPDELEGATE_H 1
 
-// Make this BIG ENOUGH!
-#define FILE_SIZE 52430000
-
-FOUNDATION_EXPORT NSString *const Upload_Url;
-FOUNDATION_EXPORT NSString *const Schedule_Xml;
-
-FOUNDATION_EXPORT NSString *const Config_Url;
-
-FOUNDATION_EXPORT NSString *const Prefs_DataUsage;
-FOUNDATION_EXPORT NSString *const Prefs_ClosestTarget;
-FOUNDATION_EXPORT NSString *const Prefs_TargetServer;
-
-FOUNDATION_EXPORT NSString *const Prefs_Activated;
-FOUNDATION_EXPORT NSString *const Prefs_DataCapEnabled;
-FOUNDATION_EXPORT NSString *const Prefs_DataCapValueBytes;
-FOUNDATION_EXPORT NSString *const Prefs_DataDate;
-FOUNDATION_EXPORT NSString *const Prefs_DateRange;
-FOUNDATION_EXPORT NSString *const Prefs_LastLocation;
-FOUNDATION_EXPORT NSString *const Prefs_LastTestSelection;
-
 @class Reachability;
 
 typedef enum SKBShowMetricsRule
@@ -220,13 +200,24 @@ typedef enum SKBShowMetricsRule
 -(NSMutableArray *) getSplashLabelArray:(UIView*)onView;
 // Splash screen (end)
 
-+ (NSString*)getNewJSONFilePath;
-+ (NSString*)getNewJSONArchiveFilePath;
++(NSString*)getNewJSONFilePath;
++(NSString*)getNewJSONArchiveFilePath;
+
++(NSString*)sGet_Prefs_LastTestSelection;
++(NSString*)sGet_Prefs_DateRange;
++(NSString*)sGet_Prefs_DataUsage;
++(NSString*)sGet_Prefs_DataDate;
++(NSString*)sGet_Prefs_DataCapValueBytes;
++(NSString*)sGet_Prefs_LastLocation;
++(NSString*)sGet_Prefs_TargetServer;
++(NSString*)sGetUpload_Url;
++(NSString*)sGetConfig_Url;
 @end
   
 // Splash screen (begin)
 CGFloat getGuiMultiplier();
 CGFloat scaleWidthHeightTo(CGFloat value);
 // Splash screen (end)
+
 
 #endif // SKAAPPDELEGATE_H 1

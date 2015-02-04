@@ -730,14 +730,14 @@
   
   dataStart = 0;
   
-  if ([prefs valueForKey:Prefs_DataUsage])
+  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_DataUsage];
+    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     dataStart = [num longLongValue];
   }
   else
   {
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:Prefs_DataUsage];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -748,9 +748,9 @@
   
   dataEnd = 0;
   
-  if ([prefs valueForKey:Prefs_DataUsage])
+  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_DataUsage];
+    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     dataEnd = [num longLongValue];
   }
   

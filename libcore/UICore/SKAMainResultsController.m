@@ -476,7 +476,7 @@ NSMutableArray *GArrayForResultsController;
 - (void)checkDataUsage
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSDate *date = [prefs objectForKey:Prefs_DataDate];
+  NSDate *date = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataDate]];
   NSDate *dateNow = [SKCore getToday];
   
   NSTimeInterval interval = [dateNow timeIntervalSinceDate:date];
@@ -486,8 +486,8 @@ NSMutableArray *GArrayForResultsController;
   if (interval > oneMonth)
   {
     // reset the data usage
-    [prefs setValue:dateNow forKey:Prefs_DataDate];
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:Prefs_DataUsage];
+    [prefs setValue:dateNow forKey:[SKAAppDelegate sGet_Prefs_DataDate]];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -906,9 +906,9 @@ static TestType GRunTheTestWithThisType;
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:Prefs_DataUsage] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:Prefs_DataCapValueBytes] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   // For all selected tests, add-up the expected amount of data to use.
   // And if data consumed + expected data > dataAllowed, present a warning to the user!
@@ -1006,9 +1006,9 @@ static TestType GRunTheTestWithThisType;
 
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:Prefs_DataUsage] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:Prefs_DataCapValueBytes] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   if (dataUsed > dataAllowed)
   {
@@ -1190,7 +1190,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (void)setDateRange:(DATERANGE_1w1m3m1y)range
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[NSNumber numberWithInt:range] forKey:Prefs_DateRange];
+  [prefs setObject:[NSNumber numberWithInt:range] forKey:[SKAAppDelegate sGet_Prefs_DateRange]];
   [prefs synchronize];
 }
 
@@ -1220,7 +1220,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (DATERANGE_1w1m3m1y)getDateRange
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  return [[prefs objectForKey:Prefs_DateRange] intValue];
+  return [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DateRange]] intValue];
 }
 
 - (NSString*)getDateRangeText
@@ -1583,7 +1583,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (void)checkConfig
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSString *server = [prefs objectForKey:Prefs_TargetServer];
+  NSString *server = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_TargetServer]];
   
   NSLog(@"server=%@", server);
   if (server == nil) {
@@ -1594,7 +1594,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   }
   
   //NSLog(@"Config_Url=%@", Config_Url);
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, Config_Url];
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAAppDelegate sGetConfig_Url]];
   //NSLog(@"strUrl=%@", strUrl);
   
   NSURL *url = [NSURL URLWithString:strUrl];

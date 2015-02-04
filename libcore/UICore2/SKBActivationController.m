@@ -257,7 +257,7 @@
              {
                // To get here, we succeeeded!
                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-               [prefs setObject:final forKey:Prefs_TargetServer];
+               [prefs setObject:final forKey:[SKAAppDelegate sGet_Prefs_TargetServer]];
                [prefs synchronize];
                [self getConfig];
                return;
@@ -279,9 +279,9 @@
   });
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSString *server = [prefs objectForKey:Prefs_TargetServer];
+  NSString *server = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_TargetServer]];
   
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, Config_Url];
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAAppDelegate sGetConfig_Url]];
   NSURL *url = [NSURL URLWithString:strUrl];
   
   // It so happens that the current system only ever uses this one path!

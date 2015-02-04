@@ -11,27 +11,40 @@
 #import "SKAMainResultsController.h"
 #import "SKAActivationController.h"
 
-NSString *const Upload_Url = @"/mobile/submitjson";
-NSString *const Config_Url = @"/mobile/getconfig";
+// Make this BIG ENOUGH!
+#define FILE_SIZE 52430000
 
-//NSString *const Upload_Url = @"http://dcs-mobile-SKA.samknows.com/mobile/submit";
-//NSString *const Config_Url = @"http://dcs-mobile-SKA.samknows.com/mobile/getconfig";
+//FOUNDATION_EXPORT NSString *const Upload_Url;
+//FOUNDATION_EXPORT NSString *const Schedule_Xml;
+//
+//FOUNDATION_EXPORT NSString *const Config_Url;
+//
+//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DataUsage];
+//FOUNDATION_EXPORT NSString *const Prefs_ClosestTarget;
+//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_TargetServer];
+//
+//FOUNDATION_EXPORT NSString *const Prefs_Activated;
+//FOUNDATION_EXPORT NSString *const Prefs_DataCapEnabled;
+//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DataCapValueBytes];
+//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DataDate];
+//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DateRange];
+//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_LastLocation];
 
 NSString *const Schedule_Xml = @"SCHEDULE.xml";
 
-NSString *const Prefs_Agreed = @"PREFS_AGREED_V2";
-NSString *const Prefs_Activated = @"PREFS_ACTIVATED_V2";
-NSString *const Prefs_TargetServer = @"PREFS_TARGET_SERVER";
+NSString *const cPrefs_Agreed = @"PREFS_AGREED_V2";
+NSString *const cPrefs_Activated = @"PREFS_ACTIVATED_V2";
+NSString *const cPrefs_TargetServer = @"PREFS_TARGET_SERVER";
 
-NSString *const Prefs_DataDate = @"PREFS_DATA_DATE";
-NSString *const Prefs_DataCapEnabled = @"PREFS_DATA_CAP_ENABLED";
-NSString *const Prefs_DataCapValueBytes = @"PREFS_ALLOWANCE";
+NSString *const cPrefs_DataDate = @"PREFS_DATA_DATE";
+NSString *const cPrefs_DataCapEnabled = @"PREFS_DATA_CAP_ENABLED";
+NSString *const cPrefs_DataCapValueBytes = @"PREFS_ALLOWANCE";
 
-NSString *const Prefs_DataUsage = @"DATA_USAGE";
-NSString *const Prefs_ClosestTarget = @"CLOSEST_TARGET";
-NSString *const Prefs_DateRange = @"DATE_RANGE";
-NSString *const Prefs_LastLocation = @"LAST_LOCATION";
-NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
+NSString *const cPrefs_DataUsage = @"DATA_USAGE";
+NSString *const cPrefs_ClosestTarget = @"CLOSEST_TARGET";
+NSString *const cPrefs_DateRange = @"DATE_RANGE";
+NSString *const cPrefs_LastLocation = @"LAST_LOCATION";
+NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 @interface SKAAppDelegate ()
 
@@ -67,6 +80,34 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 @synthesize networkCode;
 @synthesize isoCode;
 
++(NSString*)sGet_Prefs_DataCapValueBytes {
+  return cPrefs_DataCapValueBytes;
+}
+
++(NSString*)sGet_Prefs_LastTestSelection {
+  return cPrefs_LastTestSelection;
+}
++(NSString*)sGet_Prefs_DateRange {
+  return cPrefs_DateRange;
+}
++(NSString*)sGet_Prefs_DataUsage {
+  return cPrefs_DataUsage;
+}
++(NSString*)sGet_Prefs_DataDate {
+  return cPrefs_DataDate;
+}
++(NSString*)sGet_Prefs_LastLocation {
+  return cPrefs_LastLocation;
+}
++(NSString*)sGet_Prefs_TargetServer {
+  return cPrefs_TargetServer;
+}
++(NSString*)sGetUpload_Url {
+  return @"/mobile/submitjson";
+}
++(NSString*)sGetConfig_Url {
+  return @"/mobile/getconfig";
+}
 
 + (NSString*)logFile
 {
@@ -196,7 +237,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
     [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
     [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
     [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
-    [prefs setObject:loc forKey:Prefs_LastLocation];
+    [prefs setObject:loc forKey:[SKAAppDelegate sGet_Prefs_LastLocation]];
     [prefs synchronize];
   }
 }
@@ -218,19 +259,19 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   // Start with Mobile network type configured!
   [self switchNetworkTypeToMobile];
   
-  if (![prefs objectForKey:Prefs_DataCapEnabled])
+  if (![prefs objectForKey:cPrefs_DataCapEnabled])
   {
-    [prefs setObject:[NSNumber numberWithBool:YES] forKey:Prefs_DataCapEnabled];
+    [prefs setObject:[NSNumber numberWithBool:YES] forKey:cPrefs_DataCapEnabled];
   }
   
-  if (![prefs objectForKey:Prefs_DataCapValueBytes])
+  if (![prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]])
   {
     int64_t theValue = 100L;
     theValue *= CBytesInAMegabyte;
-    [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:Prefs_DataCapValueBytes];
+    [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]];
   }
   
-  if (![prefs objectForKey:Prefs_Agreed])
+  if (![prefs objectForKey:cPrefs_Agreed])
   {
     BOOL defaultValue = NO;
     SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
@@ -245,26 +286,26 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
         defaultValue = YES;
       }
     }
-    [prefs setObject:[NSNumber numberWithBool:defaultValue] forKey:Prefs_Agreed];
+    [prefs setObject:[NSNumber numberWithBool:defaultValue] forKey:cPrefs_Agreed];
   }
   
-  if (![prefs objectForKey:Prefs_Activated])
+  if (![prefs objectForKey:cPrefs_Activated])
   {
-    [prefs setObject:[NSNumber numberWithBool:NO] forKey:Prefs_Activated];
+    [prefs setObject:[NSNumber numberWithBool:NO] forKey:cPrefs_Activated];
   }
   
-  if (![prefs objectForKey:Prefs_DateRange])
+  if (![prefs objectForKey:cPrefs_DateRange])
   {
-    [prefs setObject:[NSNumber numberWithInt:DATERANGE_1w1m3m1y_ONE_WEEK] forKey:Prefs_DateRange];
+    [prefs setObject:[NSNumber numberWithInt:DATERANGE_1w1m3m1y_ONE_WEEK] forKey:cPrefs_DateRange];
   }
   
-//  if (![prefs objectForKey:Prefs_LastLocation])
+//  if (![prefs objectForKey:[SKAAppDelegate sGet_Prefs_LastLocation]])
 //  {
 //    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
 //    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LATITUDE"];
 //    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LONGITUDE"];
 //
-//    [prefs setObject:loc forKey:Prefs_LastLocation];
+//    [prefs setObject:loc forKey:[SKAAppDelegate sGet_Prefs_LastLocation]];
 //  }
 
 
@@ -277,9 +318,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if (nil == [prefs stringForKey:Prefs_DataUsage])
+  if (nil == [prefs stringForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
   {
-    [prefs setObject:[NSNumber numberWithLongLong:bytes] forKey:Prefs_DataUsage];
+    [prefs setObject:[NSNumber numberWithLongLong:bytes] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
   else
@@ -289,14 +330,14 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
       return;
     }
     
-    NSNumber *num = [prefs objectForKey:Prefs_DataUsage];
+    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     
     long currentBytes = [num longLongValue];
     
     long totalBytes = currentBytes + bytes;
     //NSLog(@"totalBytes : %d", totalBytes);
     
-    [prefs setObject:[NSNumber numberWithLongLong:totalBytes] forKey:Prefs_DataUsage];
+    [prefs setObject:[NSNumber numberWithLongLong:totalBytes] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
     
     if (self.schedule.dataCapMB > 0)
@@ -351,13 +392,13 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   SK_ASSERT(sizeof(int64_t) == 8);
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if (nil == [prefs stringForKey:Prefs_DataUsage])
+  if (nil == [prefs stringForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
   {
     return 0;
   }
   else
   {
-    NSNumber *num = [prefs objectForKey:Prefs_DataUsage];
+    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
     
     int64_t currentBytes = [num longLongValue];
     
@@ -418,8 +459,8 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 + (void)setHasAgreed:(BOOL)value
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[SKCore getToday] forKey:Prefs_DataDate];
-  [prefs setObject:[NSNumber numberWithBool:value] forKey:Prefs_Agreed];
+  [prefs setObject:[SKCore getToday] forKey:[SKAAppDelegate sGet_Prefs_DataDate]];
+  [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_Agreed];
   [prefs synchronize];
 }
 
@@ -432,9 +473,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if ([prefs objectForKey:Prefs_Agreed])
+  if ([prefs objectForKey:cPrefs_Agreed])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_Agreed];
+    NSNumber *num = [prefs objectForKey:cPrefs_Agreed];
     if (nil != num)
     {
       return [num boolValue];
@@ -454,9 +495,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if ([prefs objectForKey:Prefs_Agreed])
+  if ([prefs objectForKey:cPrefs_Agreed])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_Agreed];
+    NSNumber *num = [prefs objectForKey:cPrefs_Agreed];
     if (nil != num)
     {
       return [num boolValue];
@@ -469,7 +510,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 + (void)setIsActivated:(BOOL)value
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:[NSNumber numberWithBool:value] forKey:Prefs_Activated];
+    [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_Activated];
     [prefs synchronize];
 }
 
@@ -483,9 +524,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
-  if ([prefs objectForKey:Prefs_Activated])
+  if ([prefs objectForKey:cPrefs_Activated])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_Activated];
+    NSNumber *num = [prefs objectForKey:cPrefs_Activated];
     if (nil != num)
     {
       return [num boolValue];
@@ -530,14 +571,14 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  if (![prefs stringForKey:Prefs_TargetServer]){
+  if (![prefs stringForKey:cPrefs_TargetServer]){
     SK_ASSERT(false);
     return;
   }
   
   // Prepare the URL
-  NSString *baseServer = [prefs stringForKey:Prefs_TargetServer];
-  NSString *urlString = [NSString stringWithFormat:@"%@%@", baseServer, Upload_Url];
+  NSString *baseServer = [prefs stringForKey:cPrefs_TargetServer];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@", baseServer, [SKAAppDelegate sGetUpload_Url]];
   
   NSURL *url = [NSURL URLWithString:urlString];
   
@@ -855,9 +896,9 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSString *server = [prefs objectForKey:Prefs_TargetServer];
+  NSString *server = [prefs objectForKey:cPrefs_TargetServer];
   
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, Upload_Url];
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAAppDelegate sGetUpload_Url]];
   NSURL *url = [NSURL URLWithString:strUrl];
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -1163,7 +1204,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 + (void)setClosestTarget:(NSString*)value
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:value forKey:Prefs_ClosestTarget];
+    [prefs setObject:value forKey:cPrefs_ClosestTarget];
     [prefs synchronize];
 }
 
@@ -1226,7 +1267,7 @@ NSString *const Prefs_LastTestSelection = @"LAST_TESTSELECTION";
 -(NSString *)   amdGetClosestTarget {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  return (NSString*)[prefs objectForKey:Prefs_ClosestTarget];
+  return (NSString*)[prefs objectForKey:cPrefs_ClosestTarget];
 }
 -(void)   amdSetClosestTarget:(NSString*)inClosestTarget {
   [self.class setClosestTarget:inClosestTarget];
@@ -1777,16 +1818,16 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 
 -(void) setIsDataCapEnabled:(BOOL) value {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[NSNumber numberWithBool:value] forKey:Prefs_DataCapEnabled];
+  [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_DataCapEnabled];
   [prefs synchronize];
 }
 
 -(BOOL) isDataCapEnabled {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if ([prefs objectForKey:Prefs_DataCapEnabled])
+  if ([prefs objectForKey:cPrefs_DataCapEnabled])
   {
-    NSNumber *num = [prefs objectForKey:Prefs_DataCapEnabled];
+    NSNumber *num = [prefs objectForKey:cPrefs_DataCapEnabled];
     if (nil != num)
     {
       return [num boolValue];

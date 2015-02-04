@@ -89,7 +89,7 @@
       frmWeb.size.height = frmWeb.size.height - self.viewDataCollector.frame.size.height;
       self.webView.frame = frmWeb;
       
-      int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:Prefs_DataCapValueBytes] longLongValue];
+      int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
       SK_ASSERT(mb >= 0);
       
       mb = mb / CBytesInAMegabyte;
@@ -158,7 +158,7 @@
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   int64_t theValue = (int64_t)[self.txtData.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:Prefs_DataCapValueBytes];
+  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]];
   [prefs synchronize];
 }
 
@@ -237,7 +237,7 @@
         {
           // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
           NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-          [prefs setObject:[SKCore getToday] forKey:Prefs_DataDate];
+          [prefs setObject:[SKCore getToday] forKey:[SKAAppDelegate sGet_Prefs_DataDate]];
           [prefs synchronize];
           
           [SKAAppDelegate setHasAgreed:YES];
