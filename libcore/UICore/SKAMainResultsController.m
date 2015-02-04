@@ -627,7 +627,7 @@ NSMutableArray *GArrayForResultsController;
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
   // In your own app, you could use the delegate to track whether the user sent or canceled the email by examining the value in the result parameter.
-  [self dismissModalViewControllerAnimated:YES];
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

@@ -41,7 +41,8 @@
   [self SKSafePerformSegueWithIdentifier:@"segueToActivation" sender:self];
 }
 
--(void)doAgreeButton { // :(UIBarButtonItem*)sender {
+- (IBAction)agreeButton:(id)sender {
+
   SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
   
   if ([appDelegate getIsConnected] == NO) {
@@ -92,7 +93,7 @@
     self.navigationItem.rightBarButtonItem = nil;
   } else {
     NSString *agreeButtonTitle = sSKCoreGetLocalisedString(@"I Agree");
-    UIBarButtonItem *theAgreeButton = [[UIBarButtonItem alloc] initWithTitle:agreeButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(doAgreeButton)];
+    UIBarButtonItem *theAgreeButton = [[UIBarButtonItem alloc] initWithTitle:agreeButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(agreeButton:)];
     SK_ASSERT(self.navigationItem != nil);
     self.navigationItem.rightBarButtonItem = theAgreeButton;
   }

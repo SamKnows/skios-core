@@ -17,7 +17,7 @@
     return self;
 }
 
-+(void)placeText:(NSString*)text_ intoRect:(CGRect)rectangle_ withFont:(UIFont*)font_
++(void)placeText:(NSString*)text_ intoRect:(CGRect)rectangle_ withFont:(UIFont*)font_ withTextColor:(UIColor*)withTextColor
 {
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                 font_, NSFontAttributeName,
@@ -35,7 +35,7 @@
     if (paragraphRect.size.height > rectangle_.size.height) ry = rectangle_.origin.y - (paragraphRect.size.height - rectangle_.size.height) / 2;
     else ry = rectangle_.origin.y + (rectangle_.size.height - paragraphRect.size.height) / 2;
     
-    [text_ drawInRect:CGRectMake(rx, ry, paragraphRect.size.width, paragraphRect.size.height) withFont:font_];
+  [text_ skDrawInRectNoRet:CGRectMake(rx, ry, paragraphRect.size.width, paragraphRect.size.height) withFont:font_ withTextColor:withTextColor];
 }
 
 +(UIImage*)generateSocialShareImage:(SKATestResults*)testResults_
@@ -93,10 +93,11 @@
   labelText = sSKCoreGetLocalisedString(@"Test_Download");
   labelFont = [UIFont fontWithName:@"Roboto-Light" size:50];
   
-  [[UIColor whiteColor] set];
-  [speedFigure drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 130 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont];
+  textColor = [UIColor whiteColor];
   [textColor set];
-  [labelText drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 250 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont];
+  [speedFigure skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 130 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont withTextColor:textColor];
+  [textColor set];
+  [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 250 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   
   //Upload figure
   if (testResults_.uploadSpeed < 0)
@@ -106,9 +107,9 @@
   labelText = sSKCoreGetLocalisedString(@"Test_Upload");
   
   //[[UIColor colorWithWhite:0.75 alpha:1] set];
-  [speedFigure drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 330 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont];
+  [speedFigure skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 330 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont withTextColor:textColor];
   [textColor set];
-  [labelText drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 450 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont];
+  [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 450 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   
   labelFont = [UIFont fontWithName:@"Roboto-Light" size:35];
   speedFont = [UIFont fontWithName:@"DINCondensed-Bold" size:100];
@@ -120,9 +121,9 @@
     speedFigure = [NSString stringWithFormat:@"%.00f ms", testResults_.latency];
   labelText = sSKCoreGetLocalisedString(@"Test_Latency");
   //[[UIColor colorWithWhite:0.75 alpha:1] set];
-  [speedFigure drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 545 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont];
+  [speedFigure skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 545 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont withTextColor:textColor];
   [textColor set];
-  [labelText drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 620 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont];
+  [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 620 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   
   if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
     //Loss
@@ -133,9 +134,9 @@
     
     labelText = sSKCoreGetLocalisedString(@"Test_Packetloss");
     //[[UIColor colorWithWhite:0.75 alpha:1] set];
-    [speedFigure drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 685 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont];
+    [speedFigure skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 685 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont withTextColor:textColor];
     [textColor set];
-    [labelText drawAtPoint:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 760 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont];
+    [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 760 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   }
   
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -155,7 +156,7 @@
   [textColor set];
   //[[UIColor colorWithWhite:1 alpha:0.6] set];
   labelFont = [UIFont fontWithName:@"Roboto-Light" size:35];
-  [[NSString stringWithFormat:@"%@ / %@", timeString, [dateFormatter stringFromDate:testResults_.testDateTime] ] drawAtPoint:CGPointMake(140, 923) withFont:labelFont];
+  [[NSString stringWithFormat:@"%@ / %@", timeString, [dateFormatter stringFromDate:testResults_.testDateTime] ] skDrawAtPointNoRet:CGPointMake(140, 923) withFont:labelFont withTextColor:textColor];
   
   NSString *networkName;
   
@@ -168,7 +169,7 @@
   //[[SKAppColourScheme sGetMetricsTextColour] set];
   
   labelFont = [UIFont fontWithName:@"DINCondensed-Bold" size:50];
-  [SKATestResults placeText:networkName intoRect:CGRectMake(20, 350, C_SHARE_IMAGE_WIDTH / 4, 50) withFont:labelFont];
+  [SKATestResults placeText:networkName intoRect:CGRectMake(20, 350, C_SHARE_IMAGE_WIDTH / 4, 50) withFont:labelFont withTextColor:textColor];
   
   UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();

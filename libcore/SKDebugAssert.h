@@ -18,9 +18,14 @@ void sk_debugbreak(const char *PpFile, int PLine);
 +(BOOL)SK_ASSERT_GET_DETECTED;
 @end
 
-
+#ifdef DEBUG
 #define SK_ASSERT(PCondition) [SKDebugSupport SK_ASSERTDEBUGINTERNAL:(PCondition) File:__FILE__ Line:__LINE__]
 #define SK_ASSERT_NONSERROR(PError) [SKDebugSupport SK_ASSERT_NONSERROR_INTERNAL:(PError) File:__FILE__ Line:__LINE__]
 #define SK_REPORT_NONSERROR(PError) [SKDebugSupport SK_REPORT_NONSERROR_INTERNAL:(PError) File:__FILE__ Line:__LINE__]
+#else // DEBUG
+#define SK_ASSERT(PCondition)
+#define SK_ASSERT_NONSERROR(PError)
+#define SK_REPORT_NONSERROR(PError)
+#endif // DEBUG
 
 #endif

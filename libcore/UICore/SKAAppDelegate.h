@@ -24,20 +24,11 @@ typedef enum SKBShowMetricsRule
 } SKBShowMetricsRule;
 
 @interface SKAAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, SKAutotestManagerDelegate, UIActionSheetDelegate>
-{
-    SKScheduler *schedule;
-    CLLocationManager* locationManager;
-    
-    NSString *closestTarget;
-    
-    NSInteger connectionStatus;
-    BOOL dataCapExceeded;
-    
-    double latitude;
-    double longitude;
-    
-    BOOL hasLocation;
-}
+
+@property (nonatomic, retain) CLLocationManager* locationManager;
+@property (nonatomic, retain) NSString *closestTarget;
+@property double latitude;
+@property double longitude;
 
 @property (nonatomic, strong) NSString *deviceModel;
 @property (nonatomic, strong) NSString *devicePlatform;
@@ -195,7 +186,7 @@ typedef enum SKBShowMetricsRule
 -(NSString*) getNewAppUrlForHelpAbout;
 
 // Splash screen (begin)
--(UIColor*) getSplashBackgroundColour;
+//-(UIColor*) getSplashBackgroundColour;
 -(UILabel*) prepareLetterForAnimation:(UIView*)onView inArray:(NSMutableArray*)inArray inText:(NSString*)inText  wordFrame:(CGRect)wordFrame;
 -(NSMutableArray *) getSplashLabelArray:(UIView*)onView;
 // Splash screen (end)

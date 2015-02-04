@@ -27,4 +27,39 @@
   return CGSizeMake(labelRect.size.width, labelRect.size.height);
 }
 
+//- (CGSize)skDrawInRect:(CGRect)rect withFont:(UIFont *)font {
+//  return [self drawInRect:rect withFont:font];
+//}
+
+-(void)skDrawInRectNoRet:(CGRect)rect withFont:(UIFont *)font withTextColor:(UIColor*)withTextColor {
+  NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+  paragraphStyle.lineBreakMode = 0; // NSLineBreakMode.;
+  paragraphStyle.alignment = NSTextAlignmentLeft;
+  
+  NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        font, NSFontAttributeName,
+                                        withTextColor, NSForegroundColorAttributeName,
+                                        paragraphStyle, NSParagraphStyleAttributeName,
+                                        nil];
+  [self drawInRect:rect withAttributes:attributesDictionary];
+}
+
+
+//- (CGSize)skDrawAtPoint:(CGPoint)point withFont:(UIFont *)font {
+//  return [self drawAtPoint:point withFont:font];
+//}
+
+-(void) skDrawAtPointNoRet:(CGPoint)point withFont:(UIFont *)font withTextColor:(UIColor*)withTextColor {
+  NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+  paragraphStyle.lineBreakMode = 0; // NSLineBreakMode.;
+  paragraphStyle.alignment = NSTextAlignmentLeft;
+  
+  NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        font, NSFontAttributeName,
+                                        withTextColor, NSForegroundColorAttributeName,
+                                        paragraphStyle, NSParagraphStyleAttributeName,
+                                        nil];
+  [self drawAtPoint:point withAttributes:attributesDictionary];
+}
+
 @end

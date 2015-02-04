@@ -262,7 +262,7 @@
   self.mCenterText.textColor = [SKAppColourScheme  sGetMainColourDialCenterText];
   self.mCenterText.backgroundColor = [UIColor clearColor];
   self.mCenterText.adjustsFontSizeToFitWidth = YES;
-  self.mCenterText.minimumFontSize = 12;
+  self.mCenterText.minimumScaleFactor = 0.1; // minimumFontSize = 12 is deprecated from iOS 6
   [self addSubview:self.mCenterText];
   
   _activityIndicatorViewStyle = activityIndicatorViewStyle;
@@ -276,7 +276,7 @@
   self.mTopText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 25];
   self.mTopText.textColor = [SKAppColourScheme  sGetMainColourDialTopText];
   self.mTopText.adjustsFontSizeToFitWidth = YES;
-  self.mTopText.minimumFontSize = 12;
+  self.mTopText.minimumScaleFactor = 0.1; // minimumFontSize = 12 is deprecated from iOS 6
   [self addSubview:self.mTopText];
   
   self.mUnitText = [[UILabel alloc] initWithFrame:self.bounds];

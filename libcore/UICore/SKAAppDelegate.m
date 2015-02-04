@@ -63,6 +63,8 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 @implementation SKAAppDelegate
 
+@synthesize locationManager;
+
 // Location...
 @synthesize locationLatitude;
 @synthesize locationLongitude;
@@ -914,7 +916,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   [request setHTTPBody:jsonData];
   
 #ifdef DEBUG
-  NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  //NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   //NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
   NSLog(@"DEBUG: postResultsJsonToServer ...");
 #endif // DEBUG
@@ -1921,23 +1923,22 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 
 
 +(void) sResetUserInterfaceBackToMainScreen  {
-  UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
-  UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationControllerTAndCAgreed"];
-  
-  SKAAppDelegate *instance;
-  UIApplication *application = [UIApplication sharedApplication];
-  instance = (SKAAppDelegate*)application.delegate;
-  instance.window.rootViewController = nc;
+  SKAAppDelegate *instance = [SKAAppDelegate getAppDelegate];
+  [instance performSelector:@selector(moveToRootScreenAfterDelay) withObject:nil afterDelay:0.1];
 }
 
 +(void) resetUserInterfaceBackToRunTestsScreenFromViewController { // :(UIViewController*)fromViewController {
+  SKAAppDelegate *instance = [SKAAppDelegate getAppDelegate];
+  [instance performSelector:@selector(moveToRootScreenAfterDelay) withObject:nil afterDelay:0.1];
+}
+
+-(void) moveToRootScreenAfterDelay
+{
   UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
   UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationController"];
-  
-  SKAAppDelegate *instance;
-  UIApplication *application = [UIApplication sharedApplication];
-  instance = (SKAAppDelegate*)application.delegate;
-  instance.window.rootViewController = nc;
+  SK_ASSERT(self.window != nil);
+  [[UIApplication sharedApplication].keyWindow setRootViewController:nc];
+  //self.window.rootViewController = nc;
 }
 
 // The width of the top left icon, can be customized for different app variants!

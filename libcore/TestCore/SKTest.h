@@ -8,15 +8,6 @@
 #import <Foundation/Foundation.h>
 
 @interface SKTest : NSObject
-{
-  NSMutableDictionary *outputResultsDictionary;
-  
-  // Final test results
-  double latency;
-  int packetLoss;
-  double jitter;
-  double stdDeviation;
-}
 
 // Test string list results
 @property (atomic, strong) NSMutableArray *outputResultsArray;

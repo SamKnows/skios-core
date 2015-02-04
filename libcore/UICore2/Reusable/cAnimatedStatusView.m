@@ -35,21 +35,21 @@
   
   self.l1n.font = theFont;
   self.l1n.textColor = [UIColor lightGrayColor];
-  self.l1n.textAlignment = UITextAlignmentCenter;
+  self.l1n.textAlignment = NSTextAlignmentCenter;
   
   self.l1h.font = theFont;
   self.l1h.textColor = [SKAppColourScheme sGetMainColourStatusText];
-  self.l1h.textAlignment = UITextAlignmentCenter;
+  self.l1h.textAlignment = NSTextAlignmentCenter;
   
   self.v2.alpha = 0;
   
   self.l2n.font = theFont;
   self.l2n.textColor = self.l1n.textColor;
-  self.l2n.textAlignment = UITextAlignmentCenter;
+  self.l2n.textAlignment = NSTextAlignmentCenter;
   
   self.l2h.font = theFont;
   self.l2h.textColor = self.l1h.textColor;
-  self.l2h.textAlignment = UITextAlignmentCenter;
+  self.l2h.textAlignment = NSTextAlignmentCenter;
 }
 
 -(void)startAnimating:(UILabel*)l_ forever:(BOOL)forever_

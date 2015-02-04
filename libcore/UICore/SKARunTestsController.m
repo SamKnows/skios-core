@@ -157,6 +157,10 @@
   [self showFailedLatencyTest];
 }
 
+- (void)aodLatencyTestDidStart:(SKLatencyTest*)latencyTest {
+  
+}
+
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest
 {
   double latency = latencyTest.latency;
@@ -368,6 +372,12 @@
     }
   });
 }
+
+- (void)aodLatencyTestDidStart {}
+- (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency {}
+- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based {}
+- (void)aodDidStartTargetTesting {}
+- (void)aodDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId {}
 
 #pragma mark - Actions
 

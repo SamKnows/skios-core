@@ -20,7 +20,7 @@
 #define NUMBEROFTARGETSMAX  50
 #define NUMBEROFTARGETSMIN  2
 
-@interface SKClosestTargetTest () <SKLatencyTestDelegate>
+@interface SKClosestTargetTest () <SKLatencyOperationDelegate>
 
 @property int threadCounter;
 
@@ -31,6 +31,11 @@
 @end
 
 @implementation SKClosestTargetTest
+
+@synthesize latency;
+@synthesize packetLoss;
+@synthesize jitter;
+@synthesize stdDeviation;
 
 @synthesize threadCounter;
 @synthesize queue;
@@ -372,19 +377,20 @@ const int cQueryCountPerServer = 3;
 {
   [self reset];
   
-  if (nil != queue)
-  {
+  if (queue != nil) {
     [queue cancelAllOperations];
     queue = nil;
   }
   queue = [[NSOperationQueue alloc] init];
   [queue setMaxConcurrentOperationCount:nThreads];
   
-  if (nil == targets) {
+  if (targets == nil) {
+    SK_ASSERT(false);
     return;
   }
   
   if (nThreads == 0) {
+    SK_ASSERT(false);
     return;
   }
   
@@ -414,7 +420,7 @@ const int cQueryCountPerServer = 3;
                                                                     maxExecutionTime:0
                                                                             threadId:m
                                                                              TheTest:self
-                                                            LatencyOperationDelegate:self];
+                                                                 LatencyOperationDelegate:self];
     [operation setIsClosestTargetTest:YES];
     [operation setSKAutotest:self.skAutotest];
     [queue addOperation:operation];
@@ -551,6 +557,9 @@ const int cQueryCountPerServer = 3;
     
     [self checkIfDone:threadCounter];
   }
+}
+
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId latency:(float)latency_ { //###HG
 }
 
 - (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId

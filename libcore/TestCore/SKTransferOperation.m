@@ -648,7 +648,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   
   //  int buff_size = 0;
   int sockerr = 0;
-  socklen_t socklen = 0;
+  //socklen_t socklen = 0;
   
   //  socklen = sizeof(buff_size);
   //  sockerr = getsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(char*)&buff_size,&socklen);
@@ -836,7 +836,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
          */
         
         double finalBytesPerSecond = 0.0;
-        double finalBytesMilliseconds = 0.0;
+        //double finalBytesMilliseconds = 0.0;
         //double finalBytes = 0.0;
         
         NSArray *items = [responseString componentsSeparatedByString:@"\n"];

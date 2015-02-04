@@ -146,7 +146,7 @@
   self.lDownloadLabel.textColor = [UIColor whiteColor];
   self.lDownloadLabel.font = labelFontLight;
   self.lDownloadLabel.adjustsFontSizeToFitWidth = YES;
-  self.lDownloadLabel.minimumFontSize = 6.0;
+  self.lDownloadLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   
   [self.contentView addSubview:self.lDownloadLabel];
   
@@ -155,7 +155,7 @@
   self.lUploadLabel.textColor = [UIColor whiteColor];
   self.lUploadLabel.font = labelFontLight;
   self.lUploadLabel.adjustsFontSizeToFitWidth = YES;
-  self.lUploadLabel.minimumFontSize = 6.0;
+  self.lUploadLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lUploadLabel];
   
   self.lMbpsLabel4Download = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 15, GUI_MULTIPLIER * 69, GUI_MULTIPLIER * 59, GUI_MULTIPLIER * 21)];
@@ -163,7 +163,7 @@
   self.lMbpsLabel4Download.textColor = [UIColor whiteColor];
   self.lMbpsLabel4Download.font = labelFontThin;
   self.lMbpsLabel4Download.adjustsFontSizeToFitWidth = YES;
-  self.lMbpsLabel4Download.minimumFontSize = 6.0;
+  self.lMbpsLabel4Download.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lMbpsLabel4Download];
   
   self.lMbpsLabel4Upload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 105, GUI_MULTIPLIER * 69, GUI_MULTIPLIER * 46, GUI_MULTIPLIER * 21)];
@@ -171,7 +171,7 @@
   self.lMbpsLabel4Upload.textColor = [UIColor whiteColor];
   self.lMbpsLabel4Upload.font = labelFontThin;
   self.lMbpsLabel4Upload.adjustsFontSizeToFitWidth = YES;
-  self.lMbpsLabel4Upload.minimumFontSize = 6.0;
+  self.lMbpsLabel4Upload.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lMbpsLabel4Upload];
  
   // This must be wide enough to display "Network Latency" ...!
@@ -180,8 +180,8 @@
   self.lLatencyLabel.textColor = [UIColor whiteColor];
   self.lLatencyLabel.font = labelFontLight;
   self.lLatencyLabel.adjustsFontSizeToFitWidth = YES;
-  self.lLatencyLabel.minimumFontSize = 6.0;
-  self.lLatencyLabel.textAlignment = UITextAlignmentLeft;
+  self.lLatencyLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
+  self.lLatencyLabel.textAlignment = NSTextAlignmentLeft;
   [self.contentView addSubview:self.lLatencyLabel];
   
   if ([[SKAAppDelegate getAppDelegate] getIsLossSupported])
@@ -191,8 +191,8 @@
     self.lLossLabel.textColor = [UIColor whiteColor];
     self.lLossLabel.font = labelFontLight;
     self.lLossLabel.adjustsFontSizeToFitWidth = YES;
-    self.lLossLabel.minimumFontSize = 6.0;
-    self.lLossLabel.textAlignment = UITextAlignmentLeft;
+    self.lLossLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
+    self.lLossLabel.textAlignment = NSTextAlignmentLeft;
     [self.contentView addSubview:self.lLossLabel];
   }
   
@@ -203,8 +203,8 @@
     self.lJitterLabel.textColor = [UIColor whiteColor];
     self.lJitterLabel.font = labelFontLight;
     self.lJitterLabel.adjustsFontSizeToFitWidth = YES;
-    self.lJitterLabel.minimumFontSize = 6.0;
-    self.lJitterLabel.textAlignment = UITextAlignmentLeft;
+    self.lJitterLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
+    self.lJitterLabel.textAlignment = NSTextAlignmentLeft;
     [self.contentView addSubview:self.lJitterLabel];
   }
   
@@ -212,9 +212,9 @@
   self.lDateOfTest.text = @"-";
   self.lDateOfTest.textColor = [UIColor whiteColor];
   self.lDateOfTest.font = labelFontLight;
-  self.lDateOfTest.textAlignment = UITextAlignmentLeft;
+  self.lDateOfTest.textAlignment = NSTextAlignmentLeft;
   self.lDateOfTest.adjustsFontSizeToFitWidth = YES;
-  self.lDateOfTest.minimumFontSize = 6.0;
+  self.lDateOfTest.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lDateOfTest];
   
   self.lTimeOfTest = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 68, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21)];
@@ -222,8 +222,8 @@
   self.lTimeOfTest.textColor = [UIColor whiteColor];
   self.lTimeOfTest.font = labelFontLight;
   self.lTimeOfTest.adjustsFontSizeToFitWidth = YES;
-  self.lTimeOfTest.minimumFontSize = 6.0;
-  self.lTimeOfTest.textAlignment = UITextAlignmentLeft;
+  self.lTimeOfTest.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
+  self.lTimeOfTest.textAlignment = NSTextAlignmentLeft;
   [self.contentView addSubview:self.lTimeOfTest];
   
   self.lResultDownload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 11, GUI_MULTIPLIER * 31, GUI_MULTIPLIER * 80, GUI_MULTIPLIER * 55)];
@@ -231,7 +231,7 @@
   self.lResultDownload.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultDownload.font = resultFont1;
   self.lResultDownload.adjustsFontSizeToFitWidth = YES;
-  self.lResultDownload.minimumFontSize = 6.0;
+  self.lResultDownload.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lResultDownload];
   
   self.lResultUpload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 105, GUI_MULTIPLIER * 31, GUI_MULTIPLIER * 82, GUI_MULTIPLIER * 55)];
@@ -239,26 +239,26 @@
   self.lResultUpload.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultUpload.font = resultFont1;
   self.lResultUpload.adjustsFontSizeToFitWidth = YES;
-  self.lResultUpload.minimumFontSize = 6.0;
+  self.lResultUpload.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lResultUpload];
   
   self.lResultLatency = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
   self.lResultLatency.text = @"-";
   self.lResultLatency.textColor = [SKAppColourScheme sGetResultColourText];
-  self.lResultLatency.textAlignment = UITextAlignmentLeft;
+  self.lResultLatency.textAlignment = NSTextAlignmentLeft;
   self.lResultLatency.font = resultFont2;
   self.lResultLatency.adjustsFontSizeToFitWidth = YES;
-  self.lResultLatency.minimumFontSize = 6.0;
+  self.lResultLatency.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lResultLatency];
   
   if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
     self.lResultLoss = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
     self.lResultLoss.text = @"-";
     self.lResultLoss.textColor = [SKAppColourScheme sGetResultColourText];
-    self.lResultLoss.textAlignment = UITextAlignmentLeft;
+    self.lResultLoss.textAlignment = NSTextAlignmentLeft;
     self.lResultLoss.font = resultFont2;
     self.lResultLoss.adjustsFontSizeToFitWidth = YES;
-    self.lResultLoss.minimumFontSize = 6.0;
+    self.lResultLoss.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
     [self.contentView addSubview:self.lResultLoss];
   }
   
@@ -267,10 +267,10 @@
     self.lResultJitter = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
     self.lResultJitter.text = @"-";
     self.lResultJitter.textColor = [SKAppColourScheme sGetResultColourText];
-    self.lResultJitter.textAlignment = UITextAlignmentLeft;
+    self.lResultJitter.textAlignment = NSTextAlignmentLeft;
     self.lResultJitter.font = resultFont2;
     self.lResultJitter.adjustsFontSizeToFitWidth = YES;
-    self.lResultJitter.minimumFontSize = 6.0;
+    self.lResultJitter.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
     [self.contentView addSubview:self.lResultJitter];
   }
   

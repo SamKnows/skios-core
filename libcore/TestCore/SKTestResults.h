@@ -35,7 +35,7 @@
 //@property (nonatomic, strong) NSString *submission_id;
 
 +(UIImage*)generateSocialShareImage:(SKATestResults*)testResults_;
-+(void)placeText:(NSString*)text_ intoRect:(CGRect)rectangle_ withFont:(UIFont*)font_;
++(void)placeText:(NSString*)text_ intoRect:(CGRect)rectangle_ withFont:(UIFont*)font_ withTextColor:(UIColor*)withTextColor;
 -(NSString*)getTextForSocialMedia:(NSString*)socialNetwork;
 
 @end

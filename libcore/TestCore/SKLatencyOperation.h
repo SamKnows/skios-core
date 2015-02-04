@@ -27,10 +27,29 @@ typedef enum {
     FAILED_STATUS
 } LatencyStatus;
 
+#pragma mark - Delegate
+
+@protocol SKLatencyOperationDelegate
+
+- (void)lodTestDidSendPacket:(NSUInteger)bytes;
+
+- (void)lodTestDidFail:(NSUInteger)threadId;
+
+- (void)lodTestDidSucceed:(double)latency_
+               packetLoss:(int)packetLoss_
+                   jitter:(double)jitter_
+             stdDeviation:(double)stdDeviation_
+                 threadId:(NSUInteger)threadId_;
+
+- (void)lodTestWasCancelled:(NSUInteger)threadId;
+
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId;
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId latency:(float)latency_; //###HG
+- (void)lodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId;
+
+@end
+
 #pragma mark - Interface
-
-@protocol SKLatencyOperationDelegate;
-
 @interface SKLatencyOperation : NSOperation <AsyncUdpSocketDelegate, GCDAsyncSocketDelegate>
 {    
   NSString *target;
@@ -129,24 +148,3 @@ typedef enum {
 
 @end
 
-#pragma mark - Delegate
-
-@protocol SKLatencyOperationDelegate
-
-- (void)lodTestDidSendPacket:(NSUInteger)bytes;
-
-- (void)lodTestDidFail:(NSUInteger)threadId;
-
-- (void)lodTestDidSucceed:(double)latency_
-               packetLoss:(int)packetLoss_ 
-                   jitter:(double)jitter_ 
-             stdDeviation:(double)stdDeviation_
-                 threadId:(NSUInteger)threadId_;
-
-- (void)lodTestWasCancelled:(NSUInteger)threadId;
-
-- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId;
-- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId latency:(float)latency_; //###HG
-- (void)lodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId;
-
-@end

@@ -33,16 +33,19 @@
 
 - (void)lodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId {
 }
+
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId latency:(float)latency_ {}
 @end
 
 @implementation DummyClosestTargetTest
 
-- (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency {
-}
+- (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency { }
   
-- (void)ctdTestDidFail {
-}
+- (void)ctdTestDidFail { }
   
-- (void)ctdDidSendPacket:(NSUInteger)bytes {
-}
+- (void)ctdDidSendPacket:(NSUInteger)bytes {}
+
+- (void)ctdDidStartTargetTesting {}
+- (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId {}
+
 @end

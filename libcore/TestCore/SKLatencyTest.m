@@ -20,6 +20,15 @@
 
 @implementation SKLatencyTest
 
+@synthesize outputResultsArray;
+@synthesize outputResultsDictionary;
+
+// Final test results
+@synthesize latency;
+@synthesize packetLoss;
+@synthesize jitter;
+@synthesize stdDeviation;
+
 // Test Parameters
 @synthesize target;
 @synthesize port;
@@ -153,8 +162,6 @@
   jitter = latency = packetLoss = stdDeviation = 0;
 }
 
-// Must be overridden!
-// http://qualitycoding.org/factory-method/
 +(SKLatencyOperation*) createLatencyOperationWithTarget:(NSString*)_target
                                                    port:(int)_port
                                            numDatagrams:(int)_numDatagrams
@@ -268,6 +275,10 @@
 {
   isRunning = NO;
   [self.latencyTestDelegate ltdTestWasCancelled];
+}
+
+- (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId {
+  SK_ASSERT(false);
 }
 
 //###HG

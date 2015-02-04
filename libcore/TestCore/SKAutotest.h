@@ -59,11 +59,11 @@ typedef enum
 
 @property (nonatomic, strong) NSString* selectedTarget;
 
-@property SKThrottledQueryResult *mpThrottledQueryResult;
-@property NSString *mpThrottleResponse;
-@property NSMutableDictionary *jsonDictionary;
-@property NSMutableDictionary *cpuCondition;
-@property NSMutableArray *accumulatedNetworkTypeLocationMetrics;
+@property (nonatomic, retain) SKThrottledQueryResult *mpThrottledQueryResult;
+@property (nonatomic, retain) NSString *mpThrottleResponse;
+@property (nonatomic, retain) NSMutableDictionary *jsonDictionary;
+@property (nonatomic, retain) NSMutableDictionary *cpuCondition;
+@property (nonatomic, retain) NSMutableArray *accumulatedNetworkTypeLocationMetrics;
 @property BOOL mbIsContinuousTesting;
 
 //

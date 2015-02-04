@@ -1003,6 +1003,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                  });
 }
 
+- (void)aodLatencyTestUpdateProgress:(float)progress {
+  SK_ASSERT(false);
+}
+
+- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream {
+  SK_ASSERT(false);
+}
+
 - (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
 {
   dispatch_async(dispatch_get_main_queue(),

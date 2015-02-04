@@ -141,6 +141,8 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   
   if (self)
   {
+    SK_ASSERT ([((NSObject*)_delegate) conformsToProtocol:@protocol(SKLatencyOperationDelegate)]);
+    
     target = [_target copy];
     port = _port;
     numDatagrams = _numDatagrams;
@@ -150,7 +152,9 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
     maxExecutionTime = _maxExecutionTime;
     threadId = _threadId;
     latencyOperationDelegate = _delegate;
-    SK_ASSERT(latencyOperationDelegate != nil);
+    
+    // The latencyOperation delegate *can* be nil!
+    //SK_ASSERT(latencyOperationDelegate != nil);
     isClosestTargetTest = NO;
     self.bDidTimeoutSoIgnoreLastPacket = NO;
     
@@ -385,7 +389,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)doSendLodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId_
 {
-  SK_ASSERT(self.latencyOperationDelegate != nil);
+//  SK_ASSERT(self.latencyOperationDelegate != nil);
   
     if (isClosestTargetTest)
         [self.latencyOperationDelegate lodUpdateProgress:progress_ threadId:threadId_];
@@ -395,9 +399,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)doSendLodUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId_
 {
-  SK_ASSERT(self.latencyOperationDelegate != nil);
-  
-  SK_ASSERT(self.latencyOperationDelegate != nil);
+  //SK_ASSERT(self.latencyOperationDelegate != nil);
   [self.latencyOperationDelegate lodUpdateStatus:status_ threadId:threadId_];
 }
 
