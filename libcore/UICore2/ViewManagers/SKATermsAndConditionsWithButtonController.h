@@ -8,6 +8,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SKATermsAndConditionsWithButtonController : UIViewController
-@property (weak, nonatomic) IBOutlet UILabel *eaqTermsDetailLabel;
 
 @end
