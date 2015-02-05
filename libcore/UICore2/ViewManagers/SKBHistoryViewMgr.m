@@ -17,6 +17,10 @@
 
 @property (nonatomic, strong) SKBTestResultsSharer* mpSharer;
 
+// This buttons is not used at the moment... but the could be added to the user interface.
+@property (nonatomic, weak) UIButton* btNetworkType;
+//@property (nonatomic, weak) UIButton* btPeriod;
+
 @end
 
 @implementation SKBHistoryViewMgr
@@ -46,14 +50,14 @@
   self.btShare.alpha = 0;
   
   currentFilterNetworkType = C_FILTER_NETWORKTYPE_ALL;
-  currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
+  //currentFilterPeriod = C_FILTER_PERIOD_3MONTHS;
   
   // Ensure that the back button is properly sized!
   //self.backButtonHeightConstraint.constant = [SKAppColourScheme sGet_GUI_MULTIPLIER] * 100;
  
   // Ensure that the localized text is shown.
   [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL];
-  [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK];
+  //[self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK];
   
   [self loadData];
   
@@ -199,20 +203,19 @@
   return;
 }
 
-/*
 #pragma mark UIActionSheetDelegate (begin)
 
 #define ACTIONSHEET_NETWORK 0
-#define ACTIONSHEET_PERIOD  1
+//#define ACTIONSHEET_PERIOD  1
 
 static NSUInteger sWiFiButtonIndex = 0;
 static NSUInteger sMobileButtonIndex = 0;
 static NSUInteger sAllButtonIndex = 0;
 
-static NSUInteger s1WeekButtonIndex = 0;
-static NSUInteger s1MonthButtonIndex = 0;
-static NSUInteger s3MonthButtonIndex = 0;
-static NSUInteger s1YearButtonIndex = 0;
+//static NSUInteger s1WeekButtonIndex = 0;
+//static NSUInteger s1MonthButtonIndex = 0;
+//static NSUInteger s3MonthButtonIndex = 0;
+//static NSUInteger s1YearButtonIndex = 0;
 
 #pragma mark UIActionSheetDelegate (begin)
 // Called when a button is clicked. The view will be automatically dismissed after this call returns
@@ -236,6 +239,7 @@ static NSUInteger s1YearButtonIndex = 0;
         SK_ASSERT(false);
       }
       break;
+      /*
     case ACTIONSHEET_PERIOD:
       if (buttonIndex == s1WeekButtonIndex) {
         [self selectedTimePeriodOption:C_FILTER_PERIOD_1WEEK];
@@ -249,6 +253,7 @@ static NSUInteger s1YearButtonIndex = 0;
         SK_ASSERT(false);
       }
       break;
+       */
     default:
       SK_ASSERT(false);
       break;
@@ -286,6 +291,7 @@ static NSUInteger s1YearButtonIndex = 0;
   [alert showInView:self];
 }
 
+/*
 - (IBAction)B_Period:(id)sender {
   UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") destructiveButtonTitle:nil  otherButtonTitles:nil];
   
@@ -304,7 +310,6 @@ static NSUInteger s1YearButtonIndex = 0;
   
   currentFilterNetworkType = optionTag;
  
-  /*
   switch (optionTag) {
     case C_FILTER_NETWORKTYPE_WIFI:
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
@@ -318,15 +323,14 @@ static NSUInteger s1YearButtonIndex = 0;
     default:
       break;
   }
-  */
   
   [self loadData];
 }
 
+  /*
 -(void)selectedTimePeriodOption:(C_FILTER_PERIOD)optionTag {
   currentFilterPeriod = optionTag;
- 
-  /*
+
   switch (optionTag) {
     case C_FILTER_PERIOD_1WEEK:
       [self.btPeriod setTitle:sSKCoreGetLocalisedString(@"time_period_1week") forState:UIControlStateNormal];
@@ -343,10 +347,10 @@ static NSUInteger s1YearButtonIndex = 0;
     default:
       break;
   }
-  */
   
   [self loadData];
 }
+  */
 
 -(NSString*)getSelectedNetworkWord
 {

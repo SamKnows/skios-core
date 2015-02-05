@@ -16,14 +16,14 @@
 
 
 
-@interface SKBHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate> // , UIActionSheetDelegate>
+@interface SKBHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
 {
   NSMutableArray *arrTestsList;
   
   SKATestResults* selectedTest;
   
   C_FILTER_NETWORKTYPE currentFilterNetworkType;
-  C_FILTER_PERIOD      currentFilterPeriod;
+  //C_FILTER_PERIOD      currentFilterPeriod;
   
   int testHeight;
   int expandedRow;
