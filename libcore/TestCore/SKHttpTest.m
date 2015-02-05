@@ -616,7 +616,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
           bitrateMpbs1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
         }
         
-        if ((self.isDownstream == NO) && [[SKAAppDelegate getAppDelegate] getDoesAppSupportServerBasedUploadSpeedTesting]) {
+        if ((self.isDownstream == NO) && [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDoesAppSupportServerBasedUploadSpeedTesting]) {
           // New-style upload stream measurement!
           
         } else {
@@ -650,7 +650,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         bitrateMpbs1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
       }
       
-      if ((self.isDownstream == NO) && [[SKAAppDelegate getAppDelegate] getDoesAppSupportServerBasedUploadSpeedTesting]) {
+      if ((self.isDownstream == NO) && [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDoesAppSupportServerBasedUploadSpeedTesting]) {
         // New-style upload stream measurement!
       } else {
         // Downstream, or old-style upload

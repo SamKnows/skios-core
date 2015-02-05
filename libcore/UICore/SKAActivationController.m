@@ -10,7 +10,7 @@
 @interface SKAActivationController ()
 {
     BOOL isRunning;
-    SKAAppDelegate *appDelegate;
+    SKAppBehaviourDelegate *appDelegate;
     SKClosestTargetTest *targetTest;
     UIBackgroundTaskIdentifier btid;
 }
@@ -44,7 +44,7 @@
   [self.navigationItem setHidesBackButton:self.hidesBackButton];
   [self setTitleLabel];
   
-  appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   
   self.lblMain.text = sSKCoreGetLocalisedString(@"ACTV_Label");
   self.lblActivating.text = sSKCoreGetLocalisedString(@"ACTV_Label_Activating");
@@ -73,7 +73,7 @@
 - (void)setTitleLabel
 {
   UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
   
   label.textColor = [UIColor blackColor];
   
@@ -103,7 +103,7 @@
     return;
   }
   
-  [SKAAppDelegate resetUserInterfaceBackToRunTestsScreenFromViewController];
+  [SKAAppDelegate sResetUserInterfaceBackToRunTestsScreenFromViewController];
 }
 
 #pragma mark - Background Task management
@@ -159,14 +159,14 @@
   });
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-  NSString *baseUrlString = [[SKAAppDelegate getAppDelegate] getBaseUrlString];
+  NSString *baseUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getBaseUrlString];
   NSURL *url = [NSURL URLWithString:baseUrlString];
   [request setURL:url];
   [request setHTTPMethod:@"GET"];
   [request setTimeoutInterval:20];
   [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
   
-  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
   [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
   
   NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
@@ -194,7 +194,7 @@
            {
              // To get here, we succeeeded!
              NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-             [prefs setObject:final forKey:[SKAAppDelegate sGet_Prefs_TargetServer]];
+             [prefs setObject:final forKey:[SKAppBehaviourDelegate sGet_Prefs_TargetServer]];
              [prefs synchronize];
              [self getConfig];
              return;
@@ -215,9 +215,9 @@
   });
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSString *server = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_TargetServer]];
+  NSString *server = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_TargetServer]];
   
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAAppDelegate sGetConfig_Url]];
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAppBehaviourDelegate sGetConfig_Url]];
   NSURL *url = [NSURL URLWithString:strUrl];
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -225,7 +225,7 @@
   [request setHTTPMethod:@"GET"];
   [request setTimeoutInterval:20];
   
-  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
   [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
   
   NSString *appVersionName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -296,7 +296,7 @@
     {
         if ([xml length] > 0)
         {
-            NSString *filePath = [SKAAppDelegate schedulePath];
+            NSString *filePath = [SKAppBehaviourDelegate schedulePath];
             
             NSError *error;
             result = [xml writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
@@ -312,7 +312,7 @@
 
 - (void)populateNewSchedule
 {
-  NSString *file = [SKAAppDelegate schedulePath];
+  NSString *file = [SKAppBehaviourDelegate schedulePath];
   
   if ([[NSFileManager defaultManager] fileExistsAtPath:file])
   {
@@ -326,7 +326,7 @@
       {
         appDelegate.schedule = schedule;
         
-        [SKAAppDelegate setIsActivated:YES];
+        [SKAppBehaviourDelegate setIsActivated:YES];
         
         [self.spinnerMain stopAnimating];
         [self.spinnerActivating stopAnimating];

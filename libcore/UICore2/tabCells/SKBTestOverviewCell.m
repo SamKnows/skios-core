@@ -184,7 +184,7 @@
   self.lLatencyLabel.textAlignment = NSTextAlignmentLeft;
   [self.contentView addSubview:self.lLatencyLabel];
   
-  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported])
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported])
   {
     self.lLossLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
     self.lLossLabel.text = sSKCoreGetLocalisedString(@"Test_Loss");
@@ -196,7 +196,7 @@
     [self.contentView addSubview:self.lLossLabel];
   }
   
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported])
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported])
   {
     self.lJitterLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
     self.lJitterLabel.text = sSKCoreGetLocalisedString(@"Test_Jitter");
@@ -251,7 +251,7 @@
   self.lResultLatency.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lResultLatency];
   
-  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
     self.lResultLoss = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
     self.lResultLoss.text = @"-";
     self.lResultLoss.textColor = [SKAppColourScheme sGetResultColourText];
@@ -262,7 +262,7 @@
     [self.contentView addSubview:self.lResultLoss];
   }
   
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported])
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported])
   {
     self.lResultJitter = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
     self.lResultJitter.text = @"-";
@@ -286,7 +286,7 @@
   self.ivArrowUpload.image = [UIImage imageNamed:@"ra"];
   [self.contentView addSubview:self.ivArrowUpload];
   
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported])
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported])
     //Change the layout to make space for the Jitter Labels
   {
     self.lLatencyLabel.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
@@ -309,12 +309,12 @@
   self.aiLatency = [[CActivityBlinking alloc] initWithFrame:self.lResultLatency.frame];
   [self.contentView addSubview:self.aiLatency];
   
-  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
     self.aiLoss = [[CActivityBlinking alloc] initWithFrame:self.lResultLoss.frame];
     [self.contentView addSubview:self.aiLoss];
   }
   
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
     self.aiJitter = [[CActivityBlinking alloc] initWithFrame:self.lResultJitter.frame];
     [self.contentView addSubview:self.aiJitter];
   }

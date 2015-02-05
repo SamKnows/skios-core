@@ -267,15 +267,15 @@ static NSUInteger s1YearButtonIndex = 0;
   
   switch (optionTag) {
     case C_FILTER_NETWORKTYPE_WIFI:
-      [[SKAAppDelegate getAppDelegate] switchNetworkTypeToWiFi];
+      [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToWiFi];
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
       break;
     case C_FILTER_NETWORKTYPE_GSM:
-      [[SKAAppDelegate getAppDelegate] switchNetworkTypeToMobile];
+      [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToMobile];
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
       break;
     case C_FILTER_NETWORKTYPE_ALL:
-      [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
+      [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToAll];
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") forState:UIControlStateNormal];
       break;
     default:
@@ -514,7 +514,7 @@ static NSUInteger s1YearButtonIndex = 0;
       self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
       break;
     case 3:
-      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
         self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
       } else {
         self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
@@ -539,7 +539,7 @@ static NSUInteger s1YearButtonIndex = 0;
       self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
       break;
     case 3:
-      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
         self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
       } else {
         self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
@@ -678,7 +678,7 @@ static NSUInteger s1YearButtonIndex = 0;
       testType = @"latency";
       break;
     case 3:
-      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
         testType = @"packetloss";
       } else {
         testType = @"jitter";
@@ -760,10 +760,10 @@ static NSUInteger s1YearButtonIndex = 0;
   // This is at least 3, but up to 5.
   // FUTURE: in app variants requiring less tests, we'd return a different number!
   int rows = 3;
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
     rows++;
   }
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
     rows++;
   }
   return rows;
@@ -826,7 +826,7 @@ static NSUInteger s1YearButtonIndex = 0;
        ];
       break;
     case 3:
-      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
         [cell prepareWithTopLeftImage:nil
                          TopLeftTitle:sSKCoreGetLocalisedString(@"Test_Loss")
                      LeftAverageValue:self.lLossAvg
@@ -843,7 +843,7 @@ static NSUInteger s1YearButtonIndex = 0;
                        RightBestUnits:self.lJitterBstUnit
          ];
       }
-      //if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+      //if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
       break;
     case 4:
     default:
@@ -887,7 +887,7 @@ static NSUInteger s1YearButtonIndex = 0;
       currentChartType = 2;
       break;
     case 3:
-      if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
         currentChartType = 3;
       } else {
         currentChartType = 4;

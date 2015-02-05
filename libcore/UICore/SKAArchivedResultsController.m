@@ -64,7 +64,7 @@
 {
   [super viewDidLoad];
   
-  if ([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == NO) {
     // Hide the toolbar, if social media export not supported!
     [self.uiToolbar setHidden:YES];
   }
@@ -87,7 +87,7 @@
 //#pragma mark UINavigationControllerDelegate (begin)
 //- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 //{
-//  BOOL shouldHide = ([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported] == NO);
+//  BOOL shouldHide = ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == NO);
 //  [navigationController setToolbarHidden:shouldHide animated:animated];
 //}
 //#pragma mark UINavigationControllerDelegate (end)
@@ -183,7 +183,7 @@
 {
 //  NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
 //                        [UIColor whiteColor],UITextAttributeTextColor,
-//                        [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
+//                        [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
 //                        nil];
 //  
 //  [[UIBarButtonItem appearance] setTitleTextAttributes:dict forState:UIControlStateNormal];
@@ -366,7 +366,7 @@
     
     SK_ASSERT(height == 59 || height == 100);
     
-    if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
       if (height == 100) {
         height = 150;
       }
@@ -510,8 +510,8 @@
       
       cell.lblLatencyResult.hidden = NO;
       cell.lblLossResult.hidden = NO;
-      cell.lblJitterResult.hidden = !([[SKAAppDelegate getAppDelegate] getIsJitterSupported]);
-      cell.lblJitter.hidden = !([[SKAAppDelegate getAppDelegate] getIsJitterSupported]);
+      cell.lblJitterResult.hidden = !([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]);
+      cell.lblJitter.hidden = !([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]);
       cell.latencyProgressView.hidden = YES;
       cell.lossProgressView.hidden = YES;
       cell.jitterProgressView.hidden = YES;
@@ -690,7 +690,7 @@
   }
   */
   
-  return [SKAAppDelegate sBuildSocialMediaMessageForCarrierName:carrierName SocialNetwork:socialNetwork Upload:upload Download:download ThisDataIsAveraged:NO];
+  return [SKAppBehaviourDelegate sBuildSocialMediaMessageForCarrierName:carrierName SocialNetwork:socialNetwork Upload:upload Download:download ThisDataIsAveraged:NO];
 }
 
 - (IBAction)actionButton:(id)sender {
@@ -715,7 +715,7 @@
   NSString *sinaWeiboString = [self getTextForSocialMedia:(NSString*)SLServiceTypeSinaWeibo];
   NSDictionary *dictionary = @{SLServiceTypeTwitter:twitterString, SLServiceTypeFacebook:facebookString, SLServiceTypeSinaWeibo:sinaWeiboString};
   
-  [SKAAppDelegate showActionSheetForSocialMediaExport:dictionary OnViewController:self];
+  [SKAppBehaviourDelegate showActionSheetForSocialMediaExport:dictionary OnViewController:self];
 }
 
 @end

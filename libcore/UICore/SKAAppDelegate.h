@@ -23,7 +23,12 @@ typedef enum SKBShowMetricsRule
   SKBShowMetricsRule_ShowPassiveMetrics_WhenTestSubmitted = 2
 } SKBShowMetricsRule;
 
-@interface SKAAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, SKAutotestManagerDelegate, UIActionSheetDelegate>
+
+@interface SKAppBehaviourDelegate : NSObject<CLLocationManagerDelegate, UIActionSheetDelegate, SKAutotestManagerDelegate>
+
+// An instance of one of these MUST be called FROM main()... *before* the app fully starts-up.
+// This can be called at any time...
++(SKAppBehaviourDelegate*) sGetAppBehaviourDelegate;
 
 @property (nonatomic, retain) CLLocationManager* locationManager;
 @property (nonatomic, retain) NSString *closestTarget;
@@ -47,15 +52,10 @@ typedef enum SKBShowMetricsRule
 @property (assign, nonatomic) NSInteger connectionStatus;
 @property (assign, nonatomic) BOOL dataCapExceeded;
 
-@property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) UINavigationController *navigationController;
-
 // Array of Device Id strings associated with the logged-in user.
 // Might be nil, if nothing received for some reason (e.g. if device off-line)
 // TODO - this should be saved/retrieved, for that reason!
 @property (strong, nonatomic) NSArray *unitDeviceIds;
--(void) didFinishAppLaunching_NotActivatedYet;
 - (NSString*)getCurrentlySelectedDeviceId;
 - (void)setCurrentlySelectedDeviceId:(NSString*)deviceId;
 
@@ -82,13 +82,9 @@ typedef enum SKBShowMetricsRule
 + (BOOL)getIsActivated;
 + (void)setClosestTarget:(NSString*)value;
 
-+(UIStoryboard*) getStoryboard;
-+(void) resetUserInterfaceBackToRunTestsScreenFromViewController;
 +(NSDate*)getStartDateForThisRange:(DATERANGE_1w1m3m1y)range;
 + (double)getAverageTestData:(DATERANGE_1w1m3m1y)range testDataType:(TestDataType)testDataType RetCount:(int*)retCount;
 + (double)getAverageTestData:(DATERANGE_1w1m3m1y)range testDataType:(TestDataType)testDataType;
-
-+(SKAAppDelegate*) getAppDelegate;
 
 //
 // Network type filter: querying and setting...
@@ -176,8 +172,6 @@ typedef enum SKBShowMetricsRule
 -(NSArray*)getDownloadSixSegmentMaxValues;
 -(NSArray*)getUploadSixSegmentMaxValues;
 
-+(void) sResetUserInterfaceBackToMainScreen;
-
 // The width of the top left icon, can be customized for different app variants!
 -(CGFloat) getNewAppTopLeftIconWidth;
 
@@ -203,6 +197,26 @@ typedef enum SKBShowMetricsRule
 +(NSString*)sGet_Prefs_TargetServer;
 +(NSString*)sGetUpload_Url;
 +(NSString*)sGetConfig_Url;
+@end
+
+//
+// Simple base app delegate...
+//
+
+@interface SKAAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) UINavigationController *navigationController;
+
++(SKAAppDelegate*) getAppDelegate;
+
+-(void) didFinishAppLaunching_NotActivatedYet;
+
++(UIStoryboard*) getStoryboard;
++(void) sResetUserInterfaceBackToMainScreen;
++(void) sResetUserInterfaceBackToRunTestsScreenFromViewController;
+
 @end
   
 // Splash screen (begin)

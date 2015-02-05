@@ -309,7 +309,7 @@
     SK_ASSERT(false);
   }
   
-  NSMutableDictionary *valuesDict = [SKDatabase getDailyAveragedTestDataAsDictionaryKeyByDay:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+  NSMutableDictionary *valuesDict = [SKDatabase getDailyAveragedTestDataAsDictionaryKeyByDay:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
   if (valuesDict == nil)
   {
     SK_ASSERT(false);
@@ -337,9 +337,9 @@
   [resultsDict setObject:valuesDict forKey:inTestType];
   if (inDateRange == DATERANGE_1w1m3m1y_ONE_DAY) {
     
-    SK_ASSERT([[SKAAppDelegate getAppDelegate] supportOneDayResultView]);
+    SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportOneDayResultView]);
     
-    NSMutableArray *valuesArray24 = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+    NSMutableArray *valuesArray24 = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
     if (valuesArray24 == nil)
     {
       SK_ASSERT(false);

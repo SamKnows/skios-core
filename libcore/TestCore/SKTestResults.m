@@ -125,7 +125,7 @@
   [textColor set];
   [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 620 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   
-  if ([[SKAAppDelegate getAppDelegate] getIsLossSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
     //Loss
     if (testResults_.loss < 0)
       speedFigure = @"-";
@@ -181,7 +181,7 @@
 
 -(NSString*)getTextForSocialMedia:(NSString*)socialNetwork {
   NSString *carrierName = self.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
-  return [SKAAppDelegate
+  return [SKAppBehaviourDelegate
           sBuildSocialMediaMessageForCarrierName:carrierName
           SocialNetwork:socialNetwork
           Upload:[SKGlobalMethods bitrateMbps1024BasedToString:self.uploadSpeed]

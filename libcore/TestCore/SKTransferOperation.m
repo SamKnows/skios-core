@@ -781,7 +781,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   
   // Create a read thread, that starts monitor for a response from the server.
   MyHttpReadThread *readThread = nil;
-  if ([[SKAAppDelegate getAppDelegate] getDoesAppSupportServerBasedUploadSpeedTesting] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDoesAppSupportServerBasedUploadSpeedTesting] == NO) {
     // No, we are on an older app, that does not use server-based upload speed testing...
 #ifdef DEBUG
     NSLog(@"DEBUG: app does not use server-based upload speed testing...");

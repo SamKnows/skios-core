@@ -19,16 +19,16 @@
 //
 //FOUNDATION_EXPORT NSString *const Config_Url;
 //
-//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DataUsage];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DataUsage];
 //FOUNDATION_EXPORT NSString *const Prefs_ClosestTarget;
-//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_TargetServer];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_TargetServer];
 //
 //FOUNDATION_EXPORT NSString *const Prefs_Activated;
 //FOUNDATION_EXPORT NSString *const Prefs_DataCapEnabled;
-//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DataCapValueBytes];
-//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DataDate];
-//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_DateRange];
-//FOUNDATION_EXPORT NSString *const [SKAAppDelegate sGet_Prefs_LastLocation];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DataDate];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DateRange];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_LastLocation];
 
 NSString *const Schedule_Xml = @"SCHEDULE.xml";
 
@@ -46,7 +46,7 @@ NSString *const cPrefs_DateRange = @"DATE_RANGE";
 NSString *const cPrefs_LastLocation = @"LAST_LOCATION";
 NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
-@interface SKAAppDelegate ()
+@interface SKAppBehaviourDelegate ()
 
 @property BOOL isConnected;
 
@@ -61,7 +61,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 @end
 
-@implementation SKAAppDelegate
+@implementation SKAppBehaviourDelegate
 
 @synthesize locationManager;
 
@@ -81,6 +81,94 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 @synthesize countryCode;
 @synthesize networkCode;
 @synthesize isoCode;
+
+static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
+
+//@synthesize mpAppBehaviourDelegate;
+
+// This can be called at any time...
++(SKAppBehaviourDelegate*) sGetAppBehaviourDelegate {
+  SK_ASSERT(spAppBehaviourDelegate != nil);
+  return spAppBehaviourDelegate;
+}
+
+- (instancetype)init
+{
+  self = [super init];
+  
+  if (self) {
+    SK_ASSERT(spAppBehaviourDelegate == nil);
+    spAppBehaviourDelegate = self;
+    
+    // Initialise SKCore!
+    SKCore *libCore = [SKCore getInstance];
+    SK_ASSERT(libCore != nil);
+    
+    [SKGlobalMethods setLongDateFormat:@"dd-MM-yyyy HH:mm"];
+    [SKGlobalMethods setShortDateFormat:@"dd/MM/yy"];
+    [SKGlobalMethods setGraphDateFormat:@"d/MM"];
+    
+    // Start by DISABLING all internet NSURLRequest caching!
+    // http://twobitlabs.com/2012/01/ios-ipad-iphone-nsurlcache-uiwebview-memory-utilization/
+    // otherwise, we can run out of file handles due to too many cached responses!
+    //  [NSURLCache setSharedURLCache:[[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:@"nsurlcache"]];
+    
+    // FIRST - remove an old file in Library/UPLOAD.dat, that we don't want backed-up to the Cloud!
+    // It is large; and if it remains there, it might lead to the application getting rejected by
+    // Apple's reviewers.
+    // http://stackoverflow.com/questions/15446457/which-technique-will-be-better-to-store-ios-app-data-and-run-app-in-offline-mode
+    NSString *oldUploadFilePath = [SKAppBehaviourDelegate getUploadFilePathDeprecated];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:oldUploadFilePath])
+    {
+      NSError *theError;
+      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:oldUploadFilePath error:&theError];
+      SK_ASSERT(bRes);
+#ifdef DEBUG
+      if (bRes == NO) {
+        [SKDebugSupport SK_ASSERT_NONSERROR_INTERNAL:theError File:__FILE__ Line:__LINE__];
+      }
+#endif // DEBUG
+    }
+    
+    [self initSettings];
+    [self createJSONDirectories];
+    [self amdDoCreateUploadFile];
+    [self setupReachability];
+    //[self startLocationMonitoring];
+    [self setDeviceInformation];
+    [self setCarrierInformation];
+    
+    [SKDatabase createDatabase];
+    
+#ifdef DEBUG
+    //  // DEBUG build - grab a copy of the database, for investigation via iTunes file sharing!
+    //  if ([[NSFileManager defaultManager] fileExistsAtPath:[SKDatabase dbPath]]) {
+    //    // Database exists!
+    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    //    NSString *documentsDirectory = [paths objectAtIndex:0];
+    //    NSError *error = nil;
+    //    NSString *targetPath = [NSString stringWithFormat:@"%@/sk.db", documentsDirectory];
+    //    BOOL bRes = [[NSFileManager defaultManager] copyItemAtPath:[SKDatabase dbPath] toPath:targetPath error:&error];
+    //    SK_ASSERT(bRes);
+    //  }
+#endif // DEBUG
+    
+    
+    [self amdDoUploadJSON];
+    
+    if (![self hasAgreed]) {
+    } else if (![self isActivated]) {
+    } else {
+      SK_ASSERT([self hasAgreed] && [self isActivated]);
+    }
+    
+    if ([self hasAgreed] && [self isActivated])
+    {
+      [self populateSchedule];
+    }
+  }
+  return self;
+}
 
 +(NSString*)sGet_Prefs_DataCapValueBytes {
   return cPrefs_DataCapValueBytes;
@@ -138,7 +226,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 + (NSString*)getNewJSONFilePath
 {
-    NSString *docPath = [SKAAppDelegate jsonDirectory];
+    NSString *docPath = [SKAppBehaviourDelegate jsonDirectory];
     
     NSTimeInterval ti = [[SKCore getToday] timeIntervalSince1970];
     NSString *strDate = [NSString stringWithFormat:@"%d", (int)ti];
@@ -148,7 +236,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 + (NSString*)getNewJSONArchiveFilePath
 {
-    NSString *docPath = [SKAAppDelegate jsonArchiveDirectory];
+    NSString *docPath = [SKAppBehaviourDelegate jsonArchiveDirectory];
     
     NSTimeInterval ti = [[SKCore getToday] timeIntervalSince1970];
     NSString *strDate = [NSString stringWithFormat:@"%d", (int)ti];
@@ -239,7 +327,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
     [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
     [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
     [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
-    [prefs setObject:loc forKey:[SKAAppDelegate sGet_Prefs_LastLocation]];
+    [prefs setObject:loc forKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
     [prefs synchronize];
   }
 }
@@ -266,17 +354,17 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
     [prefs setObject:[NSNumber numberWithBool:YES] forKey:cPrefs_DataCapEnabled];
   }
   
-  if (![prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]])
+  if (![prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]])
   {
     int64_t theValue = 100L;
     theValue *= CBytesInAMegabyte;
-    [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]];
+    [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   }
   
   if (![prefs objectForKey:cPrefs_Agreed])
   {
     BOOL defaultValue = NO;
-    SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+    SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
     if ([appDelegate getIsThisTheNewApp] == YES) {
       if ([appDelegate getNewAppShowInitialTermsAndConditions] == NO)
       {
@@ -301,13 +389,13 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
     [prefs setObject:[NSNumber numberWithInt:DATERANGE_1w1m3m1y_ONE_WEEK] forKey:cPrefs_DateRange];
   }
   
-//  if (![prefs objectForKey:[SKAAppDelegate sGet_Prefs_LastLocation]])
+//  if (![prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]])
 //  {
 //    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
 //    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LATITUDE"];
 //    [loc setObject:[NSNumber numberWithDouble:0] forKey:@"LONGITUDE"];
 //
-//    [prefs setObject:loc forKey:[SKAAppDelegate sGet_Prefs_LastLocation]];
+//    [prefs setObject:loc forKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
 //  }
 
 
@@ -320,26 +408,26 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if (nil == [prefs stringForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
+  if (nil == [prefs stringForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
-    [prefs setObject:[NSNumber numberWithLongLong:bytes] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    [prefs setObject:[NSNumber numberWithLongLong:bytes] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
   else
   {
-    if ([SKAAppDelegate getIsUsingWiFi]) {
+    if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
       // Don't add if on WiFi!
       return;
     }
     
-    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     
     long currentBytes = [num longLongValue];
     
     long totalBytes = currentBytes + bytes;
     //NSLog(@"totalBytes : %d", totalBytes);
     
-    [prefs setObject:[NSNumber numberWithLongLong:totalBytes] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    [prefs setObject:[NSNumber numberWithLongLong:totalBytes] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
     
     if (self.schedule.dataCapMB > 0)
@@ -394,13 +482,13 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   SK_ASSERT(sizeof(int64_t) == 8);
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  if (nil == [prefs stringForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
+  if (nil == [prefs stringForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
     return 0;
   }
   else
   {
-    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     
     int64_t currentBytes = [num longLongValue];
     
@@ -442,9 +530,9 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)populateSchedule
 {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[SKAAppDelegate schedulePath]])
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[SKAppBehaviourDelegate schedulePath]])
     {
-        NSData *data = [NSData dataWithContentsOfFile:[SKAAppDelegate schedulePath]];
+        NSData *data = [NSData dataWithContentsOfFile:[SKAppBehaviourDelegate schedulePath]];
         
         if (nil != data)
         {
@@ -461,7 +549,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 + (void)setHasAgreed:(BOOL)value
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[SKCore getToday] forKey:[SKAAppDelegate sGet_Prefs_DataDate]];
+  [prefs setObject:[SKCore getToday] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
   [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_Agreed];
   [prefs synchronize];
 }
@@ -518,7 +606,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 + (BOOL)getIsActivated
 {
-  SKAAppDelegate *appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   return [appDelegate isActivated];
 }
 
@@ -549,7 +637,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)amdDoUploadLogFile
 {
-  NSString *logFile = [SKAAppDelegate logFile];
+  NSString *logFile = [SKAppBehaviourDelegate logFile];
   
   if (![[NSFileManager defaultManager] fileExistsAtPath:logFile])
   {
@@ -580,7 +668,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   
   // Prepare the URL
   NSString *baseServer = [prefs stringForKey:cPrefs_TargetServer];
-  NSString *urlString = [NSString stringWithFormat:@"%@%@", baseServer, [SKAAppDelegate sGetUpload_Url]];
+  NSString *urlString = [NSString stringWithFormat:@"%@%@", baseServer, [SKAppBehaviourDelegate sGetUpload_Url]];
   
   NSURL *url = [NSURL URLWithString:urlString];
   
@@ -590,7 +678,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   [request setTimeoutInterval:60];
   [request setValue:@"false" forHTTPHeaderField:@"X-Encrypted"];
   
-  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
   [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
   [request setHTTPBody:bodyData];
   
@@ -653,7 +741,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 //The file is deleted only when the size is different than requested
 - (void)amdDoCreateUploadFile
 {
-  NSString *uploadFilePath = [SKAAppDelegate getUploadFilePathNeverNil];
+  NSString *uploadFilePath = [SKAppBehaviourDelegate getUploadFilePathNeverNil];
   
   if ([[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath]) {
     NSError *error = nil;
@@ -831,7 +919,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 -(void) amdDoUploadJSON {
   
-  NSString *jsonDirectory = [SKAAppDelegate jsonDirectory];
+  NSString *jsonDirectory = [SKAppBehaviourDelegate jsonDirectory];
   
   NSError *error = nil;
   NSArray *jsonFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:jsonDirectory error:&error];
@@ -900,7 +988,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSString *server = [prefs objectForKey:cPrefs_TargetServer];
   
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAAppDelegate sGetUpload_Url]];
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAppBehaviourDelegate sGetUpload_Url]];
   NSURL *url = [NSURL URLWithString:strUrl];
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -911,7 +999,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   [request setTimeoutInterval:60];
   [request setValue:@"false" forHTTPHeaderField:@"X-Encrypted"];
   
-  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
   [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
   [request setHTTPBody:jsonData];
   
@@ -1035,123 +1123,6 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
   self.isoCode =     [SKGlobalMethods getCarrierIsoCountryCode];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-//  // Start by DISABLING all internet NSURLRequest caching!
-//  // http://twobitlabs.com/2012/01/ios-ipad-iphone-nsurlcache-uiwebview-memory-utilization/
-//  // otherwise, we can run out of file handles due to too many cached responses!
-//  [NSURLCache setSharedURLCache:[[NSURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:@"nsurlcache"]];
-  
-  // FIRST - remove an old file in Library/UPLOAD.dat, that we don't want backed-up to the Cloud!
-  // It is large; and if it remains there, it might lead to the application getting rejected by
-  // Apple's reviewers.
-  // http://stackoverflow.com/questions/15446457/which-technique-will-be-better-to-store-ios-app-data-and-run-app-in-offline-mode
-  NSString *oldUploadFilePath = [SKAAppDelegate getUploadFilePathDeprecated];
-  if ([[NSFileManager defaultManager] fileExistsAtPath:oldUploadFilePath])
-  {
-    NSError *theError;
-    BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:oldUploadFilePath error:&theError];
-    SK_ASSERT(bRes);
-#ifdef DEBUG
-    if (bRes == NO) {
-      [SKDebugSupport SK_ASSERT_NONSERROR_INTERNAL:theError File:__FILE__ Line:__LINE__];
-    }
-#endif // DEBUG
-  }
-
-  
-  [SKGlobalMethods setLongDateFormat:@"MM-dd-yyyy HH:mm"];
-  [SKGlobalMethods setShortDateFormat:@"MM/dd/yy"];
-  [SKGlobalMethods setGraphDateFormat:@"MM/d"];
-  
-  [self initSettings];
-  [self createJSONDirectories];
-  [self amdDoCreateUploadFile];
-  [self setupReachability];
-  //[self startLocationMonitoring];
-  [self setDeviceInformation];
-  [self setCarrierInformation];
-  
-  [SKDatabase createDatabase];
- 
-#ifdef DEBUG
-//  // DEBUG build - grab a copy of the database, for investigation via iTunes file sharing!
-//  if ([[NSFileManager defaultManager] fileExistsAtPath:[SKDatabase dbPath]]) {
-//    // Database exists!
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-//    NSString *documentsDirectory = [paths objectAtIndex:0];
-//    NSError *error = nil;
-//    NSString *targetPath = [NSString stringWithFormat:@"%@/sk.db", documentsDirectory];
-//    BOOL bRes = [[NSFileManager defaultManager] copyItemAtPath:[SKDatabase dbPath] toPath:targetPath error:&error];
-//    SK_ASSERT(bRes);
-//  }
-#endif // DEBUG
-
-  
-  [self amdDoUploadJSON];
-  
-  if (![self hasAgreed]) {
-  } else if (![self isActivated]) {
-  } else {
-    SK_ASSERT([self hasAgreed] && [self isActivated]);
-  }
-  
-  if ([self hasAgreed] && [self isActivated])
-  {
-    [self populateSchedule];
-  }
-  
-  if ([self getIsThisTheNewApp] == NO) {
-    
-    if (![self hasAgreed]) {
-      // Not yet agreed to T&C - start (modally) with the T&C navigation controller, instead!
-      UIStoryboard *storyboard = [self.class getStoryboard];
-      self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsNavigationController"];
-    } else if (![self isActivated]) {
-      [self didFinishAppLaunching_NotActivatedYet];
-    }
-  }
-  
-  [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-  
-  return YES;
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-  // STOP monitoring location data, as we background!
-  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-  // STOP monitoring location data, as we background!
-  if ([SKAutotest sGetIsTestRunning] == YES) {
-    // Resume monitoring!
-    [[SKAAppDelegate getAppDelegate] startLocationMonitoring];
-  }
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
-}
-
-+(UIStoryboard*) getStoryboard {
-  // http://stackoverflow.com/questions/8025248/uistoryboard-get-first-view-controller-from-applicationdelegate
-  NSString *storyBoardName = [[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"];
-  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:[NSBundle mainBundle]];
-  return storyboard;
-}
 
 
 +(NSDate*)getStartDateForThisRange:(DATERANGE_1w1m3m1y)range {
@@ -1193,14 +1164,14 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 
 + (double)getAverageTestData:(DATERANGE_1w1m3m1y)range testDataType:(TestDataType)testDataType {
-  return [SKAAppDelegate getAverageTestData:range testDataType:testDataType RetCount:NULL];
+  return [SKAppBehaviourDelegate getAverageTestData:range testDataType:testDataType RetCount:NULL];
 }
 
 + (double)getAverageTestData:(DATERANGE_1w1m3m1y)range testDataType:(TestDataType)testDataType RetCount:(int*)retCount {
-  NSDate *previousDate = [SKAAppDelegate getStartDateForThisRange:range];
+  NSDate *previousDate = [SKAppBehaviourDelegate getStartDateForThisRange:range];
   NSDate *dateNow = [SKCore getToday];
   
-  return [SKDatabase getAverageTestDataJoinToMetrics:previousDate toDate:dateNow testDataType:testDataType WhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString] RetCount:retCount];
+  return [SKDatabase getAverageTestDataJoinToMetrics:previousDate toDate:dateNow testDataType:testDataType WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString] RetCount:retCount];
 }
 
 + (void)setClosestTarget:(NSString*)value
@@ -1312,13 +1283,9 @@ static BOOL sbDebugWarningMessageShownYet = NO;
   NetworkStatus netStatus = [reachability currentReachabilityStatus];
   return (netStatus == kReachableViaWiFi);
   // Do NOT use this variant, as it is CACHED - and won't work (say) on first use.
-  //return ([[SKAAppDelegate getAppDelegate] amdGetConnectionStatus] == WIFI);
+  //return ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus] == WIFI);
 }
 
-+(SKAAppDelegate*) getAppDelegate {
-  SKAAppDelegate *appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
-  return appDelegate;
-}
 
 //
 // Network type filter - querying and setting
@@ -1383,12 +1350,12 @@ static NSString *networkTypeSwitchValue = nil;
 
 +(void) Controller_DoShowFacebookOrTwitterEtc_PostAlertToShowImageOrNot:(UIViewController*)fromViewController SocialNetwork:(NSString*)socialNetwork ExportThisString:(NSString*)exportString ShowImage:(BOOL)showImage
 {
-  SK_ASSERT([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported]);
+  SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported]);
   
   if([SLComposeViewController isAvailableForServiceType:socialNetwork])
   {
     UIImage *exportImage = nil;
-    if([[SKAAppDelegate getAppDelegate] isSocialMediaImageExportSupported]) {
+    if([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaImageExportSupported]) {
       // TODO - move this decision to a menu item from which the user selects...
       exportImage = [fromViewController.view skTakeScreenshot];
     }
@@ -1421,10 +1388,10 @@ static NSString *networkTypeSwitchValue = nil;
     
     
     if (showImage) {
-      SK_ASSERT((exportImage != nil) == [[SKAAppDelegate getAppDelegate] isSocialMediaImageExportSupported]);
+      SK_ASSERT((exportImage != nil) == [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaImageExportSupported]);
       if (exportImage != nil) {
         // Use the attached screenshot...
-        SK_ASSERT([[SKAAppDelegate getAppDelegate] isSocialMediaImageExportSupported]);
+        SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaImageExportSupported]);
         [theSocialMediaController addImage:exportImage];
       } else if ([socialNetwork isEqualToString:SLServiceTypeFacebook]) {
         // Otherwise, add image ONLY for Facebook; otherwise, there is not enough room for the text!
@@ -1483,7 +1450,7 @@ static NSString *networkTypeSwitchValue = nil;
 
 +(void) Controller_DoShowFacebookOrTwitterEtc:(UIViewController*)fromViewController SocialNetwork:(NSString*)socialNetwork ExportThisString:(NSString*)exportString
 {
-  if ([[SKAAppDelegate getAppDelegate] isSocialMediaImageExportSupported] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaImageExportSupported] == NO) {
     // This app configuration doesn't allow for image data to be attached to the social
     // media post.
     [self Controller_DoShowFacebookOrTwitterEtc_PostAlertToShowImageOrNot:fromViewController SocialNetwork:socialNetwork ExportThisString:exportString ShowImage:NO];
@@ -1492,7 +1459,7 @@ static NSString *networkTypeSwitchValue = nil;
   
   // This app configuration allows for image data to be attached to the social
   // media post. Prompt the user to see if they want to attache a screen grab.
-  SK_ASSERT([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported]);
+  SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported]);
   UIAlertView *alert = [[UIAlertView alloc]
                         initWithTitle:sSKCoreGetLocalisedString(@"Include screenshot?")
                         message:sSKCoreGetLocalisedString(@"Would you like to include a screenshot with your social media post?")
@@ -1530,15 +1497,15 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
     if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"SocialMediaOption_Twitter")]) {
       
       NSString *bodyString = GShowThisTextForSocialMediaExport[SLServiceTypeTwitter];
-      [SKAAppDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeTwitter ExportThisString:bodyString];
+      [SKAppBehaviourDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeTwitter ExportThisString:bodyString];
     } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"SocialMediaOption_SinaWeibo")]) {
       
       NSString *bodyString = GShowThisTextForSocialMediaExport[SLServiceTypeSinaWeibo];
-      [SKAAppDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeSinaWeibo ExportThisString:bodyString];
+      [SKAppBehaviourDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeSinaWeibo ExportThisString:bodyString];
       
     } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"SocialMediaOption_Facebook")]) {
       NSString *bodyString = GShowThisTextForSocialMediaExport[SLServiceTypeFacebook];
-      [SKAAppDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeFacebook ExportThisString:bodyString];
+      [SKAppBehaviourDelegate Controller_DoShowFacebookOrTwitterEtc:GpShowSocialExportOnViewController SocialNetwork:(NSString*)SLServiceTypeFacebook ExportThisString:bodyString];
       
     } else {
       SK_ASSERT(false);
@@ -1577,7 +1544,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   
   
   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMedia")
-                                                           delegate:[SKAAppDelegate getAppDelegate]
+                                                           delegate:[SKAppBehaviourDelegate sGetAppBehaviourDelegate]
                                                   cancelButtonTitle:nil
                                              destructiveButtonTitle:nil
                                                   otherButtonTitles:nil];
@@ -1865,12 +1832,6 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 -(BOOL) isFacebookExportSupported {
   return [self isSocialMediaExportSupported];
 }
-
--(void) didFinishAppLaunching_NotActivatedYet {
-  UIStoryboard *storyboard = [self.class getStoryboard];
-  self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ActivationNavigationController"];
-}
-
 // Device ID querying
 - (NSString*)getCurrentlySelectedDeviceId {
   NSString *deviceId = [[NSUserDefaults standardUserDefaults] objectForKey:@"unitID"];
@@ -1922,24 +1883,6 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 }
 
 
-+(void) sResetUserInterfaceBackToMainScreen  {
-  SKAAppDelegate *instance = [SKAAppDelegate getAppDelegate];
-  [instance performSelector:@selector(moveToRootScreenAfterDelay) withObject:nil afterDelay:0.1];
-}
-
-+(void) resetUserInterfaceBackToRunTestsScreenFromViewController { // :(UIViewController*)fromViewController {
-  SKAAppDelegate *instance = [SKAAppDelegate getAppDelegate];
-  [instance performSelector:@selector(moveToRootScreenAfterDelay) withObject:nil afterDelay:0.1];
-}
-
--(void) moveToRootScreenAfterDelay
-{
-  UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
-  UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationController"];
-  SK_ASSERT(self.window != nil);
-  [[UIApplication sharedApplication].keyWindow setRootViewController:nc];
-  //self.window.rootViewController = nc;
-}
 
 // The width of the top left icon, can be customized for different app variants!
 -(CGFloat) getNewAppTopLeftIconWidth {
@@ -2003,4 +1946,101 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
 //
 // Splash screen (end)
 //
+@end
+
+//=============================================================================
+//
+//
+
+@interface SKAAppDelegate()
+//@property (retain, atomic) SKAppBehaviourDelegate *mpAppBehaviourDelegate;
+@end
+
+@implementation SKAAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  SKAppBehaviourDelegate *appBehaviourDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
+  SK_ASSERT(appBehaviourDelegate != nil);
+  
+  if ([appBehaviourDelegate getIsThisTheNewApp] == NO) {
+    
+    if (![appBehaviourDelegate hasAgreed]) {
+      // Not yet agreed to T&C - start (modally) with the T&C navigation controller, instead!
+      UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
+      self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TermsAndConditionsNavigationController"];
+    } else if (![[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivated]) {
+      [self didFinishAppLaunching_NotActivatedYet];
+    }
+  }
+  
+  [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+  
+  return YES;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+  // STOP monitoring location data, as we background!
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] stopLocationMonitoring];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+  // STOP monitoring location data, as we background!
+  if ([SKAutotest sGetIsTestRunning] == YES) {
+    // Resume monitoring!
+    [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] startLocationMonitoring];
+  }
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+  
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
++(SKAAppDelegate*) getAppDelegate {
+  SKAAppDelegate *appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  return appDelegate;
+}
+
++(UIStoryboard*) getStoryboard {
+  // http://stackoverflow.com/questions/8025248/uistoryboard-get-first-view-controller-from-applicationdelegate
+  NSString *storyBoardName = [[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"];
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:[NSBundle mainBundle]];
+  return storyboard;
+}
+
+-(void) didFinishAppLaunching_NotActivatedYet {
+  UIStoryboard *storyboard = [self.class getStoryboard];
+  self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ActivationNavigationController"];
+}
+
++(void) sResetUserInterfaceBackToMainScreen  {
+  SKAAppDelegate *instance = [SKAAppDelegate getAppDelegate];
+  [instance performSelector:@selector(moveToRootScreenAfterDelay) withObject:nil afterDelay:0.1];
+}
+
++(void) sResetUserInterfaceBackToRunTestsScreenFromViewController { // :(UIViewController*)fromViewController {
+  SKAAppDelegate *instance = [SKAAppDelegate getAppDelegate];
+  [instance performSelector:@selector(moveToRootScreenAfterDelay) withObject:nil afterDelay:0.1];
+}
+
+-(void) moveToRootScreenAfterDelay
+{
+  UIStoryboard *storyboard = [SKAAppDelegate getStoryboard];
+  UINavigationController *nc = [storyboard instantiateViewControllerWithIdentifier:@"theRootNavigationController"];
+  SK_ASSERT(self.window != nil);
+  [[UIApplication sharedApplication].keyWindow setRootViewController:nc];
+  //self.window.rootViewController = nc;
+}
 @end

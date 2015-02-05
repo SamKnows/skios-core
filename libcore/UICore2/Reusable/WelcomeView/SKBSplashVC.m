@@ -39,7 +39,7 @@
   
   [self.vWelcomeView callWhenViewControllerResized:^{
 
-  SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   if ( ([appDelegate getNewAppShowInitialTermsAndConditions] == YES) &&
        ([appDelegate hasNewAppAgreed] == NO)
      )

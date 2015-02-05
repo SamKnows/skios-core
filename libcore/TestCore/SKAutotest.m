@@ -78,7 +78,7 @@ static BOOL sbTestIsRunning = NO;
 {
   // START monitoring location data!
   sbTestIsRunning = YES;
-  [[SKAAppDelegate getAppDelegate] startLocationMonitoring];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] startLocationMonitoring];
   
   self.btid = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     if (self.btid != UIBackgroundTaskInvalid) {
@@ -650,7 +650,7 @@ static BOOL sbTestIsRunning = NO;
   self.isRunning = NO;
   sbTestIsRunning = NO;
   // STOP monitoring location data!
-  [[SKAAppDelegate getAppDelegate] stopLocationMonitoring];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] stopLocationMonitoring];
 }
 
 - (void)stopTheTests
@@ -751,7 +751,7 @@ static BOOL sbTestIsRunning = NO;
 }
 
 -(void)startOfTestRunThrottleQuery {
-  if ([[SKAAppDelegate getAppDelegate] isThrottleQuerySupported] == false)
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isThrottleQuerySupported] == false)
   {
     // No throttle query supported...
     
@@ -840,7 +840,7 @@ static BOOL sbTestIsRunning = NO;
 
 - (void)writeJSON_TestHeader:(SKScheduler*)scheduler
 {
-  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
   [jsonDictionary setObject:enterpriseId forKey:@"enterprise_id"];
   
   [jsonDictionary setObject:[SKGlobalMethods getSimOperatorCodeMCCAndMNC]
@@ -1003,7 +1003,7 @@ static BOOL sbTestIsRunning = NO;
    */
   
   // Updates the reachability status...
-  [[SKAAppDelegate getAppDelegate] getIsConnected];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected];
   
   NSMutableDictionary *network = [NSMutableDictionary dictionary];
   [network setObject:@"network_data"
@@ -1011,7 +1011,7 @@ static BOOL sbTestIsRunning = NO;
   [network setObject:@"true"
               forKey:@"connected"];   // must be true, seeing as we completed the test(s)
   [network setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  [network setObject:[SKGlobalMethods getConnectionResultString:(ConnectionStatus)[[SKAAppDelegate getAppDelegate] amdGetConnectionStatus]]
+  [network setObject:[SKGlobalMethods getConnectionResultString:(ConnectionStatus)[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
               forKey:@"active_network_type"];
   [network setObject:@"NA"
               forKey:@"active_network_type_code"];
@@ -1028,7 +1028,7 @@ static BOOL sbTestIsRunning = NO;
               forKey:@"network_operator_name"];
   [network setObject:@"NA"
               forKey:@"network_type_code"];
-  //[network setObject:[SKGlobalMethods getConnectionResultString:[[SKAAppDelegate getAppDelegate] amdGetConnectionStatus]]
+  //[network setObject:[SKGlobalMethods getConnectionResultString:[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
   [network setObject:[SKGlobalMethods getNetworkType]
               forKey:@"network_type"];
   [network setObject:[SKGlobalMethods getDevicePlatform]
@@ -1108,7 +1108,7 @@ static BOOL sbTestIsRunning = NO;
             forKey:@"type"];
   
   // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants.
-  if ([[SKAAppDelegate getAppDelegate] getShouldUploadDeviceId]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldUploadDeviceId]) {
     [phone setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"app_id"];
   }
   
@@ -1145,7 +1145,7 @@ static BOOL sbTestIsRunning = NO;
   double latitude = 0.0;
   double longitude = 0.0;
   //NSTimeInterval locationdate = 0;
-  NSDictionary *loc = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_LastLocation]];
+  NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
   if (loc != nil) {
     latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
     longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
@@ -1296,7 +1296,7 @@ static BOOL sbTestIsRunning = NO;
   
   // 1. Write to JSON file for upload
   {
-    NSString *path = [SKAAppDelegate getNewJSONFilePath];
+    NSString *path = [SKAppBehaviourDelegate getNewJSONFilePath];
     NSError *error = nil;
     if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
     {
@@ -1313,7 +1313,7 @@ static BOOL sbTestIsRunning = NO;
   
   // 2. Write to JSON file for archive (for subsequent export!)
   {
-    NSString *path = [SKAAppDelegate getNewJSONArchiveFilePath];
+    NSString *path = [SKAppBehaviourDelegate getNewJSONArchiveFilePath];
     NSError *error = nil;
     if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
     {

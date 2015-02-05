@@ -35,7 +35,7 @@
     }
   }
  
-  [[SKAAppDelegate getAppDelegate] overrideTabBarColoursOnStart:self];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] overrideTabBarColoursOnStart:self];
 }
 
 

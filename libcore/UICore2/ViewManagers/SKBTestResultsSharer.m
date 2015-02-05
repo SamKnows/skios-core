@@ -35,11 +35,11 @@
   
   self.casShare = [[CActionSheet alloc] initOnView:self.masterViewController.view withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") WithMultiSelection:NO];
   
-  if ([[SKAAppDelegate getAppDelegate] isFacebookExportSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isFacebookExportSupported]) {
     [self.casShare addOption:@"Facebook" withImage:[UIImage imageNamed:@"share-facebook"] andTag:C_SHARE_FACEBOOK AndSelected:NO];
   }
   
-  if ([[SKAAppDelegate getAppDelegate] isTwitterExportSupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isTwitterExportSupported]) {
     [self.casShare addOption:@"Twitter" withImage:[UIImage imageNamed:@"share-twitter"] andTag:C_SHARE_TWITTER AndSelected:NO];
   }
   

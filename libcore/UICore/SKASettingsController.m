@@ -84,8 +84,8 @@
     [self.tableView setBackgroundColor:[UIColor clearColor]];
   }
 
-  BOOL canDisableDataCap = [[SKAAppDelegate getAppDelegate] canDisableDataCap];
-  BOOL datacapEnabled = [[SKAAppDelegate getAppDelegate] isDataCapEnabled];
+  BOOL canDisableDataCap = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canDisableDataCap];
+  BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
   self.datacapSwitch.hidden = !canDisableDataCap;
   self.datacapSwitch.on = datacapEnabled;
   self.txtDataCap.enabled = datacapEnabled;
@@ -101,7 +101,7 @@
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSDictionary *loc = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_LastLocation]];
+  NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
   
   if (loc != nil) {
     double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
@@ -147,7 +147,7 @@
   // on iOS 7!
 //    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
 //                          [UIColor whiteColor],UITextAttributeTextColor,
-//                          [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
+//                          [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
 //                          nil];
 //    
 //    [[UIBarButtonItem appearance] setTitleTextAttributes:dict forState:UIControlStateNormal];
@@ -156,7 +156,7 @@
 - (void)setLabels
 {
   UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
   label.textColor = [UIColor blackColor];
   
   label.backgroundColor = [UIColor clearColor];
@@ -169,7 +169,7 @@
   [self.lblDataUsage setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Usage")];
   [self.lblConfig setText:sSKCoreGetLocalisedString(@"SETTINGS_Config")];
   
-  SKAAppDelegate *delegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   int64_t bytesUsed = [delegate amdGetDataUsageBytes];
   
   NSString *valueString = [SKGlobalMethods bytesToString:(double)bytesUsed];
@@ -182,7 +182,7 @@
 
 - (void)setDataAllowance
 {
-    int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+    int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
     
     mb = mb / CBytesInAMegabyte;
     
@@ -209,7 +209,7 @@
   NSLog(@"Sizeof int64_t = %d", (int)sizeof(int64_t));
   int64_t theValue = (int64_t)[self.txtDataCap.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   [prefs synchronize];
 }
 
@@ -239,7 +239,7 @@
       // Empty the database
       [SKDatabase sEmptyTheDatabase];
       // Delete any archived files!
-      [SKAAppDelegate deleteAllArchivedJSONFiles];
+      [SKAppBehaviourDelegate deleteAllArchivedJSONFiles];
       
       // Notify the rest of the UI!
       [[NSNotificationCenter defaultCenter]
@@ -266,9 +266,9 @@
 }
 
 - (IBAction)datacapSwitch:(id)sender {
-  [[SKAAppDelegate getAppDelegate] setIsDataCapEnabled:self.datacapSwitch.on];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] setIsDataCapEnabled:self.datacapSwitch.on];
   
-  BOOL datacapEnabledNow = [[SKAAppDelegate getAppDelegate] isDataCapEnabled];
+  BOOL datacapEnabledNow = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
   
   if (datacapEnabledNow == YES) {
     self.txtDataCap.alpha = 1.0;
@@ -284,7 +284,7 @@ enum {
 
 - (IBAction)showDataCapEditor:(id)sender {
   
-  BOOL datacapEnabled = [[SKAAppDelegate getAppDelegate] isDataCapEnabled];
+  BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
   if (datacapEnabled == NO) {
     // Datacap not enabled - don't allow editing!
     return;
@@ -307,7 +307,7 @@ enum {
   // http://stackoverflow.com/questions/10307561/uikeyboardtypenumberpad-ipad
   textField.delegate = self;
   
-  int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   mb = mb / CBytesInAMegabyte;
   
@@ -335,7 +335,7 @@ enum {
     alert.tag = ALERT_WIPEDATA;
     [alert show];
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
-    SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+    SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
     if ([appDelegate getIsConnected] == NO) {
       // If not connected, display an alert, and do not try to activate.
       // This covers e.g. if we lost connection and tests stopped automatically.
@@ -353,7 +353,7 @@ enum {
       return;
     }
 
-    [SKAAppDelegate setIsActivated:NO];
+    [SKAppBehaviourDelegate setIsActivated:NO];
    
     //UIViewController *doSequeFrom = nil;
     //if (self.parentViewController != nil) {
@@ -368,7 +368,7 @@ enum {
     [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
   } else if ([cell.reuseIdentifier isEqualToString:@"about_url"]) {
     
-    NSString *theUrlString = [[SKAAppDelegate getAppDelegate] getNewAppUrlForHelpAbout];
+    NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
     if (theUrlString != nil) {
       // View a specific URL!
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theUrlString]];
@@ -400,7 +400,7 @@ enum {
 {
   if(section == 1)
   {
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO)
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO)
     {
       // Hide it!
       return 0;
@@ -414,7 +414,7 @@ enum {
 {
   if(section == 1)
   {
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
       return [[UIView alloc] initWithFrame:CGRectZero];
     }
   }
@@ -426,7 +426,7 @@ enum {
 {
   if(section == 1)
   {
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
       return 0.01f;
     }
   }
@@ -439,7 +439,7 @@ enum {
 {
   if(section == 1)
   {
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
       return 0.01f;
     }
   }
@@ -456,7 +456,7 @@ enum {
 {
   if(section == 1)
   {
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
       return [[UIView alloc] initWithFrame:CGRectZero];
     }
   }

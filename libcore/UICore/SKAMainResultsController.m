@@ -78,7 +78,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 @synthesize viewBG;
 
 -(int) calculateSections {
-  SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   NSArray *tests = appDelegate.schedule.tests;
  
   int lRows = 2; // Header, footer etc. - and tests (4 or 5 usually...) 6 for FCC.
@@ -105,7 +105,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
     }
     else if ([type isEqualToString:@"latency"])
     {
-      if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported] == NO) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported] == NO) {
         lRows += 2;
         // latency/loss!
       } else {
@@ -120,7 +120,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   mSections = lRows;
   
   mSectionIndexForFooter = -1;
-  if ([[SKAAppDelegate getAppDelegate] getIsFooterSupported] == YES) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsFooterSupported] == YES) {
     mSectionIndexForFooter = mSections;
     SK_ASSERT(mSectionIndexForFooter > 0);
   }
@@ -130,12 +130,12 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 }
 
 -(int) getResultsRows {
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported] == NO) {
     return 4;
   }
   
   // Jitter is supported?
-  SK_ASSERT ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]);
+  SK_ASSERT ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]);
   return 5;
 }
 
@@ -168,9 +168,9 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   
   SK_ASSERT(self.tableView != nil);
   
-  SKAAppDelegate *delegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
-  SK_ASSERT ([delegate hasAgreed]);
-  SK_ASSERT ([delegate isActivated]);
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
+  SK_ASSERT ([appDelegate hasAgreed]);
+  SK_ASSERT ([appDelegate isActivated]);
   
   // http://stackoverflow.com/questions/11664766/cell-animation-stop-fraction-must-be-greater-than-start-fraction
   tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -192,13 +192,13 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 
 -(void) setNetworkTypeTo:(NSString*)toNetworkType {
   if ([toNetworkType isEqualToString:@"mobile"]) {
-    [[SKAAppDelegate getAppDelegate] switchNetworkTypeToMobile];
+    [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToMobile];
     self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_Mobile"); // : @"WiFi results");
   } else if ([toNetworkType isEqualToString:@"network"]) {
-    [[SKAAppDelegate getAppDelegate] switchNetworkTypeToWiFi];
+    [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToWiFi];
     self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_WiFi"); // : @"WiFi results");
   } else if ([toNetworkType isEqualToString:@"all"]) {
-    [[SKAAppDelegate getAppDelegate] switchNetworkTypeToAll];
+    [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToAll];
     self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_All"); // : @"WiFi results");
   } else {
     SK_ASSERT(false);
@@ -294,7 +294,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 NSMutableArray *GArrayForResultsController;
 
 -(BOOL) canViewArchivedResults {
-  GArrayForResultsController = [SKDatabase getTestMetaDataWhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+  GArrayForResultsController = [SKDatabase getTestMetaDataWhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
   
   if (GArrayForResultsController != nil)
   {
@@ -334,7 +334,7 @@ NSMutableArray *GArrayForResultsController;
   [array addObject:sSKCoreGetLocalisedString(@"Menu_About")];
   [array addObject:sSKCoreGetLocalisedString(@"Menu_TermsOfUse")];
   
-  if ([[SKAAppDelegate getAppDelegate] supportExportMenuItem]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportExportMenuItem]) {
     [array addObject:sSKCoreGetLocalisedString(@"Menu_Export")];
   }
   
@@ -368,31 +368,31 @@ NSMutableArray *GArrayForResultsController;
   
   int retCount = 0;
   
-  result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:DOWNLOAD_DATA RetCount:&retCount];
+  result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:DOWNLOAD_DATA RetCount:&retCount];
   download = [SKGlobalMethods bitrateMbps1024BasedToString:result];
   
-  result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:UPLOAD_DATA RetCount:&retCount];
+  result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:UPLOAD_DATA RetCount:&retCount];
   upload = [SKGlobalMethods bitrateMbps1024BasedToString:result];
   
   /*
    // LATENCY and LOSS
-   result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:LATENCY_DATA RetCount:&retCount];
+   result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:LATENCY_DATA RetCount:&retCount];
    str = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:result]];
    
-   result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:LOSS_DATA RetCount:&retCount];
+   result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:LOSS_DATA RetCount:&retCount];
    str = [NSString stringWithFormat:@"%d %%", (int)result];
    
-   result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:JITTER_DATA RetCount:&retCount];
+   result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:JITTER_DATA RetCount:&retCount];
    str = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:result]];
    */
   
   NSString *carrierName = [SKGlobalMethods getCarrierName];
-  return [SKAAppDelegate sBuildSocialMediaMessageForCarrierName:carrierName SocialNetwork:socialNetwork Upload:upload Download:download ThisDataIsAveraged:YES];
+  return [SKAppBehaviourDelegate sBuildSocialMediaMessageForCarrierName:carrierName SocialNetwork:socialNetwork Upload:upload Download:download ThisDataIsAveraged:YES];
 }
 
 
 - (IBAction)shareButton:(id)sender {
-  if (![[SKAAppDelegate getAppDelegate] isNetworkTypeMobile]) {
+  if (![[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isNetworkTypeMobile]) {
     UIAlertView *alert =
     [[UIAlertView alloc]
      initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaMobile")
@@ -404,7 +404,7 @@ NSMutableArray *GArrayForResultsController;
     return;
   }
   
-  NSDate *dateLastRun = [SKDatabase getLastRunDateWhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+  NSDate *dateLastRun = [SKDatabase getLastRunDateWhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
   if (dateLastRun == nil) {
     UIAlertView *alert =
     [[UIAlertView alloc]
@@ -425,7 +425,7 @@ NSMutableArray *GArrayForResultsController;
   
   NSDictionary *dictionary = @{SLServiceTypeTwitter:twitterString, SLServiceTypeFacebook:facebookString, SLServiceTypeSinaWeibo:sinaWeiboString};
   
-  [SKAAppDelegate showActionSheetForSocialMediaExport:dictionary OnViewController:self];
+  [SKAppBehaviourDelegate showActionSheetForSocialMediaExport:dictionary OnViewController:self];
 }
 
 - (void)swipeLeft
@@ -476,7 +476,7 @@ NSMutableArray *GArrayForResultsController;
 - (void)checkDataUsage
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSDate *date = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataDate]];
+  NSDate *date = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
   NSDate *dateNow = [SKCore getToday];
   
   NSTimeInterval interval = [dateNow timeIntervalSinceDate:date];
@@ -486,8 +486,8 @@ NSMutableArray *GArrayForResultsController;
   if (interval > oneMonth)
   {
     // reset the data usage
-    [prefs setValue:dateNow forKey:[SKAAppDelegate sGet_Prefs_DataDate]];
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    [prefs setValue:dateNow forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -495,7 +495,7 @@ NSMutableArray *GArrayForResultsController;
 - (void)setLabels
 {
   UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
   
   label.textColor = [UIColor blackColor];
   
@@ -516,7 +516,7 @@ NSMutableArray *GArrayForResultsController;
 {
   // NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   //NSDate *dateLastRun = [prefs objectForKey:Prefs_LastTestDate];
-  NSDate *dateLastRun = [SKDatabase getLastRunDateWhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+  NSDate *dateLastRun = [SKDatabase getLastRunDateWhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
   if (dateLastRun != nil)
   {
     NSString *strDateLastRun = [SKGlobalMethods formatDate:dateLastRun];
@@ -654,7 +654,7 @@ NSMutableArray *GArrayForResultsController;
   [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
     int items = 0;
     
-    if ([SKAAppDelegate exportArchivedJSONFilesToZip:&items] == NO) {
+    if ([SKAppBehaviourDelegate exportArchivedJSONFilesToZip:&items] == NO) {
       UIAlertView *alert = [[UIAlertView alloc]
                             initWithTitle:sSKCoreGetLocalisedString(@"Export_Failed_Title")
                             message:sSKCoreGetLocalisedString(@"Export_Failed_Body")
@@ -681,7 +681,7 @@ NSMutableArray *GArrayForResultsController;
         NSDate *now = [NSDate date];
         NSString *lpReadableDate = [dateFormatter stringFromDate:now];
         
-        NSString *zipPath = [SKAAppDelegate getJSONArchiveZipFilePath];
+        NSString *zipPath = [SKAppBehaviourDelegate getJSONArchiveZipFilePath];
         NSString *lpFileNameWithExtension = [NSString stringWithFormat:@"export_%@.zip",lpReadableDate];
         // Ensure that there are no :/, characters in the name!
         lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@":" withString:@"_"];
@@ -844,7 +844,7 @@ static TestType GRunTheTestWithThisType;
 - (void)runTests:(TestType)type
 {
   
-  if ([[SKAAppDelegate getAppDelegate] amdGetFileUploadPath] == nil) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetFileUploadPath] == nil) {
     // File not yet ready - TODO add an alerts to say "Please wait"...?
     SK_ASSERT(false);
     return;
@@ -875,7 +875,7 @@ static TestType GRunTheTestWithThisType;
 
 -(void) selfRunTestAfterUserApprovedToDataCapChecks {
 
-  SKAAppDelegate *delegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
 
   if ([delegate getIsConnected])
   {
@@ -900,15 +900,15 @@ static TestType GRunTheTestWithThisType;
 -(BOOL) checkIfTestWillExceedDataCapForTestType:(TestType)type {
   
   // If we're currently WiFi, there is nothing to run!
-  if ([SKAAppDelegate getIsUsingWiFi]) {
+  if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
     return NO;
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   // For all selected tests, add-up the expected amount of data to use.
   // And if data consumed + expected data > dataAllowed, present a warning to the user!
@@ -916,7 +916,7 @@ static TestType GRunTheTestWithThisType;
   int64_t dataWillBeUsed = 0;
  
   // TODO - add-in the correct value here!
-  for (NSDictionary *testDict in [SKAAppDelegate getAppDelegate].schedule.tests) {
+  for (NSDictionary *testDict in [SKAppBehaviourDelegate sGetAppBehaviourDelegate].schedule.tests) {
     NSString *thisTestType = [testDict objectForKey:@"type"];
     
     NSArray *params = testDict[@"params"];
@@ -985,7 +985,7 @@ static TestType GRunTheTestWithThisType;
     // Data cap exceeded - but only ask the user if they want to continue, if the app is configured
     // to work like that...
     
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == YES) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES) {
       
       return YES;
     }
@@ -996,26 +996,26 @@ static TestType GRunTheTestWithThisType;
 
 -(BOOL) checkIfTestsHaveExceededDataCap {
   // If we're currently WiFi, there is nothing to test against!
-  if ([SKAAppDelegate getIsUsingWiFi]) {
+  if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
     return NO;
   }
   
-  if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
     return NO;
   }
 
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   if (dataUsed > dataAllowed)
   {
     // Data cap already exceeded - but only ask the user if they want to continue, if the app is configured
     // to work like that...
     
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == YES) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES) {
       
       return YES;
     }
@@ -1036,7 +1036,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     // and loop continuously until Done is pressed - at which point, we
     // must auto-stop!
     
-    SK_ASSERT([[SKAAppDelegate getAppDelegate] supportContinuousTesting] == YES);
+    SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportContinuousTesting] == YES);
   }
   
   if ([self checkIfTestsHaveExceededDataCap]) {
@@ -1063,7 +1063,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 {
   // Depending on configuration, we either run all tests, or show a picker...
   
-  if ([[SKAAppDelegate getAppDelegate] alwaysRunAllTests]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] alwaysRunAllTests]) {
     // Run all tests!
     [self runTests:ALL_TESTS];
     return;
@@ -1085,7 +1085,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   
   NSArray *array;
   
-  if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported] == NO) {
     array = [[NSArray alloc] initWithObjects:
              sSKCoreGetLocalisedString(@"Test_Run_Download"),
              sSKCoreGetLocalisedString(@"Test_Run_Upload"),
@@ -1124,7 +1124,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
                      otherButtonTitles:nil];
   
   // One day results view
-  if ([[SKAAppDelegate getAppDelegate] supportOneDayResultView]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportOneDayResultView]) {
     [action addButtonWithTitle:sSKCoreGetLocalisedString(@"time_period_1day")];
   }
   
@@ -1190,7 +1190,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (void)setDateRange:(DATERANGE_1w1m3m1y)range
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[NSNumber numberWithInt:range] forKey:[SKAAppDelegate sGet_Prefs_DateRange]];
+  [prefs setObject:[NSNumber numberWithInt:range] forKey:[SKAppBehaviourDelegate sGet_Prefs_DateRange]];
   [prefs synchronize];
 }
 
@@ -1200,7 +1200,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 
   // There are 4 graphs; grab the data for each of them.
   DATERANGE_1w1m3m1y dateRange = [self getDateRange];
-  NSDate *fromDate = [SKAAppDelegate getStartDateForThisRange:dateRange];
+  NSDate *fromDate = [SKAppBehaviourDelegate getStartDateForThisRange:dateRange];
   NSDate *toDate = [SKCore getToday];
  
   //int items = [self getSections];
@@ -1208,7 +1208,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   int resultsRows = [self getResultsRows];
   for (int j=0; j<resultsRows; j++)
   {
-    NSMutableArray *array = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:(TestDataType)j WhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+    NSMutableArray *array = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:(TestDataType)j WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:array forKey:@"DATA"];
@@ -1220,7 +1220,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (DATERANGE_1w1m3m1y)getDateRange
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  return [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DateRange]] intValue];
+  return [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DateRange]] intValue];
 }
 
 - (NSString*)getDateRangeText
@@ -1333,27 +1333,27 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   switch (section)
   {
     case 2:
-      result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:DOWNLOAD_DATA RetCount:&retCount];
+      result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:DOWNLOAD_DATA RetCount:&retCount];
       str = [SKGlobalMethods bitrateMbps1024BasedToString:result];
       break;
       
     case 3:
-      result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:UPLOAD_DATA RetCount:&retCount];
+      result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:UPLOAD_DATA RetCount:&retCount];
       str = [SKGlobalMethods bitrateMbps1024BasedToString:result];
       break;
       
     case 4:
-      result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:LATENCY_DATA RetCount:&retCount];
+      result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:LATENCY_DATA RetCount:&retCount];
       str = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:result]];
       break;
       
     case 5:
-      result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:LOSS_DATA RetCount:&retCount];
+      result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:LOSS_DATA RetCount:&retCount];
       str = [NSString stringWithFormat:@"%d %%", (int)result];
       break;
       
     default:
-      result = [SKAAppDelegate getAverageTestData:[self getDateRange] testDataType:JITTER_DATA RetCount:&retCount];
+      result = [SKAppBehaviourDelegate getAverageTestData:[self getDateRange] testDataType:JITTER_DATA RetCount:&retCount];
       str = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:result]];
       break;
   }
@@ -1405,7 +1405,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   if (section == 0) {
     // SKARunTestsButtonCell
     // For some apps, we have a CONTINUOUS TESTING button!
-    SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+    SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
     if ([appDelegate supportContinuousTesting]) {
       return 2;
     }
@@ -1448,7 +1448,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     BOOL continuousTesting = (indexPath.row == 1);
 #ifdef DEBUG
     if (continuousTesting) {
-      SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+      SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
       SK_ASSERT ([appDelegate supportContinuousTesting]);
     }
 #endif // DEBUG
@@ -1583,7 +1583,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (void)checkConfig
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSString *server = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_TargetServer]];
+  NSString *server = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_TargetServer]];
   
   NSLog(@"server=%@", server);
   if (server == nil) {
@@ -1594,7 +1594,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   }
   
   //NSLog(@"Config_Url=%@", Config_Url);
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAAppDelegate sGetConfig_Url]];
+  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAppBehaviourDelegate sGetConfig_Url]];
   //NSLog(@"strUrl=%@", strUrl);
   
   NSURL *url = [NSURL URLWithString:strUrl];
@@ -1604,7 +1604,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   [request setHTTPMethod:@"GET"];
   [request setTimeoutInterval:20];
   
-  NSString *enterpriseId = [[SKAAppDelegate getAppDelegate] getEnterpriseId];
+  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
   [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
   
   NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
@@ -1639,7 +1639,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
          {
            if ([xml length] > 0)
            {
-             NSString *filePath = [SKAAppDelegate schedulePath];
+             NSString *filePath = [SKAppBehaviourDelegate schedulePath];
              
              //NSLog(@"%@", xml);
              

@@ -43,7 +43,7 @@
 
 - (IBAction)agreeButton:(id)sender {
 
-  SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   
   if ([appDelegate getIsConnected] == NO) {
     // On test stopped - if not connected, display an alert.
@@ -62,7 +62,7 @@
     return;
   }
   
-  [SKAAppDelegate setHasAgreed:YES];
+  [SKAppBehaviourDelegate setHasAgreed:YES];
   [self performSelector:@selector(moveToActivationScreen) withObject:nil afterDelay:0.1];
 }
 
@@ -74,7 +74,7 @@
  
   // Depending on if we're navigated to, or at start-up ...
   // show the "Agree" button which takes us to Activation!
-  SKAAppDelegate *appDelegate = [SKAAppDelegate getAppDelegate];
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   
   BOOL bHideButton;
   if ([appDelegate getIsThisTheNewApp]) {

@@ -88,7 +88,7 @@
 }
 
 -(BOOL) canViewArchivedResults {
-  NSMutableArray * GArrayForResultsController = [SKDatabase getTestMetaDataWhereNetworkTypeEquals:[SKAAppDelegate getNetworkTypeString]];
+  NSMutableArray * GArrayForResultsController = [SKDatabase getTestMetaDataWhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
   
   if (GArrayForResultsController != nil)
   {
@@ -368,7 +368,7 @@ static NSUInteger s1YearButtonIndex = 0;
 
 -(void)loadData
 {
-  //    arrTestsList = [SKDatabase getTestDataForNetworkType:[SKAAppDelegate getNetworkTypeString]];
+  //    arrTestsList = [SKDatabase getTestDataForNetworkType:[SKAppBehaviourDelegate getNetworkTypeString]];
   arrTestsList = [SKDatabase getTestDataForNetworkType:[self getSelectedNetworkWord] afterDate:nil];
   [self.tvTests reloadData];
   
@@ -455,7 +455,7 @@ static SKATestResults* testToShareExternal = nil;
   
   arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:0];
   
-  NSArray *passiveResultsArray = [[SKAAppDelegate getAppDelegate] getPassiveMetricsToDisplay];
+  NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplay];
   
   for (NSString *thePassiveMetric in passiveResultsArray) {
     [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[thePassiveMetric] withLocalizedLabelTextID:sSKCoreGetLocalisedString(thePassiveMetric)];
@@ -488,7 +488,7 @@ static SKATestResults* testToShareExternal = nil;
     }
   }
 
-  if ([[SKAAppDelegate getAppDelegate] showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics]) {
     
     if (theNetworkType.length > 0)
     {

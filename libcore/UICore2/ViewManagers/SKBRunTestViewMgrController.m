@@ -47,21 +47,21 @@
   NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray];
   self.mNumberOfPassiveMetrics = (int)passiveMetricArrayTemp.count;
   
-  [[SKAAppDelegate getAppDelegate] setLogoImage:self.optionalTopLeftLogoView];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] setLogoImage:self.optionalTopLeftLogoView];
   
   self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
   
-  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] enableTestsSelection] == NO) {
     // Test selection not enabled
   } else {
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    if (![prefs objectForKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]])
+    if (![prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastTestSelection]])
     {
       self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
-      [prefs setInteger:self.testTypes2Execute forKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]];
+      [prefs setInteger:self.testTypes2Execute forKey:[SKAppBehaviourDelegate sGet_Prefs_LastTestSelection]];
     }
-    self.testTypes2Execute = (int)[prefs integerForKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]];
+    self.testTypes2Execute = (int)[prefs integerForKey:[SKAppBehaviourDelegate sGet_Prefs_LastTestSelection]];
   }
   
   [self initialiseViewOnMasterView];
@@ -134,7 +134,7 @@
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
   
-//  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+//  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] enableTestsSelection] == NO) {
 //    // Test selection not enabled
 //    // ... hide the test selection button
 //    self.btSelectTests.hidden = YES;
@@ -154,7 +154,7 @@
 -(void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   
-  if ([[SKAAppDelegate getAppDelegate] isActivated] == NO)
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivated] == NO)
   {
     [self SKSafePerformSegueWithIdentifier:@"segueFromRunTestToActivate" sender:self];
     return;
@@ -175,13 +175,13 @@
   self.tmActivityIndicator.activityOwner = self;
   
   self.networkType = [SKGlobalMethods getNetworkTypeString];
-  self.appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  self.appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
  
   // Start with the share button hidden.
   self.btShare.alpha = 0;
   
   //NSLog(@"CONSTRAINTS: %@", self.btShare.constraints.description);
-  if ([[SKAAppDelegate getAppDelegate] enableTestsSelection] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] enableTestsSelection] == NO) {
     // Test selection not enabled
     // ... hide the test selection button
     self.btSelectTests.hidden = YES;
@@ -193,7 +193,7 @@
   }
 
   // The width of the top left icon, can be customized for different app variants!
-  self.iconWidthConstraint.constant = [[SKAAppDelegate getAppDelegate] getNewAppTopLeftIconWidth];
+  self.iconWidthConstraint.constant = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppTopLeftIconWidth];
   
   dataStart = 0;
   dataEnd = 0;
@@ -309,7 +309,7 @@
 -(void) viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
  
-  // ?? [[SKAAppDelegate getAppDelegate] getLogoUIView:self.optionalTopLeftLogoView];
+  // ?? [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getLogoUIView:self.optionalTopLeftLogoView];
   
   // We MUST ensure that the main "dial" preserves a square aspect ratio, or it doesn't look good!
   [self adjustViewSizesOnStartOrOnDidRotate];
@@ -348,15 +348,15 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(BOOL) checkIfTestWillExceedDataCapForTestType:(TestType)type {
   
   // If we're currently WiFi, there is nothing to run!
-  if ([SKAAppDelegate getIsUsingWiFi]) {
+  if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
     return NO;
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   // For all selected tests, add-up the expected amount of data to use.
   // And if data consumed + expected data > dataAllowed, present a warning to the user!
@@ -364,7 +364,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   int64_t dataWillBeUsed = 0;
   
   // TODO - add-in the correct value here!
-  for (NSDictionary *testDict in [SKAAppDelegate getAppDelegate].schedule.tests) {
+  for (NSDictionary *testDict in [SKAppBehaviourDelegate sGetAppBehaviourDelegate].schedule.tests) {
     NSString *thisTestType = [testDict objectForKey:@"type"];
     
     NSArray *params = testDict[@"params"];
@@ -433,7 +433,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     // Data cap exceeded - but only ask the user if they want to continue, if the app is configured
     // to work like that...
     
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == YES) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES) {
       
       return YES;
     }
@@ -444,22 +444,22 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(BOOL) checkIfTestsHaveExceededDataCap {
   // If we're currently WiFi, there is nothing to test against!
-  if ([SKAAppDelegate getIsUsingWiFi]) {
+  if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
     return NO;
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
-  int64_t dataUsed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]] longLongValue];
+  int64_t dataUsed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
   
   if (dataUsed > dataAllowed)
   {
     // Data cap already exceeded - but only ask the user if they want to continue, if the app is configured
     // to work like that...
     
-    if ([[SKAAppDelegate getAppDelegate] isDataCapEnabled] == YES) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES) {
       
       return YES;
     }
@@ -469,7 +469,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 }
 
 -(BOOL) getIsConnected {
-  return [[SKAAppDelegate getAppDelegate] getIsConnected];
+  return [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected];
 }
 
 - (void)reachabilityStatusChanged:(NSNotification*)notification
@@ -479,7 +479,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)setConnectionStatus
 {
-  SKAAppDelegate* appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  SKAppBehaviourDelegate* appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   
   if (appDelegate.connectionStatus == NONE)
   {
@@ -507,7 +507,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void) selfRunTestAfterUserApprovedToDataCapChecks {
   
   [self fillPassiveMetrics];
-  SKAAppDelegate *appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   
   if ([appDelegate getIsConnected])
   {
@@ -580,10 +580,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)updateRadioType
 {
-  if ([[SKAAppDelegate getAppDelegate] getIsConnected] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected] == NO) {
     [self.tmActivityIndicator setTopText:sSKCoreGetLocalisedString(@"No connection")];
   } else {
-    connectionStatus = [SKAAppDelegate getAppDelegate].connectionStatus;
+    connectionStatus = [SKAppBehaviourDelegate sGetAppBehaviourDelegate].connectionStatus;
     
     if (connectionStatus == WIFI) {
       [self.tmActivityIndicator setTopText:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi")];
@@ -640,7 +640,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
  
   // And save the updated preferences!
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setInteger:self.testTypes2Execute forKey:[SKAAppDelegate sGet_Prefs_LastTestSelection]];
+  [prefs setInteger:self.testTypes2Execute forKey:[SKAppBehaviourDelegate sGet_Prefs_LastTestSelection]];
   [prefs synchronize];
 }
 
@@ -839,7 +839,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodClosestTargetTestDidStart
 {
-  if ([[SKAAppDelegate getAppDelegate] getIsBestTargetDisplaySupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsBestTargetDisplaySupported]) {
     [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Finding_Best_Target")];
   } else {
     // "Running Tests"
@@ -860,9 +860,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target
 {
-  [SKAAppDelegate setClosestTarget:target];
+  [SKAppBehaviourDelegate setClosestTarget:target];
   
-  if ([[SKAAppDelegate getAppDelegate] getIsBestTargetDisplaySupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsBestTargetDisplaySupported]) {
     NSString *closest = [NSString stringWithFormat:@"%@ %@",
                          sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
                          [self.appDelegate.schedule getClosestTargetName:target]];
@@ -986,7 +986,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    {
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Download testing") forever:YES];
                      
-                     NSArray *valueArray = [[SKAAppDelegate getAppDelegate] getDownloadSixSegmentMaxValues];
+                     NSArray *valueArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDownloadSixSegmentMaxValues];
                      [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
                      
                      [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Download")];
@@ -995,7 +995,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    {
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Upload testing") forever:YES];
                      
-                     NSArray *valueArray = [[SKAAppDelegate getAppDelegate] getDownloadSixSegmentMaxValues];
+                     NSArray *valueArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDownloadSixSegmentMaxValues];
                      [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
                      
                      [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Upload")];
@@ -1207,14 +1207,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   dataStart = 0;
   
-  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
+  if ([prefs valueForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     dataStart = [num longLongValue];
   }
   else
   {
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -1225,9 +1225,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   dataEnd = 0;
   
-  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
+  if ([prefs valueForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     dataEnd = [num longLongValue];
   }
   
@@ -1268,7 +1268,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   //                    height = 59.0F;
   //                } else {
   //                    // Latency/loss/jitter!
-  //                    if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+  //                    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
   //                        height = 150;
   //                    }
   //                }
@@ -1329,7 +1329,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (tableView == self.tvCurrentResults) {
-    switch ([[SKAAppDelegate getAppDelegate] getShowMetricsOnMainScreen]) {
+    switch ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowMetricsOnMainScreen]) {
       case SKBShowMetricsRule_ShowPassiveMetrics_Never:
         return 1; // Just the main test result.
       case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts:
@@ -1478,7 +1478,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 +(void)sAddPassiveMetricsToArray:(NSMutableArray*)testResultsArray
 {
-  NSArray *passiveResultsArray = [[SKAAppDelegate getAppDelegate] getPassiveMetricsToDisplay];
+  NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplay];
   
   for (NSString *thePassiveMetric in passiveResultsArray) {
     SKBTestResultValue* tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:thePassiveMetric];

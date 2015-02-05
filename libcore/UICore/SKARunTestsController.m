@@ -24,7 +24,7 @@
   BOOL testsComplete;
 }
 
-@property SKAAppDelegate *appDelegate;
+@property SKAppBehaviourDelegate *appDelegate;
 @property NSString *networkType;
 @property (nonatomic, strong) NSMutableArray *resultsArray;
 
@@ -102,9 +102,9 @@
 
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target
 {
-  [SKAAppDelegate setClosestTarget:target];
+  [SKAppBehaviourDelegate setClosestTarget:target];
  
-  if ([[SKAAppDelegate getAppDelegate] getIsBestTargetDisplaySupported]) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsBestTargetDisplaySupported]) {
     NSString *closest = [NSString stringWithFormat:@"%@ %@",
                          sSKCoreGetLocalisedString(@"TEST_Label_Closest_Target"),
                          [appDelegate.schedule getClosestTargetName:target]];
@@ -480,11 +480,11 @@
   }
   
   if ([self.networkType isEqualToString:@"mobile"]) {
-    if ([[SKAAppDelegate getAppDelegate] isNetworkTypeWiFi]) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isNetworkTypeWiFi]) {
       [[SKAMainResultsController getSKAMainResultsController] setNetworkTypeTo:self.networkType];
     }
   } else if ([self.networkType isEqualToString:@"network"]) {
-    if ([[SKAAppDelegate getAppDelegate] isNetworkTypeMobile]) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isNetworkTypeMobile]) {
       [[SKAMainResultsController getSKAMainResultsController] setNetworkTypeTo:self.networkType];
     }
   } else {
@@ -717,7 +717,7 @@
           height = 59.0F;
         } else {
           // Latency/loss/jitter!
-          if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+          if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
             height = 150;
           }
         }
@@ -740,14 +740,14 @@
   
   dataStart = 0;
   
-  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
+  if ([prefs valueForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     dataStart = [num longLongValue];
   }
   else
   {
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -758,9 +758,9 @@
   
   dataEnd = 0;
   
-  if ([prefs valueForKey:[SKAAppDelegate sGet_Prefs_DataUsage]])
+  if ([prefs valueForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
-    NSNumber *num = [prefs objectForKey:[SKAAppDelegate sGet_Prefs_DataUsage]];
+    NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     dataEnd = [num longLongValue];
   }
   
@@ -780,14 +780,14 @@
 {
   [super viewDidLoad];
   
-  if ([[SKAAppDelegate getAppDelegate] isSocialMediaExportSupported] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == NO) {
     // Hide the toolbar, if social media export not supported!
     [self.navigationController setToolbarHidden:YES];
   }
   
   self.networkType = [SKGlobalMethods getNetworkTypeString];
   
-  appDelegate = (SKAAppDelegate*)[UIApplication sharedApplication].delegate;
+  appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   
   dataStart = 0;
   dataEnd = 0;
@@ -877,7 +877,7 @@ static BOOL sbViewIsVisible;
   self.networkType = [SKGlobalMethods getNetworkTypeString];
 #ifdef DEBUG
   if (self.continuousTesting == YES) {
-    SK_ASSERT([[SKAAppDelegate getAppDelegate] supportContinuousTesting]);
+    SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportContinuousTesting]);
     
     // TODO - continuous testing - keep on running until Done pressed!!
   }
@@ -909,7 +909,7 @@ static BOOL sbViewIsVisible;
 - (void)setLabelsOnViewLoad {
   
   UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
   label.textColor = [UIColor blackColor];
   
   label.backgroundColor = [UIColor clearColor];
@@ -948,7 +948,7 @@ static BOOL sbViewIsVisible;
     
     SK_ASSERT(height == 59 || height == 100 || height == 150);
     
-    if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported]) {
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
       if (height == 100) {
         height = 150;
       }
@@ -1069,7 +1069,7 @@ static BOOL sbViewIsVisible;
       cell.latencyProgressView.hidden = hideSpinner;
       cell.lossProgressView.hidden = hideSpinner;
       
-      if ([[SKAAppDelegate getAppDelegate] getIsJitterSupported] == NO) {
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported] == NO) {
         cell.lblJitter.hidden = YES;
         cell.lblJitter = nil;
         cell.lblJitterResult = nil;
@@ -1236,7 +1236,7 @@ static BOOL sbViewIsVisible;
   // Build-up the message!
   //
   
-  return [SKAAppDelegate sBuildSocialMediaMessageForCarrierName:appDelegate.carrierName SocialNetwork:socialNetwork Upload:upload Download:download ThisDataIsAveraged:NO];
+  return [SKAppBehaviourDelegate sBuildSocialMediaMessageForCarrierName:appDelegate.carrierName SocialNetwork:socialNetwork Upload:upload Download:download ThisDataIsAveraged:NO];
 }
 
 - (IBAction)actionButton:(id)sender {
@@ -1262,7 +1262,7 @@ static BOOL sbViewIsVisible;
   NSDictionary *dictionary = @{SLServiceTypeTwitter:twitterString, SLServiceTypeFacebook:facebookString, SLServiceTypeSinaWeibo:sinaWeiboString};
   
   // TODO - how do we extract the network type?!
-  [SKAAppDelegate showActionSheetForSocialMediaExport:dictionary OnViewController:self];
+  [SKAppBehaviourDelegate showActionSheetForSocialMediaExport:dictionary OnViewController:self];
 }
 
 @end

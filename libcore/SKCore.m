@@ -79,7 +79,8 @@ static SKCore *sbCore = nil;
 +(SKCore*) getInstance {
   if (sbCore == nil) {
     sbCore = [[SKCore alloc] init];
-    SK_ASSERT([sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyLTE") isEqualToString:@"LTE"]);
+    // This cannot be called UNTIL the UIApplication is initialized fully!
+    // SK_ASSERT([sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyLTE") isEqualToString:@"LTE"]);
   }
  
   // Always initialise the operators singleton!

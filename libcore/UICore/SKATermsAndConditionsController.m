@@ -69,7 +69,7 @@
   if (hasFinished) {
     // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
     //[self.navigationController popToRootViewControllerAnimated:YES];
-    [SKAAppDelegate resetUserInterfaceBackToRunTestsScreenFromViewController];
+    [SKAAppDelegate sResetUserInterfaceBackToRunTestsScreenFromViewController];
   }
 }
 
@@ -89,7 +89,7 @@
       frmWeb.size.height = frmWeb.size.height - self.viewDataCollector.frame.size.height;
       self.webView.frame = frmWeb;
       
-      int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+      int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
       SK_ASSERT(mb >= 0);
       
       mb = mb / CBytesInAMegabyte;
@@ -107,7 +107,7 @@
     // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-    label.font = [[SKAAppDelegate getAppDelegate] getSpecialFontOfSize:17];
+    label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
     label.textColor = [UIColor blackColor];
     
     label.backgroundColor = [UIColor clearColor];
@@ -158,7 +158,7 @@
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   int64_t theValue = (int64_t)[self.txtData.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAAppDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   [prefs synchronize];
 }
 
@@ -237,10 +237,10 @@
         {
           // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
           NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-          [prefs setObject:[SKCore getToday] forKey:[SKAAppDelegate sGet_Prefs_DataDate]];
+          [prefs setObject:[SKCore getToday] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
           [prefs synchronize];
           
-          [SKAAppDelegate setHasAgreed:YES];
+          [SKAppBehaviourDelegate setHasAgreed:YES];
           [self performSelector:@selector(moveToActivationScreen) withObject:nil afterDelay:0.1];
         }
         else

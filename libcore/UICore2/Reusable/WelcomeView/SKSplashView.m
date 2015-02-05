@@ -32,7 +32,7 @@
 }
 
 -(void) prepareForAnimation {
-  self.mLetterLabels = [[SKAAppDelegate getAppDelegate] getSplashLabelArray:self];
+  self.mLetterLabels = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSplashLabelArray:self];
 }
   
 -(void) animatePhase3:(UIView*)l_ delay:(CGFloat)delay_ completionBlock_:(void (^)())completionBlock_ {

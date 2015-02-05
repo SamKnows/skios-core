@@ -69,7 +69,7 @@
 
 @property BOOL continuousTesting;
 
-@property SKAAppDelegate *appDelegate;
+@property SKAppBehaviourDelegate *appDelegate;
 @property NSString *networkType;
 
 //@property (nonatomic, strong) NSMutableArray *resultsArray;
