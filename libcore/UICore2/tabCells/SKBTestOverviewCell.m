@@ -193,6 +193,8 @@
     self.lLossLabel.adjustsFontSizeToFitWidth = YES;
     self.lLossLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
     self.lLossLabel.textAlignment = NSTextAlignmentLeft;
+    // Comment this out, if you want to allow the number of lines to be > 1!
+    // self.lLossLabel.numberOfLines = 0;
     [self.contentView addSubview:self.lLossLabel];
   }
   
@@ -292,7 +294,7 @@
     self.lLatencyLabel.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
     self.lDateOfTest.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 55, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21);
     self.lTimeOfTest.frame =  CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 68, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21);
-    self.lLossLabel.frame = CGRectMake(GUI_MULTIPLIER * 230, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
+    self.lLossLabel.frame = CGRectMake(GUI_MULTIPLIER * 230, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 35, GUI_MULTIPLIER * 21);
     self.lJitterLabel.frame = CGRectMake(GUI_MULTIPLIER * 270, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
     
     self.lResultLatency.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
