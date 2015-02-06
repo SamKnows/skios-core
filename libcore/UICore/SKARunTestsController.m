@@ -157,7 +157,7 @@
   [self showFailedLatencyTest];
 }
 
-- (void)aodLatencyTestDidStart:(SKLatencyTest*)latencyTest {
+- (void)aodLatencyTestDidStart {
   
 }
 
