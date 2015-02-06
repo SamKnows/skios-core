@@ -4,23 +4,12 @@
 
 #import <Social/Social.h>
 
-typedef enum { CELLULAR, WIFI, NONE } ConnectionStatus;
-typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA } TestDataType;
-
-// SKA:
-typedef enum {
-  DATERANGE_1w1m3m1y_ONE_WEEK,
-  DATERANGE_1w1m3m1y_ONE_MONTH,
-  DATERANGE_1w1m3m1y_THREE_MONTHS,
-  DATERANGE_1w1m3m1y_SIX_MONTHS,
-  DATERANGE_1w1m3m1y_ONE_YEAR,
-  DATERANGE_1w1m3m1y_ONE_DAY
-} DATERANGE_1w1m3m1y;
 
 //#define CTwoToThePowerOfTwenty 1048576L
 #define CBytesInAMegabyte      1000000
 
 #import "./SKDebugAssert.h"
+#import "../SKKit/SKAppBehaviourDelegate.h"
 #import "./SKDatabase.h"
 #import "./SKGlobalMethods.h"
 //#import "./SKPreloadData.h"
@@ -52,6 +41,7 @@ typedef enum {
 #import "./3rdParty/xmldocument/SMXMLDocument.h"
 #import "./3rdParty/ZipArchive/ZipArchive.h"
 #import "../core-plot-build/CorePlotHeaders/CorePlot-CocoaTouch.h"
+
 #import "./SKGraphForResults.h"
 #import "./SKNSURLAsyncQuery.h"
 #import "./SKOperators.h"
@@ -63,7 +53,6 @@ typedef enum {
 
 #import "./UICore2/Reusable/SKAppColourScheme/SKAppColourScheme.h"
 #import "./UICore2/ViewManagers/SKBTestResultValue.h"
-
 FOUNDATION_EXPORT NSString *const Prefs_Username;
 FOUNDATION_EXPORT NSString *const Prefs_UserId;
 FOUNDATION_EXPORT NSString *const Prefs_UnitId;

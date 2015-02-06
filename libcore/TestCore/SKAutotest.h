@@ -140,25 +140,6 @@ typedef enum
 
 @end
 
-@protocol SKAutotestManagerDelegate
 
--(double)       amdGetLatitude;
--(double)       amdGetLongitude;
--(NSTimeInterval)       amdGetDateAsTimeIntervalSince1970;
-  
--(SKScheduler*) amdGetSchedule;
--(NSString*)    amdGetClosestTarget;
--(void)         amdSetClosestTarget:(NSString*)inClosestTarget;
--(BOOL)         amdGetIsConnected;
--(NSInteger)    amdGetConnectionStatus;
--(NSString*)    amdGetFileUploadPath;
--(void)         amdDoUploadJSON;
--(void)         amdDoCreateUploadFile;
--(void)         amdDoUpdateDataUsage:(int)bytes;
--(int64_t)      amdGetDataUsageBytes;
--(void)         amdDoUploadLogFile;
--(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType;
- 
-@end
 
 

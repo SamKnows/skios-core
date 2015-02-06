@@ -286,6 +286,7 @@
 		B271658919EEA86D005FAECA /* SKBSettingsTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSettingsTabViewController.m; sourceTree = "<group>"; };
 		B279124A18D88AF000E17EBF /* SKOperatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKOperatorsTests.m; sourceTree = "<group>"; };
 		B27B0D87181A7F58008D76D6 /* SKCoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCoreTests.m; sourceTree = "<group>"; };
+		B27CFAA81A84CA1800C410B8 /* SKAppBehaviourDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAppBehaviourDelegate.h; sourceTree = "<group>"; };
 		B28006DB19C881E90008DF5F /* SKBMainViewTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKBMainViewTabBarController.h; path = ../SKBMainViewTabBarController.h; sourceTree = "<group>"; };
 		B28006DC19C881E90008DF5F /* SKBMainViewTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKBMainViewTabBarController.m; path = ../SKBMainViewTabBarController.m; sourceTree = "<group>"; };
 		B28006DE19C970300008DF5F /* SKBRunTestViewMgrController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBRunTestViewMgrController.h; sourceTree = "<group>"; };
@@ -594,7 +595,8 @@
 			children = (
 				B232599E1954679500C03C2D /* README.md */,
 				B2DC501818C75D9500E69F36 /* HockeySDK-iOS */,
-				B22E88AC17C36789005D9094 /* SKCore */,
+				B22E88AC17C36789005D9094 /* libcore */,
+				B27CFAA71A84CA1800C410B8 /* SKKit */,
 				B22E88C117C3678A005D9094 /* SKCoreTests */,
 				B22E88A917C36789005D9094 /* Frameworks */,
 				B22E88A817C36789005D9094 /* Products */,
@@ -638,7 +640,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B22E88AC17C36789005D9094 /* SKCore */ = {
+		B22E88AC17C36789005D9094 /* libcore */ = {
 			isa = PBXGroup;
 			children = (
 				B22E893417C39185005D9094 /* TestCore */,
@@ -667,7 +669,7 @@
 				B2FB02F819B75D09007AA3C2 /* UICore2 */,
 				B22E88E217C36875005D9094 /* 3rdParty */,
 			);
-			name = SKCore;
+			name = libcore;
 			sourceTree = "<group>";
 		};
 		B22E88C117C3678A005D9094 /* SKCoreTests */ = {
@@ -839,6 +841,15 @@
 				B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */,
 			);
 			name = GCD;
+			sourceTree = "<group>";
+		};
+		B27CFAA71A84CA1800C410B8 /* SKKit */ = {
+			isa = PBXGroup;
+			children = (
+				B27CFAA81A84CA1800C410B8 /* SKAppBehaviourDelegate.h */,
+			);
+			name = SKKit;
+			path = ../SKKit;
 			sourceTree = "<group>";
 		};
 		B2AE67F21883DA4D00D87FAE /* UICore */ = {
