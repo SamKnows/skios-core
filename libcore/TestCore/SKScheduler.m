@@ -102,79 +102,9 @@
 
 #pragma mark - Methods
 
-- (NSArray*)getTestsAndTimes
+- (NSArray*)getArrayOfTests
 {
-  if (nil == tests)
-  {
-    return nil;
-  }
-  
-  if ([tests count] == 0)
-  {
-    return nil;
-  }
-  
-  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-  [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  [dateFormatter setLocale:[NSLocale currentLocale]];
-  [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
-  
-  NSDateFormatter *yearFormatter = [[NSDateFormatter alloc] init];
-  [yearFormatter setDateFormat:@"yyyy-MM-dd"];
-  [yearFormatter setLocale:[NSLocale currentLocale]];
-  [yearFormatter setTimeZone:[NSTimeZone systemTimeZone]];
-  
-  // Parallel arrays of Test Type | Test Name | Test Time
-  NSMutableArray *tsts = [[NSMutableArray alloc] init];
-  NSMutableArray *times = [[NSMutableArray alloc] init];
-  
-  for (int m=0; m<[tests count]; m++)
-  {
-    NSDictionary *dict = [tests objectAtIndex:m];
-    
-    if (nil != dict)
-    {
-      NSArray *tmpTimes = [dict objectForKey:@"executeAt"];
-      if (nil != tmpTimes)
-      {
-        NSDate *dateNow = [SKCore getToday];
-        for (int t=0; t<[tmpTimes count]; t++)
-        {
-          NSString *time = [tmpTimes objectAtIndex:t];
-          NSString *ymd = [yearFormatter stringFromDate:dateNow];
-          NSString *strDate = [NSString stringWithFormat:@"%@ %@:00", ymd, time];
-          //NSLog(@"Time: %@, YMD: %@, DateStr: %@", time, ymd, strDate);
-          
-          NSDate *date = [dateFormatter dateFromString:strDate];
-          
-          if (nil != date)
-          {                                
-            NSComparisonResult result = [dateNow compare:date];
-            
-            // if the date is in the past, add one day to the date
-            if (result == NSOrderedDescending)
-            {
-              NSDate *newDate = [date dateByAddingTimeInterval:60*60*24];
-              [tsts addObject:dict];
-              [times addObject:newDate];
-            }
-            else
-            {
-              [tsts addObject:dict];
-              [times addObject:date];
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  NSArray *lists = [NSArray arrayWithObjects:tsts, times, nil];
-  
-  tsts = nil;
-  times = nil;
-  
-  return lists;
+  return tests;
 }
 
 - (NSString*)getClosestTargetName:(NSString*)dns
@@ -265,9 +195,14 @@
 
 - (SKTestConfig*)getTestConfig:(NSString*)type_
 {
-  if (nil == tests) return nil;
-  if ([tests count] == 0) return nil;
+  if (tests == nil) {
+    return nil;
+  }
   
+  if ([tests count] == 0) {
+    return nil;
+  }
+
   for (int j=0; j<[tests count]; j++)
   {
     NSDictionary *dict = [tests objectAtIndex:j];
@@ -292,8 +227,13 @@
 
 - (SKTestConfig*)getTestConfig:(NSString*)type_ name:(NSString*)name_
 {
-  if (nil == tests) return nil;
-  if ([tests count] == 0) return nil;
+  if (tests == nil) {
+    return nil;
+  }
+  
+  if ([tests count] == 0) {
+    return nil;
+  }
   
   for (int j=0; j<[tests count]; j++)
   {

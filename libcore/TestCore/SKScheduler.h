@@ -64,7 +64,14 @@
 - (int)getInitTestCount;
 - (NSString*)getInitTestName:(int)index;
 - (NSDictionary*)getCommunication:(NSString*)id_;
-- (NSArray*)getTestsAndTimes;
+
+// Return an array of "Tests"
+// each element is actually a NSMutableDictionary - with properties such as:
+// [dictTest setObject:type forKey:@"type"];
+// [dictTest setObject:condId forKey:@"condition_group_id"];
+// [dictTest setObject:displayName forKey:@"displayName"];
+// This is then used by [SKTestConfig initWithDictionary] to create the individual test instances!
+- (NSArray*)getArrayOfTests;
 - (NSString*)getClosestTargetName:(NSString*)dns;
 - (SKTestConfig*)getTestConfig:(NSString*)type_;
 - (SKTestConfig*)getTestConfig:(NSString*)type_ name:(NSString*)name_;

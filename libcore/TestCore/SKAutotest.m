@@ -87,13 +87,10 @@ static BOOL sbTestIsRunning = NO;
     }
   }];
   
-  NSArray *testsTimes = [[self.autotestManagerDelegate amdGetSchedule] getTestsAndTimes];
+  NSArray *tests_ = [[self.autotestManagerDelegate amdGetSchedule] getArrayOfTests];
   
-  if (nil != testsTimes)
+  if (tests_ != nil)
   {
-    // This is a big hack - the autotest code assumes we're ONLY interested in the very first item!
-    NSArray *tests_ = [testsTimes objectAtIndex:0];
-    
     NSMutableArray *testTypes = [[NSMutableArray alloc] init];
     NSMutableArray *testDisplayNames = [[NSMutableArray alloc] init];
     NSMutableArray *nextTests = [[NSMutableArray alloc] init];
@@ -515,10 +512,7 @@ static BOOL sbTestIsRunning = NO;
 //###HG
 - (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate
 {
-    if ([self.autotestObserverDelegate respondsToSelector:@selector(aodTransferTestDidUpdateProgress:isDownstream:bitrate1024Based:)])
-        [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream bitrate1024Based:currentBitrate];
-    else
-        [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream];
+  [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream bitrate1024Based:currentBitrate];
 }
 
 #pragma mark - Latency Test Method
@@ -627,13 +621,9 @@ static BOOL sbTestIsRunning = NO;
   NSLog(@"SKAutotest::ltdTestWasCancelled");
 }
 
-//###HG
 - (void)ltdUpdateProgress:(float)progress latency:(float)latency_
 {
-    if ([self.autotestObserverDelegate respondsToSelector:@selector(aodLatencyTestUpdateProgress:latency:)])
-        [self.autotestObserverDelegate aodLatencyTestUpdateProgress:progress latency:latency_];
-    else
-        [self.autotestObserverDelegate aodLatencyTestUpdateProgress:progress];
+  [self.autotestObserverDelegate aodLatencyTestUpdateProgress:progress latency:latency_];
 }
 
 - (void)ltdUpdateStatus:(LatencyStatus)status
@@ -1254,7 +1244,7 @@ static BOOL sbTestIsRunning = NO;
   }
   
 #ifdef DEBUG
-  NSLog(@"DEBUG - SKAAutoTest: doSaveAndUploadJson");
+  NSLog(@"DEBUG - SKAutotest: doSaveAndUploadJson");
 #endif // DEBUG
   
   [self writeJSON_Metrics];
@@ -1334,13 +1324,13 @@ static BOOL sbTestIsRunning = NO;
   int nextTestIndex = testIndex + 1;
   
 #ifdef DEBUG
-  NSLog(@"DEBUG **** - SKAAutoTest:runNextTest< testIndex=%d, nextTestIndex=%d", testIndex, nextTestIndex);
+  NSLog(@"DEBUG **** - SKAutotest:runNextTest< testIndex=%d, nextTestIndex=%d", testIndex, nextTestIndex);
 #endif // DEBUG
   
   if ([self.autoTests count] > 0)
   {
 #ifdef DEBUG
-    NSLog(@"DEBUG **** - SKAAutoTest: self.autoTests.count=%d", (int)[self.autoTests count]);
+    NSLog(@"DEBUG **** - SKAutotest: self.autoTests.count=%d", (int)[self.autoTests count]);
 #endif // DEBUG
     
     int testsCount = (int)[self.autoTests count];
@@ -1348,7 +1338,7 @@ static BOOL sbTestIsRunning = NO;
     if (nextTestIndex < testsCount)
     {
 #ifdef DEBUG
-      NSLog(@"DEBUG **** - SKAAutoTest: nextTestIndex < testsCount (%d)", testsCount);
+      NSLog(@"DEBUG **** - SKAutotest: nextTestIndex < testsCount (%d)", testsCount);
 #endif // DEBUG
       
       NSDictionary *dict = [self.autoTests objectAtIndex:nextTestIndex];
@@ -1365,7 +1355,7 @@ static BOOL sbTestIsRunning = NO;
           
           NSString *tstType = config.type;
 #ifdef DEBUG
-          NSLog(@"DEBUG **** - SKAAutoTest: about to run next test - tstType=%@", tstType);
+          NSLog(@"DEBUG **** - SKAutotest: about to run next test - tstType=%@", tstType);
 #endif // DEBUG
           
           if ([tstType isEqualToString:@"closestTarget"])
@@ -1416,7 +1406,7 @@ static BOOL sbTestIsRunning = NO;
     {
       // Complete
 #ifdef DEBUG
-      NSLog(@"DEBUG **** - SKAAutoTest: COMPLETE!");
+      NSLog(@"DEBUG **** - SKAutotest: COMPLETE!");
 #endif // DEBUG
       
       self.isRunning = NO;

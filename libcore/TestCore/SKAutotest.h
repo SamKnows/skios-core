@@ -123,12 +123,10 @@ typedef enum
 - (void)aodLatencyTestDidFail:(NSString*)messageIgnore;
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest;
 - (void)aodLatencyTestUpdateStatus:(LatencyStatus)status;
-- (void)aodLatencyTestUpdateProgress:(float)progress;
 - (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency;
 
 - (void)aodTransferTestDidFail:(BOOL)isDownstream;
 - (void)aodTransferTestDidStart:(BOOL)isDownstream;
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream;
 - (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based;
 
 //- (void)aodTransferTestDidFinish:(NSString*)message isDownstream:(BOOL)isDownstream;

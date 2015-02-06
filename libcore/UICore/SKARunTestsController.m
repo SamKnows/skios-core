@@ -233,7 +233,7 @@
   [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
 }
 
-- (void)aodLatencyTestUpdateProgress:(float)progress
+- (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency
 {
   dispatch_async(dispatch_get_main_queue(), ^{
     
@@ -259,7 +259,7 @@
   
 }
 
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream
+- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
 {
   dispatch_async(dispatch_get_main_queue(), ^{
     
@@ -373,9 +373,6 @@
   });
 }
 
-- (void)aodLatencyTestDidStart {}
-- (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency {}
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based {}
 - (void)aodDidStartTargetTesting {}
 - (void)aodDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId {}
 

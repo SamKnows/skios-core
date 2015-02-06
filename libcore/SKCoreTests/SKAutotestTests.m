@@ -17,7 +17,9 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 @interface SKAutotestStubbed : SKAutotest
 
 // Private members!
+// Each one of these is a NSDictionary, describing the test!
 @property (atomic, retain) NSMutableArray *autoTests;
+
 @property (nonatomic, assign) BOOL isRunning;
 
 @end
@@ -212,16 +214,13 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 - (void)aodLatencyTestUpdateStatus:(LatencyStatus)status {
   NSLog(@"SKAutotestObserverDelegate::aodLatencyTestUpdateStatus");
 }
-- (void)aodLatencyTestUpdateProgress:(float)progress {
-  NSLog(@"SKAutotestObserverDelegate::aodLatencyTestUpdateProgress");
-}
 - (void)aodTransferTestDidFail:(BOOL)isDownstream {
   NSLog(@"SKAutotestObserverDelegate::aodTransferTestDidFail");
 }
 - (void)aodTransferTestDidStart:(BOOL)isDownstream {
   NSLog(@"SKAutotestObserverDelegate::transferTestDidStart");
 }
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream {
+- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based {
   NSLog(@"SKAutotestObserverDelegate::aodTransferTestDidUpdateProgress");
 }
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based {
@@ -278,7 +277,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   XCTAssertTrue(autotest.autotestManagerDelegate == (id<SKAutotestManagerDelegate>)mockManagerDelegate, @"");
   XCTAssertTrue(autotest.autotestObserverDelegate == (id<SKAutotestObserverDelegate>)mockObserverDelegate, @"");
   
-  [[mockScheduler expect] getTestsAndTimes];
+  [[mockScheduler expect] getArrayOfTests];
  
   // We need to run this manually...
   [autotestMock runTheTests];
@@ -326,7 +325,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   XCTAssertTrue(autotest.autotestManagerDelegate == (id<SKAutotestManagerDelegate>)mockDelegate, @"");
  
   // Do not intercept this call, as it results in many other important calls we need to verify.
-  //[[mockScheduler expect] getTestsAndTimes];
+  //[[mockScheduler expect] getArrayOfTests];
   // TODO - monitor for other methods being called!
 
   // The runNextTest method is next expected to be called - once - with an initial index of -1.

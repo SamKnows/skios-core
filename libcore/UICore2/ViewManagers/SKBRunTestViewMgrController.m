@@ -1003,14 +1003,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                  });
 }
 
-- (void)aodLatencyTestUpdateProgress:(float)progress {
-  SK_ASSERT(false);
-}
-
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream {
-  SK_ASSERT(false);
-}
-
 - (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
 {
   dispatch_async(dispatch_get_main_queue(),
@@ -1028,18 +1020,16 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    {
                      self.timeOfLastUIUpdate = CACurrentMediaTime();
                      
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                       [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.02f", bitrate1024Based]];
-                       
-                       [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
-                       
-                       [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
+                     [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.02f", bitrate1024Based]];
+                     
+                     [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
+                     
+                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
 #ifdef DEBUG
-                       //NSLog(@"DEBUG: Bitrate: %f", bitrate1024Based);
+                     NSLog(@"DEBUG: Bitrate: %f (%s) (%s %d)", bitrate1024Based, isDownstream?"DOWN":"UP", __FILE__, (int)__LINE__);
 #endif // DEBUG
-                       
-                       [self setProgressView:0];
-                     });
+                     
+                     [self setProgressView:0];
                    }
                  });
 }
@@ -1440,23 +1430,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   } else {
     SK_ASSERT(false);
   }
-  //    else if (tableView == self.tvTargets)
-  //    {
-  //        NSString *targetName;
-  //        SKATargetCell2 *cell;
-  //        static NSString *CellIdentifier = @"SKATargetCell2";
-  //
-  //        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-  //        if (cell == nil) {
-  //
-  //            cell = [[SKATargetCell2 alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  //        }
-  //
-  //        targetName = [self.appDelegate.schedule getClosestTargetName:((NSString*)[autoTest.targetTest.targets objectAtIndex:indexPath.row])];
-  //        [cell setTarget:((NSString*)[autoTest.targetTest.targets objectAtIndex:indexPath.row]) withName:targetName];
-  //        [cell startActivityAnimation];
-  //        return cell;
-  //    }
   
   return nil;
 }
