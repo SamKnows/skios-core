@@ -90,3 +90,14 @@ static BOOL GbSKAssertDetected = NO;
 }
 
 @end
+
+bool SK_VERIFY(bool value) {
+#if  DEBUG
+  if (value == false) {
+    NSLog(@"SK_VERIFY! file:\(fileName) line:\(lineNumber)");
+    SK_ASSERT(false);
+  }
+#endif
+  
+  return value;
+}

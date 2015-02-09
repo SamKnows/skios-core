@@ -28,4 +28,6 @@ void sk_debugbreak(const char *PpFile, int PLine);
 #define SK_REPORT_NONSERROR(PError)
 #endif // DEBUG
 
+bool SK_VERIFY(bool value);
+
 #endif
