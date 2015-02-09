@@ -129,6 +129,7 @@
 		B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77DC1A88C791009B324A /* SKScheduleParser.m */; };
 		B2EC77E31A88C838009B324A /* SKTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E21A88C838009B324A /* SKTestRunner.m */; };
 		B2EC77E61A88CA07009B324A /* SKKitTestAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */; };
+		B2EC77F41A88D4ED009B324A /* SKAppBehaviourDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */; };
 		B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */; };
 		B2FB032C19B75D09007AA3C2 /* CActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FC19B75D09007AA3C2 /* CActionSheet.m */; };
 		B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FF19B75D09007AA3C2 /* CActivityBlinking.m */; };
@@ -456,6 +457,7 @@
 		B2EC77E21A88C838009B324A /* SKTestRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTestRunner.m; sourceTree = "<group>"; };
 		B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitTestAdaptor.m; sourceTree = "<group>"; };
 		B2EC77E51A88CA07009B324A /* SKKitTestAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKKitTestAdaptor.h; sourceTree = "<group>"; };
+		B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppBehaviourDelegate.m; sourceTree = "<group>"; };
 		B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHttpTest.m; sourceTree = "<group>"; };
 		B2FB02FB19B75D09007AA3C2 /* CActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionSheet.h; sourceTree = "<group>"; };
 		B2FB02FC19B75D09007AA3C2 /* CActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CActionSheet.m; sourceTree = "<group>"; };
@@ -856,8 +858,9 @@
 			isa = PBXGroup;
 			children = (
 				B27CFAA81A84CA1800C410B8 /* SKAppBehaviourDelegate.h */,
-				B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */,
+				B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */,
 				B2EC77E51A88CA07009B324A /* SKKitTestAdaptor.h */,
+				B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */,
 				B2EC77DD1A88C791009B324A /* SKScheduleParser.h */,
 				B2EC77DC1A88C791009B324A /* SKScheduleParser.m */,
 				B2EC77E11A88C838009B324A /* SKTestRunner.h */,
@@ -1373,6 +1376,7 @@
 				B2D1DE4B19E66F93003840BE /* SKBSplashVC.m in Sources */,
 				B221AEDB18FFC21E00323923 /* mztools.c in Sources */,
 				B2BE448917C7610F00C96D58 /* SKTest.m in Sources */,
+				B2EC77F41A88D4ED009B324A /* SKAppBehaviourDelegate.m in Sources */,
 				B2AE681A1883DA4D00D87FAE /* SKAGraphViewCell.m in Sources */,
 				B221AED918FFC20700323923 /* zip.c in Sources */,
 				B28006E319C9776D0008DF5F /* SKBTestResultValue.m in Sources */,

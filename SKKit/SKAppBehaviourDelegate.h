@@ -231,4 +231,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 +(NSString*)sGetConfig_Url;
 @end
 
+
+NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath);
+NSData *skGetFileDataFromBundleWithComponentPath(Class theClass, NSString *componentPath);
+
 #endif // SKAPPBEHAVIOURDELEGATE_H
