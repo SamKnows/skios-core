@@ -123,6 +123,16 @@
   }
 }
 
+CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width, CGFloat height)
+{
+  CGRect rect;
+  rect.origin.x = x * GUI_MULTIPLIER;
+  rect.origin.y = y * GUI_MULTIPLIER;
+  rect.size.width = width * GUI_MULTIPLIER;
+  rect.size.height = height * GUI_MULTIPLIER;
+  return rect;
+}
+
 -(void)layoutCellActive
 {
   if (self.vBackground != nil) return;
@@ -134,14 +144,63 @@
   UIFont* resultFont1 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 53];
   UIFont* resultFont2 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
   
-  self.vBackground = [[UIView alloc] initWithFrame:CGRectMake(GUI_MULTIPLIER * 5,GUI_MULTIPLIER * 3, GUI_MULTIPLIER * 310, GUI_MULTIPLIER * 90)];
+  self.vBackground = [[UIView alloc] initWithFrame:MakeScaledRect(GUI_MULTIPLIER, 5,3, 310, 90)];
   self.vBackground.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.vBackground.layer.cornerRadius = GUI_MULTIPLIER * 3;
   self.vBackground.layer.borderWidth = 0.5;
   self.vBackground.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.2].CGColor;
   [self.contentView addSubview:self.vBackground];
   
-  self.lDownloadLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 29, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 103, GUI_MULTIPLIER * 21)];
+  //
+  // Determine the item positions.
+  // Depending on the app configuration, the positions might be different from app to app.
+  // TODO: for some clients, the strings are of lengths such that we require very different layouts!
+  //
+  
+  CGRect lDownloadLabelFrame = MakeScaledRect( GUI_MULTIPLIER, 29,  9,  103,  21);
+  CGRect lUploadLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  121,  9,  82,  21);
+  CGRect lMbpsLabel4DownloadFrame = MakeScaledRect(GUI_MULTIPLIER,  15,  69,  59,  21);
+  CGRect lMbpsLabel4UploadFrame = MakeScaledRect(GUI_MULTIPLIER,  105,  69,  46,  21);
+  CGRect lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  9,  130,  21);
+    CGRect lLossLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  247,  9,  65,  21);
+    CGRect lJitterLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  297,  9,  65,  21);
+  CGRect lDateOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  55,  121,  21);
+  CGRect lTimeOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  68,  121,  21);
+  CGRect lResultDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,  11,  31,  80,  55);
+  CGRect lResultUploadFrame = MakeScaledRect(GUI_MULTIPLIER,  105,  31,  82,  55);
+  CGRect lResultLatencyFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  27,  65,  17);
+    CGRect lResultLossFrame = MakeScaledRect(GUI_MULTIPLIER,  247,  27,  65,  17);
+    CGRect lResultJitterFrame = MakeScaledRect(GUI_MULTIPLIER,  297,  27,  65,  17);
+  CGRect ivNetworkTypeFrame = MakeScaledRect(GUI_MULTIPLIER,  280,  60,  25,  25);
+  CGRect ivArrowDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,  9,  12,  17,  17);
+  CGRect ivArrowUploadFrame = MakeScaledRect(GUI_MULTIPLIER,  103,  11,  17,  17);
+  
+  // Activity indicator frames... (left)
+  CGRect laiDownloadFrame = CGRectMake(self.lResultDownload.frame.origin.x, self.lDownloadLabel.frame.origin.y + self.lDownloadLabel.frame.size.height, self.lResultDownload.frame.size.width, self.lMbpsLabel4Download.frame.origin.y - self.lDownloadLabel.frame.origin.y - self.lDownloadLabel.frame.size.height);
+  CGRect laiUploadFrame = CGRectMake(self.lResultUpload.frame.origin.x, self.lUploadLabel.frame.origin.y + self.lUploadLabel.frame.size.height, self.lResultUpload.frame.size.width, self.lMbpsLabel4Upload.frame.origin.y - self.lUploadLabel.frame.origin.y - self.lUploadLabel.frame.size.height);
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
+    //Change the layout of the right side, to make space for the Jitter Labels!
+    lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  9,  45,  21);
+    lDateOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  55,  121,  21);
+    lTimeOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  68,  121,  21);
+    lLossLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  230,  9,  35,  21);
+    lJitterLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  270,  9,  45,  21);
+    lResultLatencyFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  27,  45,  21);
+    lResultLossFrame = MakeScaledRect(GUI_MULTIPLIER,  230,  27,  45,  21);
+    lResultJitterFrame = MakeScaledRect(GUI_MULTIPLIER,  270,  27,  45,  21);
+  }
+ 
+  // Activity indicator frames... (right)
+  CGRect laiLatencyFrame = lResultLatencyFrame;
+  CGRect laiLossFrame = lResultLossFrame;
+  CGRect laiJitterFrame = lResultJitterFrame;
+  
+  //
+  // Construct the items at the required positions...
+  //
+  
+  self.lDownloadLabel = [[UILabel alloc] initWithFrame:lDownloadLabelFrame];
   self.lDownloadLabel.text = sSKCoreGetLocalisedString(@"Test_Download");
   self.lDownloadLabel.textColor = [UIColor whiteColor];
   self.lDownloadLabel.font = labelFontLight;
@@ -150,7 +209,7 @@
   
   [self.contentView addSubview:self.lDownloadLabel];
   
-  self.lUploadLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 82, GUI_MULTIPLIER * 21)];
+  self.lUploadLabel = [[UILabel alloc] initWithFrame:lUploadLabelFrame];
   self.lUploadLabel.text = sSKCoreGetLocalisedString(@"Test_Upload");
   self.lUploadLabel.textColor = [UIColor whiteColor];
   self.lUploadLabel.font = labelFontLight;
@@ -158,7 +217,7 @@
   self.lUploadLabel.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lUploadLabel];
   
-  self.lMbpsLabel4Download = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 15, GUI_MULTIPLIER * 69, GUI_MULTIPLIER * 59, GUI_MULTIPLIER * 21)];
+  self.lMbpsLabel4Download = [[UILabel alloc] initWithFrame:lMbpsLabel4DownloadFrame];
   self.lMbpsLabel4Download.text = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
   self.lMbpsLabel4Download.textColor = [UIColor whiteColor];
   self.lMbpsLabel4Download.font = labelFontThin;
@@ -166,7 +225,7 @@
   self.lMbpsLabel4Download.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lMbpsLabel4Download];
   
-  self.lMbpsLabel4Upload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 105, GUI_MULTIPLIER * 69, GUI_MULTIPLIER * 46, GUI_MULTIPLIER * 21)];
+  self.lMbpsLabel4Upload = [[UILabel alloc] initWithFrame:lMbpsLabel4UploadFrame];
   self.lMbpsLabel4Upload.text = sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps");
   self.lMbpsLabel4Upload.textColor = [UIColor whiteColor];
   self.lMbpsLabel4Upload.font = labelFontThin;
@@ -175,7 +234,7 @@
   [self.contentView addSubview:self.lMbpsLabel4Upload];
  
   // This must be wide enough to display "Network Latency" ...!
-  self.lLatencyLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 130, GUI_MULTIPLIER * 21)];
+  self.lLatencyLabel = [[UILabel alloc] initWithFrame:lLatencyLabelFrame];
   self.lLatencyLabel.text = sSKCoreGetLocalisedString(@"Test_Latency");
   self.lLatencyLabel.textColor = [UIColor whiteColor];
   self.lLatencyLabel.font = labelFontLight;
@@ -186,7 +245,7 @@
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported])
   {
-    self.lLossLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
+    self.lLossLabel = [[UILabel alloc] initWithFrame:lLossLabelFrame];
     self.lLossLabel.text = sSKCoreGetLocalisedString(@"Test_Loss");
     self.lLossLabel.textColor = [UIColor whiteColor];
     self.lLossLabel.font = labelFontLight;
@@ -200,7 +259,7 @@
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported])
   {
-    self.lJitterLabel = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 21)];
+    self.lJitterLabel = [[UILabel alloc] initWithFrame:lJitterLabelFrame];
     self.lJitterLabel.text = sSKCoreGetLocalisedString(@"Test_Jitter");
     self.lJitterLabel.textColor = [UIColor whiteColor];
     self.lJitterLabel.font = labelFontLight;
@@ -210,7 +269,7 @@
     [self.contentView addSubview:self.lJitterLabel];
   }
   
-  self.lDateOfTest = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 55, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21)];
+  self.lDateOfTest = [[UILabel alloc] initWithFrame:lDateOfTestFrame];
   self.lDateOfTest.text = @"-";
   self.lDateOfTest.textColor = [UIColor whiteColor];
   self.lDateOfTest.font = labelFontLight;
@@ -219,7 +278,7 @@
   self.lDateOfTest.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lDateOfTest];
   
-  self.lTimeOfTest = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 68, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21)];
+  self.lTimeOfTest = [[UILabel alloc] initWithFrame:lTimeOfTestFrame];
   self.lTimeOfTest.text = @"-";
   self.lTimeOfTest.textColor = [UIColor whiteColor];
   self.lTimeOfTest.font = labelFontLight;
@@ -228,7 +287,7 @@
   self.lTimeOfTest.textAlignment = NSTextAlignmentLeft;
   [self.contentView addSubview:self.lTimeOfTest];
   
-  self.lResultDownload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 11, GUI_MULTIPLIER * 31, GUI_MULTIPLIER * 80, GUI_MULTIPLIER * 55)];
+  self.lResultDownload = [[UILabel alloc] initWithFrame:lResultDownloadFrame];
   self.lResultDownload.text = @"-";
   self.lResultDownload.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultDownload.font = resultFont1;
@@ -236,7 +295,7 @@
   self.lResultDownload.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lResultDownload];
   
-  self.lResultUpload = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 105, GUI_MULTIPLIER * 31, GUI_MULTIPLIER * 82, GUI_MULTIPLIER * 55)];
+  self.lResultUpload = [[UILabel alloc] initWithFrame:lResultUploadFrame];
   self.lResultUpload.text = @"-";
   self.lResultUpload.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultUpload.font = resultFont1;
@@ -244,7 +303,7 @@
   self.lResultUpload.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   [self.contentView addSubview:self.lResultUpload];
   
-  self.lResultLatency = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 191, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
+  self.lResultLatency = [[UILabel alloc] initWithFrame:lResultLatencyFrame];
   self.lResultLatency.text = @"-";
   self.lResultLatency.textColor = [SKAppColourScheme sGetResultColourText];
   self.lResultLatency.textAlignment = NSTextAlignmentLeft;
@@ -254,7 +313,7 @@
   [self.contentView addSubview:self.lResultLatency];
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
-    self.lResultLoss = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 247, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
+    self.lResultLoss = [[UILabel alloc] initWithFrame:lResultLossFrame];
     self.lResultLoss.text = @"-";
     self.lResultLoss.textColor = [SKAppColourScheme sGetResultColourText];
     self.lResultLoss.textAlignment = NSTextAlignmentLeft;
@@ -266,7 +325,7 @@
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported])
   {
-    self.lResultJitter = [[UILabel alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 297, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 65, GUI_MULTIPLIER * 17)];
+    self.lResultJitter = [[UILabel alloc] initWithFrame:lResultJitterFrame];
     self.lResultJitter.text = @"-";
     self.lResultJitter.textColor = [SKAppColourScheme sGetResultColourText];
     self.lResultJitter.textAlignment = NSTextAlignmentLeft;
@@ -276,48 +335,37 @@
     [self.contentView addSubview:self.lResultJitter];
   }
   
-  self.ivNetworkType = [[UIImageView alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 280, GUI_MULTIPLIER * 60, GUI_MULTIPLIER * 25, GUI_MULTIPLIER * 25)];
+  self.ivNetworkType = [[UIImageView alloc] initWithFrame:ivNetworkTypeFrame];
   self.ivNetworkType.contentMode = UIViewContentModeScaleAspectFit;
   [self.contentView addSubview:self.ivNetworkType];
   
-  self.ivArrowDownload = [[UIImageView alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 12, GUI_MULTIPLIER * 17, GUI_MULTIPLIER * 17)];
+  self.ivArrowDownload = [[UIImageView alloc] initWithFrame:ivArrowDownloadFrame];
   self.ivArrowDownload.image = [UIImage imageNamed:@"ga"];
   [self.contentView addSubview:self.ivArrowDownload];
   
-  self.ivArrowUpload = [[UIImageView alloc] initWithFrame: CGRectMake(GUI_MULTIPLIER * 103, GUI_MULTIPLIER * 11, GUI_MULTIPLIER * 17, GUI_MULTIPLIER * 17)];
+  self.ivArrowUpload = [[UIImageView alloc] initWithFrame:ivArrowUploadFrame];
   self.ivArrowUpload.image = [UIImage imageNamed:@"ra"];
   [self.contentView addSubview:self.ivArrowUpload];
-  
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported])
-    //Change the layout to make space for the Jitter Labels
-  {
-    self.lLatencyLabel.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
-    self.lDateOfTest.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 55, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21);
-    self.lTimeOfTest.frame =  CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 68, GUI_MULTIPLIER * 121, GUI_MULTIPLIER * 21);
-    self.lLossLabel.frame = CGRectMake(GUI_MULTIPLIER * 230, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 35, GUI_MULTIPLIER * 21);
-    self.lJitterLabel.frame = CGRectMake(GUI_MULTIPLIER * 270, GUI_MULTIPLIER * 9, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
-    
-    self.lResultLatency.frame = CGRectMake(GUI_MULTIPLIER * 180, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
-    self.lResultLoss.frame = CGRectMake(GUI_MULTIPLIER * 230, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
-    self.lResultJitter.frame = CGRectMake(GUI_MULTIPLIER * 270, GUI_MULTIPLIER * 27, GUI_MULTIPLIER * 45, GUI_MULTIPLIER * 21);
-  }
-  
-  self.aiDownload = [[CActivityBlinking alloc] initWithFrame:CGRectMake(self.lResultDownload.frame.origin.x, self.lDownloadLabel.frame.origin.y + self.lDownloadLabel.frame.size.height, self.lResultDownload.frame.size.width, self.lMbpsLabel4Download.frame.origin.y - self.lDownloadLabel.frame.origin.y - self.lDownloadLabel.frame.size.height)];
+
+  //
+  // Finally, construct the activity indicators...
+  //
+  self.aiDownload = [[CActivityBlinking alloc] initWithFrame:laiDownloadFrame];
   [self.contentView addSubview:self.aiDownload];
   
-  self.aiUpload = [[CActivityBlinking alloc] initWithFrame:CGRectMake(self.lResultUpload.frame.origin.x, self.lUploadLabel.frame.origin.y + self.lUploadLabel.frame.size.height, self.lResultUpload.frame.size.width, self.lMbpsLabel4Upload.frame.origin.y - self.lUploadLabel.frame.origin.y - self.lUploadLabel.frame.size.height)];
+  self.aiUpload = [[CActivityBlinking alloc] initWithFrame:laiUploadFrame];
   [self.contentView addSubview:self.aiUpload];
   
-  self.aiLatency = [[CActivityBlinking alloc] initWithFrame:self.lResultLatency.frame];
+  self.aiLatency = [[CActivityBlinking alloc] initWithFrame:laiLatencyFrame];
   [self.contentView addSubview:self.aiLatency];
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
-    self.aiLoss = [[CActivityBlinking alloc] initWithFrame:self.lResultLoss.frame];
+    self.aiLoss = [[CActivityBlinking alloc] initWithFrame:laiLossFrame];
     [self.contentView addSubview:self.aiLoss];
   }
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
-    self.aiJitter = [[CActivityBlinking alloc] initWithFrame:self.lResultJitter.frame];
+    self.aiJitter = [[CActivityBlinking alloc] initWithFrame:laiJitterFrame];
     [self.contentView addSubview:self.aiJitter];
   }
 }
@@ -384,7 +432,6 @@
 
 -(UIView*)getView
 {
-  //    [self printLayoutDefinition];
   return self.contentView;
 }
 
@@ -396,48 +443,6 @@
   if (number_ < 10) return [NSString stringWithFormat:@"%.02f", number_];
   else if (number_ < 100) return [NSString stringWithFormat:@"%.01f", number_];
   else return [NSString stringWithFormat:@"%.00f", number_];
-}
-
-#pragma mark Reverse Engineering
-
--(void)printLayoutDefinition
-{
-  [SKBTestOverviewCell printFrameForView:self.lDownloadLabel withName:@"lDownloadLabel"];
-  [SKBTestOverviewCell printFrameForView:self.lUploadLabel withName:@"lUploadLabel"];
-  
-  [SKBTestOverviewCell printFrameForView:self.lMbpsLabel4Download withName:@"lMbpsLabel4Download"];
-  [SKBTestOverviewCell printFrameForView:self.lMbpsLabel4Upload withName:@"lMbpsLabel4Upload"];
-  [SKBTestOverviewCell printFrameForView:self.lLatencyLabel withName:@"lLatencyLabel"];
-  [SKBTestOverviewCell printFrameForView:self.lLossLabel withName:@"lLossLabel"];
-  
-  [SKBTestOverviewCell printFrameForView:self.lDateOfTest withName:@"lDateOfTest"];
-  [SKBTestOverviewCell printFrameForView:self.lTimeOfTest withName:@"lTimeOfTest"];
-  
-  [SKBTestOverviewCell printFrameForView:self.lResultDownload withName:@"lResultDownload"];
-  [SKBTestOverviewCell printFrameForView:self.lResultUpload withName:@"lResultUpload"];
-  [SKBTestOverviewCell printFrameForView:self.lResultLatency withName:@"lResultLatency"];
-  [SKBTestOverviewCell printFrameForView:self.lResultLoss withName:@"lResultLoss"];
-  
-  [SKBTestOverviewCell printFrameForView:self.ivNetworkType withName:@"ivNetworkType"];
-  [SKBTestOverviewCell printFrameForView:self.ivArrowDownload withName:@"ivArrowDownload"];
-  [SKBTestOverviewCell printFrameForView:self.ivArrowUpload withName:@"ivArrowUpload"];
-  
-  [SKBTestOverviewCell printFrameForView:self.ivNetworkType withName:@"ivNetworkType"];
-}
-
-+(void)printFrameForView:(UIView*)view_ withName:(NSString*)name_
-{
-  if ([view_ isKindOfClass:[UILabel class]])
-  {
-    NSLog(@"self.%@ = [[UILabel alloc] initWithFrame: CGRectMake(%.0f, %.0f, %.0f, %.0f)];", name_, view_.frame.origin.x, view_.frame.origin.y, view_.frame.size.width, view_.frame.size.height);
-    NSLog(@"self.%@.text = @\"%@\";", name_, ((UILabel*)view_).text);
-    NSLog(@"self.%@.textColor =[UIColor whiteColor];", name_);
-    
-  }
-  else if ([view_ isKindOfClass:[UIImageView class]])
-    NSLog(@"self.%@ = [[UIImageView alloc] initWithFrame: CGRectMake(%.0f, %.0f, %.0f, %.0f)];", name_, view_.frame.origin.x, view_.frame.origin.y, view_.frame.size.width, view_.frame.size.height);
-  
-  //    NSLog(@"self.%@.frame = CGRectMake(%.0f, %.0f, %.0f, %.0f);", name_, view_.frame.origin.x, view_.frame.origin.y, view_.frame.size.width, view_.frame.size.height);
 }
 
 @end
