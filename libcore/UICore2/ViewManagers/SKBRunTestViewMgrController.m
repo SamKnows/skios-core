@@ -87,9 +87,11 @@
   {
     self.warningLabelBeforeTableFirstShown.hidden = YES;
     self.warningLabelBeforeTableFirstShown.text = @"";
+    [self.view sendSubviewToBack:self.warningLabelBeforeTableFirstShown];
   } else {
     self.warningLabelBeforeTableFirstShown.hidden = NO;
     self.warningLabelBeforeTableFirstShown.text = warningMessage;
+    [self.view bringSubviewToFront:self.warningLabelBeforeTableFirstShown];
     //self.warningLabelBeforeTableFirstShown.textColor = [UIColor whiteColor];
   }
 }
@@ -671,6 +673,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   self.warningLabelBeforeTableFirstShown.hidden = YES;
   self.tvCurrentResults.hidden = NO;
+  [self.view sendSubviewToBack:self.warningLabelBeforeTableFirstShown];
   
   latencySUM = 0;
   latencyCNT = 0;

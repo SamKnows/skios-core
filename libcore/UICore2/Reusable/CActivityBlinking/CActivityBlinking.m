@@ -29,7 +29,12 @@
   
   // Put on the LEFT-X, CENTER-Y (not CENTER-X), as our text is now left-aligned.
   //V_Blinker.frame = CGRectMake(self.bounds.origin.x + (self.bounds.size.width - C_BLINKER_SIZE) / 2, self.bounds.origin.y + (self.bounds.size.height - C_BLINKER_SIZE) / 2, C_BLINKER_SIZE, C_BLINKER_SIZE);
-  V_Blinker.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y + (self.bounds.size.height - C_BLINKER_SIZE) / 2, C_BLINKER_SIZE, C_BLINKER_SIZE);
+  V_Blinker.frame = CGRectMake
+  (
+   (self.frame.size.width - C_BLINKER_SIZE) / 2,
+   (self.frame.size.height - C_BLINKER_SIZE) / 2,
+   C_BLINKER_SIZE,
+   C_BLINKER_SIZE);
   
   V_Blinker.layer.cornerRadius = C_BLINKER_SIZE / 2;
   V_Blinker.layer.borderColor = [SKAppColourScheme sGetBlinkerBorderColour].CGColor;

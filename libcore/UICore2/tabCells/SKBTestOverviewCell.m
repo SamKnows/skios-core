@@ -143,7 +143,15 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   UIFont* labelFontThin = [UIFont fontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 12];
   UIFont* resultFont1 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 53];
   UIFont* resultFont2 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
+  UIFont* dateTimeFont = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
+ 
+  BOOL newLayout = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsAlternativeResultsPanelLayoutRequired];
+  if (newLayout) {
+    resultFont2 = labelFontLight;
+    dateTimeFont = [UIFont fontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 10];
+  }
   
+  self.backgroundColor = [UIColor clearColor];
   self.vBackground = [[UIView alloc] initWithFrame:MakeScaledRect(GUI_MULTIPLIER, 5,3, 310, 90)];
   self.vBackground.backgroundColor = [SKAppColourScheme sGetPanelColourBackground];
   self.vBackground.layer.cornerRadius = GUI_MULTIPLIER * 3;
@@ -157,27 +165,29 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   // TODO: for some clients, the strings are of lengths such that we require very different layouts!
   //
   
-  CGRect lDownloadLabelFrame = MakeScaledRect( GUI_MULTIPLIER, 29,  9,  103,  21);
-  CGRect lUploadLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  121,  9,  82,  21);
-  CGRect lMbpsLabel4DownloadFrame = MakeScaledRect(GUI_MULTIPLIER,  15,  69,  59,  21);
+  CGRect ivArrowDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,      9,  12,  17,  17);
+  CGRect lDownloadLabelFrame = MakeScaledRect( GUI_MULTIPLIER,     29,   9, 103,  21);
+  CGRect lResultDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,     11,  31,  80,  55);
+  CGRect lMbpsLabel4DownloadFrame = MakeScaledRect(GUI_MULTIPLIER, 11,  69,  59,  21);
+  
+  CGRect ivArrowUploadFrame = MakeScaledRect(GUI_MULTIPLIER,      103,  11,  17,  17);
+  CGRect lUploadLabelFrame = MakeScaledRect(GUI_MULTIPLIER,       121,   9,  82,  21);
+  CGRect lResultUploadFrame = MakeScaledRect(GUI_MULTIPLIER,      105,  31,  82,  55);
   CGRect lMbpsLabel4UploadFrame = MakeScaledRect(GUI_MULTIPLIER,  105,  69,  46,  21);
-  CGRect lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  9,  130,  21);
+  
+  CGRect lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,       191,  9,  130,  21);
     CGRect lLossLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  247,  9,  65,  21);
     CGRect lJitterLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  297,  9,  65,  21);
   CGRect lDateOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  55,  121,  21);
   CGRect lTimeOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  68,  121,  21);
-  CGRect lResultDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,  11,  31,  80,  55);
-  CGRect lResultUploadFrame = MakeScaledRect(GUI_MULTIPLIER,  105,  31,  82,  55);
   CGRect lResultLatencyFrame = MakeScaledRect(GUI_MULTIPLIER,  191,  27,  65,  17);
     CGRect lResultLossFrame = MakeScaledRect(GUI_MULTIPLIER,  247,  27,  65,  17);
     CGRect lResultJitterFrame = MakeScaledRect(GUI_MULTIPLIER,  297,  27,  65,  17);
   CGRect ivNetworkTypeFrame = MakeScaledRect(GUI_MULTIPLIER,  280,  60,  25,  25);
-  CGRect ivArrowDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,  9,  12,  17,  17);
-  CGRect ivArrowUploadFrame = MakeScaledRect(GUI_MULTIPLIER,  103,  11,  17,  17);
   
   // Activity indicator frames... (left)
-  CGRect laiDownloadFrame = CGRectMake(self.lResultDownload.frame.origin.x, self.lDownloadLabel.frame.origin.y + self.lDownloadLabel.frame.size.height, self.lResultDownload.frame.size.width, self.lMbpsLabel4Download.frame.origin.y - self.lDownloadLabel.frame.origin.y - self.lDownloadLabel.frame.size.height);
-  CGRect laiUploadFrame = CGRectMake(self.lResultUpload.frame.origin.x, self.lUploadLabel.frame.origin.y + self.lUploadLabel.frame.size.height, self.lResultUpload.frame.size.width, self.lMbpsLabel4Upload.frame.origin.y - self.lUploadLabel.frame.origin.y - self.lUploadLabel.frame.size.height);
+  CGRect laiDownloadFrame = lResultDownloadFrame; // CGRectMake(self.lResultDownload.frame.origin.x, self.lDownloadLabel.frame.origin.y + self.lDownloadLabel.frame.size.height, self.lResultDownload.frame.size.width, self.lMbpsLabel4Download.frame.origin.y - self.lDownloadLabel.frame.origin.y - self.lDownloadLabel.frame.size.height);
+  CGRect laiUploadFrame = lResultUploadFrame; // CGRectMake(self.lResultUpload.frame.origin.x, self.lUploadLabel.frame.origin.y + self.lUploadLabel.frame.size.height, self.lResultUpload.frame.size.width, self.lMbpsLabel4Upload.frame.origin.y - self.lUploadLabel.frame.origin.y - self.lUploadLabel.frame.size.height);
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
     //Change the layout of the right side, to make space for the Jitter Labels!
@@ -189,6 +199,21 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
     lResultLatencyFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  27,  45,  21);
     lResultLossFrame = MakeScaledRect(GUI_MULTIPLIER,  230,  27,  45,  21);
     lResultJitterFrame = MakeScaledRect(GUI_MULTIPLIER,  270,  27,  45,  21);
+  }
+  
+  if (newLayout)
+  {
+    lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  10,  80,  21);
+    lLossLabelFrame = MakeScaledRect(GUI_MULTIPLIER,     180,  30,  80,  21);
+    lJitterLabelFrame = MakeScaledRect(GUI_MULTIPLIER,   180,  50,  80,  21);
+    lDateOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,    180,  70,  45,  21);
+    
+    lResultLatencyFrame = MakeScaledRect(GUI_MULTIPLIER, 265,  10,  40,  21);
+    lResultLossFrame = MakeScaledRect(GUI_MULTIPLIER,    265,  30,  40,  21);
+    lResultJitterFrame = MakeScaledRect(GUI_MULTIPLIER,  265,  50,  40,  21);
+    lTimeOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,    230,  70,  45,  21);
+    
+    ivNetworkTypeFrame = MakeScaledRect(GUI_MULTIPLIER,  293,  73,  17,  17);
   }
  
   // Activity indicator frames... (right)
@@ -272,7 +297,7 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   self.lDateOfTest = [[UILabel alloc] initWithFrame:lDateOfTestFrame];
   self.lDateOfTest.text = @"-";
   self.lDateOfTest.textColor = [UIColor whiteColor];
-  self.lDateOfTest.font = labelFontLight;
+  self.lDateOfTest.font = dateTimeFont;
   self.lDateOfTest.textAlignment = NSTextAlignmentLeft;
   self.lDateOfTest.adjustsFontSizeToFitWidth = YES;
   self.lDateOfTest.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
@@ -281,7 +306,7 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   self.lTimeOfTest = [[UILabel alloc] initWithFrame:lTimeOfTestFrame];
   self.lTimeOfTest.text = @"-";
   self.lTimeOfTest.textColor = [UIColor whiteColor];
-  self.lTimeOfTest.font = labelFontLight;
+  self.lTimeOfTest.font = dateTimeFont;
   self.lTimeOfTest.adjustsFontSizeToFitWidth = YES;
   self.lTimeOfTest.minimumScaleFactor = 0.1; // minimumFontSize = 6.0 is deprecated from iOS 6
   self.lTimeOfTest.textAlignment = NSTextAlignmentLeft;
@@ -367,6 +392,11 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
     self.aiJitter = [[CActivityBlinking alloc] initWithFrame:laiJitterFrame];
     [self.contentView addSubview:self.aiJitter];
+  }
+  
+  if (newLayout) {
+    self.lTimeOfTest.adjustsFontSizeToFitWidth = NO;
+    self.lDateOfTest.adjustsFontSizeToFitWidth = NO;
   }
 }
 

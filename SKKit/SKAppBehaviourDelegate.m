@@ -1946,6 +1946,10 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
 //
 // Splash screen (end)
 //
+
+-(BOOL) getIsAlternativeResultsPanelLayoutRequired {
+  return NO;
+}
 @end
 
 NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath) {
