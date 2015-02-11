@@ -184,9 +184,6 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   NSLog(@"SKAutotestManagerDelegate::amdGetDataUsageBytes");
   return 100;
 }
--(void)         amdDoUploadLogFile {
-  NSLog(@"SKAutotestManagerDelegate::amdDoUploadLogFile");
-}
 -(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType {
   NSLog(@"SKAutotestManagerDelegate::amdDoAppendOutputResultsArrayToLogFile, results==%@, networkType=%@", results, networkType);
 }

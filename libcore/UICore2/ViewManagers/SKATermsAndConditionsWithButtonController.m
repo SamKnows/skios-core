@@ -36,16 +36,23 @@
   [self.webView loadHTMLString:html baseURL:[[NSBundle mainBundle] bundleURL]];
 }
 
-- (void)moveToActivationScreen
+- (void)moveToActivationOrMainScreen
 {
-  [self SKSafePerformSegueWithIdentifier:@"segueToActivation" sender:self];
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+    // Activation not required - return automatically to the main screen!
+    [SKAAppDelegate sResetUserInterfaceBackToMainScreen];
+  } else {
+    // Activation required!
+    [self SKSafePerformSegueWithIdentifier:@"segueToActivation" sender:self];
+  }
 }
 
 - (IBAction)agreeButton:(id)sender {
 
   SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
-  
-  if ([appDelegate getIsConnected] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+    // Activation not required - so, we don't need to be online to continue...
+  } else if ([appDelegate getIsConnected] == NO) {
     // On test stopped - if not connected, display an alert.
     // This covers e.g. if we lost connection and tests stopped automatically.
     // It will also stop a test re-running in the event of continuous testing.
@@ -61,9 +68,10 @@
     
     return;
   }
-  
+ 
+  // We've agreed to terms. Continue to activation (if required), or reurn to main screen.
   [SKAppBehaviourDelegate setHasAgreed:YES];
-  [self performSelector:@selector(moveToActivationScreen) withObject:nil afterDelay:0.1];
+  [self performSelector:@selector(moveToActivationOrMainScreen) withObject:nil afterDelay:0.1];
 }
 
 - (void)viewWillAppear:(BOOL)animated

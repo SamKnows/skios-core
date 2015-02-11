@@ -159,7 +159,7 @@
   });
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-  NSString *baseUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getBaseUrlString];
+  NSString *baseUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getUrlForServerQuery];
   NSURL *url = [NSURL URLWithString:baseUrlString];
   [request setURL:url];
   [request setHTTPMethod:@"GET"];
@@ -296,7 +296,7 @@
     {
         if ([xml length] > 0)
         {
-            NSString *filePath = [SKAppBehaviourDelegate schedulePath];
+            NSString *filePath = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] schedulePath];
             
             NSError *error;
             result = [xml writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
@@ -312,7 +312,7 @@
 
 - (void)populateNewSchedule
 {
-  NSString *file = [SKAppBehaviourDelegate schedulePath];
+  NSString *file = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] schedulePath];
   
   if ([[NSFileManager defaultManager] fileExistsAtPath:file])
   {

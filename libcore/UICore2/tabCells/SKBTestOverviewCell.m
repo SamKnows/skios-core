@@ -143,7 +143,7 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   UIFont* labelFontThin = [UIFont fontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 12];
   UIFont* resultFont1 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 53];
   UIFont* resultFont2 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
-  UIFont* dateTimeFont = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
+  UIFont* dateTimeFont = labelFontLight;
  
   BOOL newLayout = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsAlternativeResultsPanelLayoutRequired];
   if (newLayout) {

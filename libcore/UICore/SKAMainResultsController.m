@@ -1582,6 +1582,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 
 - (void)checkConfig
 {
+  SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
+  if ([appDelegate isActivationSupported] == NO) {
+    // This app variant doesn't support downloading configurations!
+    return;
+  }
+  
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSString *server = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_TargetServer]];
   
@@ -1639,7 +1645,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
          {
            if ([xml length] > 0)
            {
-             NSString *filePath = [SKAppBehaviourDelegate schedulePath];
+             NSString *filePath = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] schedulePath];
              
              //NSLog(@"%@", xml);
              

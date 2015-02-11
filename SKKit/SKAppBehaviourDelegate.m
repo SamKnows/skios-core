@@ -161,8 +161,10 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     } else {
       SK_ASSERT([self hasAgreed] && [self isActivated]);
     }
-    
-    if ([self hasAgreed] && [self isActivated])
+   
+    if ([self isActivationSupported] == NO) {
+      [self populateSchedule];
+    } else if ([self hasAgreed] && [self isActivated])
     {
       [self populateSchedule];
     }
@@ -197,6 +199,18 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 }
 +(NSString*)sGetConfig_Url {
   return @"/mobile/getconfig";
+}
+
+-(NSString*)getBaseUrlForUpload {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if (![prefs stringForKey:cPrefs_TargetServer]){
+    SK_ASSERT(false);
+    return @"";
+  }
+  
+  // Prepare the URL
+  NSString *baseServer = [prefs stringForKey:cPrefs_TargetServer];
+  return baseServer;
 }
 
 + (NSString*)logFile
@@ -530,20 +544,26 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 - (void)populateSchedule
 {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[SKAppBehaviourDelegate schedulePath]])
+  if ([[NSFileManager defaultManager] fileExistsAtPath:[self schedulePath]])
+  {
+    NSData *data = [NSData dataWithContentsOfFile:[self schedulePath]];
+    
+    if (data != nil)
     {
-        NSData *data = [NSData dataWithContentsOfFile:[SKAppBehaviourDelegate schedulePath]];
-        
-        if (nil != data)
-        {
-            SKScheduler *sch = [[SKScheduler alloc] initWithXmlData:data];
-            
-            if (nil != sch)
-            {
-                self.schedule = sch;
-            }
-        }
+      SKScheduler *sch = [[SKScheduler alloc] initWithXmlData:data];
+      
+      if (nil != sch)
+      {
+        self.schedule = sch;
+      }
+    } else {
+      // If activation is NOT required, then this is NOT valid!
+      SK_ASSERT([self isActivationSupported] == NO);
     }
+  } else {
+    // If activation is NOT required, then this is NOT valid!
+    SK_ASSERT([self isActivationSupported] == NO);
+  }
 }
 
 + (void)setHasAgreed:(BOOL)value
@@ -610,6 +630,12 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return [appDelegate isActivated];
 }
 
+// By default, all app variants support activation.
+// Newer apps don't require this...
+- (BOOL)isActivationSupported {
+  return YES;
+}
+
 - (BOOL)isActivated
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -632,108 +658,6 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   [self updateReachabilityStatus:reachability];
   
   return self.isConnected;
-}
-
-
-- (void)amdDoUploadLogFile
-{
-  NSString *logFile = [SKAppBehaviourDelegate logFile];
-  
-  if (![[NSFileManager defaultManager] fileExistsAtPath:logFile])
-  {
-    SK_ASSERT(false);
-    return;
-  }
-  
-  NSURL *fileUrl = [[NSURL alloc] initFileURLWithPath:logFile];
-  if (fileUrl == nil)
-  {
-    SK_ASSERT(false);
-    return;
-  }
-  
-  NSData *bodyData = [[NSData alloc] initWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
-  
-  if (bodyData == nil)
-  {
-    SK_ASSERT(false);
-    return;
-  }
-  
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  if (![prefs stringForKey:cPrefs_TargetServer]){
-    SK_ASSERT(false);
-    return;
-  }
-  
-  // Prepare the URL
-  NSString *baseServer = [prefs stringForKey:cPrefs_TargetServer];
-  NSString *urlString = [NSString stringWithFormat:@"%@%@", baseServer, [SKAppBehaviourDelegate sGetUpload_Url]];
-  
-  NSURL *url = [NSURL URLWithString:urlString];
-  
-  NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-  [request setURL:url];
-  [request setHTTPMethod:@"POST"];
-  [request setTimeoutInterval:60];
-  [request setValue:@"false" forHTTPHeaderField:@"X-Encrypted"];
-  
-  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
-  [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
-  [request setHTTPBody:bodyData];
-  
-  NSOperationQueue *idQueue = [[NSOperationQueue alloc] init];
-  [idQueue setName:@"com.samknows.uploadqueue"];
-  
-  // Send an asynchronous request
-
-  [NSURLConnection sendAsynchronousRequest:request queue:idQueue completionHandler:^(NSURLResponse *response, 
-                                                                                     NSData *data, 
-                                                                                     NSError *error) 
-  {
-    SK_ASSERT_NONSERROR(error);
-
-    if (error != nil)
-    {
-      NSLog(@"Error uploading log file : %@", error);
-      SK_ASSERT(false);
-    }
-    else
-    {
-      if (response == nil)
-      {
-        SK_ASSERT(false);
-      }
-      else
-      {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-
-        if ([httpResponse isKindOfClass:[NSHTTPURLResponse class]])
-        {
-          if (httpResponse.statusCode == 200)
-          {
-            // file upload successful.. blast out the file
-            if (![[NSFileManager defaultManager] removeItemAtPath:logFile error:NULL])
-            {
-              NSLog(@"Unable to remove log file");
-            }
-            else
-            {
-              NSLog(@"Uploaded Log File");
-            }
-          }
-          else
-          {
-            if (nil != data)
-            {
-              NSString* newStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-              NSLog(@"UploadLogFile Response : %@", newStr);
-            }
-          }
-        }
-      }
-    }
-  }];
 }
 
 #pragma mark - Upload File Creation
@@ -985,9 +909,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     NSLog(@"DEBUG: test_id = %@", testId);
   }
   
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSString *server = [prefs objectForKey:cPrefs_TargetServer];
-  
+  NSString *server = [self getBaseUrlForUpload];
   NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAppBehaviourDelegate sGetUpload_Url]];
   NSURL *url = [NSURL URLWithString:strUrl];
   
@@ -1091,6 +1013,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
          }
          else
          {
+           SK_ASSERT(false);
 #ifdef DEBUG
            if (nil != data)
            {
@@ -1181,7 +1104,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     [prefs synchronize];
 }
 
-+ (NSString *)schedulePath
+- (NSString *)schedulePath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths objectAtIndex:0];
@@ -1714,7 +1637,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return nil;
 }
 
--(NSString *) getBaseUrlString {
+-(NSString *) getUrlForServerQuery {
   SK_ASSERT(false);
   return nil;
 }

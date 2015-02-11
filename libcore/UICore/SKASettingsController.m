@@ -11,6 +11,8 @@
 
 @interface SKASettingsController ()
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *activateTableViewCell;
+
 - (void)setLabels;
 
 @end
@@ -121,6 +123,7 @@
     self.longitudeValue.text = sSKCoreGetLocalisedString(@"Unknown");
     self.dateValue.text = sSKCoreGetLocalisedString(@"Unknown");
   }
+  
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -434,6 +437,19 @@ enum {
   return [super tableView:tableView heightForHeaderInSection:section];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+  
+  if (cell == self.activateTableViewCell) {
+    // Hide the activation row?
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+      return 0;
+    }
+  }
+  
+  return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

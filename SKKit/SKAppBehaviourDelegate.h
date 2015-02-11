@@ -51,7 +51,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(void)         amdDoCreateUploadFile;
 -(void)         amdDoUpdateDataUsage:(int)bytes;
 -(int64_t)      amdGetDataUsageBytes;
--(void)         amdDoUploadLogFile;
 -(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType;
 
 @end
@@ -103,11 +102,13 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 - (BOOL)hasAgreed;
 - (BOOL)hasNewAppAgreed;
 - (BOOL)isActivated;
+- (BOOL)isActivationSupported;
 - (BOOL)getIsConnected;
+-(NSString*)getBaseUrlForUpload;
 
 + (NSString*)getUploadFilePathNeverNil;
 + (NSString*)getUploadFilePath;
-+ (NSString*)schedulePath;
+- (NSString*)schedulePath;
 
 + (void)setHasAgreed:(BOOL)value;
 + (void)setIsActivated:(BOOL)value;
@@ -137,7 +138,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 // Configuration - must be overriden by child class!
 -(NSString *) getEnterpriseId;
--(NSString *) getBaseUrlString;
+-(NSString *) getUrlForServerQuery;
 -(BOOL)       getDoesAppSupportServerBasedUploadSpeedTesting;
 
 -(BOOL) getIsFooterSupported;

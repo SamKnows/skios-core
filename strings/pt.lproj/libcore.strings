@@ -356,13 +356,13 @@
 "Device: " = "Dispositivo: "; // TODO - translate!
 "Start" = "Iniciar"; // TODO - translate!
 "Ready to run" = "Pronto para iniciar"; // TODO - translate!
-"Press the Start button" = "Precione o botão iniciar"; // TODO - translate!
+"Press the Start button" = "Pressione o botão iniciar"; // TODO - translate!
 "No connection" = "Sem conexão"; // TODO - translate!
 "Latency / Loss testing" = "Testando Latência / Perda de pacotes"; // TODO - translate!
 "Error" = "Erro"; // TODO - translate!
 "Tests executed" = "Testes executados"; // TODO - translate!
 "Tests canceled" = "Testes cancelados"; // TODO - translate!
-"Press the Start button to run again" = "Precione o botão iniciar para executar novamente"; // TODO - translate!
+"Press the Start button to run again" = "Pressione o botão iniciar para executar novamente"; // TODO - translate!
 "Target Selection" = "Escolha do servidor"; // TODO - translate!
 "Latency / Loss / Jitter" = "Latência / Perda de pacotes / Jitter"; // TODO - translate!
 "Download speed for " = "Velocidade de download para "; // TODO - translate!
