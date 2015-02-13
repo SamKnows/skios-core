@@ -1113,9 +1113,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
                      self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
                     
-                     if ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
+                     if ( ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"]) &&
+                         ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == YES)
+                       )
                      {
-                       // Only show if NETWORK!
+                       // Only show if NETWORK - and if social media sharing is enabled!
                        self.btShare.alpha = 1;
                        self.btShare.userInteractionEnabled = YES;
                      } else {

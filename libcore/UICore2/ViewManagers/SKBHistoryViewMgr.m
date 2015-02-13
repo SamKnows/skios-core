@@ -486,9 +486,12 @@ static SKATestResults* testToShareExternal = nil;
 //      networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
     } else if ([theNetworkType isEqualToString:@"mobile"]) {
       
-      // Only allow MOBILE results to be shared!
-      self.btShare.hidden = NO;
-      [self bringSubviewToFront:self.btShare];
+      // Only allow MOBILE results to be shared - provided social media sharing is enabled!
+      
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == YES) {
+        self.btShare.hidden = NO;
+        [self bringSubviewToFront:self.btShare];
+      }
     }
   }
 
