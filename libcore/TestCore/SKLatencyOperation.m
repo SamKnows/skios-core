@@ -984,7 +984,11 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
                port:(UInt16)port
 {
   NSDate *now = [NSDate date];
-  [self skDebug:[NSString stringWithFormat:@"%s %ld : DID RECEIVE PACKET", __FUNCTION__, tag]];
+#ifdef DEBUG
+  if (isClosestTargetTest) {
+    NSLog(@"DEBUG: onUdpSocket - CLOSEST TARGET TEST: DID RECEIVE PACKET for host (%@)", host);
+  }
+#endif // DEBUG
   
   [self addEndTimes:tag TheDate:now];
   [self computeLatency:tag];
@@ -1030,7 +1034,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error
 {
 #ifdef DEBUG
-  NSLog(@"DEBUG: - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error, DID NOT RECEIVE PACKET : %@", [error localizedDescription]);
+  NSLog(@"DEBUG: - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error, DID NOT RECEIVE PACKET, error:(%@)", [error localizedDescription]);
 #endif // DEBUG
   
   if ([self isCancelled])

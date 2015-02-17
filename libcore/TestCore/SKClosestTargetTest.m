@@ -543,8 +543,9 @@ const int cQueryCountPerServer = 3;
     threadCounter = threadCounter + 1;
     
     //###HG
-      if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidFinishAnotherTarget:withLatency:withBest:)])
-    [self.closestTargetDelegate ctdDidFinishAnotherTarget:(int)threadId_ withLatency:lowestLatency withBest:(int)lowestLatencyThreadId];
+    if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidFinishAnotherTarget:withLatency:withBest:)]) {
+      [self.closestTargetDelegate ctdDidFinishAnotherTarget:(int)threadId_ withLatency:lowestLatency withBest:(int)lowestLatencyThreadId];
+    }
 
     [self checkIfDone:threadCounter];
   }
