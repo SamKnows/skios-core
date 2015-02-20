@@ -1018,6 +1018,15 @@ static NSUInteger s1YearButtonIndex = 0;
         if (sbReloadTableAfterBack == YES) {
           sbReloadTableAfterBack = NO;
           [self loadData];
+        } else {
+          // Work around a display bug in iOS 7, where the separators might disappear!
+          // http://stackoverflow.com/questions/18924589/uitableviewcell-separator-disappearing-in-ios7
+          // http://stackoverflow.com/questions/3339722/how-to-check-ios-version
+          if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+            // This is iOS 7 or earlier...
+            self.tvTests.separatorStyle = UITableViewCellSeparatorStyleNone;
+            self.tvTests.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+          }
         }
       }];
     }];

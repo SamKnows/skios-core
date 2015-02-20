@@ -1793,6 +1793,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController {
 }
 
+-(BOOL) getIsExportResultsSupported {
+  return YES;
+}
+
 -(BOOL) getIsBestTargetDisplaySupported {
   return YES;
 }

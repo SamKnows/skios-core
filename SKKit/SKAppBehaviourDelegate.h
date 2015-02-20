@@ -201,6 +201,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;
 -(BOOL) getIsBestTargetDisplaySupported;
+-(BOOL) getIsExportResultsSupported;
 
 -(NSArray*)getDownloadSixSegmentMaxValues;
 -(NSArray*)getUploadSixSegmentMaxValues;

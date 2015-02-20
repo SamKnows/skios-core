@@ -11,7 +11,9 @@
 
 @interface SKASettingsController ()
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *aboutOrVersionTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *activateTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *exportResultsTableViewCell;
 
 - (void)setLabels;
 
@@ -37,14 +39,21 @@
   
   // Added for new app
   self.exportResultsLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
-  self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
-  self.lblAboutCaption.text = sSKCoreGetLocalisedString(@"About_Version");
+  self.lblAboutCaption.text = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
   NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
   NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
   NSString *displayVersion = [NSString stringWithFormat:@"%@.%@", appVersion, bundleVersion];
   self.lblAboutVersion.text = displayVersion;
   
-  self.lblAboutWebServer.text =sSKCoreGetLocalisedString(@"About_Web_Server");
+  NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
+  if (theUrlString != nil) {
+    self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"About_Web_Server");
+    displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
+    self.lblAboutCaption.text = displayVersion;
+    self.aboutOrVersionTableViewCell.accessoryType = UITableViewCellAccessoryNone;
+  } else {
+    self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
+  }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -363,20 +372,24 @@ enum {
     //}
     [self SKSafePerformSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
   } else if ([cell.reuseIdentifier isEqualToString:@"terms_and_conditions"]) {
+    SK_ASSERT(false);
     [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
   } else if ([cell.reuseIdentifier isEqualToString:@"export_results"]) {
     UIViewController *fromThisVC = self;
     id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
     
     [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
-  } else if ([cell.reuseIdentifier isEqualToString:@"about_url"]) {
+  } else if ([cell.reuseIdentifier isEqualToString:@"terms_or_about_url"]) {
     
     NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
     if (theUrlString != nil) {
       // View a specific URL!
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theUrlString]];
     } else {
-      // Just show the default "About" screen.
+      [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
+    }
+  } else if (cell == self.aboutOrVersionTableViewCell) {
+    if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator) {
       [self performSegueWithIdentifier:@"segueFromSettingsToAbout" sender:self];
     }
   }
@@ -444,6 +457,11 @@ enum {
   if (cell == self.activateTableViewCell) {
     // Hide the activation row?
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+      return 0;
+    }
+  } else if (cell == self.exportResultsTableViewCell) {
+    // Hide the export results row
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
       return 0;
     }
   }
