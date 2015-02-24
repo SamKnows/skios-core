@@ -9,6 +9,7 @@
 #import "SKBHistoryViewMgr.h"
 #import "SKTestResults.h"
 #import "SKBTestResultsSharer.h"
+#import "SKBHistoryViewController.h"
 
 #define C_SHARE_BUTTON_HEIGHT   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
 #define C_SHARE_BUTTON_WIDTH   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
@@ -30,7 +31,7 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)initialiseViewOnMasterViewController:(UIViewController*)masterViewController_
+- (void)initialiseViewOnMasterViewController:(SKBHistoryViewController*)masterViewController_
 {
   self.mpSharer = [[SKBTestResultsSharer alloc] initWithViewController:masterViewController_];
   
@@ -375,6 +376,16 @@ static NSUInteger sAllButtonIndex = 0;
   //    arrTestsList = [SKDatabase getTestDataForNetworkType:[SKAppBehaviourDelegate getNetworkTypeString]];
   arrTestsList = [SKDatabase getTestDataForNetworkType:[self getSelectedNetworkWord] afterDate:nil];
   [self.tvTests reloadData];
+
+  // Show or hide the label behind!
+  [self.masterViewController childTableViewRowsUpdated:arrTestsList.count];
+  if (arrTestsList.count == 0) {
+    // Reveal the label behind!
+    self.tvTests.hidden = YES;
+  } else {
+    // Hide the label behind!
+    self.tvTests.hidden = NO;
+  }
   
   return;
 }

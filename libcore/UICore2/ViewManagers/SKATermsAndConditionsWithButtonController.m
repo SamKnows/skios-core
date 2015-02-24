@@ -34,6 +34,8 @@
   [self.webView.scrollView setBounces:NO];
   [self.webView setDataDetectorTypes:UIDataDetectorTypeNone];
   [self.webView loadHTMLString:html baseURL:[[NSBundle mainBundle] bundleURL]];
+  
+  self.webView.scalesPageToFit = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getCanUserZoomTheTAndCView];
 }
 
 - (void)moveToActivationOrMainScreen

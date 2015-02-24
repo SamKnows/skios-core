@@ -141,7 +141,7 @@
 
 - (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate {}
 
-- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+- (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer {}
 #pragma mark - SKHttpTestDelegate (end)
 

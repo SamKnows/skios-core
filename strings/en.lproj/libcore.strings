@@ -384,3 +384,5 @@
 // Shown in the run screen.
 "Download testing" = "Download testing";
 "Upload testing" = "Upload testing";
+
+"no_archived_results_yet" = "There are no results yet";

@@ -22,6 +22,9 @@
   [self.webView.scrollView setBounces:NO];
   [self.webView setDataDetectorTypes:UIDataDetectorTypeNone];
   [self.webView loadHTMLString:html baseURL:[[NSBundle mainBundle] bundleURL]];
+  
+  // Enable zoom support!
+  self.webView.scalesPageToFit = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getCanUserZoomTheTAndCView];
 }
 
 @end

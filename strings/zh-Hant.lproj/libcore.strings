@@ -384,3 +384,5 @@
 // Shown in the run screen.
 "Download testing" = "下載測試中";
 "Upload testing" = "上載測試中";
+
+"no_archived_results_yet" = "還未有結果";

@@ -156,7 +156,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 - (void)todDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
                           transferBytes:(NSUInteger)transferBytes
                              totalBytes:(NSUInteger)totalBytes
-       ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
+       ForceThisBitsPerSecondFromServer:(double)bitrateMbps1024Based // If > 0, use this instead!
                                threadId:(NSUInteger)threadId;
 
 // End of what was once a delegate
@@ -177,7 +177,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 
 - (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate;
 
-- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+- (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer;
 //(SKTimeIntervalMicroseconds)transferTimeMicroseconds
 //              transferBytes:(NSUInteger)transferBytes

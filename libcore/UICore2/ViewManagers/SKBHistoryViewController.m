@@ -20,6 +20,8 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   
+  self.tv_warning_no_results_yet.text = sSKCoreGetLocalisedString(@"no_archived_results_yet");
+  
   [self.historyManagerView initialiseViewOnMasterViewController:self];
   [self.historyManagerView setColoursAndShowHideElements];
   
@@ -39,6 +41,15 @@
   [[NSNotificationCenter defaultCenter]
    postNotificationName:@"TestListNeedsUpdate"
    object:self];
+}
+
+-(void) childTableViewRowsUpdated:(NSInteger)rowCount {
+  
+  if (rowCount == 0) {
+    self.tv_warning_no_results_yet.hidden = NO;
+  } else {
+    self.tv_warning_no_results_yet.hidden = YES;
+  }
 }
 
 @end

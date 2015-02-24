@@ -384,3 +384,5 @@
 // Column headings, shown at top of summary view in the new app.
 "Average" = "Média";
 "Best" = "Melhor";
+
+"no_archived_results_yet" = "Sem resultados até o momento";

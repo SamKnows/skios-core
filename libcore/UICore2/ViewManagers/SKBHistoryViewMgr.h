@@ -14,6 +14,8 @@
 
 @class SKATestResults;
 
+@class SKBHistoryViewController;
+
 
 
 @interface SKBHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
@@ -37,7 +39,7 @@
 }
 
 @property (nonatomic, weak) UIView* masterView;
-@property (nonatomic, weak) UIViewController* masterViewController;
+@property (nonatomic, weak) SKBHistoryViewController* masterViewController;
 
 @property (weak, nonatomic) IBOutlet UITableView *tvTests;
 @property (weak, nonatomic) IBOutlet UIButton *btBack;
@@ -52,7 +54,7 @@
 - (IBAction)B_Back:(id)sender;
 - (IBAction)B_Share:(id)sender;
 
--(void)initialiseViewOnMasterViewController:(UIViewController*)masterViewController_;
+-(void)initialiseViewOnMasterViewController:(SKBHistoryViewController*)masterViewController_;
 -(void)setColoursAndShowHideElements;
 -(void)performLayout;
 

@@ -777,7 +777,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   
   __block bool bGotValidResponseFromServer = false;
   __block bool bReadThreadIsRunning = true;
-  __block double bitrateMpbs1024Based = -1.0;
+  __block double bitrateMbps1024Based = -1.0;
   
   // Create a read thread, that starts monitor for a response from the server.
   MyHttpReadThread *readThread = nil;
@@ -887,9 +887,9 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 #ifdef DEBUG
           NSLog(@"DEBUG: BYTES CALCULATED FROM SERVER, PER SECOND = %g", finalBytesPerSecond);
 #endif // DEBUG
-          bitrateMpbs1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:finalBytesPerSecond];
+          bitrateMbps1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:finalBytesPerSecond];
 #ifdef DEBUG
-          NSLog(@"DEBUG: bitsPerSecond CALCULATED FROM SERVER = %@", [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMpbs1024Based]);
+          NSLog(@"DEBUG: bitsPerSecond CALCULATED FROM SERVER = %@", [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMbps1024Based]);
 #endif // DEBUG
         }
         
@@ -1019,19 +1019,19 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   if (bGotValidResponseFromServer == true) {
     // BEST RESULT is from the SERVER!
 #ifdef DEBUG
-    NSLog(@"DEBUG: Best result is from the SERVER, bitrateMpbs1024Based=%d", (int)bitrateMpbs1024Based);
+    NSLog(@"DEBUG: Best result is from the SERVER, bitrateMbps1024Based=%d", (int)bitrateMbps1024Based);
 #endif // DEBUG
-    SK_ASSERT(bitrateMpbs1024Based > 0);
-    [self doSendtodDidCompleteTransferOperation:0 transferBytes:0 totalBytes:0 ForceThisBitsPerSecondFromServer:bitrateMpbs1024Based threadId:threadId];
+    SK_ASSERT(bitrateMbps1024Based > 0);
+    [self doSendtodDidCompleteTransferOperation:0 transferBytes:0 totalBytes:0 ForceThisBitsPerSecondFromServer:bitrateMbps1024Based threadId:threadId];
   } else {
     // Best result is from the built-in measurement.
-    if (bitrateMpbs1024Based == -1) {
+    if (bitrateMbps1024Based == -1) {
       double bytesPerSecondRealTimeUpload = [mpParentHttpTest getBytesPerSecondRealTimeUpload];
-      bitrateMpbs1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:bytesPerSecondRealTimeUpload];
+      bitrateMbps1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:bytesPerSecondRealTimeUpload];
     }
-    SK_ASSERT(bitrateMpbs1024Based >= 0);
+    SK_ASSERT(bitrateMbps1024Based >= 0);
 #ifdef DEBUG
-    NSLog(@"DEBUG: Best result is from the BUILT-IN MEASUREMENT, bitrateMpbs1024Based=%d", (int)bitrateMpbs1024Based);
+    NSLog(@"DEBUG: Best result is from the BUILT-IN MEASUREMENT, bitrateMbps1024Based=%d", (int)bitrateMbps1024Based);
 #endif // DEBUG
     
     int theTransferBytes;
@@ -1147,13 +1147,13 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 - (void)doSendtodDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTime_
                                 transferBytes:(NSUInteger)transferBytes_
                                    totalBytes:(NSUInteger)totalBytes_
-       ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
+       ForceThisBitsPerSecondFromServer:(double)bitrateMbps1024Based // If > 0, use this instead!
                                      threadId:(NSUInteger)threadId_
 {
   [self.mpParentHttpTest todDidCompleteTransferOperation:transferTime_
                                                     transferBytes:transferBytes_
                                                        totalBytes:totalBytes_
-                                 ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
+                                 ForceThisBitsPerSecondFromServer:(double)bitrateMbps1024Based // If > 0, use this instead!
                                                          threadId:threadId_];
 }
 

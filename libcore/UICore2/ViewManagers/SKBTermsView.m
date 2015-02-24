@@ -19,6 +19,7 @@
   self.wvWebView.delegate = self;
   self.wvWebView.backgroundColor = [UIColor clearColor];
   self.wvWebView.opaque = NO;
+  self.wvWebView.scalesPageToFit = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getCanUserZoomTheTAndCView];
   
   [self loadHtml];
 }
@@ -72,12 +73,13 @@
   //        return YES;
   //    }
   //
-  //    if ( inType == UIWebViewNavigationTypeLinkClicked ) {
-  //        [[UIApplication sharedApplication] openURL:[inRequest URL]];
-  //        return NO;
-  //    }
-  //    
-  //    _WV_WebView.alpha = 0.0;
+  
+  // Do  NOT handle this link "in situ" - open in Safari instead!
+  if ( inType == UIWebViewNavigationTypeLinkClicked ) {
+    [[UIApplication sharedApplication] openURL:[inRequest URL]];
+    return NO;
+  }
+
   return YES;
 }
 

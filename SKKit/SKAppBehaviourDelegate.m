@@ -1698,6 +1698,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+-(BOOL) getCanUserZoomTheTAndCView {
+  return NO;
+}
+
 // The New app might show T&C at start, but this is handled differently to the way the old app does it.
 -(BOOL) getNewAppShowInitialTermsAndConditions {
   return NO;

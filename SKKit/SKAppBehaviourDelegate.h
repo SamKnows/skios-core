@@ -164,8 +164,9 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // The New app might show T&C at start, but this is handled differently to the way the old app does it.
 // Note that for the NewApp, the showInitialTermsAndConditions *must* return NO.
 -(BOOL) getIsThisTheNewApp;
+-(BOOL) getCanUserZoomTheTAndCView;
 -(BOOL) getNewAppShowInitialTermsAndConditions;
-  
+
 // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants;
 // the default is NO.
 -(BOOL) getShouldUploadDeviceId;

@@ -119,7 +119,7 @@
   
 }
                       
-- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+- (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer {
   // TODO
 }
@@ -181,7 +181,7 @@
   
 }
 
-- (void)htdDidCompleteHttpTest:(double)bitrateMpbs1024Based
+- (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer {
   // TODO
 }

@@ -260,7 +260,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   float total = 0;
   SKTimeIntervalMicroseconds transferTime = 0;
   // Actually, the total transfer bytes are stored at the HttpTest level, now!
-  int totalTransferBytes = self.mTransferBytes;
+//  int totalTransferBytes = self.mTransferBytes;
   
   //int totalTransferBytes = 0;
   @synchronized(arrTransferOperations)
@@ -272,20 +272,22 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       if (opStatus.transferTimeMicroseconds > transferTime) transferTime = opStatus.transferTimeMicroseconds;
     }
   }
+//  
+//  double bitrateMbps1024Based = 0;
+//  
+//  if (transferTime > 0)
+//  {
+//    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
+//  }
+//  
+//  if (self.isDownstream == NO)
+//  {
+//    //Upload test - correct the first huge readings
+//    if (transferTime < C_MAX_UPLOAD_FALSE_TIME && bitrateMbps1024Based > C_MAX_UPLOAD_SPEED)
+//      bitrateMbps1024Based = transferTime;
+//  }
   
-  double bitrateMbps1024Based = 0;
-  
-  if (transferTime > 0)
-  {
-    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
-  }
-  
-  if (self.isDownstream == NO)
-  {
-    //Upload test - correct the first huge readings
-    if (transferTime < C_MAX_UPLOAD_FALSE_TIME && bitrateMbps1024Based > C_MAX_UPLOAD_SPEED)
-      bitrateMbps1024Based = transferTime;
-  }
+  double bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
   
   [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) currentBitrate:bitrateMbps1024Based];
 }
@@ -538,15 +540,15 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 - (void)todDidCompleteTransferOperation:(SKTimeIntervalMicroseconds)transferTimeMicroseconds
               transferBytes:(NSUInteger)transferBytes
                  totalBytes:(NSUInteger)totalBytes
-       ForceThisBitsPerSecondFromServer:(double)bitrateMpbs1024Based // If > 0, use this instead!
+       ForceThisBitsPerSecondFromServer:(double)bitrateMbps1024Based // If > 0, use this instead!
                    threadId:(NSUInteger)threadId
 {
   // This block MUST be synchronized, otherwise the multiple callbacks can all interfere with each other!
   @synchronized(self) {
     if ([self isMultiThreaded])
     {
-      if (bitrateMpbs1024Based > 0.0) {
-        [self.mServerUploadTestBitrates addObject:[NSNumber numberWithDouble:bitrateMpbs1024Based]];
+      if (bitrateMbps1024Based > 0.0) {
+        [self.mServerUploadTestBitrates addObject:[NSNumber numberWithDouble:bitrateMbps1024Based]];
       }
       
       multiThreadCount += 1;
@@ -565,7 +567,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       {
         @synchronized(self) {
           if (self.isDownstream == NO && testTransferBytes_New > 0 && self.testTransferTimeFirstBytesAt != nil) {
-            if (bitrateMpbs1024Based < 0.0) {
+            if (bitrateMbps1024Based < 0.0) {
 #ifdef DEBUG
               NSLog(@"DEBUG: We have NO TIMES FROM THE SERVER. So, use our best guess of locally calculated upload time.");
 #endif // DEBUG
@@ -602,18 +604,18 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
           // Calculate average result from server!
           bResultIsFromServer = YES;
           
-          double totalBitrateMpbs1024Based = 0.0;
+          double totalbitrateMbps1024Based = 0.0;
           
           for (NSNumber *number in self.mServerUploadTestBitrates) {
-            totalBitrateMpbs1024Based += number.doubleValue;
+            totalbitrateMbps1024Based += number.doubleValue;
           }
           
-          bitrateMpbs1024Based = totalBitrateMpbs1024Based / (double)self.mServerUploadTestBitrates.count;
+          bitrateMbps1024Based = totalbitrateMbps1024Based / (double)self.mServerUploadTestBitrates.count;
           
         } else {
           // Use our best guess from the client, instead!
           bResultIsFromServer = NO;
-          bitrateMpbs1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
+          bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
         }
         
         if ((self.isDownstream == NO) && [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDoesAppSupportServerBasedUploadSpeedTesting]) {
@@ -621,10 +623,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
           
         } else {
           // Downstream, or old-style upload
-          bitrateMpbs1024Based = [self getSpeedBitrateMpbs1024Based_ForDownloadOrLocalUpload];
+          bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
         }
         
-        [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMpbs1024Based
+        [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
                                         ResultIsFromServer:bResultIsFromServer];
       }
     }
@@ -641,29 +643,29 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       [self storeOutputResults];
       
       BOOL bResultIsFromServer;
-      if (bitrateMpbs1024Based > 0.0) {
+      if (bitrateMbps1024Based > 0.0) {
         // From server!
         bResultIsFromServer = YES;
       } else {
         // Use our best guess from the client, instead!
         bResultIsFromServer = NO;
-        bitrateMpbs1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
+        bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:transferBytes];
       }
       
       if ((self.isDownstream == NO) && [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDoesAppSupportServerBasedUploadSpeedTesting]) {
         // New-style upload stream measurement!
       } else {
         // Downstream, or old-style upload
-        bitrateMpbs1024Based = [self getSpeedBitrateMpbs1024Based_ForDownloadOrLocalUpload];
+        bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
       }
       
-      [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMpbs1024Based
+      [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
                                       ResultIsFromServer:bResultIsFromServer];
     }
   }
 }
 
--(double)getSpeedBitrateMpbs1024Based_ForDownloadOrLocalUpload {
+-(double)getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload {
   double total = 0;
   SKTimeIntervalMicroseconds transferTime = 0;
   
@@ -681,14 +683,14 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   }
  
   
-  double bitrateMpbs1024Based = 0;
+  double bitrateMbps1024Based = 0;
   
   if (transferTime > 0)
   {
-    bitrateMpbs1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
+    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
   }
   
-  return bitrateMpbs1024Based;
+  return bitrateMbps1024Based;
 }
 // ---------------------------------------------------------------------------------------------------------
 

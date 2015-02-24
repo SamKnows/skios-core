@@ -39,6 +39,8 @@
   
   [self setWebViewContext];
   [self setWebViewTitleLabel];
+  
+  self.webView.scalesPageToFit = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getCanUserZoomTheTAndCView];
 }
 
 
