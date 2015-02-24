@@ -288,6 +288,14 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 //  }
   
   double bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
+
+#ifdef DEBUG
+  if (isDownstream == NO) {
+    // Upload test!
+    // Check for unexpectedly large results...
+    SK_ASSERT (bitrateMbps1024Based <= 100);
+  }
+#endif // DEBUG
   
   [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) currentBitrate:bitrateMbps1024Based];
 }
@@ -520,6 +528,12 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   }
   
   // TODO - ENABLE THIS TO DEBUG TRACK PROGRESS! NSLog(@"Transfer time in Milliseconds: %f, PROGRESS=%g", transferTime/1000.0F, progress);
+
+//#ifdef DEBUG
+//  if (isDownstream == NO) {
+//    NSLog(@"todDidTransfer - upload test, progress = %d", (int)progress);
+// }
+//#endif // DEBUG
   
   [self computeMultiThreadProgress];
 }
@@ -667,7 +681,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 -(double)getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload {
   double total = 0;
-  SKTimeIntervalMicroseconds transferTime = 0;
+  SKTimeIntervalMicroseconds transferTimeMicroseconds = 0;
   
   // Actually, the total transfer bytes are stored at the HttpTest level, now!
   int totalTransferBytes = self.mTransferBytes;
@@ -678,16 +692,18 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       total += opStatus.progress;
       //totalTransferBytes += opStatus.totalTransferBytes;
       
-      if (opStatus.transferTimeMicroseconds > transferTime) transferTime = opStatus.transferTimeMicroseconds;
+      if (opStatus.transferTimeMicroseconds > transferTimeMicroseconds) {
+        transferTimeMicroseconds = opStatus.transferTimeMicroseconds;
+      }
     }
   }
  
   
   double bitrateMbps1024Based = 0;
   
-  if (transferTime > 0)
+  if (transferTimeMicroseconds > 1000000.0) // At least a second!
   {
-    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
+    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:totalTransferBytes];
   }
   
   return bitrateMbps1024Based;
