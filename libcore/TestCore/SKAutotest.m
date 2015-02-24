@@ -1061,10 +1061,10 @@ static BOOL sbTestIsRunning = NO;
   
   [location setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
   
-  [location setObject:[NSString stringWithFormat:@"%f", [self.autotestManagerDelegate amdGetLatitude]]
+  [location setObject:[NSString localizedStringWithFormat:@"%f", [self.autotestManagerDelegate amdGetLatitude]]
                forKey:@"latitude"];
   
-  [location setObject:[NSString stringWithFormat:@"%f", [self.autotestManagerDelegate amdGetLongitude]]
+  [location setObject:[NSString localizedStringWithFormat:@"%f", [self.autotestManagerDelegate amdGetLongitude]]
                forKey:@"longitude"];
   
   [location setObject:[SKGlobalMethods getNetworkOrGps]
@@ -1156,10 +1156,10 @@ static BOOL sbTestIsRunning = NO;
   
   [lastLocation setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
   
-  [lastLocation setObject:[NSString stringWithFormat:@"%f", latitude]
+  [lastLocation setObject:[NSString localizedStringWithFormat:@"%f", latitude]
                    forKey:@"latitude"];
   
-  [lastLocation setObject:[NSString stringWithFormat:@"%f", longitude]
+  [lastLocation setObject:[NSString localizedStringWithFormat:@"%f", longitude]
                    forKey:@"longitude"];
   
   [lastLocation setObject:[SKGlobalMethods getNetworkOrGps]

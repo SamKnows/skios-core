@@ -969,7 +969,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     self.timeOfLastUIUpdate = CACurrentMediaTime();
     
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.00f", latencyAVG]];
+      [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.00f", latencyAVG]];
       [self.tmActivityIndicator setAngleByValue:latencyAVG];
       
       [self setProgressView:0];
@@ -983,7 +983,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 {
   dispatch_async(dispatch_get_main_queue(),
                  ^{
-                   [self.tmActivityIndicator setCenterTextWithAnimation:@"0.00"];
+                   [self.tmActivityIndicator setCenterTextWithAnimation: @""];
+                   //[NSString localizedStringWithFormat:@"%0.02f", 0.00]];
                    
                    if (isDownstream)
                    {
@@ -1022,10 +1023,21 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
                    if (CACurrentMediaTime() - self.timeOfLastUIUpdate > C_GUI_UPDATE_INTERVAL)
                    {
                      self.timeOfLastUIUpdate = CACurrentMediaTime();
-                     
-                     [self.tmActivityIndicator setCenterText:[NSString stringWithFormat:@"%.02f", bitrate1024Based]];
-                     
-                     [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
+                    
+                     //if ((isDownstream == NO) && (progress == 0) && (bitrate1024Based == 0)) {
+                     if ((isDownstream == NO) && (progress == 0 && bitrate1024Based == 0)) {
+                         NSLog(@"DEBUG: Remove me!");
+                     }
+
+                     if ((progress == 0) && (bitrate1024Based == 0)) {
+                       // IGNORE this first, dummy event, which means nothing - we don't want 0.00 to be displayed
+                       // too soon for upload tests!
+                     } else {
+                       
+                       [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate1024Based]];
+                       
+                       [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
+                     }
                      
                      [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
 #ifdef DEBUG

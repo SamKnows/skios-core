@@ -470,9 +470,9 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
 //  number_ = 1999.978F;
 //  number_ = 0.978F;
 //  number_ = 10.978F;
-  if (number_ < 10) return [NSString stringWithFormat:@"%.02f", number_];
-  else if (number_ < 100) return [NSString stringWithFormat:@"%.01f", number_];
-  else return [NSString stringWithFormat:@"%.00f", number_];
+  if (number_ < 10) return [NSString localizedStringWithFormat:@"%.02f", number_];
+  else if (number_ < 100) return [NSString localizedStringWithFormat:@"%.01f", number_];
+  else return [NSString localizedStringWithFormat:@"%.00f", number_];
 }
 
 @end

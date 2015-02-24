@@ -639,9 +639,9 @@
     double fractionalPart = doubleValue - ((double)value.integerValue);
     if (fractionalPart > 0.4) {
       // Something like 0.5, 1.5 etc.
-      [self.arrLabels addObject:[NSString stringWithFormat:@"%.1f", doubleValue]];
+      [self.arrLabels addObject:[NSString localizedStringWithFormat:@"%.1f", doubleValue]];
     } else {
-      [self.arrLabels addObject:[NSString stringWithFormat:@"%ld", (long)value.integerValue]];
+      [self.arrLabels addObject:[NSString localizedStringWithFormat:@"%ld", (long)value.integerValue]];
     }
   }
   

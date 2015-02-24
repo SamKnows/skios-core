@@ -423,8 +423,8 @@ static NSUInteger s1YearButtonIndex = 0;
   
   if (latencyCNT > 0)
   {
-    self.lLatencyAvg = [NSString stringWithFormat:@"%.0f", latencySUM / latencyCNT];
-    self.lLatencyBst = [NSString stringWithFormat:@"%.0f", latencyBEST];
+    self.lLatencyAvg = [NSString localizedStringWithFormat:@"%.0f", latencySUM / latencyCNT];
+    self.lLatencyBst = [NSString localizedStringWithFormat:@"%.0f", latencyBEST];
   }
   else
   {
@@ -434,8 +434,8 @@ static NSUInteger s1YearButtonIndex = 0;
   
   if (lossCNT > 0)
   {
-    self.lLossAvg = [NSString stringWithFormat:@"%.0f", lossSUM / lossCNT];
-    self.lLossBst = [NSString stringWithFormat:@"%.0f", lossBEST];
+    self.lLossAvg = [NSString localizedStringWithFormat:@"%.0f", lossSUM / lossCNT];
+    self.lLossBst = [NSString localizedStringWithFormat:@"%.0f", lossBEST];
   }
   else
   {
@@ -445,8 +445,8 @@ static NSUInteger s1YearButtonIndex = 0;
   
   if (jitterCNT > 0)
   {
-    self.lJitterAvg = [NSString stringWithFormat:@"%.0f", jitterSUM / jitterCNT];
-    self.lJitterBst = [NSString stringWithFormat:@"%.0f", jitterBEST];
+    self.lJitterAvg = [NSString localizedStringWithFormat:@"%.0f", jitterSUM / jitterCNT];
+    self.lJitterBst = [NSString localizedStringWithFormat:@"%.0f", jitterBEST];
   }
   else
   {

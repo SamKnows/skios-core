@@ -288,16 +288,19 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 //  }
   
   double bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
-
-#ifdef DEBUG
-  if (isDownstream == NO) {
-    // Upload test!
-    // Check for unexpectedly large results...
-    SK_ASSERT (bitrateMbps1024Based <= 100);
-  }
-#endif // DEBUG
   
-  [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) currentBitrate:bitrateMbps1024Based];
+  if (bitrateMbps1024Based >= 0.0) {
+    
+#ifdef DEBUG
+    if (isDownstream == NO) {
+      // Upload test!
+      // Check for unexpectedly large results...
+      SK_ASSERT (bitrateMbps1024Based <= 100);
+    }
+#endif // DEBUG
+    
+    [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) currentBitrate:bitrateMbps1024Based];
+  }
 }
 
 //##HG
@@ -637,11 +640,16 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
           
         } else {
           // Downstream, or old-style upload
-          bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
+          // Returns -1.0 if invalid!
+          double tryThis = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
+          if (tryThis >= 0.0) {
+            
+            bitrateMbps1024Based = tryThis;
+          }
         }
-        
+       
         [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
-                                        ResultIsFromServer:bResultIsFromServer];
+                                          ResultIsFromServer:bResultIsFromServer];
       }
     }
     else
@@ -670,18 +678,24 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         // New-style upload stream measurement!
       } else {
         // Downstream, or old-style upload
-        bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
+        // returns -1.0 if invalid.
+        double tryThis = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
+        if (tryThis >= 0.0) {
+          
+          bitrateMbps1024Based = tryThis;
+        }
       }
-      
+     
       [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
-                                      ResultIsFromServer:bResultIsFromServer];
+                                        ResultIsFromServer:bResultIsFromServer];
     }
   }
 }
 
+// RETURNS -1 if value returned is NOT YET VALID!
 -(double)getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload {
-  double total = 0;
-  SKTimeIntervalMicroseconds transferTimeMicroseconds = 0;
+  double total = 0.0;
+  SKTimeIntervalMicroseconds transferTimeMicroseconds = 0.0;
   
   // Actually, the total transfer bytes are stored at the HttpTest level, now!
   int totalTransferBytes = self.mTransferBytes;
@@ -699,12 +713,14 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   }
  
   
-  double bitrateMbps1024Based = 0;
   
-  if (transferTimeMicroseconds > 1000000.0) // At least a second!
+  if (transferTimeMicroseconds < 1000000.0) // At least a second!
   {
-    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:totalTransferBytes];
+    // Not yet possible to return a valid result!
+    return -1.0;
   }
+  
+  double bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:totalTransferBytes];
   
   return bitrateMbps1024Based;
 }
