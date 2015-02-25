@@ -7,6 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SKATermsAndConditionsWithButtonController : UIViewController
+@interface SKATermsAndConditionsWithButtonController : UIViewController<UIWebViewDelegate>
 
 @end

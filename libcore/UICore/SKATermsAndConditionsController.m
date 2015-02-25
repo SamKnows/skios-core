@@ -39,7 +39,8 @@
   
   [self setWebViewContext];
   [self setWebViewTitleLabel];
-  
+ 
+  self.webView.delegate = self;
   self.webView.scalesPageToFit = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getCanUserZoomTheTAndCView];
 }
 
@@ -253,6 +254,12 @@
       }
     }
     
+    return NO;
+  }
+  
+  // Do  NOT handle this link "in situ" - open in Safari instead!
+  if ( navigationType == UIWebViewNavigationTypeLinkClicked ) {
+    [[UIApplication sharedApplication] openURL:[request URL]];
     return NO;
   }
   

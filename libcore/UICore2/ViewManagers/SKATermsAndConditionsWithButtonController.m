@@ -31,6 +31,7 @@
   NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:@"htm"];
   NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
   
+  self.webView.delegate = self;
   [self.webView.scrollView setBounces:NO];
   [self.webView setDataDetectorTypes:UIDataDetectorTypeNone];
   [self.webView loadHTMLString:html baseURL:[[NSBundle mainBundle] bundleURL]];
@@ -132,6 +133,31 @@
     }
   }
   
+}
+
+#pragma mark - UIWebViewDelegate methods
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+  // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+  // Do  NOT handle this link "in situ" - open in Safari instead!
+  if ( navigationType == UIWebViewNavigationTypeLinkClicked ) {
+    [[UIApplication sharedApplication] openURL:[request URL]];
+    return NO;
+  }
+  
+  return YES;
 }
 
 @end

@@ -348,37 +348,37 @@
 //
 // Strings added for the new app!
 //
-"Results" = "Resultados"; // TODO - translate!
-"Run" = "Executar"; // TODO - translate!
-"Settings" = "Ajustes"; // TODO - translate!
-"Summary" = "Resumo"; // TODO - translate!
-"Target" = "Servidor"; // TODO - translate!
-"Device: " = "Dispositivo: "; // TODO - translate!
-"Start" = "Iniciar"; // TODO - translate!
-"Ready to run" = "Pronto para iniciar"; // TODO - translate!
-"Press the Start button" = "Pressione o botão iniciar"; // TODO - translate!
-"No connection" = "Sem conexão"; // TODO - translate!
-"Latency / Loss testing" = "Testando Latência / Perda de pacotes"; // TODO - translate!
-"Error" = "Erro"; // TODO - translate!
-"Tests executed" = "Testes executados"; // TODO - translate!
-"Tests canceled" = "Testes cancelados"; // TODO - translate!
-"Press the Start button to run again" = "Pressione o botão iniciar para executar novamente"; // TODO - translate!
-"Target Selection" = "Escolha do servidor"; // TODO - translate!
-"Latency / Loss / Jitter" = "Latência / Perda de pacotes / Jitter"; // TODO - translate!
-"Download speed for " = "Velocidade de download para "; // TODO - translate!
-"Upload speed for " = "Velocidade de upload para "; // TODO - translate!
-"Latency for " = "Latência para "; // TODO - translate!
-"Loss for " = "Perda de pacotes para "; // TODO - translate!
-"Jitter for " = "Jitter para "; // TODO - translate!
+"Results" = "Resultados";
+"Run" = "Executar";
+"Settings" = "Ajustes";
+"Summary" = "Resumo";
+"Target" = "Servidor";
+"Device: " = "Dispositivo: ";
+"Start" = "Iniciar";
+"Ready to run" = "Pronto para iniciar";
+"Press the Start button" = "Pressione o botão iniciar";
+"No connection" = "Sem conexão";
+"Latency / Loss testing" = "Testando Latência/Perda de Pacotes/Jitter";
+"Error" = "Erro";
+"Tests executed" = "Testes executados";
+"Tests canceled" = "Testes cancelados";
+"Press the Start button to run again" = "Pressione o botão iniciar para executar novamente";
+"Target Selection" = "Escolha do servidor";
+"Latency / Loss / Jitter" = "Latência / Perda de pacotes / Jitter";
+"Download speed for " = "Velocidade de download para ";
+"Upload speed for " = "Velocidade de upload para ";
+"Latency for " = "Latência para ";
+"Loss for " = "Perda de pacotes para ";
+"Jitter for " = "Jitter para ";
 "Initial_Warning_Text" = "";
-"Public_IP" = "Seu IP"; // TODO - translate!
-"Submission_ID" = "Número de referência"; // TODO - translate!
+"Public_IP" = "Seu IP";
+"Submission_ID" = "Número de referência";
 "All" = "Todos";
 "Best" =  "Melhores";
-"Activation Error" = "Erro na ativação"; // TODO - translate
-"Please check your internet connection, and then try again." = "Favor verificar sua conexão de internet e tentar novamente."; // TODO - translate
-"Email not enabled" = "Email não permitido"; // TODO - translate
-"In order to send emails, you must first configure email on your device." = "Para enviar emails deve-se configurar uma conta de email no dispositivo."; // TODO - translate
+"Activation Error" = "Erro na ativação";
+"Please check your internet connection, and then try again." = "Favor verificar sua conexão de internet e tentar novamente.";
+"Email not enabled" = "Email não permitido";
+"In order to send emails, you must first configure email on your device." = "Para enviar emails deve-se configurar uma conta de email no dispositivo.";
 
 // Localized strings - 25/11/2014
 // Column headings, shown at top of summary view in the new app.
