@@ -18,7 +18,7 @@
 #define DELAYTIMEOUTMIN     1000000
 #define DELAYTIMEOUTMAX     5000000
 #define NUMBEROFTARGETSMAX  50
-#define NUMBEROFTARGETSMIN  2
+#define NUMBEROFTARGETSMIN  1
 
 @interface SKClosestTargetTest () <SKLatencyOperationDelegate>
 
@@ -460,6 +460,7 @@ const int cQueryCountPerServer = 3;
   }
   if (nThreads == 0 || !(nThreads >= NUMBEROFTARGETSMIN && nThreads <= NUMBEROFTARGETSMAX))
   {
+    SK_ASSERT(false);
     return  false;
   }
   if(numDatagrams == 0 || !(numDatagrams >= NUMBEROFPACKETSMIN && numDatagrams <= NUMBEROFPACKETSMAX))

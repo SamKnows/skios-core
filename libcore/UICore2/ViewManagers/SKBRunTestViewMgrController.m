@@ -981,72 +981,70 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodTransferTestDidStart:(BOOL)isDownstream
 {
-  dispatch_async(dispatch_get_main_queue(),
-                 ^{
-                   [self.tmActivityIndicator setCenterTextWithAnimation: @""];
-                   //[NSString localizedStringWithFormat:@"%0.02f", 0.00]];
-                   
-                   if (isDownstream)
-                   {
-                     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Download testing") forever:YES];
-                     
-                     NSArray *valueArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDownloadSixSegmentMaxValues];
-                     [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
-                     
-                     [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Download")];
-                   }
-                   else
-                   {
-                     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Upload testing") forever:YES];
-                     
-                     NSArray *valueArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDownloadSixSegmentMaxValues];
-                     [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
-                     
-                     [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Upload")];
-                   }
-                 });
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self.tmActivityIndicator setCenterTextWithAnimation:sSKCoreGetLocalisedString(@"result_working") ];
+    //[NSString localizedStringWithFormat:@"%0.02f", 0.00]];
+    
+    if (isDownstream)
+    {
+      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Download testing") forever:YES];
+      
+      NSArray *valueArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDownloadSixSegmentMaxValues];
+      [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
+      
+      [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Download")];
+    }
+    else
+    {
+      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Upload testing") forever:YES];
+      
+      NSArray *valueArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getDownloadSixSegmentMaxValues];
+      [self.tmActivityIndicator setSixSegmentMaxValues:valueArray];
+      
+      [self.tmActivityIndicator setUnitMeasurement:sSKCoreGetLocalisedString(@"Graph_Suffix_Mbps") measurement:sSKCoreGetLocalisedString(@"Test_Upload")];
+    }
+  });
 }
 
 - (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
 {
-  dispatch_async(dispatch_get_main_queue(),
-                 ^{
-                   if (isDownstream)
-                   {
-                     progressDownload = progress/100.0F;
-                   }
-                   else
-                   {
-                     progressUpload = progress/100.0F;
-                   }
-                   
-                   if (CACurrentMediaTime() - self.timeOfLastUIUpdate > C_GUI_UPDATE_INTERVAL)
-                   {
-                     self.timeOfLastUIUpdate = CACurrentMediaTime();
-                    
-                     //if ((isDownstream == NO) && (progress == 0) && (bitrate1024Based == 0)) {
-                     if ((isDownstream == NO) && (progress == 0 && bitrate1024Based == 0)) {
-                         NSLog(@"DEBUG: Remove me!");
-                     }
-
-                     if ((progress == 0) && (bitrate1024Based == 0)) {
-                       // IGNORE this first, dummy event, which means nothing - we don't want 0.00 to be displayed
-                       // too soon for upload tests!
-                     } else {
-                       
-                       [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate1024Based]];
-                       
-                       [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
-                     }
-                     
-                     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if (isDownstream)
+    {
+      progressDownload = progress/100.0F;
+    }
+    else
+    {
+      progressUpload = progress/100.0F;
+    }
+    
+    if (CACurrentMediaTime() - self.timeOfLastUIUpdate > C_GUI_UPDATE_INTERVAL)
+    {
+      self.timeOfLastUIUpdate = CACurrentMediaTime();
+      
+      //if ((isDownstream == NO) && (progress == 0) && (bitrate1024Based == 0)) {
+      if ((isDownstream == NO) && (progress == 0 && bitrate1024Based == 0)) {
+        NSLog(@"DEBUG: Remove me!");
+      }
+      
+      if ((progress == 0) && (bitrate1024Based == 0)) {
+        // IGNORE this first, dummy event, which means nothing - we don't want 0.00 to be displayed
+        // too soon for upload tests!
+      } else {
+        
+        [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate1024Based]];
+        
+        [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
+      }
+      
+      [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
 #ifdef DEBUG
-                     NSLog(@"DEBUG: Bitrate: %f (%s) (%s %d)", bitrate1024Based, isDownstream?"DOWN":"UP", __FILE__, (int)__LINE__);
+      NSLog(@"DEBUG: Bitrate: %f (%s) (%s %d)", bitrate1024Based, isDownstream?"DOWN":"UP", __FILE__, (int)__LINE__);
 #endif // DEBUG
-                     
-                     [self setProgressView:0];
-                   }
-                 });
+      
+      [self setProgressView:0];
+    }
+  });
 }
 
 -(void)setErrorMessage
@@ -1088,66 +1086,64 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based
 //- (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate:(double)bitrate
 {
-  dispatch_async(dispatch_get_main_queue(),
-                 ^{
-                   BOOL isDownstream = httpTest.isDownstream;
-                   
-                   [self.tmActivityIndicator setAngleByValue:0];
-                   
-                   if (isDownstream) //Download test
-                   {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
-                     [SKBHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
-                     progressDownload = 1;
-                   }
-                   else
-                   {
-                     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
-                     [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
-                     progressUpload = 1;
-                   }
-                   
-                   [self setProgressView:0.2];
-                   [self updateTableAnimated];
-                 });
+  dispatch_async(dispatch_get_main_queue(), ^{
+    BOOL isDownstream = httpTest.isDownstream;
+    
+    [self.tmActivityIndicator setAngleByValue:0];
+    
+    if (isDownstream) //Download test
+    {
+      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
+      [SKBHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
+      progressDownload = 1;
+    }
+    else
+    {
+      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
+      [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
+      progressUpload = 1;
+    }
+    
+    [self setProgressView:0.2];
+    [self updateTableAnimated];
+  });
 }
 
 // ALL TESTS COMPLETE
 
 - (void)aodAllTestsComplete
 {
-  dispatch_async(dispatch_get_main_queue(),
-                 ^{
-                   [self restoreButton];
-                   
-                   [UIView animateWithDuration:1.0 animations:^{
-                     [self resetProgressView];
-                     [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
-                     self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
-                    
-                     if ( ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"]) &&
-                         ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == YES)
-                       )
-                     {
-                       // Only show if NETWORK - and if social media sharing is enabled!
-                       self.btShare.alpha = 1;
-                       self.btShare.userInteractionEnabled = YES;
-                     } else {
-                       self.btShare.alpha = 0;
-                       self.btShare.userInteractionEnabled = NO;
-                     }
-                   }];
-                   
-                   [self setIsRunning:NO];
-                   [self setEndDataUsage];
-                   //
-                   SK_ASSERT([NSThread isMainThread]);
-                   [self updateTableAnimated];
-                   
-                   [[NSNotificationCenter defaultCenter]
-                    postNotificationName:@"TestListNeedsUpdate"
-                    object:self];
-                 });
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self restoreButton];
+    
+    [UIView animateWithDuration:1.0 animations:^{
+      [self resetProgressView];
+      [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
+      self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
+      
+      if ( ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"]) &&
+          ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == YES)
+          )
+      {
+        // Only show if NETWORK - and if social media sharing is enabled!
+        self.btShare.alpha = 1;
+        self.btShare.userInteractionEnabled = YES;
+      } else {
+        self.btShare.alpha = 0;
+        self.btShare.userInteractionEnabled = NO;
+      }
+    }];
+    
+    [self setIsRunning:NO];
+    [self setEndDataUsage];
+    //
+    SK_ASSERT([NSThread isMainThread]);
+    [self updateTableAnimated];
+    
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"TestListNeedsUpdate"
+     object:self];
+  });
 }
 
 - (void)cancelCurrentTests

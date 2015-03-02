@@ -206,12 +206,12 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
     lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,  180,  10,  80,  21);
     lLossLabelFrame = MakeScaledRect(GUI_MULTIPLIER,     180,  30,  80,  21);
     lJitterLabelFrame = MakeScaledRect(GUI_MULTIPLIER,   180,  50,  80,  21);
-    lDateOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,    180,  70,  45,  21);
+    lDateOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,    180,  70,  50,  21);
     
     lResultLatencyFrame = MakeScaledRect(GUI_MULTIPLIER, 265,  10,  40,  21);
     lResultLossFrame = MakeScaledRect(GUI_MULTIPLIER,    265,  30,  40,  21);
     lResultJitterFrame = MakeScaledRect(GUI_MULTIPLIER,  265,  50,  40,  21);
-    lTimeOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,    230,  70,  45,  21);
+    lTimeOfTestFrame = MakeScaledRect(GUI_MULTIPLIER,    235,  70,  50,  21);
     
     ivNetworkTypeFrame = MakeScaledRect(GUI_MULTIPLIER,  293,  73,  17,  17);
   }
@@ -394,10 +394,10 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
     [self.contentView addSubview:self.aiJitter];
   }
   
-  if (newLayout) {
-    self.lTimeOfTest.adjustsFontSizeToFitWidth = NO;
-    self.lDateOfTest.adjustsFontSizeToFitWidth = NO;
-  }
+//  if (newLayout) {
+//    self.lTimeOfTest.adjustsFontSizeToFitWidth = NO;
+//    self.lDateOfTest.adjustsFontSizeToFitWidth = NO;
+//  }
 }
 
 -(void)initCell
