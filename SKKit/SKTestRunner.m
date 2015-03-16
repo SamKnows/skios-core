@@ -33,21 +33,29 @@
         case SKTestType_Closest:
         {
           SKKitTestClosestTarget *closestTest = [[SKKitTestClosestTarget alloc] initWithClosestTargetTestDescriptor:(SKScheduleTest_Descriptor_ClosestTarget*)testDescriptor];
+          // TODO!
+          SK_ASSERT(closestTest != nil);
         }
           break;
         case SKTestType_Download:
         {
           SKKitTestDownload *downloadTest = [[SKKitTestDownload alloc] initWithDownloadTestDescriptor:(SKScheduleTest_Descriptor_Download*)testDescriptor];
+          // TODO!
+          SK_ASSERT(downloadTest != nil);
         }
           break;
         case SKTestType_Upload:
         {
           SKKitTestUpload *uploadTest = [[SKKitTestUpload alloc] initWithUploadTestDescriptor:(SKScheduleTest_Descriptor_Upload*)testDescriptor];
+          // TODO!
+          SK_ASSERT(uploadTest != nil);
         }
           break;
         case SKTestType_Latency:
         {
           SKKitTestLatency *latencyTest = [[SKKitTestLatency alloc] initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)testDescriptor];
+          // TODO!
+          SK_ASSERT(latencyTest != nil);
         }
           break;
         default:

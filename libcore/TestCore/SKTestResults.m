@@ -48,8 +48,6 @@
   //UIColor* colorLightBlue = [UIColor colorWithRed:109.0/255.0 green:211.0/255.0 blue:244.0/255.0 alpha:1];
   //UIColor* colorDarkBlue = [UIColor colorWithRed:44.0/255.0 green:66.0/255.0 blue:149.0/255.0 alpha:1];
   
-  UIColor *textColor = [SKAppColourScheme sGetTableCellColourText];
-  
   UIGraphicsBeginImageContext(CGSizeMake(C_SHARE_IMAGE_WIDTH, C_SHARE_IMAGE_HEIGHT));
   
   [[UIImage imageNamed:@"shareBackground"] drawInRect:CGRectMake(0, 0, C_SHARE_IMAGE_WIDTH, C_SHARE_IMAGE_HEIGHT)];
@@ -93,7 +91,8 @@
   labelText = sSKCoreGetLocalisedString(@"Test_Download");
   labelFont = [UIFont fontWithName:@"Roboto-Light" size:50];
   
-  textColor = [UIColor whiteColor];
+  //UIColor *textColor = [SKAppColourScheme sGetTableCellColourText];
+  UIColor *textColor = [UIColor whiteColor];
   [textColor set];
   [speedFigure skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 130 + C_SHARE_IMAGE_SHIFT_Y) withFont:speedFont withTextColor:textColor];
   [textColor set];

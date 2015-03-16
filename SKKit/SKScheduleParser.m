@@ -423,7 +423,9 @@
       // Simply store this value for later sorting by tidyUpScheduleBeforeUse()...
       NSString *tTestId = [attributeDict objectForKey:@"id"];
       SK_ASSERT(tTestId != nil);
-      [mManualTestArray addObject:tTestId];
+      if (tTestId != nil) {
+        [mManualTestArray addObject:tTestId];
+      }
     } else if (mbInInitBlock == true) {
       // This is OK
     } else if (mbInScheduledTestsBlock == true) {
