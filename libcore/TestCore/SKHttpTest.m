@@ -948,7 +948,15 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
                                 forKey:@"type"];
   }
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", [self getBytesPerSecond]]
+  int bytesPerSecond = [self getBytesPerSecond];
+  
+  if (bytesPerSecond == 0) {
+    // 30/03/2015 - note that if bytesPerSecond is ZERO, we must also tag this with "success": false
+    // c.f. HttpTest.java on 
+    self.testOK = NO;
+  }
+  
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", bytesPerSecond]
                               forKey:@"bytes_sec"];
   
   [outputResultsDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
