@@ -256,6 +256,7 @@ static BOOL sbTestIsRunning = NO;
                    target:targetName];
     
     dispatch_async(dispatch_get_main_queue(), ^{
+      // Posting to NSNotificationCenter *must* be done in the main thread!
       [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_GeneratedTestId object:self.testId];
     });
   }

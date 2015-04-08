@@ -935,6 +935,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
           
           // Send the notification - it is used ONLY if it matches THE CURRENT TEST ID!
           dispatch_async(dispatch_get_main_queue(), ^{
+            // Posting to NSNotificationCenter *must* be done in the main thread!
             [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_Submission_ID" object:testId userInfo:@{@"test_id":testId, @"Public_IP": thePublicIp, @"Submission_ID":theSubmissionId}];
           });
         }

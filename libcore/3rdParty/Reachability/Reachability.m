@@ -258,6 +258,8 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	NSAutoreleasePool* pool = [NSAutoreleasePool new];
 	
 	// Post a notification to notify the client that the network reachability changed.
+  // Posting to NSNotificationCenter *must* be done in the main thread!
+  SK_ASSERT([NSThread isMainThread]);
 	[[NSNotificationCenter defaultCenter] postNotificationName: kReachabilityChangedNotification 
 														object: (Reachability *) info];
 	

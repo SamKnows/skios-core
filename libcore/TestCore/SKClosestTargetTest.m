@@ -354,8 +354,10 @@ const int cQueryCountPerServer = 3;
 #ifdef DEBUG
       NSLog(@"DEBUG: Closest target test... UDP tests failed, so try http test instead!");
 #endif // DEBUG
-      [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_UDPFailedSkipTests object:self];
       dispatch_async(dispatch_get_main_queue(), ^{
+        // Posting to NSNotificationCenter *must* be done in the main thread!
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_UDPFailedSkipTests object:self];
+        
         [self tryHttpClosestTargetTestIfUdpTestFails];
       });
     }
