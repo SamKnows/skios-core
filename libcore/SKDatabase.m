@@ -833,19 +833,52 @@
     NSString *network_code = [rs stringForColumnIndex:5];
     NSString *network_type = [rs stringForColumnIndex:6];
     NSString *radio_type = [rs stringForColumnIndex:7];
+   
+    if (device == nil) {
+      SK_ASSERT(false);
+    } else {
+      [dict setObject:device              forKey:@"DEVICE"];
+    }
     
-    [dict setObject:device              forKey:@"DEVICE"];
-    [dict setObject:os                  forKey:@"OS"];
-    [dict setObject:carrier_name        forKey:@"CARRIER_NAME"];
-    if (country_code != nil) {
+    if (os == nil) {
+      SK_ASSERT(false);
+    } else {
+      [dict setObject:os                  forKey:@"OS"];
+    }
+    
+    if (carrier_name == nil) {
+      SK_ASSERT(false);
+    } else {
+      [dict setObject:carrier_name        forKey:@"CARRIER_NAME"];
+    }
+    
+    if (country_code == nil) {
+      SK_ASSERT(false);
+    } else {
       [dict setObject:country_code        forKey:@"COUNTRY_CODE"];
     }
-    [dict setObject:iso_country_code    forKey:@"ISO_CODE"];
-    [dict setObject:network_code        forKey:@"NETWORK_CODE"];
-    if (network_type != nil) {
+    
+    if (iso_country_code == nil) {
+      SK_ASSERT(false);
+    } else {
+      [dict setObject:iso_country_code    forKey:@"ISO_CODE"];
+    }
+    
+    if (network_code == nil) {
+      SK_ASSERT(false);
+    } else {
+      [dict setObject:network_code        forKey:@"NETWORK_CODE"];
+    }
+    
+    if (network_type == nil) {
+      SK_ASSERT(false);
+    } else {
       [dict setObject:network_type        forKey:@"NETWORK_TYPE"];
     }
-    if (radio_type != nil) {
+    
+    if (radio_type == nil) {
+      SK_ASSERT(false);
+    } else {
       [dict setObject:radio_type          forKey:@"RADIO_TYPE"];
     }
   }

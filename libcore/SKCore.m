@@ -160,5 +160,17 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
     SK_ASSERT(false);
     return @"";
   }
+  
+  if (theResult == nil) {
+    // This must NEVER return nil, as it could result in a nil value being added to a dictionary!
+    if (theString == nil) {
+      SK_ASSERT(false);
+      return @"";
+    }
+    
+    SK_ASSERT(false);
+    return theString;
+  }
+  
   return theResult;
 }

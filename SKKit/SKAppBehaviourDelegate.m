@@ -878,6 +878,98 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   }
 }
 
+- (void)handleUploadAsyncResponse:(NSURLResponse*)response data:(NSData *)data filePath:(NSString *)filePath testId:(NSNumber *)testId error:(NSError *)error
+{
+  SK_ASSERT_NONSERROR(error);
+  
+  if (error != nil)
+  {
+    NSLog(@"Error uploading JSON file : %@", error.description);
+    SK_ASSERT(false);
+  }
+  else
+  {
+    if (response == nil)
+    {
+      SK_ASSERT(false);
+      return;
+    }
+    
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+    
+    if ([httpResponse isKindOfClass:[NSHTTPURLResponse class]])
+    {
+      if (httpResponse.statusCode == 200)
+      {
+        //
+        // File upload successfully!
+        //
+#ifdef DEBUG
+        NSString *jsonStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
+#endif // DEBUG
+        
+        NSError *error = nil;
+        NSDictionary *theObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                  options:NSJSONReadingMutableLeaves
+                                                                    error:&error];
+#ifdef DEBUG
+        NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
+#endif // DEBUG
+        if (testId != nil) {
+          // Write the data to the database, along with the
+          // other passive metrics associated with the test!
+          // Notify the app, in case it is interested in showing it.
+          NSString *thePublicIp = theObject[@"public_ip"];
+          SK_ASSERT(thePublicIp != nil);
+          NSString *theSubmissionId = theObject[@"submission_id"];
+          SK_ASSERT(theSubmissionId != nil);
+          
+          [SKDatabase updateMetricForTestId:testId
+                               MetricColumn:@"Public_IP"
+                                MetricValue:thePublicIp];
+          
+          [SKDatabase updateMetricForTestId:testId
+                               MetricColumn:@"Submission_ID"
+                                MetricValue:theSubmissionId];
+          
+          // Send the notification - it is used ONLY if it matches THE CURRENT TEST ID!
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_Submission_ID" object:testId userInfo:@{@"test_id":testId, @"Public_IP": thePublicIp, @"Submission_ID":theSubmissionId}];
+          });
+        }
+        
+        // file upload successfully.. remove the uploaded file
+        if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])
+        {
+#ifdef DEBUG
+          NSLog(@"DEBUG: Unable to remove JSON file");
+#endif // DEBUG
+        }
+        else
+        {
+#ifdef DEBUG
+          NSLog(@"DEBUG: Uploaded JSON File");
+#endif // DEBUG
+        }
+      }
+      else
+      {
+        SK_ASSERT(false);
+#ifdef DEBUG
+        if (nil != data)
+        {
+          NSString* newStr = [[NSString alloc] initWithData:data
+                                                   encoding:NSUTF8StringEncoding];
+          
+          NSLog(@"DEBUG: postResultsJsonToServer Error Response : %@", newStr);
+        }
+#endif // DEBUG
+      }
+    }
+  }
+}
+
 - (void)postResultsJsonToServer:(NSData*)jsonData filePath:(NSString*)filePath {
 
   NSError *error = nil;
@@ -938,94 +1030,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
                                                                                      NSData *data,
                                                                                      NSError *error)
    {
-     SK_ASSERT_NONSERROR(error);
-     
-     if (error != nil)
-     {
-       NSLog(@"Error uploading JSON file : %@", error.description);
-       SK_ASSERT(false);
-     }
-     else
-     {
-       if (response == nil)
-       {
-         SK_ASSERT(false);
-         return;
-       }
-       
-       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-       
-       if ([httpResponse isKindOfClass:[NSHTTPURLResponse class]])
-       {
-         if (httpResponse.statusCode == 200)
-         {
-           //
-           // File upload successfully!
-           //
-#ifdef DEBUG
-           NSString *jsonStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-           NSLog(@"DEBUG: postResultsJsonToServer - jsonStr=...\n%@", jsonStr);
-#endif // DEBUG
-           
-           NSError *error = nil;
-           NSDictionary *theObject = [NSJSONSerialization JSONObjectWithData:data
-                                                                     options:NSJSONReadingMutableLeaves
-                                                                       error:&error];
-#ifdef DEBUG
-           NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
-#endif // DEBUG
-           if (testId != nil) {
-             // Write the data to the database, along with the
-             // other passive metrics associated with the test!
-             // Notify the app, in case it is interested in showing it.
-             NSString *thePublicIp = theObject[@"public_ip"];
-             SK_ASSERT(thePublicIp != nil);
-             NSString *theSubmissionId = theObject[@"submission_id"];
-             SK_ASSERT(theSubmissionId != nil);
-             
-             [SKDatabase updateMetricForTestId:testId
-                                  MetricColumn:@"Public_IP"
-                                   MetricValue:thePublicIp];
-             
-             [SKDatabase updateMetricForTestId:testId
-                                  MetricColumn:@"Submission_ID"
-                                   MetricValue:theSubmissionId];
-             
-             // Send the notification - it is used ONLY if it matches THE CURRENT TEST ID!
-             dispatch_async(dispatch_get_main_queue(), ^{
-               [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_Submission_ID" object:testId userInfo:@{@"test_id":testId, @"Public_IP": thePublicIp, @"Submission_ID":theSubmissionId}];
-             });
-           }
-           
-           // file upload successfully.. remove the uploaded file
-           if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])
-           {
-#ifdef DEBUG
-             NSLog(@"DEBUG: Unable to remove JSON file");
-#endif // DEBUG
-           }
-           else
-           {
-#ifdef DEBUG
-             NSLog(@"DEBUG: Uploaded JSON File");
-#endif // DEBUG
-           }
-         }
-         else
-         {
-           SK_ASSERT(false);
-#ifdef DEBUG
-           if (nil != data)
-           {
-             NSString* newStr = [[NSString alloc] initWithData:data
-                                                      encoding:NSUTF8StringEncoding];
-             
-             NSLog(@"DEBUG: postResultsJsonToServer Error Response : %@", newStr);
-           }
-#endif // DEBUG
-         }
-       }
-     }
+     [self handleUploadAsyncResponse:response data:data filePath:filePath testId:testId error:error];
    }];
 }
 

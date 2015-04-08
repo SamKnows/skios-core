@@ -696,6 +696,11 @@
       if (![type isEqualToString:@"closestTarget"] && [self testIsIncluded:type])
       {
         NSString *displayName = [dict objectForKey:@"displayName"];
+        if (displayName == nil) {
+          // Defend against this being nil, as otherwise the dictionary setObject would fail.
+          SK_ASSERT(false);
+          displayName = @"";
+        }
         
         NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
         [tmpDict setObject:type forKey:@"TYPE"];
@@ -706,7 +711,14 @@
         [tmpDict setObject:[NSNumber numberWithFloat:0] forKey:@"PROGRESS"];
         [tmpDict setObject:[NSNumber numberWithBool:NO] forKey:@"HIDE_SPINNER"];
         [tmpDict setObject:[NSNumber numberWithBool:YES] forKey:@"HIDE_LABEL"];
-        [tmpDict setObject:[SKLatencyOperation getIdleStatus] forKey:@"STATUS"];
+        NSString* idleStatus = [SKLatencyOperation getIdleStatus];
+        if (idleStatus == nil) {
+          // Defend against this being nil, as otherwise the dictionary setObject would fail.
+          // On some devices, this has been nil for some unexplained reason!
+          SK_ASSERT(false);
+          idleStatus = @"Idle";
+        }
+        [tmpDict setObject:idleStatus forKey:@"STATUS"];
         
         float height = 100.0F;
         if ( ([type isEqualToString:@"downstreamthroughput"]) ||
