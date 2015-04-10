@@ -9,7 +9,6 @@
 #import "SKBRunTestViewMgrController.h"
 #import "SKSplashView.h"
 #import "SKBTestResultsSharer.h"
-#import "SKBActivationController.h"
 
 #include <math.h>
 
@@ -155,12 +154,6 @@
 
 -(void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivated] == NO)
-  {
-    [self SKSafePerformSegueWithIdentifier:@"segueFromRunTestToActivate" sender:self];
-    return;
-  }
 }
 
 - (void)initialiseViewOnMasterView
@@ -1598,13 +1591,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  if ([segue.identifier isEqualToString:@"segueFromRunTestToActivate"]) {
-    SKBActivationController *vc = (SKBActivationController*)segue.destinationViewController;
-    
-    vc.hidesBackButton = NO;
-  } else {
-    SK_ASSERT(false);
-  }
+ SK_ASSERT(false);
 }
 
 @end

@@ -138,7 +138,6 @@
 		B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030A19B75D09007AA3C2 /* IPHelper.m */; };
 		B2FB033219B75D09007AA3C2 /* CGaugeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB030F19B75D09007AA3C2 /* CGaugeView.m */; };
 		B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */; };
-		B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031719B75D09007AA3C2 /* SKBActivationController.m */; };
 		B2FB033719B75D09007AA3C2 /* SKBSimpleResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031C19B75D09007AA3C2 /* SKBSimpleResultCell.m */; };
 		B2FB033819B75D09007AA3C2 /* SKBTestOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB031E19B75D09007AA3C2 /* SKBTestOverviewCell.m */; };
 		B2FB033A19B75D09007AA3C2 /* SKBHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */; };
@@ -475,8 +474,6 @@
 		B2FB031119B75D09007AA3C2 /* UIViewWithGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewWithGradient.h; sourceTree = "<group>"; };
 		B2FB031219B75D09007AA3C2 /* UIViewWithGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewWithGradient.m; sourceTree = "<group>"; };
 		B2FB031419B75D09007AA3C2 /* SKSplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSplashView.h; sourceTree = "<group>"; };
-		B2FB031619B75D09007AA3C2 /* SKBActivationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBActivationController.h; sourceTree = "<group>"; };
-		B2FB031719B75D09007AA3C2 /* SKBActivationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBActivationController.m; sourceTree = "<group>"; };
 		B2FB031B19B75D09007AA3C2 /* SKBSimpleResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSimpleResultCell.h; sourceTree = "<group>"; };
 		B2FB031C19B75D09007AA3C2 /* SKBSimpleResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSimpleResultCell.m; sourceTree = "<group>"; };
 		B2FB031D19B75D09007AA3C2 /* SKBTestOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTestOverviewCell.h; sourceTree = "<group>"; };
@@ -1055,8 +1052,6 @@
 			isa = PBXGroup;
 			children = (
 				B2FB02F919B75D09007AA3C2 /* Reusable */,
-				B2FB031619B75D09007AA3C2 /* SKBActivationController.h */,
-				B2FB031719B75D09007AA3C2 /* SKBActivationController.m */,
 				B2FB031A19B75D09007AA3C2 /* tabCells */,
 				B22E5ED719D9713800666F16 /* NewViewControllers */,
 			);
@@ -1329,7 +1324,6 @@
 				B282672B19E3F579003A4172 /* SKBTestResultsSharer.m in Sources */,
 				B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */,
 				B2FB032F19B75D09007AA3C2 /* SKAppColourScheme.m in Sources */,
-				B2FB033519B75D09007AA3C2 /* SKBActivationController.m in Sources */,
 				B221AEDC18FFC22500323923 /* ioapi.c in Sources */,
 				B22E88F017C36875005D9094 /* FMDatabase.m in Sources */,
 				B221AEC918FFC12100323923 /* ZipArchive.m in Sources */,

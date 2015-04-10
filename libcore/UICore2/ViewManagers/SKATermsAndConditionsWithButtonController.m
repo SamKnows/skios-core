@@ -6,7 +6,6 @@
 //
 
 #import "SKATermsAndConditionsWithButtonController.h"
-#import "SKBActivationController.h"
 #import "SKAActivationController.h"
 
 @interface SKATermsAndConditionsWithButtonController()
@@ -126,11 +125,6 @@
 #ifdef DEBUG
     NSLog(@"segue.destinationVieController=%@", [segue.destinationViewController description]);
 #endif // DEBUG
-    
-    if ([segue.destinationViewController isKindOfClass:SKBActivationController.class]) {
-      SKBActivationController *vc = (SKBActivationController*)segue.destinationViewController;
-      vc.hidesBackButton = YES;
-    }
   }
   
 }

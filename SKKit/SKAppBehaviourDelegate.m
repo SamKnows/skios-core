@@ -638,18 +638,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 - (BOOL)isActivated
 {
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-
-  if ([prefs objectForKey:cPrefs_Activated])
-  {
-    NSNumber *num = [prefs objectForKey:cPrefs_Activated];
-    if (nil != num)
-    {
-      return [num boolValue];
-    }
-  }
-
-  return NO;
+  return YES;
 }
 
 -(BOOL) getIsConnected {

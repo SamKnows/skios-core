@@ -347,6 +347,10 @@ enum {
     alert.tag = ALERT_WIPEDATA;
     [alert show];
   } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
+    
+    SK_ASSERT(false); // This is ONLY in the old-style apps, now!
+   
+    /*
     SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
     if ([appDelegate getIsConnected] == NO) {
       // If not connected, display an alert, and do not try to activate.
@@ -371,6 +375,7 @@ enum {
     //if (self.parentViewController != nil) {
     //}
     [self SKSafePerformSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
+     */
   } else if ([cell.reuseIdentifier isEqualToString:@"terms_and_conditions"]) {
     SK_ASSERT(false);
     [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
