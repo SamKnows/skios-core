@@ -878,10 +878,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodLatencyTestDidFail:(NSString*)message
 {
-  [self stopTestFromAlertResponse:NO];
-  [self setIsRunning:NO];
-  
-  [self setErrorMessage];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [self stopTestFromAlertResponse:NO];
+    [self setIsRunning:NO];
+    
+    [self setErrorMessage];
+  });
 }
 
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest
