@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *aboutOrVersionTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *activateTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *exportResultsTableViewCell;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dataCapLabelToSwitchSpacingConstraint;
 
 - (void)setLabels;
 
@@ -98,6 +99,11 @@
   BOOL canDisableDataCap = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canDisableDataCap];
   BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
   self.datacapSwitch.hidden = !canDisableDataCap;
+  if (self.datacapSwitch.hidden == YES) {
+    // Move the hidden switch sideways, to give more room for the text!
+    CGRect theFrame = self.datacapSwitch.frame;
+    self.dataCapLabelToSwitchSpacingConstraint.constant -= theFrame.size.width;
+  }
   self.datacapSwitch.on = datacapEnabled;
   self.txtDataCap.enabled = datacapEnabled;
  
