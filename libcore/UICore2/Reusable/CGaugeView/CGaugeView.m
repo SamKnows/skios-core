@@ -531,7 +531,7 @@
   rotationAnimation.fromValue = [NSNumber numberWithFloat:fromValue];
   rotationAnimation.toValue = [NSNumber numberWithFloat:toValue];
   rotationAnimation.duration = duration;
-  rotationAnimation.RepeatCount = repeatCount;
+  rotationAnimation.repeatCount = repeatCount;
   rotationAnimation.removedOnCompletion = NO;
   rotationAnimation.fillMode = kCAFillModeForwards;
   [self.indicatorImageView.layer addAnimation:rotationAnimation forKey:@"rotation"];

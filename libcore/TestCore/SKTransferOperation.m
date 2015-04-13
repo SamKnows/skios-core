@@ -1293,7 +1293,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
       {
         if (![mpParentHttpTest isTransferDone:(int)bytesLength])
         {
-          if (!self.status == TRANSFERRING)
+          if (!(self.status == TRANSFERRING))
           {
             self.status = TRANSFERRING;
             [self doSendUpdateStatus:self.status threadId:threadId];
@@ -1359,7 +1359,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
       }
     }
     else if (![self.mpParentHttpTest isUploadTransferDoneBytesThisTime:(int)bytesWritten TotalBytes:(int)totalBytesWritten TotalBytesToTransfer:(int)totalBytesExpectedToWrite]) {
-      if (!self.status == TRANSFERRING)
+      if (!(self.status == TRANSFERRING))
       {
         self.status = TRANSFERRING;
         [self doSendUpdateStatus:self.status threadId:threadId];

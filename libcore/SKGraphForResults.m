@@ -300,19 +300,19 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   if (([self.testName isEqualToString:@"downstream_mt"]) ||
       ([self.testName isEqualToString:@"upstream_mt"]))
   {
-    y.Title = sSKCoreGetLocalisedString(@"Graph_Title_Mbps");
+    y.title = sSKCoreGetLocalisedString(@"Graph_Title_Mbps");
     y.titleOffset                 = +1.0; // Negative moves it RIGHT, Positive moves it LEFT!
   } else if ([self.testName isEqualToString:@"latency"]) {
-    y.Title = sSKCoreGetLocalisedString(@"Graph_Title_Ms");
+    y.title = sSKCoreGetLocalisedString(@"Graph_Title_Ms");
     y.titleOffset                 = +5.0;
   } else if ([self.testName isEqualToString:@"packetloss"]) {
-    y.Title = sSKCoreGetLocalisedString(@"Graph_Title_Percent");
+    y.title = sSKCoreGetLocalisedString(@"Graph_Title_Percent");
     y.titleOffset                 = +5.0;  // Negative moves it RIGHT, Positive moves it LEFT!
   } else if ([self.testName isEqualToString:@"www_load"]) {
-    y.Title = sSKCoreGetLocalisedString(@"Graph_Title_Sec");
+    y.title = sSKCoreGetLocalisedString(@"Graph_Title_Sec");
     y.titleOffset                 = +4.0;
   } else { // if ([self.testName isEqualToString:@"voip_jitter"])
-    y.Title = sSKCoreGetLocalisedString(@"Graph_Title_Ms");
+    y.title = sSKCoreGetLocalisedString(@"Graph_Title_Ms");
     y.titleOffset                 = +5.0;
   }
   
