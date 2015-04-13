@@ -55,6 +55,14 @@
   } else {
     self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
   }
+  
+  BOOL canDisableDataCap = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canDisableDataCap];
+  self.datacapSwitch.hidden = !canDisableDataCap;
+  if (self.datacapSwitch.hidden == YES) {
+    // Move the hidden switch sideways, to give more room for the text!
+    CGRect theFrame = self.datacapSwitch.frame;
+    self.dataCapLabelToSwitchSpacingConstraint.constant -= theFrame.size.width;
+  }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -96,14 +104,7 @@
     [self.tableView setBackgroundColor:[UIColor clearColor]];
   }
 
-  BOOL canDisableDataCap = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canDisableDataCap];
   BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
-  self.datacapSwitch.hidden = !canDisableDataCap;
-  if (self.datacapSwitch.hidden == YES) {
-    // Move the hidden switch sideways, to give more room for the text!
-    CGRect theFrame = self.datacapSwitch.frame;
-    self.dataCapLabelToSwitchSpacingConstraint.constant -= theFrame.size.width;
-  }
   self.datacapSwitch.on = datacapEnabled;
   self.txtDataCap.enabled = datacapEnabled;
  
