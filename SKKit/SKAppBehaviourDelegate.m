@@ -1198,10 +1198,15 @@ static BOOL sbDebugWarningMessageShownYet = NO;
 #endif // TARGET_IPHONE_SIMULATOR
   
   Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  //BOOL bReachableViaWWan =[reachability isReachableViaWWAN];
+  BOOL bReachableViaWiFi =[reachability isReachableViaWiFi];
+  
   NetworkStatus netStatus = [reachability currentReachabilityStatus];
-  return (netStatus == kReachableViaWiFi);
+  BOOL result = (netStatus == kReachableViaWiFi);
   // Do NOT use this variant, as it is CACHED - and won't work (say) on first use.
   //return ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus] == WIFI);
+  SK_ASSERT(result == bReachableViaWiFi);
+  return result;
 }
 
 

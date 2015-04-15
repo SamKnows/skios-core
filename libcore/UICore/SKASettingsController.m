@@ -139,7 +139,12 @@
     self.longitudeValue.text = sSKCoreGetLocalisedString(@"Unknown");
     self.dateValue.text = sSKCoreGetLocalisedString(@"Unknown");
   }
-  
+
+  // And update the data usage value.
+  SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
+  int64_t bytesUsed = [delegate amdGetDataUsageBytes];
+  NSString *valueString = [SKGlobalMethods bytesToString:(double)bytesUsed];
+  [self.lblDataMB setText:valueString];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -189,12 +194,6 @@
   [self.lblConfig setText:sSKCoreGetLocalisedString(@"SETTINGS_Config")];
   
   SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
-  int64_t bytesUsed = [delegate amdGetDataUsageBytes];
-  
-  NSString *valueString = [SKGlobalMethods bytesToString:(double)bytesUsed];
-  
-  [self.lblDataMB setText:valueString];
-  
   [self.lblVersion setText:delegate.schedule.scheduleVersion];
 }
 
