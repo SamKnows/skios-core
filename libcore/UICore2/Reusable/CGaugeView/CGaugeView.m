@@ -277,6 +277,7 @@
   self.mTopText.textColor = [SKAppColourScheme  sGetMainColourDialTopText];
   self.mTopText.adjustsFontSizeToFitWidth = YES;
   self.mTopText.minimumScaleFactor = 0.1; // minimumFontSize = 12 is deprecated from iOS 6
+  self.mTopText.numberOfLines = 2;
   [self addSubview:self.mTopText];
   
   self.mUnitText = [[UILabel alloc] initWithFrame:self.bounds];
@@ -408,7 +409,7 @@
   
   self.mCenterText.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * 0.2, self.bounds.origin.y + 0.18 * self.mCenterText.font.pointSize, self.bounds.size.width * 0.6, self.bounds.size.height);
   
-  self.mTopText.frame = CGRectMake(self.bounds.origin.x + 0.27 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.46 * self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 25);
+  self.mTopText.frame = CGRectMake(self.bounds.origin.x + 0.27 * self.bounds.size.width, 0.20 * self.bounds.size.height, 0.46 * self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 35);
   
   self.mUnitText.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.67, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 25);
   self.mMeasurementText.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.77, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 20);

@@ -664,7 +664,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   NSString *currentSSID = [self.class sCurrentWifiSSID];
   if (currentSSID != nil && currentSSID.length > 0) {
-    return [NSMutableString stringWithFormat:@"%@ (%@)", wifiString, currentSSID];
+    return [NSMutableString stringWithFormat:@"%@\n(%@)", wifiString, currentSSID];
   }
   
   return wifiString;
