@@ -408,7 +408,7 @@
   
   self.mCenterText.frame = CGRectMake(self.bounds.origin.x + self.bounds.size.width * 0.2, self.bounds.origin.y + 0.18 * self.mCenterText.font.pointSize, self.bounds.size.width * 0.6, self.bounds.size.height);
   
-  self.mTopText.frame = CGRectMake(self.bounds.origin.x + 0.25 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.5 * self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 25);
+  self.mTopText.frame = CGRectMake(self.bounds.origin.x + 0.27 * self.bounds.size.width, 0.25 * self.bounds.size.height, 0.46 * self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 25);
   
   self.mUnitText.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.67, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 25);
   self.mMeasurementText.frame = CGRectMake(self.bounds.origin.x, self.bounds.size.height * 0.77, self.bounds.size.width, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 20);
