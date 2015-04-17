@@ -10,6 +10,9 @@
 #import "SKSplashView.h"
 #import "SKBTestResultsSharer.h"
 
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+
 #include <math.h>
 
 #define C_SHARE_BUTTON_HEIGHT   ([SKAppColourScheme sGet_GUI_MULTIPLIER] * 40)
@@ -26,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidthConstraint;
 @property int mNumberOfPassiveMetrics;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnShareSpacing;
+@property  NSTimer *mTimer;
 @end
 
 @implementation SKBRunTestViewMgrController
@@ -33,6 +37,8 @@
 @synthesize mTestResultsArray;
 @synthesize mpTestResult;
 @synthesize mpSharer;
+@synthesize mTimer;
+
 #pragma mark ProgressView
 
 
@@ -150,10 +156,34 @@
 //  CGRect theFrame = self.frame;
 //  theFrame.size.width = 375;
 //  self.frame = theFrame;
+  
+  // Send a new event, using a timer!
+  // We use to track changes in network connectivity!
+  SK_ASSERT(mTimer == nil);
+  
+  mTimer = [NSTimer
+            scheduledTimerWithTimeInterval:1.0
+            target:self
+            selector:@selector(handleTimer:)
+            userInfo:0
+            repeats:YES];
+}
+
+-(void) viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  
+  [mTimer invalidate];
+  mTimer = nil;
 }
 
 -(void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+}
+
+-(void) handleTimer: (NSTimer*)theTimer {
+
+  // Every second, we update the radion type in case the network has changed (e.g. the SSID has updated)
+  [self updateRadioType];
 }
 
 - (void)initialiseViewOnMasterView
@@ -573,6 +603,73 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   return theResult;
 }
 
+// http://stackoverflow.com/questions/5198716/iphone-get-ssid-without-private-library
+/*
+// Returns first non-empty SSID network info dictionary.
+// @see CNCopyCurrentNetworkInfo
+- (NSDictionary *)fetchSSIDInfo
+{
+  NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
+  
+#ifdef DEBUG
+  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
+#endif // DEBUG
+  
+  NSDictionary *SSIDInfo;
+  for (NSString *interfaceName in interfaceNames) {
+    SSIDInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
+#ifdef DEBUG
+    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, SSIDInfo);
+#endif // DEBUG
+    
+    BOOL isNotEmpty = (SSIDInfo.count > 0);
+    if (isNotEmpty) {
+      break;
+    }
+  }
+  
+  return SSIDInfo;
+}
+*/
+
++ (NSString *)sCurrentWifiSSID {
+  NSString *ssid = nil;
+  
+  //NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+  NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
+#ifdef DEBUG
+  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
+#endif // DEBUG
+  
+  for (NSString *interfaceName in interfaceNames) {
+    NSDictionary *ssidInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
+    //NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName);
+#ifdef DEBUG
+    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, ssidInfo);
+#endif // DEBUG
+    if (ssidInfo[@"SSID"]) {
+      ssid = ssidInfo[@"SSID"];
+    }
+  }
+#if TARGET_IPHONE_SIMULATOR
+  // This method does not work on the simulator!
+  ssid = @"Simulator";
+#endif // TARGET_IPHONE_SIMULATOR
+  return ssid;
+}
+
+-(NSString*) getWiFiStringForUIWithSSIDIfAvailable {
+  // TODO - get the network string as (localized) "WiFi" or "WiFi (SSID)"
+  NSString *wifiString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
+  
+  NSString *currentSSID = [self.class sCurrentWifiSSID];
+  if (currentSSID != nil && currentSSID.length > 0) {
+    return [NSMutableString stringWithFormat:@"%@ (%@)", wifiString, currentSSID];
+  }
+  
+  return wifiString;
+}
+
 -(void)updateRadioType
 {
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected] == NO) {
@@ -581,7 +678,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     connectionStatus = [SKAppBehaviourDelegate sGetAppBehaviourDelegate].connectionStatus;
     
     if (connectionStatus == WIFI) {
-      [self.tmActivityIndicator setTopText:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi")];
+      // Get the network string as (localized) "WiFi" or "WiFi (SSID)"
+      [self.tmActivityIndicator setTopText:[self getWiFiStringForUIWithSSIDIfAvailable]];
     } else {
       [self.tmActivityIndicator setTopText:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
     }

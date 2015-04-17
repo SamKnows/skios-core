@@ -126,6 +126,7 @@
 		B2DC501E18C75DA100E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2E16BD7181A5D4500B907DE /* SKGraphForResultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */; };
+		B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
 		B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77DC1A88C791009B324A /* SKScheduleParser.m */; };
 		B2EC77E31A88C838009B324A /* SKTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E21A88C838009B324A /* SKTestRunner.m */; };
 		B2EC77E61A88CA07009B324A /* SKKitTestAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */; };
@@ -498,6 +499,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */,
 				B2697B291A232A0E0077C360 /* QuickLook.framework in Frameworks */,
 				B2697B271A232A050077C360 /* MobileCoreServices.framework in Frameworks */,
 				B2697B251A2329FD0077C360 /* AssetsLibrary.framework in Frameworks */,
@@ -602,11 +604,11 @@
 			isa = PBXGroup;
 			children = (
 				B232599E1954679500C03C2D /* README.md */,
+				B22E88A917C36789005D9094 /* Frameworks */,
 				B2DC501818C75D9500E69F36 /* HockeySDK-iOS */,
 				B22E88AC17C36789005D9094 /* libcore */,
 				B27CFAA71A84CA1800C410B8 /* SKKit */,
 				B22E88C117C3678A005D9094 /* SKCoreTests */,
-				B22E88A917C36789005D9094 /* Frameworks */,
 				B22E88A817C36789005D9094 /* Products */,
 			);
 			sourceTree = "<group>";
