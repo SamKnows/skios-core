@@ -28,7 +28,6 @@
   //SK_ASSERT(self.dateLabel != nil);
   //SK_ASSERT(self.dateValue != nil);
   
-  [self addBackButton];
   [self setLabels];
   [self setDataAllowance];
   
@@ -165,28 +164,19 @@
   return nil;
 }
 
-- (void)addBackButton
-{
-  // The following code leads, eventually, to the "back" button disappearing through the whole app,
-  // on iOS 7!
-//    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-//                          [UIColor whiteColor],UITextAttributeTextColor,
-//                          [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
-//                          nil];
-//    
-//    [[UIBarButtonItem appearance] setTitleTextAttributes:dict forState:UIControlStateNormal];
-}
-
 - (void)setLabels
 {
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
-  label.textColor = [UIColor blackColor];
-  
-  label.backgroundColor = [UIColor clearColor];
-  label.text = sSKCoreGetLocalisedString(@"SETTINGS_Title");
-  [label sizeToFit];
-  self.navigationItem.titleView = label;
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsThisTheNewApp] == YES) {
+  } else {
+    // Old app!
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
+    label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
+    label.textColor = [UIColor blackColor];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = sSKCoreGetLocalisedString(@"SETTINGS_Title");
+    [label sizeToFit];
+    self.navigationItem.titleView = label;
+  }
   
   [self setTitle:sSKCoreGetLocalisedString(@"SETTINGS_Title")];
   [self.lblDataCap setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Cap")];

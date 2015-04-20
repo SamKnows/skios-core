@@ -52,7 +52,7 @@
     
     self.btCancel = [[UIButton alloc] initWithFrame:self.backgroundView.bounds];
     [self.btCancel addTarget:self action:@selector(mainButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.btCancel.titleLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
+    self.btCancel.titleLabel.font = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
     //self.btCancel.titleLabel.alpha = 0.7;
     self.btCancel.titleLabel.textColor = [SKAppColourScheme sGetActionSheetButtonTextSelectedColour];
     self.btCancel.backgroundColor = [SKAppColourScheme sGetActionSheetButtonSelectedColour];
@@ -241,8 +241,8 @@
   option.label.text = [self getStringBasedOn:optionTitle WithTickAtIfTrue:selected];
   
   option.label.textAlignment = NSTextAlignmentCenter;
-  //option.label.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
-  option.label.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
+  //option.label.font = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
+  option.label.font = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 14];
   
   option.button = [[UIButton alloc] init];
   [option.button addTarget:self action:@selector(optionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];

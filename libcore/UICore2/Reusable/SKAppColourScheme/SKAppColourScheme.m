@@ -169,6 +169,10 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
   return [[SKAppColourScheme sGetAppColourScheme] getBlinkerBackgroundColour];
 }
 
++(UIFont*)sGetFontWithName:(NSString*)name size:(CGFloat)withSize {
+  return [[SKAppColourScheme sGetAppColourScheme] getFontWithName:name size:withSize];
+}
+
 +(float) sGet_GUI_MULTIPLIER {
   // TODO - this should be removed, so we work fully with storyboards,
   // in LANDSCAPE mode and with different layouts!
@@ -369,6 +373,12 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 -(UIColor*)getBlinkerBackgroundColour {
  return [UIColor orangeColor];
 }
+
+-(UIFont*)getFontWithName:(NSString*)name size:(CGFloat)withSize {
+  // By default, use the requested font!
+  return [UIFont fontWithName:name size:withSize];
+}
+
 
 //-(UIColor*)getGraphColourTitleText {
 //  return [UIColor blackColor];

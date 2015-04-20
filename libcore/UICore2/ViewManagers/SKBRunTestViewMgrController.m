@@ -360,7 +360,7 @@
   //[self.tmActivityIndicator setNeedsLayout];
   
   [self.casStatusView setText:sSKCoreGetLocalisedString(@"Ready to run") forever:YES];
-  //self.mPressTheStartButtonLabel.font = [UIFont fontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
+  //self.mPressTheStartButtonLabel.font = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
   self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button");
   self.mPressTheStartButtonLabel.textColor = [SKAppColourScheme sGetMainColourPressTheStartButtonText];
   self.tvCurrentResults.hidden = YES;

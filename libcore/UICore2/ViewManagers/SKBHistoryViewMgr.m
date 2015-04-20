@@ -538,7 +538,7 @@ static SKATestResults* testToShareExternal = nil;
   {
     label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 10, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 85, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
     label.adjustsFontSizeToFitWidth = YES;
-    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
+    label.font = [SKAppColourScheme sGetFontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
     label.textColor = [SKAppColourScheme sGetMetricsTextColour];
     label.text = localizedLabelTextID_;
     [self addSubview:label];
@@ -546,7 +546,7 @@ static SKATestResults* testToShareExternal = nil;
     
     label = [[UILabel alloc] initWithFrame:CGRectMake([SKAppColourScheme sGet_GUI_MULTIPLIER] * 100, mPassiveMetricsY + self.bounds.size.height, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 220, [SKAppColourScheme sGet_GUI_MULTIPLIER] * 18)];
     label.adjustsFontSizeToFitWidth = YES;
-    label.font = [UIFont fontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
+    label.font = [SKAppColourScheme sGetFontWithName:@"RobotoCondensed-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 13];
     label.textColor = [SKAppColourScheme sGetMetricsTextColour];
     label.text = text_;
     [self addSubview:label];

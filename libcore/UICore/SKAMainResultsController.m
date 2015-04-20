@@ -494,15 +494,17 @@ NSMutableArray *GArrayForResultsController;
 
 - (void)setLabels
 {
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
-  
-  label.textColor = [UIColor blackColor];
-  
-  label.backgroundColor = [UIColor clearColor];
-  label.text = sSKCoreGetLocalisedString(@"RESULTS_Title");
-  [label sizeToFit];
-  self.navigationItem.titleView = label;
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsThisTheNewApp] == YES) {
+    SK_ASSERT(false);
+  } else {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
+    label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
+    label.textColor = [UIColor blackColor];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = sSKCoreGetLocalisedString(@"RESULTS_Title");
+    [label sizeToFit];
+    self.navigationItem.titleView = label;
+  }
   
   [self.lblMain setText:sSKCoreGetLocalisedString(@"RESULTS_Label")];
   [self.lblAlert setText:sSKCoreGetLocalisedString(@"RESULTS_Label_Data")];

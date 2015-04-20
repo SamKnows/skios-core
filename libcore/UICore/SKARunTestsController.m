@@ -916,15 +916,20 @@ static BOOL sbViewIsVisible;
 
 
 - (void)setLabelsOnViewLoad {
-  
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-  label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
-  label.textColor = [UIColor blackColor];
-  
-  label.backgroundColor = [UIColor clearColor];
-  label.text = sSKCoreGetLocalisedString(@"TEST_Title");
-  [label sizeToFit];
-  self.navigationItem.titleView = label;
+ 
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsThisTheNewApp] == YES) {
+    SK_ASSERT(false);
+  } else {
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
+    label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
+    label.textColor = [UIColor blackColor];
+    
+    label.backgroundColor = [UIColor clearColor];
+    label.text = sSKCoreGetLocalisedString(@"TEST_Title");
+    [label sizeToFit];
+    self.navigationItem.titleView = label;
+  }
   
   NSString *txt = (self.testType == ALL_TESTS) ?
   sSKCoreGetLocalisedString(@"TEST_Label_Multiple") :

@@ -64,7 +64,7 @@
   //    CGContextFillRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, C_SHARE_IMAGE_WIDTH, 105));
   
   NSString *labelText = sSKCoreGetLocalisedString(@"Network performance test");
-  UIFont *labelFont = [UIFont fontWithName:@"Roboto-Regular" size:70];
+  UIFont *labelFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:70];
   
   NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
   [style setAlignment:NSTextAlignmentCenter];
@@ -87,9 +87,9 @@
   else
     speedFigure = [NSString stringWithFormat:@"%.02f Mbps", testResults_.downloadSpeed];
   
-  UIFont *speedFont = [UIFont fontWithName:@"DINCondensed-Bold" size:170];
+  UIFont *speedFont = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:170];
   labelText = sSKCoreGetLocalisedString(@"Test_Download");
-  labelFont = [UIFont fontWithName:@"Roboto-Light" size:50];
+  labelFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:50];
   
   //UIColor *textColor = [SKAppColourScheme sGetTableCellColourText];
   UIColor *textColor = [UIColor whiteColor];
@@ -110,8 +110,8 @@
   [textColor set];
   [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 450 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   
-  labelFont = [UIFont fontWithName:@"Roboto-Light" size:35];
-  speedFont = [UIFont fontWithName:@"DINCondensed-Bold" size:100];
+  labelFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:35];
+  speedFont = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:100];
   
   //Latency
   if (testResults_.latency < 0)
@@ -154,7 +154,7 @@
   
   [textColor set];
   //[[UIColor colorWithWhite:1 alpha:0.6] set];
-  labelFont = [UIFont fontWithName:@"Roboto-Light" size:35];
+  labelFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:35];
   [[NSString stringWithFormat:@"%@ / %@", timeString, [dateFormatter stringFromDate:testResults_.testDateTime] ] skDrawAtPointNoRet:CGPointMake(140, 923) withFont:labelFont withTextColor:textColor];
   
   NSString *networkName;
@@ -167,7 +167,7 @@
   //    [[UIColor colorWithRed:0 green:129.0/255.0 blue:220.0/255.0 alpha:1] set];
   //[[SKAppColourScheme sGetMetricsTextColour] set];
   
-  labelFont = [UIFont fontWithName:@"DINCondensed-Bold" size:50];
+  labelFont = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:50];
   [SKATestResults placeText:networkName intoRect:CGRectMake(20, 350, C_SHARE_IMAGE_WIDTH / 4, 50) withFont:labelFont withTextColor:textColor];
   
   UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();

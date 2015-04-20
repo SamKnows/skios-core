@@ -139,16 +139,16 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   
   float GUI_MULTIPLIER = [SKAppColourScheme sGet_GUI_MULTIPLIER];
   
-  UIFont* labelFontLight = [UIFont fontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 12];
-  UIFont* labelFontThin = [UIFont fontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 12];
-  UIFont* resultFont1 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 53];
-  UIFont* resultFont2 = [UIFont fontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
+  UIFont* labelFontLight = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 12];
+  UIFont* labelFontThin = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 12];
+  UIFont* resultFont1 = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 53];
+  UIFont* resultFont2 = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:GUI_MULTIPLIER * 17];
   UIFont* dateTimeFont = labelFontLight;
  
   BOOL newLayout = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsAlternativeResultsPanelLayoutRequired];
   if (newLayout) {
     resultFont2 = labelFontLight;
-    dateTimeFont = [UIFont fontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 10];
+    dateTimeFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:GUI_MULTIPLIER * 10];
   }
   
   self.backgroundColor = [UIColor clearColor];

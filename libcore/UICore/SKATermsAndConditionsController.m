@@ -108,15 +108,20 @@
 {
   if (self.webView != nil) {
     // NSLog(@"MPC %s %d", __FUNCTION__, __LINE__);
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
-    label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
-    label.textColor = [UIColor blackColor];
-    
-    label.backgroundColor = [UIColor clearColor];
-    label.text = sSKCoreGetLocalisedString(@"TC_Title");
-    [label sizeToFit];
-    self.navigationItem.titleView = label;
+   
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsThisTheNewApp] == YES) {
+      SK_ASSERT(false);
+    } else {
+      
+      UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,45,45)];
+      label.font = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:17];
+      label.textColor = [UIColor blackColor];
+      
+      label.backgroundColor = [UIColor clearColor];
+      label.text = sSKCoreGetLocalisedString(@"TC_Title");
+      [label sizeToFit];
+      self.navigationItem.titleView = label;
+    }
   }
 }
 

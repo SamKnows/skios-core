@@ -31,7 +31,7 @@
   
   self.v1.alpha = 0;
   
-  UIFont *theFont = [UIFont fontWithName:@"Roboto-Light" size:0.85 * self.bounds.size.height];
+  UIFont *theFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:0.85 * self.bounds.size.height];
   
   self.l1n.font = theFont;
   self.l1n.textColor = [UIColor lightGrayColor];

@@ -18,8 +18,6 @@
 - (void)swipeLeft;
 - (void)swipeRight;
 - (void)setLabels;
-- (void)addBackButton;
-- (void)addMainButton;
 
 - (void)goToMain;
 
@@ -97,8 +95,6 @@
   
   [self populateResults];
   [self setLabels];
-  [self addBackButton];
-  [self addMainButton];
   
   [self.tableView reloadData];
   
@@ -177,29 +173,6 @@
                    sSKCoreGetLocalisedString(@"Storyboard_ArchivedResults_Of_Separator"),
                    (int)[self.testMetaData count]];
   [self.lblCount setText:txt];
-}
-
-- (void)addBackButton
-{
-//  NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-//                        [UIColor whiteColor],UITextAttributeTextColor,
-//                        [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getSpecialFontOfSize:12.0],UITextAttributeFont,
-//                        nil];
-//  
-//  [[UIBarButtonItem appearance] setTitleTextAttributes:dict forState:UIControlStateNormal];
-}
-
-- (void)addMainButton
-{
-//  UIImage *img = [UIImage imageNamed:@"WAY_BACK"];
-//  
-//  UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, img.size.width, img.size.height)];
-//  [backButton setImage:img forState:UIControlStateNormal];
-//  [backButton addTarget:self action:@selector(goToMain) forControlEvents:UIControlEventTouchDown];
-//  
-//  UIBarButtonItem *barBackItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-//  
-//  self.navigationItem.rightBarButtonItem = barBackItem;
 }
 
 - (void)goToMain

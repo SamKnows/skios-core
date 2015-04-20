@@ -1686,6 +1686,8 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 
 // User interface special behaviours - you can override if you want!
 -(UIFont*) getSpecialFontOfSize:(CGFloat)theSize {
+  // We use AmericanTypewriter in some cases in the OLD app only!
+  SK_ASSERT(false);
   return [UIFont systemFontOfSize:theSize];
 }
 

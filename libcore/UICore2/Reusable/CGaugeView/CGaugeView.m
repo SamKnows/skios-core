@@ -75,7 +75,7 @@
   CGContextBeginPath(context_);
   labelCenter = CGPointMake(mainCenter.x + radiusInner * sin(angleTransformed), mainCenter.y + radiusInner * cos(angleTransformed));
   
-  UIFont* labelFont = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
+  UIFont* labelFont = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
   NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
   [style setAlignment:NSTextAlignmentCenter];
   NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -245,10 +245,10 @@
   self.mCenterText = [[UILabel alloc] initWithFrame:self.bounds];
   self.mCenterText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.mCenterText.textAlignment = NSTextAlignmentCenter;
-  self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 80];
+  self.mCenterText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 80];
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
     // Actually, make smaller on iPad
-    self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
+    self.mCenterText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
   }
   else if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
   {
@@ -256,7 +256,7 @@
     if(result.height < 568)
     {
       // iPhone 4 or earlier!
-      self.mCenterText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
+      self.mCenterText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 66];
     }
   }
   self.mCenterText.textColor = [SKAppColourScheme  sGetMainColourDialCenterText];
@@ -273,7 +273,7 @@
   self.mTopText = [[UILabel alloc] initWithFrame:self.bounds];
   self.mTopText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.mTopText.textAlignment = NSTextAlignmentCenter;
-  self.mTopText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 25];
+  self.mTopText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 25];
   self.mTopText.textColor = [SKAppColourScheme  sGetMainColourDialTopText];
   self.mTopText.adjustsFontSizeToFitWidth = YES;
   self.mTopText.minimumScaleFactor = 0.1; // minimumFontSize = 12 is deprecated from iOS 6
@@ -283,14 +283,14 @@
   self.mUnitText = [[UILabel alloc] initWithFrame:self.bounds];
   self.mUnitText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.mUnitText.textAlignment = NSTextAlignmentCenter;
-  self.mUnitText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 25];
+  self.mUnitText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 25];
   if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
   {
     CGSize result = [[UIScreen mainScreen] bounds].size;
     if(result.height < 568)
     {
       // iPhone 4 or earlier!
-      self.mUnitText.font = [UIFont fontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 20];
+      self.mUnitText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 20];
     }
   }
   self.mUnitText.textColor = [SKAppColourScheme  sGetMainColourDialUnitText];
@@ -299,7 +299,7 @@
   self.mMeasurementText = [[UILabel alloc] initWithFrame:self.bounds];
   self.mMeasurementText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   self.mMeasurementText.textAlignment = NSTextAlignmentCenter;
-  self.mMeasurementText.font = [UIFont fontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
+  self.mMeasurementText.font = [SKAppColourScheme sGetFontWithName:@"Roboto-Regular" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
   self.mMeasurementText.textColor = [SKAppColourScheme  sGetMainColourDialMeasurementText];
   [self addSubview:self.mMeasurementText];
   

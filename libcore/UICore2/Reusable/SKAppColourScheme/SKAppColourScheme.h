@@ -53,6 +53,8 @@
 
 -(UIColor*)getBlinkerBorderColour;
 -(UIColor*)getBlinkerBackgroundColour;
+
+-(UIFont*)getFontWithName:(NSString*)name size:(CGFloat)withSize;
 @end
 
 @interface SKAppColourScheme : NSObject<PSKAppColourScheme>
@@ -117,6 +119,8 @@
 +(UIColor*)sGetMetricsTextColour;
 +(UIColor*)sGetBlinkerBorderColour;
 +(UIColor*)sGetBlinkerBackgroundColour;
+
++(UIFont*)sGetFontWithName:(NSString*)name size:(CGFloat)withSize;
 
 // The app can call this static method, in order to provide a custom app colour scheme!
 +(void)sSetAppColourScheme:(NSObject<PSKAppColourScheme>*)theAppColourScheme;
