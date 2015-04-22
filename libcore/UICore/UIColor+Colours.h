@@ -17,6 +17,7 @@ typedef enum
 @interface UIColor (Colours)
 
 // Color Methods
++ (NSString *)hexStringFromColor:(UIColor *)color;
 + (UIColor *)colorFromHexString:(NSString *)hexString;
 + (UIColor *)colorWithRGBAArray:(NSArray *)rgbaArray;
 - (NSString *)hexString;

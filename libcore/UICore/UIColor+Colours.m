@@ -26,6 +26,20 @@
   }
 }
 
+// Note that this IGNORES alpha, in the current implementation!
++ (NSString *)hexStringFromColor:(UIColor *)color {
+  const CGFloat *components = CGColorGetComponents(color.CGColor);
+  
+  CGFloat r = components[0];
+  CGFloat g = components[1];
+  CGFloat b = components[2];
+  
+  return [NSString stringWithFormat:@"#%02lX%02lX%02lX",
+          lroundf(r * 255),
+          lroundf(g * 255),
+          lroundf(b * 255)];
+}
+
 #pragma mark - UIColor from Array
 
 + (UIColor *)colorWithRGBAArray:(NSArray *)rgbaArray {

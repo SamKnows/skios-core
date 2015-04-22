@@ -87,6 +87,10 @@
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
     header.contentView.backgroundColor = [UIColor colorFromHexString:@"#EBEBF1"]; // Sampled from real screen!
     //header.textLabel.textColor = [UIColor blackColor];
+    
+//    UIColor *x = header.textLabel.textColor;
+//    NSString *xAsString = [UIColor hexStringFromColor:x];
+//    NSLog(@"COLOR: %@", xAsString);
   }
 }
 
