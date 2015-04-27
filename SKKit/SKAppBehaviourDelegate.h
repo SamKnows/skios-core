@@ -234,6 +234,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 +(NSString*)sGetConfig_Url;
 
 -(BOOL) getIsAlternativeResultsPanelLayoutRequired;
+-(NSString*)getPrefsAgreedPropertyName;
 @end
 
 

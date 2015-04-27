@@ -32,7 +32,7 @@
 
 NSString *const Schedule_Xml = @"SCHEDULE.xml";
 
-NSString *const cPrefs_Agreed = @"PREFS_AGREED_V2";
+//NSString *const cPrefs_Agreed = @"PREFS_AGREED_V2";
 NSString *const cPrefs_Activated = @"PREFS_ACTIVATED_V2";
 NSString *const cPrefs_TargetServer = @"PREFS_TARGET_SERVER";
 
@@ -374,7 +374,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     theValue *= CBytesInAMegabyte;
     [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   }
-  
+ 
+  NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
   if (![prefs objectForKey:cPrefs_Agreed])
   {
     BOOL defaultValue = NO;
@@ -568,6 +569,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 + (void)setHasAgreed:(BOOL)value
 {
+  NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
+  
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   [prefs setObject:[SKCore getToday] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
   [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_Agreed];
@@ -582,6 +585,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   }
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  
+  NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
   
   if ([prefs objectForKey:cPrefs_Agreed])
   {
@@ -605,6 +610,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
+  NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
   if ([prefs objectForKey:cPrefs_Agreed])
   {
     NSNumber *num = [prefs objectForKey:cPrefs_Agreed];
@@ -1883,6 +1889,11 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
 -(BOOL) getIsAlternativeResultsPanelLayoutRequired {
   return NO;
 }
+
+-(NSString*)getPrefsAgreedPropertyName {
+  return @"PREFS_AGREED_V2";
+}
+
 @end
 
 NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath) {
