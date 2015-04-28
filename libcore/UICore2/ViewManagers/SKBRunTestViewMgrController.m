@@ -638,14 +638,14 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   //NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
   NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
 #ifdef DEBUG
-  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
+//  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
 #endif // DEBUG
   
   for (NSString *interfaceName in interfaceNames) {
     NSDictionary *ssidInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
     //NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName);
 #ifdef DEBUG
-    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, ssidInfo);
+//    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, ssidInfo);
 #endif // DEBUG
     if (ssidInfo[@"SSID"]) {
       ssid = ssidInfo[@"SSID"];

@@ -93,8 +93,21 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 }
 
 +(double) convertBytesPerSecondToMbps1024Based:(double)bytesPerSecond {
-  return bytesPerSecond * 8.0 / (1024.0 * 1024.0);
+  double result = bytesPerSecond * 8.0 / (1024.0 * 1024.0);
+#ifdef DEBUG
+  double testBytesPerSecond = [self convertMpbs1024BasedToBytesPerSecond:result];
+  double diff = fabs(testBytesPerSecond - bytesPerSecond);
+  SK_ASSERT(diff == 0.0F);
+  //SK_ASSERT(diff <= (result * 0.1F));
+#endif // DEBUG
+  return result;
 }
+
++(double) convertMpbs1024BasedToBytesPerSecond:(double)value1024Based {
+  double bytesPerSecond = (value1024Based * (1024.0*1024.0) / 8.0);
+  return bytesPerSecond;
+}
+
 
 +(double) convertMbps1024BasedToMBps1000Based:(double)value1024Based {
   return value1024Based * (1024.0 * 1024.0) / (1000.0 * 1000.0);

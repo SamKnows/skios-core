@@ -413,7 +413,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     return true;
 }
 
-- (int)getBytesPerSecond
+- (int)getBytesPerSecondForFinalDisplayAndUploadOld
 {
   double dTime = testTransferTimeMicroseconds / 1000000.0;   // convert microseconds -> seconds
   if (dTime == 0) {
@@ -590,6 +590,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #endif // DEBUG
               testTransferTimeMicroseconds = [[NSDate date] timeIntervalSinceDate:self.testTransferTimeFirstBytesAt] * 1000000.0;
               testTransferBytes = testTransferBytes_New;
+              
+              //double bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
+              //NSLog(@"DEBUG: bitrateMbps1024Based (RESULT)=%f (bytes=%f, micro=%f)", bitrateMbps1024Based, (double)testTransferBytes, (double)testTransferTimeMicroseconds);
             }
           }
         }
@@ -612,7 +615,6 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         
         
         [self setRunningStatus:COMPLETE];
-        [self storeOutputResults];
         
         SK_ASSERT(self.httpRequestDelegate != nil);
         
@@ -645,9 +647,13 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
           if (tryThis >= 0.0) {
             
             bitrateMbps1024Based = tryThis;
+            //NSLog(@"DEBUG: bitrateMbps1024Based (TRYTHIS)=%f)", bitrateMbps1024Based);
+            
           }
         }
-       
+      
+        [self storeOutputResults:bitrateMbps1024Based];
+        
         [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
                                           ResultIsFromServer:bResultIsFromServer];
       }
@@ -662,7 +668,6 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       testTransferBytes = transferBytes;
       testTransferTimeMicroseconds = transferTimeMicroseconds;
       
-      [self storeOutputResults];
       
       BOOL bResultIsFromServer;
       if (bitrateMbps1024Based > 0.0) {
@@ -686,6 +691,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         }
       }
      
+      [self storeOutputResults:bitrateMbps1024Based];
+      
       [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
                                         ResultIsFromServer:bResultIsFromServer];
     }
@@ -915,7 +922,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 
 
-- (void)storeOutputResults
+- (void)storeOutputResults:(double)bitrateMbps1024Based
 {
   //    "type": "JHTTPPOSTMT",
   //    "bytes_sec": "167995",
@@ -947,14 +954,23 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     [outputResultsDictionary setObject:type
                                 forKey:@"type"];
   }
+ 
+#ifdef DEBUG
+  int bytesPerSecondOld = [self getBytesPerSecondForFinalDisplayAndUploadOld];
+  double bitrateMbps1024BasedOld = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
+  NSLog(@"DEBUG: bitrateMpbs1024Based=%f, bitrateMbps1024BasedOld (JSON)=%f (bytes=%f, micro=%f)", bitrateMbps1024Based, bitrateMbps1024BasedOld, (double)testTransferBytes, (double)testTransferTimeMicroseconds);
+#endif // DEBUG
   
-  int bytesPerSecond = [self getBytesPerSecond];
-  
+  int bytesPerSecond = [SKGlobalMethods convertMpbs1024BasedToBytesPerSecond:bitrateMbps1024Based];
   if (bytesPerSecond == 0) {
     // 30/03/2015 - note that if bytesPerSecond is ZERO, we must also tag this with "success": false
     // c.f. HttpTest.java on 
     self.testOK = NO;
   }
+  
+#ifdef DEBUG
+  NSLog(@"DEBUG: bytesPerSecond (JSON)=%d (bytesPerSecondOld=%d)", bytesPerSecond, bytesPerSecondOld);
+#endif // DEBUG
   
   [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", bytesPerSecond]
                               forKey:@"bytes_sec"];
@@ -976,10 +992,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)([[SKCore getToday] timeIntervalSince1970])]
                               forKey:@"timestamp"];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)self.testTransferBytes]
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)testTransferBytes]
                               forKey:@"transfer_bytes"];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(self.testTransferTimeMicroseconds)]
+  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(testTransferTimeMicroseconds)]
                               forKey:@"transfer_time"];
   
   [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)self.testWarmupBytes]
