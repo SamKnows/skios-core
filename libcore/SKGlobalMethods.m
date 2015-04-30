@@ -244,6 +244,16 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     return result;
 }
 
++(NSString*)sGet3DigitsNumber:(float)number_
+{
+  //  number_ = 1999.978F;
+  //  number_ = 0.978F;
+  //  number_ = 10.978F;
+  if (number_ < 10) return [NSString localizedStringWithFormat:@"%.02f", number_];
+  else if (number_ < 100) return [NSString localizedStringWithFormat:@"%.01f", number_];
+  else return [NSString localizedStringWithFormat:@"%.00f", number_];
+}
+
 
 + (NSString *)bytesToString:(double)value
 {

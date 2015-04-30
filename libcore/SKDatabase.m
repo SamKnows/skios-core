@@ -1360,14 +1360,20 @@ public static String convertConnectivityType(int type) {
     testResult.target = [rs stringForColumnIndex:2];
     
     if ([rs objectForColumnIndexReturnsNullNotNil:3] == [NSNull null])
-      testResult.downloadSpeed = -1;
-    else
-      testResult.downloadSpeed = [rs doubleForColumnIndex:3];
+      testResult.downloadSpeed1000Based = -1;
+    else {
+      double bitrate1024Based =  [rs doubleForColumnIndex:3];
+      double bitrate1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
+      testResult.downloadSpeed1000Based = bitrate1000Based;
+    }
     
     if ([rs objectForColumnIndexReturnsNullNotNil:4] == [NSNull null])
-      testResult.uploadSpeed = -1;
-    else
-      testResult.uploadSpeed = [rs doubleForColumnIndex:4];
+      testResult.uploadSpeed1000Based = -1;
+    else {
+      double bitrate1024Based = [rs doubleForColumnIndex:4];
+      double bitrate1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
+      testResult.uploadSpeed1000Based = bitrate1000Based;
+    }
     
     if ([rs objectForColumnIndexReturnsNullNotNil:5] == [NSNull null])
       testResult.latency = -1;

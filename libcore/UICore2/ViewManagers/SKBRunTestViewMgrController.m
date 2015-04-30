@@ -44,6 +44,8 @@
 
 -(void) viewDidLoad {
   [super viewDidLoad];
+  
+  [self.tmActivityIndicator setSixSegmentMaxValues:@[@100.0, @200.0, @300, @400.0, @500.0, @600.0]];
 
   // Calculate how many passive metrics we have!
   
@@ -1186,14 +1188,20 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     
     if (isDownstream) //Download test
     {
-      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
-      [SKBHistoryViewMgr sGetTstToShareExternal].downloadSpeed = bitrate1024Based;
+      double bitrate1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
+      
+      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1000Based];
+      [SKBHistoryViewMgr sGetTstToShareExternal].downloadSpeed1000Based = bitrate1000Based;
+      
       progressDownload = 1;
     }
     else
     {
-      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1024Based];
-      [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed = bitrate1024Based;
+      double bitrate1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
+      
+      [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_UPLOAD_TEST].value = [SKBTestOverviewCell sGet3DigitsNumber: bitrate1000Based];
+      [SKBHistoryViewMgr sGetTstToShareExternal].uploadSpeed1000Based = bitrate1000Based;
+      
       progressUpload = 1;
     }
     
@@ -1592,8 +1600,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   mpTestResult = [SKBHistoryViewMgr sCreateNewTstToShareExternal];
   mpTestResult.testDateTime = [NSDate date];
-  mpTestResult.downloadSpeed = -1;
-  mpTestResult.uploadSpeed = -1;
+  mpTestResult.downloadSpeed1000Based = -1;
+  mpTestResult.uploadSpeed1000Based = -1;
   mpTestResult.latency = -1;
   mpTestResult.loss = -1;
   mpTestResult.jitter = -1;

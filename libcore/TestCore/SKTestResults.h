@@ -14,8 +14,8 @@
 @property (nonatomic) long testId;
 @property (nonatomic, strong) NSDate* testDateTime;
 @property (nonatomic, strong) NSString* target;
-@property (nonatomic) double downloadSpeed;
-@property (nonatomic) double uploadSpeed;
+@property (nonatomic) double downloadSpeed1000Based;
+@property (nonatomic) double uploadSpeed1000Based;
 @property (nonatomic) double latency;
 @property (nonatomic) double loss;
 @property (nonatomic) double jitter;

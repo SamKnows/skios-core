@@ -23,12 +23,12 @@
   
   int currentChartType;
   
-  float downloadSUM;
+  float downloadSUM1000Based;
   int downloadCNT;
-  float downloadBEST;
-  float uploadSUM;
+  float downloadBEST1000Based;
+  float uploadSUM1000Based;
   int uploadCNT;
-  float uploadBEST;
+  float uploadBEST1000Based;
   float latencySUM;
   int latencyCNT;
   float latencyBEST;

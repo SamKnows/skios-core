@@ -345,12 +345,12 @@ static NSUInteger s1YearButtonIndex = 0;
   
   arrTestsList = [SKDatabase getTestDataForNetworkType:[self getSelectedNetworkWord] afterDate:previousDate];
   
-  downloadSUM = 0;
+  downloadSUM1000Based = 0;
   downloadCNT = 0;
-  downloadBEST = -1;
-  uploadSUM = 0;
+  downloadBEST1000Based = -1;
+  uploadSUM1000Based = 0;
   uploadCNT = 0;
-  uploadBEST = -1;
+  uploadBEST1000Based = -1;
   latencySUM = 0;
   latencyCNT = 0;
   latencyBEST = -1;
@@ -363,18 +363,18 @@ static NSUInteger s1YearButtonIndex = 0;
   
   for (SKATestResults* tr in arrTestsList) {
     
-    if (tr.downloadSpeed >= 0) //If the test was executed
+    if (tr.downloadSpeed1000Based >= 0) //If the test was executed
     {
       downloadCNT++;
-      downloadSUM += tr.downloadSpeed;
-      if (downloadBEST < 0 || downloadBEST < tr.downloadSpeed) downloadBEST = tr.downloadSpeed;
+      downloadSUM1000Based += tr.downloadSpeed1000Based;
+      if (downloadBEST1000Based < 0 || downloadBEST1000Based < tr.downloadSpeed1000Based) downloadBEST1000Based = tr.downloadSpeed1000Based;
     }
     
-    if (tr.uploadSpeed >= 0) //If the test was executed
+    if (tr.uploadSpeed1000Based >= 0) //If the test was executed
     {
       uploadCNT++;
-      uploadSUM += tr.uploadSpeed;
-      if (uploadBEST < 0 || uploadBEST < tr.uploadSpeed) uploadBEST = tr.uploadSpeed;
+      uploadSUM1000Based += tr.uploadSpeed1000Based;
+      if (uploadBEST1000Based < 0 || uploadBEST1000Based < tr.uploadSpeed1000Based) uploadBEST1000Based = tr.uploadSpeed1000Based;
     }
     
     if (tr.latency >= 0) //If the test was executed
@@ -401,8 +401,8 @@ static NSUInteger s1YearButtonIndex = 0;
   
   if (downloadCNT > 0)
   {
-    self.lDownloadAvg = [SKBTestOverviewCell sGet3DigitsNumber:downloadSUM / downloadCNT];
-    self.lDownloadBst = [SKBTestOverviewCell sGet3DigitsNumber:downloadBEST];
+    self.lDownloadAvg = [SKBTestOverviewCell sGet3DigitsNumber:downloadSUM1000Based / downloadCNT];
+    self.lDownloadBst = [SKBTestOverviewCell sGet3DigitsNumber:downloadBEST1000Based];
   }
   else
   {
@@ -412,8 +412,8 @@ static NSUInteger s1YearButtonIndex = 0;
   
   if (uploadCNT > 0)
   {
-    self.lUploadAvg = [SKBTestOverviewCell sGet3DigitsNumber:uploadSUM / uploadCNT];
-    self.lUploadBst = [SKBTestOverviewCell sGet3DigitsNumber:uploadBEST];
+    self.lUploadAvg = [SKBTestOverviewCell sGet3DigitsNumber:uploadSUM1000Based / uploadCNT];
+    self.lUploadBst = [SKBTestOverviewCell sGet3DigitsNumber:uploadBEST1000Based];
   }
   else
   {

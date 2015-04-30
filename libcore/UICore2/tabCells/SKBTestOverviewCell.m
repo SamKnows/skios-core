@@ -424,15 +424,19 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   [dateFormatter setDateStyle:NSDateFormatterNoStyle];
   self.lTimeOfTest.text = [dateFormatter stringFromDate:testResult.testDateTime];
   
-  if (testResult_.downloadSpeed < 0)
+  if (testResult_.downloadSpeed1000Based < 0)
     self.lResultDownload.text = @"-";
-  else
-    self.lResultDownload.text = [SKBTestOverviewCell sGet3DigitsNumber:testResult_.downloadSpeed];
+  else {
+    NSString *displayValue = [SKBTestOverviewCell sGet3DigitsNumber:testResult_.downloadSpeed1000Based];
+    self.lResultDownload.text = displayValue;
+  }
   
-  if (testResult.uploadSpeed < 0)
+  if (testResult.uploadSpeed1000Based < 0)
     self.lResultUpload.text = @"-";
-  else
-    self.lResultUpload.text = [SKBTestOverviewCell sGet3DigitsNumber:testResult.uploadSpeed];
+  else {
+    NSString *displayValue = [SKBTestOverviewCell sGet3DigitsNumber:testResult_.uploadSpeed1000Based];
+    self.lResultUpload.text = displayValue;
+  }
   
   if (testResult.latency < 0)
     self.lResultLatency.text = @"-";
@@ -467,12 +471,7 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
 
 +(NSString*)sGet3DigitsNumber:(float)number_
 {
-//  number_ = 1999.978F;
-//  number_ = 0.978F;
-//  number_ = 10.978F;
-  if (number_ < 10) return [NSString localizedStringWithFormat:@"%.02f", number_];
-  else if (number_ < 100) return [NSString localizedStringWithFormat:@"%.01f", number_];
-  else return [NSString localizedStringWithFormat:@"%.00f", number_];
+  return [SKGlobalMethods sGet3DigitsNumber:number_];
 }
 
 @end

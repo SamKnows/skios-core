@@ -82,10 +82,10 @@
   
   //Download figure
   NSString* speedFigure;
-  if (testResults_.downloadSpeed < 0)
+  if (testResults_.downloadSpeed1000Based < 0)
     speedFigure = @"-";
   else
-    speedFigure = [NSString stringWithFormat:@"%.02f Mbps", testResults_.downloadSpeed];
+    speedFigure = [NSString stringWithFormat:@"%.02f Mbps", testResults_.downloadSpeed1000Based];
   
   UIFont *speedFont = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:170];
   labelText = sSKCoreGetLocalisedString(@"Test_Download");
@@ -99,10 +99,10 @@
   [labelText skDrawAtPointNoRet:CGPointMake(0.3 * C_SHARE_IMAGE_WIDTH , 250 + C_SHARE_IMAGE_SHIFT_Y) withFont:labelFont withTextColor:textColor];
   
   //Upload figure
-  if (testResults_.uploadSpeed < 0)
+  if (testResults_.uploadSpeed1000Based < 0)
     speedFigure = @"-";
   else
-    speedFigure = [NSString stringWithFormat:@"%.02f Mbps", testResults_.uploadSpeed];
+    speedFigure = [NSString stringWithFormat:@"%.02f Mbps", testResults_.uploadSpeed1000Based];
   labelText = sSKCoreGetLocalisedString(@"Test_Upload");
   
   //[[UIColor colorWithWhite:0.75 alpha:1] set];
@@ -183,8 +183,8 @@
   return [SKAppBehaviourDelegate
           sBuildSocialMediaMessageForCarrierName:carrierName
           SocialNetwork:socialNetwork
-          Upload:[SKGlobalMethods bitrateMbps1024BasedToString:self.uploadSpeed]
-          Download:[SKGlobalMethods bitrateMbps1024BasedToString:self.downloadSpeed]
+          Upload:[SKGlobalMethods bitrateMbps1024BasedToString:self.uploadSpeed1000Based]
+          Download:[SKGlobalMethods bitrateMbps1024BasedToString:self.downloadSpeed1000Based]
           ThisDataIsAveraged:NO];
 }
 

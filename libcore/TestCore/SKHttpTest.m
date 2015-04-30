@@ -959,6 +959,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   int bytesPerSecondOld = [self getBytesPerSecondForFinalDisplayAndUploadOld];
   double bitrateMbps1024BasedOld = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
   NSLog(@"DEBUG: bitrateMpbs1024Based=%f, bitrateMbps1024BasedOld (JSON)=%f (bytes=%f, micro=%f)", bitrateMbps1024Based, bitrateMbps1024BasedOld, (double)testTransferBytes, (double)testTransferTimeMicroseconds);
+  
+  double bitrateMbps1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrateMbps1024Based];
+  NSString *mbpsString = [SKGlobalMethods sGet3DigitsNumber:bitrateMbps1000Based];
+  NSLog(@"DEBUG: The app should display Mbps value of ... %@ Mbps", mbpsString);
 #endif // DEBUG
   
   int bytesPerSecond = [SKGlobalMethods convertMpbs1024BasedToBytesPerSecond:bitrateMbps1024Based];
