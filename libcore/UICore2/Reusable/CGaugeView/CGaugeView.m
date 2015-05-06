@@ -243,7 +243,10 @@
   //    [self.arrLabels addObject:@"*"];
   
   self.mCenterText = [[UILabel alloc] initWithFrame:self.bounds];
+  [self.mCenterText setBaselineAdjustment:UIBaselineAdjustmentAlignCenters];
+  //self.mCenterText.userInteractionEnabled = NO;
   self.mCenterText.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  // http://stackoverflow.com/questions/1054558/vertically-align-text-within-a-uilabel
   self.mCenterText.textAlignment = NSTextAlignmentCenter;
   self.mCenterText.font = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 80];
   if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

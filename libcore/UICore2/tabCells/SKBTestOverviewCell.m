@@ -165,14 +165,21 @@ CGRect MakeScaledRect(float GUI_MULTIPLIER, CGFloat x, CGFloat y, CGFloat width,
   // TODO: for some clients, the strings are of lengths such that we require very different layouts!
   //
   
+  // Down -> Latn = 191 - 9 = 182
+  // Take aways padding of 9 = 173
+  // Divided by two gives width of 86
+  // Experimentation with larger fonts, show that a width of 70 is best!
+  
+  const int cUploadDownloadWidth = 70;
+  
   CGRect ivArrowDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,      9,  12,  17,  17);
   CGRect lDownloadLabelFrame = MakeScaledRect( GUI_MULTIPLIER,     29,   9, 103,  21);
-  CGRect lResultDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,     11,  31,  80,  55);
+  CGRect lResultDownloadFrame = MakeScaledRect(GUI_MULTIPLIER,     11,  31,  cUploadDownloadWidth, 55); // 80,  55);
   CGRect lMbpsLabel4DownloadFrame = MakeScaledRect(GUI_MULTIPLIER, 11,  69,  59,  21);
   
   CGRect ivArrowUploadFrame = MakeScaledRect(GUI_MULTIPLIER,      103,  11,  17,  17);
   CGRect lUploadLabelFrame = MakeScaledRect(GUI_MULTIPLIER,       121,   9,  82,  21);
-  CGRect lResultUploadFrame = MakeScaledRect(GUI_MULTIPLIER,      105,  31,  82,  55);
+  CGRect lResultUploadFrame = MakeScaledRect(GUI_MULTIPLIER,      105,  31,  cUploadDownloadWidth, 55); // 82,  55);
   CGRect lMbpsLabel4UploadFrame = MakeScaledRect(GUI_MULTIPLIER,  105,  69,  46,  21);
   
   CGRect lLatencyLabelFrame = MakeScaledRect(GUI_MULTIPLIER,       191,  9,  130,  21);
