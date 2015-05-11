@@ -1741,6 +1741,19 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return YES;
 }
 
+-(BOOL) canViewLocationInSettings {
+  return YES;
+}
+
+-(BOOL) getRevealGraphFromSummary {
+  return YES;
+}
+
+-(BOOL) getRevealPassiveMetricsFromPanel {
+  return YES;
+}
+
+
 // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants;
 // the default is NO.
 -(BOOL) getShouldUploadDeviceId {

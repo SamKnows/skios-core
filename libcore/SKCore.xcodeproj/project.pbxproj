@@ -24,6 +24,9 @@
 		B221AEE518FFE24800323923 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
 		B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2246C7917CF691700E1DC79 /* SKAutotest.m */; };
 		B224BE2F1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m in Sources */ = {isa = PBXBuildFile; fileRef = B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */; };
+		B22B60EF1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B22B60EE1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m */; };
+		B22B60F21B00B6FF00CEB36B /* SKSettingsDataCapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B22B60F11B00B6FE00CEB36B /* SKSettingsDataCapCell.m */; };
+		B22B60F51B00BF1000CEB36B /* SKSettingsLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B22B60F41B00BF1000CEB36B /* SKSettingsLinkCell.m */; };
 		B22E5EDA19D9715B00666F16 /* SKBTermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */; };
 		B22E5EDF19DAC40000666F16 /* SKBHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDC19DAC40000666F16 /* SKBHistoryViewController.m */; };
 		B22E5EE019DAC40000666F16 /* SKBSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B22E5EDE19DAC40000666F16 /* SKBSummaryViewController.m */; };
@@ -205,6 +208,12 @@
 		B2246C7917CF691700E1DC79 /* SKAutotest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAutotest.m; sourceTree = "<group>"; };
 		B224BE2D1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKATermsAndConditionsWithButtonController.h; path = UICore2/ViewManagers/SKATermsAndConditionsWithButtonController.h; sourceTree = SOURCE_ROOT; };
 		B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKATermsAndConditionsWithButtonController.m; path = UICore2/ViewManagers/SKATermsAndConditionsWithButtonController.m; sourceTree = SOURCE_ROOT; };
+		B22B60ED1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsCellValueWithLabel.h; sourceTree = "<group>"; };
+		B22B60EE1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsCellValueWithLabel.m; sourceTree = "<group>"; };
+		B22B60F01B00B6FE00CEB36B /* SKSettingsDataCapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsDataCapCell.h; sourceTree = "<group>"; };
+		B22B60F11B00B6FE00CEB36B /* SKSettingsDataCapCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsDataCapCell.m; sourceTree = "<group>"; };
+		B22B60F31B00BF1000CEB36B /* SKSettingsLinkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsLinkCell.h; sourceTree = "<group>"; };
+		B22B60F41B00BF1000CEB36B /* SKSettingsLinkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsLinkCell.m; sourceTree = "<group>"; };
 		B22E5ED819D9715B00666F16 /* SKBTermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBTermsViewController.h; sourceTree = "<group>"; };
 		B22E5ED919D9715B00666F16 /* SKBTermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTermsViewController.m; sourceTree = "<group>"; };
 		B22E5EDB19DAC40000666F16 /* SKBHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBHistoryViewController.h; sourceTree = "<group>"; };
@@ -1151,6 +1160,12 @@
 				B2FB031E19B75D09007AA3C2 /* SKBTestOverviewCell.m */,
 				B22E5EE119DAEC7000666F16 /* SKBSummaryTableViewCell.h */,
 				B22E5EE219DAEC7000666F16 /* SKBSummaryTableViewCell.m */,
+				B22B60ED1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.h */,
+				B22B60EE1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m */,
+				B22B60F01B00B6FE00CEB36B /* SKSettingsDataCapCell.h */,
+				B22B60F11B00B6FE00CEB36B /* SKSettingsDataCapCell.m */,
+				B22B60F31B00BF1000CEB36B /* SKSettingsLinkCell.h */,
+				B22B60F41B00BF1000CEB36B /* SKSettingsLinkCell.m */,
 			);
 			path = tabCells;
 			sourceTree = "<group>";
@@ -1313,6 +1328,7 @@
 				B22E88DF17C3682E005D9094 /* SKDebugAssert.m in Sources */,
 				B248E3E81A7A69B6009BC956 /* SKSplashView.m in Sources */,
 				B2AE68181883DA4D00D87FAE /* SKAGraphResultCell.m in Sources */,
+				B22B60EF1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m in Sources */,
 				B25001D8188FC9D5004287B1 /* GCDAsyncSocket.m in Sources */,
 				B2038F461897D70B005AC0BB /* SKAMainResultTestHeaderCell.m in Sources */,
 				B2FB033119B75D09007AA3C2 /* IPHelper.m in Sources */,
@@ -1353,6 +1369,7 @@
 				B22E892317C371DD005D9094 /* UIDeviceHardware.m in Sources */,
 				B22E892817C37243005D9094 /* SMXMLDocument.m in Sources */,
 				B221AEDA18FFC21600323923 /* unzip.c in Sources */,
+				B22B60F51B00BF1000CEB36B /* SKSettingsLinkCell.m in Sources */,
 				B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */,
 				B22E892C17C37339005D9094 /* AsyncUdpSocket.m in Sources */,
 				B20BCEB71A28873400A45AD4 /* SKAFooterCell.m in Sources */,
@@ -1360,6 +1377,7 @@
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
+				B22B60F21B00B6FF00CEB36B /* SKSettingsDataCapCell.m in Sources */,
 				B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */,
 				B28006DD19C881E90008DF5F /* SKBMainViewTabBarController.m in Sources */,
 				B2AE681B1883DA4D00D87FAE /* SKARunTestsButtonCell.m in Sources */,

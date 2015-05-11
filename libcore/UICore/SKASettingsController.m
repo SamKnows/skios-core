@@ -8,13 +8,21 @@
 #import "SKASettingsController.h"
 #import "SKAAppDelegate.h"
 #import "SKAMainResultsController.h"
+#import "SKSettingsCellValueWithLabel.h"
+#import "SKSettingsDataCapCell.h"
+#import "SKSettingsLinkCell.h"
 
 @interface SKASettingsController ()
 
-@property (weak, nonatomic) IBOutlet UITableViewCell *aboutOrVersionTableViewCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *activateTableViewCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *exportResultsTableViewCell;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dataCapLabelToSwitchSpacingConstraint;
+@property  NSString *lblAboutCaptionText;
+@property  NSString *lblAboutVersionText;
+@property  BOOL mbShowAccessoryOnAboutOrVersion;
+@property  (weak, atomic) SKSettingsDataCapCell *dataCapCell;
+@property  NSString *termsAndConditionsLabelText;
+
+#define SECTION_INDEX_MAIN 0
+@property int SECTION_INDEX_DATACAP;
+@property int SECTION_INDEX_LOCATION;
 
 - (void)setLabels;
 
@@ -22,46 +30,54 @@
 
 @implementation SKASettingsController
 
+@synthesize lblAboutCaptionText;
+@synthesize lblAboutVersionText;
+@synthesize mbShowAccessoryOnAboutOrVersion;
+@synthesize dataCapCell;
+@synthesize termsAndConditionsLabelText;
+@synthesize SECTION_INDEX_DATACAP;
+@synthesize SECTION_INDEX_LOCATION;
+
 - (void)viewDidLoad {
   [super viewDidLoad];
+  
+  SECTION_INDEX_DATACAP = -1;
+  SECTION_INDEX_LOCATION = -1;
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES) {
+    SECTION_INDEX_DATACAP = 1;
+  }
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == YES) {
+    if (SECTION_INDEX_DATACAP == -1) {
+      SECTION_INDEX_LOCATION = 1;
+    } else {
+      SECTION_INDEX_LOCATION = 2;
+    }
+  }
   
   //SK_ASSERT(self.dateLabel != nil);
   //SK_ASSERT(self.dateValue != nil);
   
   [self setLabels];
-  [self setDataAllowance];
-  
-  self.lblClearAllData.text = sSKCoreGetLocalisedString(@"Settings_ClearAllResults");
-  self.lblActivate.text = sSKCoreGetLocalisedString(@"Settings_Activate");
-  self.latitudeLabel.text = sSKCoreGetLocalisedString(@"latitude");
-  self.longitudeLabel.text = sSKCoreGetLocalisedString(@"longitude");
-  self.dateLabel.text = sSKCoreGetLocalisedString(@"date");
   
   // Added for new app
-  self.exportResultsLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
-  self.lblAboutCaption.text = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
+//  self.exportResultsLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
+  self.lblAboutCaptionText = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
   NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
   NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
   NSString *displayVersion = [NSString stringWithFormat:@"%@.%@", appVersion, bundleVersion];
-  self.lblAboutVersion.text = displayVersion;
+  self.lblAboutVersionText = displayVersion;
   
   NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
   if (theUrlString != nil) {
-    self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"About_Web_Server");
+    self.termsAndConditionsLabelText = sSKCoreGetLocalisedString(@"About_Web_Server");
     displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
-    self.lblAboutCaption.text = displayVersion;
-    self.aboutOrVersionTableViewCell.accessoryType = UITableViewCellAccessoryNone;
+    self.lblAboutCaptionText = displayVersion;
+    mbShowAccessoryOnAboutOrVersion = NO;
   } else {
-    self.termsAndConditionsLabel.text = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
+    self.termsAndConditionsLabelText = sSKCoreGetLocalisedString(@"Menu_TermsOfUse");
+    mbShowAccessoryOnAboutOrVersion = YES;
   }
   
-  BOOL canDisableDataCap = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canDisableDataCap];
-  self.datacapSwitch.hidden = !canDisableDataCap;
-  if (self.datacapSwitch.hidden == YES) {
-    // Move the hidden switch sideways, to give more room for the text!
-    CGRect theFrame = self.datacapSwitch.frame;
-    self.dataCapLabelToSwitchSpacingConstraint.constant -= theFrame.size.width;
-  }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -97,6 +113,9 @@
 
 -(void) viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  
+  SK_ASSERT(self.tableView != nil);
+  [self.tableView reloadData];
  
   UIViewController *parentViewController = self.parentViewController;
   NSString *classDescription = [parentViewController.class description];
@@ -106,48 +125,6 @@
     [self.tableView setBackgroundView:nil];
     [self.tableView setBackgroundColor:[UIColor clearColor]];
   }
-
-  BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
-  self.datacapSwitch.on = datacapEnabled;
-  self.txtDataCap.enabled = datacapEnabled;
- 
-  if (self.uniqueIdLabel != nil) {
-    self.uniqueIdLabel.text = [[UIDevice currentDevice] uniqueDeviceIdentifier];
-  }
-  
-  if (datacapEnabled == YES) {
-    self.txtDataCap.alpha = 1.0;
-  } else {
-    self.txtDataCap.alpha = 0.3;
-  }
-  
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
-  
-  if (loc != nil) {
-    double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
-    double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
-    double dateAsTimeIntervalSince1970 = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
-    
-    self.latitudeValue.text = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
-    self.longitudeValue.text = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
-    
-    if (dateAsTimeIntervalSince1970 == 0) {
-      self.dateValue.text = sSKCoreGetLocalisedString(@"Unknown");
-    } else {
-    self.dateValue.text = [SKGlobalMethods formatDate:[NSDate dateWithTimeIntervalSince1970:dateAsTimeIntervalSince1970]];
-    }
-  } else {
-    self.latitudeValue.text = sSKCoreGetLocalisedString(@"Unknown");
-    self.longitudeValue.text = sSKCoreGetLocalisedString(@"Unknown");
-    self.dateValue.text = sSKCoreGetLocalisedString(@"Unknown");
-  }
-
-  // And update the data usage value.
-  SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
-  int64_t bytesUsed = [delegate amdGetDataUsageBytes];
-  NSString *valueString = [SKGlobalMethods bytesToString:(double)bytesUsed];
-  [self.lblDataMB setText:valueString];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -183,47 +160,12 @@
   }
   
   [self setTitle:sSKCoreGetLocalisedString(@"SETTINGS_Title")];
-  [self.lblDataCap setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Cap")];
-  [self.lblDataUsage setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Usage")];
-  [self.lblConfig setText:sSKCoreGetLocalisedString(@"SETTINGS_Config")];
+//  [self.lblConfig setText:sSKCoreGetLocalisedString(@"SETTINGS_Config")];
   
-  SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
-  [self.lblVersion setText:delegate.schedule.scheduleVersion];
+//  SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
+//  [self.lblVersion setText:delegate.schedule.scheduleVersion];
 }
 
-
-- (void)setDataAllowance
-{
-    int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
-    
-    mb = mb / CBytesInAMegabyte;
-    
-    [self.txtDataCap setText:[NSString stringWithFormat:@"%d", (int)mb]];
-}
-
--(void) validateText {
-  if ([self.txtDataCap.text length] == 0)
-  {
-    self.txtDataCap.text = @"1";
-  }
-  else
-  {
-    int64_t value = [self.txtDataCap.text longLongValue];
-    
-    if (value <= 0)
-    {
-      self.txtDataCap.text = @"1";
-    }
-  }
-  
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  NSLog(@"Sizeof long = %d", (int)sizeof(long));
-  NSLog(@"Sizeof int64_t = %d", (int)sizeof(int64_t));
-  int64_t theValue = (int64_t)[self.txtDataCap.text longLongValue];
-  theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
-  [prefs synchronize];
-}
 
 #pragma mark - UIAlertViewDelegate
 
@@ -232,18 +174,21 @@
   
   if (alertView.tag == ALERT_DATACAP) {
     
-    // after animation
-    
-    UITextField *textField = [alertView textFieldAtIndex:0];
-    SK_ASSERT(textField != nil);
-    SK_ASSERT(textField.text != nil);
-    
-    NSString *stringValue = textField.text;
-    int64_t value = [stringValue longLongValue];
-    
-    self.txtDataCap.text = [NSString stringWithFormat:@"%ld", (long)value];
-    
-    [self validateText];
+    if (buttonIndex == alertView.cancelButtonIndex) {
+      // Nothing to do!
+    } else {
+      
+      UITextField *textField = [alertView textFieldAtIndex:0];
+      SK_ASSERT(textField != nil);
+      SK_ASSERT(textField.text != nil);
+      
+      NSString *stringValue = textField.text;
+      int64_t value = [stringValue longLongValue];
+      
+      dataCapCell.txtDataCap.text = [NSString stringWithFormat:@"%ld", (long)value];
+      
+      [self validateText];
+    }
   } else if (alertView.tag == ALERT_WIPEDATA) {
     if (buttonIndex == alertView.cancelButtonIndex) {
       // Nothing to do!
@@ -277,24 +222,12 @@
     return NO;
 }
 
-- (IBAction)datacapSwitch:(id)sender {
-  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] setIsDataCapEnabled:self.datacapSwitch.on];
-  
-  BOOL datacapEnabledNow = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
-  
-  if (datacapEnabledNow == YES) {
-    self.txtDataCap.alpha = 1.0;
-  } else {
-    self.txtDataCap.alpha = 0.3;
-  }
-}
-
 enum {
   ALERT_DATACAP = 1,
   ALERT_WIPEDATA = 2,
 };
 
-- (IBAction)showDataCapEditor:(id)sender {
+- (void)showDataCapEditor {
   
   BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
   if (datacapEnabled == NO) {
@@ -329,74 +262,61 @@ enum {
   [alert show];
 }
 
+
+
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   
   cell.selected = NO;
-  if ([cell.reuseIdentifier isEqualToString:@"clear_all_results"]) {
-    // Optionally - clear the database - TODO!
-    NSLog(@"TODO - optionally, clear the database!");
-    
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Title")
-                          message:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Message")
-                          delegate:self
-                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
-                          otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),
-                          nil];
-    alert.tag = ALERT_WIPEDATA;
-    [alert show];
-  } else if ([cell.reuseIdentifier isEqualToString:@"activate"]) {
-    
-    SK_ASSERT(false); // This is ONLY in the old-style apps, now!
-   
-    /*
-    SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
-    if ([appDelegate getIsConnected] == NO) {
-      // If not connected, display an alert, and do not try to activate.
-      // This covers e.g. if we lost connection and tests stopped automatically.
-      // It will also stop a test re-running in the event of continuous testing.
+  
+  if (indexPath.section != SECTION_INDEX_MAIN) {
+    return;
+  }
+ 
+  switch (indexPath.row) {
+    case 0: { // About
+      if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator) {
+        [self performSegueWithIdentifier:@"segueFromSettingsToAbout" sender:self];
+      }
+    }
+      break;
+    case 1: { // Terms
+      NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
+      if (theUrlString != nil) {
+        // View a specific URL!
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theUrlString]];
+      } else {
+        [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
+      }
+    }
+      break;
+    case 2: { // Clear
+      NSLog(@"TODO - optionally, clear the database!");
       
-      UIAlertView *alert =
-      [[UIAlertView alloc] initWithTitle:nil
-                                 message:sSKCoreGetLocalisedString(@"Offline_message")
-                                delegate:nil
-                       cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
-                       otherButtonTitles: nil];
-      
+      UIAlertView *alert = [[UIAlertView alloc]
+                            initWithTitle:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Title")
+                            message:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Message")
+                            delegate:self
+                            cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
+                            otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"),
+                            nil];
+      alert.tag = ALERT_WIPEDATA;
       [alert show];
+    }
+      break;
+    case 3: { // Export
+      UIViewController *fromThisVC = self;
+      id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
       
+      [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
+    }
+      break;
+    case 4: // Activate
+      SK_ASSERT(false); // This is ONLY in the old-style apps, now!
+      break;
+    default:
+      SK_ASSERT(false);
       return;
-    }
-
-    [SKAppBehaviourDelegate setIsActivated:NO];
-   
-    //UIViewController *doSequeFrom = nil;
-    //if (self.parentViewController != nil) {
-    //}
-    [self SKSafePerformSegueWithIdentifier:@"segueToActivateFromSettings" sender:self];
-     */
-  } else if ([cell.reuseIdentifier isEqualToString:@"terms_and_conditions"]) {
-    SK_ASSERT(false);
-    [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
-  } else if ([cell.reuseIdentifier isEqualToString:@"export_results"]) {
-    UIViewController *fromThisVC = self;
-    id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
-    
-    [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
-  } else if ([cell.reuseIdentifier isEqualToString:@"terms_or_about_url"]) {
-    
-    NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
-    if (theUrlString != nil) {
-      // View a specific URL!
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theUrlString]];
-    } else {
-      [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
-    }
-  } else if (cell == self.aboutOrVersionTableViewCell) {
-    if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator) {
-      [self performSegueWithIdentifier:@"segueFromSettingsToAbout" sender:self];
-    }
   }
 }
 
@@ -417,90 +337,271 @@ enum {
 // http://code-ninja.org/blog/2012/02/29/ios-quick-tip-programmatically-hiding-sections-of-a-uitableview-with-static-cells/
 //
 
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//  int sections = 3;
+//  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
+//    sections--;
+//  }
+//  
+//  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == NO)
+//  {
+//    sections--;
+//  }
+//  
+//  return sections;
+//}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+  int sections = 3;
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO)
+  {
+    sections--;
+  }
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == NO)
+  {
+    sections--;
+  }
+ 
+  return sections;
+}
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if(section == 1)
-  {
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO)
-    {
-      // Hide it!
-      return 0;
+  if (section == SECTION_INDEX_MAIN) {
+    int rows = 5;
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+      rows--;
     }
-  }
-    
-  return [super tableView:tableView numberOfRowsInSection:section];
-}
-
--(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-  if(section == 1)
-  {
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
-      return [[UIView alloc] initWithFrame:CGRectZero];
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
+      rows--;
     }
+    return rows;
+  } else if (section == SECTION_INDEX_DATACAP) {
+    SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES);
+    return 2;
+  } else if (section == SECTION_INDEX_LOCATION) {
+    SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == YES);
+    return 3;
+  } else {
+    SK_ASSERT(false);
+    return [super tableView:tableView numberOfRowsInSection:section];
   }
-  
-  return [super tableView:tableView viewForHeaderInSection:section];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-  if(section == 1)
-  {
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
-      return 0.01f;
-    }
-  }
-  
-  return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
-  
-  if (cell == self.activateTableViewCell) {
-    // Hide the activation row?
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
-      return 0;
-    }
-  } else if (cell == self.exportResultsTableViewCell) {
-    // Hide the export results row
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
-      return 0;
-    }
-  }
+//  UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+//  if (cell == self.activateTableViewCell) {
+//    // Hide the activation row?
+//    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+//      return 0;
+//    }
+//  } else if (cell == self.exportResultsTableViewCell) {
+//    // Hide the export results row
+//    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
+//      return 0;
+//    }
+//  }
   
   return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+static BOOL sbDidConstraint = NO;
+
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if(section == 1)
-  {
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
-      return 0.01f;
+  int section = (int)indexPath.section;
+  
+  if (section == SECTION_INDEX_MAIN) {
+    SK_ASSERT(indexPath.row >= 0);
+    SK_ASSERT(indexPath.row <= 4);
+    // The version!
+    
+    static NSString *CellIdentifier = @"SKSettingsLinkCell";
+    
+    SKSettingsLinkCell *cell = (SKSettingsLinkCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+      cell = [[SKSettingsLinkCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    switch (indexPath.row) {
+      case 0:
+        cell.mLabel.text = lblAboutCaptionText;
+        break;
+      case 1:
+        cell.mLabel.text = self.termsAndConditionsLabelText;
+        if (self.mbShowAccessoryOnAboutOrVersion == NO) {
+          //cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        break;
+      case 2:
+        cell.mLabel.text = sSKCoreGetLocalisedString(@"Settings_ClearAllResults");
+        break;
+      case 3:
+        cell.mLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
+        break;
+      case 4:
+        cell.mLabel.text = sSKCoreGetLocalisedString(@"Settings_Activate");
+        break;
+      default:
+        SK_ASSERT(false);
+        break;
+    }
+    
+    return cell;
+  } else if (section == SECTION_INDEX_DATACAP) {
+    switch (indexPath.row) {
+      case 0: {
+        static NSString *CellIdentifier = @"SKSettingsDataCapCell";
+        
+        SKSettingsDataCapCell *cell = (SKSettingsDataCapCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+          cell = [[SKSettingsDataCapCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        cell.mpParentSettingsController = self;
+        dataCapCell = cell;
+        
+        [cell.lblDataCap setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Cap")];
+        
+        BOOL datacapEnabled = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled];
+        cell.datacapSwitch.on = datacapEnabled;
+        cell.txtDataCap.enabled = datacapEnabled;
+        [cell setDataAllowance];
+        
+        if (self.uniqueIdLabel != nil) {
+          self.uniqueIdLabel.text = [[UIDevice currentDevice] uniqueDeviceIdentifier];
+        }
+        
+        if (datacapEnabled == YES) {
+          cell.txtDataCap.alpha = 1.0;
+        } else {
+          cell.txtDataCap.alpha = 0.3;
+        }
+        
+        BOOL canDisableDataCap = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canDisableDataCap];
+        cell.datacapSwitch.hidden = !canDisableDataCap;
+        if (cell.datacapSwitch.hidden == YES) {
+          // Move the hidden switch sideways, to give more room for the text!
+          if (sbDidConstraint == NO) {
+            sbDidConstraint = YES;
+            CGRect theFrame = cell.datacapSwitch.frame;
+            //cell.dataCapLabelToSwitchSpacingConstraint.active = false;// .constant = 10; // -= theFrame.size.width;
+            cell.dataCapLabelToSwitchSpacingConstraint.constant -= theFrame.size.width;
+            [cell updateConstraints];
+          }
+        }
+        
+        return cell;
+      }
+      case 1: {
+        static NSString *CellIdentifier = @"SKSettingsCellValueWithLabel";
+        
+        SKSettingsCellValueWithLabel *cell = (SKSettingsCellValueWithLabel*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+          cell = [[SKSettingsCellValueWithLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        [cell.mLabel setText:sSKCoreGetLocalisedString(@"SETTINGS_Data_Usage")];
+        
+        // And update the data usage value.
+        SKAppBehaviourDelegate *delegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
+        int64_t bytesUsed = [delegate amdGetDataUsageBytes];
+        NSString *valueString = [SKGlobalMethods bytesToString:(double)bytesUsed];
+        [cell.mValue setText:valueString];
+        
+        return cell;
+      }
+        
+      default:
+        SK_ASSERT(false);
+        return nil;
+    }
+  } else if (section == SECTION_INDEX_LOCATION) {
+    
+    static NSString *CellIdentifier = @"SKSettingsCellValueWithLabel";
+    
+    SKSettingsCellValueWithLabel *cell = (SKSettingsCellValueWithLabel*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+      cell = [[SKSettingsCellValueWithLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
+    
+    NSString *dataValueText = nil;
+    NSString *longitudeValueText = nil;
+    NSString *latitudeValueText = nil;
+    if (loc != nil) {
+      double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
+      double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
+      double dateAsTimeIntervalSince1970 = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
+      
+      latitudeValueText = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
+      longitudeValueText = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
+      
+      if (dateAsTimeIntervalSince1970 == 0) {
+        dataValueText = sSKCoreGetLocalisedString(@"Unknown");
+      } else {
+        dataValueText = [SKGlobalMethods formatDate:[NSDate dateWithTimeIntervalSince1970:dateAsTimeIntervalSince1970]];
+      }
+    } else {
+      latitudeValueText = sSKCoreGetLocalisedString(@"Unknown");
+      longitudeValueText = sSKCoreGetLocalisedString(@"Unknown");
+      dataValueText = sSKCoreGetLocalisedString(@"Unknown");
+    }
+    
+    switch (indexPath.row) {
+      case 0:
+        [cell.mLabel setText: sSKCoreGetLocalisedString(@"latitude")];
+        [cell.mValue setText:latitudeValueText];
+        break;
+      case 1:
+        [cell.mLabel setText: sSKCoreGetLocalisedString(@"longitude")];
+        [cell.mValue setText:longitudeValueText];
+        break;
+      case 2:
+        [cell.mLabel setText:sSKCoreGetLocalisedString(@"date")];
+        [cell.mValue setText:dataValueText];
+        break;
+      default:
+        break;
+    }
+    
+    return cell;
+  } else {
+    SK_ASSERT(false);
+    return nil;
   }
-  
-  if (self.parentViewController == nil) {
-    // Not embedded!
-    return [super tableView:tableView heightForFooterInSection:section];
-  }
-  
-  return 0.01f;
 }
 
--(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-  if(section == 1)
+
+-(void) validateText {
+  if ([dataCapCell.txtDataCap.text length] == 0)
   {
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO) {
-      return [[UIView alloc] initWithFrame:CGRectZero];
+    dataCapCell.txtDataCap.text = @"1";
+  }
+  else
+  {
+    int64_t value = [dataCapCell.txtDataCap.text longLongValue];
+    
+    if (value <= 0)
+    {
+      dataCapCell.txtDataCap.text = @"1";
     }
   }
   
-  return [super tableView:tableView viewForFooterInSection:section];
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSLog(@"Sizeof long = %d", (int)sizeof(long));
+  NSLog(@"Sizeof int64_t = %d", (int)sizeof(int64_t));
+  int64_t theValue = (int64_t)[dataCapCell.txtDataCap.text longLongValue];
+  theValue *= CBytesInAMegabyte;
+  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs synchronize];
 }
+
 
 @end

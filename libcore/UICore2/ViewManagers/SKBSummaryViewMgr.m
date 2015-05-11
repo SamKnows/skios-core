@@ -503,6 +503,10 @@ static NSUInteger s1YearButtonIndex = 0;
 
 -(void)viewTouched:(UIButton*)button_
 {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealGraphFromSummary] == NO) {
+    return;
+  }
+  
   switch (button_.tag) {
     case 0:
       self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
@@ -528,6 +532,10 @@ static NSUInteger s1YearButtonIndex = 0;
 
 -(void)viewUntouched:(UIButton*)button_
 {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealGraphFromSummary] == NO) {
+    return;
+  }
+  
   switch (button_.tag) {
     case 0:
       self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:C_BUTTON_BASE_ALPHA];
@@ -876,6 +884,10 @@ static NSUInteger s1YearButtonIndex = 0;
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealGraphFromSummary] == NO) {
+    return;
+  }
+  
   switch (indexPath.row) {
     case 0:
       currentChartType = 0;

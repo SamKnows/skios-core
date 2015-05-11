@@ -10,21 +10,7 @@
 
 "Done"              = "Done";
 "Offline_message"   = "The internet connection appears to be offline. Please connect and try again.";
-"Data_Might_Be_Exceeded"     = "Data Cap Might Be Exceeded";
-"Data_Exceeded"     = "Data Cap Exceeded";
-"Data_Exceed_Msg"   = "Do you wish to continue anyway?";
 
-"Phone"             = "Phone";
-"OS"                = "Operating System";
-"Carrier_Name"      = "Carrier name";
-"Carrier_Country"   = "Carrier country code";
-"Carrier_Network"   = "Carrier network code";
-"Carrier_ISO"       = "Carrier ISO country code";
-"Network_Type"      = "Network Type";
-"Radio_Technology"  = "Radio Technology";
-
-"Label_Active"          = "Active metrics";
-"Label_Passive"         = "Passive metrics";
 "Test_Run_Download"     = "Download";
 "Test_Run_Upload"       = "Upload";
 "Test_Run_LatencyLoss"  = "Latency / Loss";
@@ -34,37 +20,6 @@
 "Tests_Running_Message" = "You are recommended to wait until the tests complete. Do you really want to stop the tests?";
 
 
-// Social Media posting
-"Dismiss"            = "Dismiss";
-"Post successful"    = "Post successful";
-"Posted"             = "Posted";
-
-// Social Media string text
-"SocialMedia_Header_Twitter_Carrier"     = "Now testing my #mobilebroadband with @";
-"SocialMedia_Header_Twitter_NoCarrier"   = "Now testing my #mobilebroadband";
-"SocialMedia_Header_SinaWeibo_Carrier"   = "Now testing my #mobilebroadband# with @";
-"SocialMedia_Header_SinaWeibo_NoCarrier" = "Now testing my #mobilebroadband#";
-"SocialMedia_Header_Facebook_Carrier"    = "Now testing my actual #mobilebroadband speed with ";
-"SocialMedia_Header_Facebook_NoCarrier"  = "Now testing my actual #mobilebroadband speed";
-
-"SocialMedia_Header_Twitter_Carrier_Average"     = "Testing average #mobilebroadband speed on @";
-"SocialMedia_Header_Twitter_NoCarrier_Average"   = "Testing average #mobilebroadband speed";
-"SocialMedia_Header_SinaWeibo_Carrier_Average"   = "Testing average #mobilebroadband# speed on @";
-"SocialMedia_Header_SinaWeibo_NoCarrier_Average" = "Testing average #mobilebroadband# speed";
-"SocialMedia_Header_Facebook_Carrier_Average"    = "Now testing my average #mobilebroadband speed with ";
-"SocialMedia_Header_Facebook_NoCarrier_Average"  = "Now testing my average #mobilebroadband speed";
-
-"SocialMedia_Footer_Short"               = "with Bell Mobility app by @SamKnows http://bit.ly/1lzG5V6";
-"SocialMedia_Footer_Long"                = "using Bell Mobility, by SamKnows. Get the app yourself here http://bit.ly/1lzG5V6";
-"SocialMedia_TwitterIfUsingImage_ChangeFromThis1" = "Testing average";
-"SocialMedia_TwitterIfUsingImage_ChangeToThis1" = "Testing";
-"SocialMedia_TwitterIfUsingImage_ChangeFromThis2" = "Testing actual";
-"SocialMedia_TwitterIfUsingImage_ChangeToThis2" = "Testing";
-"SocialMedia_TwitterIfUsingImage_ChangeRegex4From" = ", Up:.* with";
-"SocialMedia_TwitterIfUsingImage_ChangeRegex4To" = " with";
-
-"SocialMedia_Download_Short" = "Down";
-"SocialMedia_Upload_Short"   = "Up";
 
 "Test_Download"         = "Download";
 "Test_Upload"           = "Upload";
@@ -225,19 +180,7 @@
 "MenuExport_Mail_Subject" = "Archived test results";
 
 
-"SocialMediaOption_Twitter" = "Twitter";
-"SocialMediaOption_Facebook" = "Facebook";
-"SocialMediaOption_SinaWeibo" = "Sina Weibo";
 
-// Various alert titles:
-"Title_ShareUsingSocialMediaInfo" = "Share using Social Media";
-"Message_ShareUsingSocialMediaInfo" = "In order to share your Mobile test results, you must first configure a Social Media account (such as Twitter or Facebook) on your iOS device.";
-"Title_ShareUsingSocialMediaMobile" = "Share using Social Media";
-"Message_ShareUsingSocialMediaMobile" = "Only Mobile test results can be shared using Social Media.";
-"Title_ShareUsingSocialMedia" = "Share using Social Media:";
-"Title_SelectResultsToShow" = "Select results to show:";
-"Title_SelectOption" = "Select option:";
-"Title_MonthlyDataCap" = "Monthly data cap?";
 
 // About screen
 "About_Version" = "Version";
@@ -247,24 +190,7 @@
 "ConnectionString_Cellular" = "Cellular";
 "ConnectionString_WiFi"     = "WiFi";
 
-// Test Results screen section headers
-"ResultsTestHeader_ActiveMetrics_Mobile" = "Active Metrics (Mobile)";
-"ResultsTestHeader_ActiveMetrics_WiFi"   = "Active Metrics (WiFi)";
-"ResultsTestHeader_PassiveMetrics"       = "Passive Metrics";
 
-// Graph suffixes
-"Graph_Suffix_Mbps"       = "Mbps";
-"Graph_Suffix_Ms"         = "ms";
-"Graph_Suffix_Percent"    = "%";
-
-// Graph titles
-"Graph_Title_Mbps"       = "Mbps";
-"Graph_Title_Ms"         = "ms  ";
-"Graph_Title_Percent"    = "%   ";
-"Graph_Title_Sec"        = "sec ";
-
-// Settings screen - placeholder text
-"Settings_DataCap_Placeholder" = "Data cap";
 
 // Various storyboard items
 "Storyboard_SKAMainResultsController_Title" = "Results";
@@ -275,7 +201,6 @@
 
 // The paged terms screen - only show on first use after installation
 "Storyboard_Terms_Title" = "Terms";
-"Storyboard_Terms_DataLabel" = "Please choose the amount of data (in MB) the Application should use each month :";
 
 // Activation screen - only show on first use after installation
 "Storyboard_Activation_Title" = "Activation";
@@ -292,18 +217,7 @@
 "Storyboard_About_Section_Latency"    = "Latency";
 "Storyboard_About_Section_PacketLoss" = "Packet Loss";
 "Storyboard_About_Section_Jitter"     = "Jitter";
-"Storyboard_About_Text_Download"   = "This should be indicative of the maximum speed your broadband connection will be able to download data from the Internet.  Results are recorded in Mbps (higher is better).";
-"Storyboard_About_Text_Upload"     = "This should be indicative of the maximum speed your broadband connection will be able to transmit data to the Internet.  Results are recorded in Mbps (higher is better).";
-"Storyboard_About_Text_Latency"    = "This test measures how long it takes one packet to be sent to one of our test servers, and then returned back to you.  Latency can be thought of as the responsiveness of the connection from your device and our servers on the Internet. Times are recorded here in milliseconds (lower is better).";
-"Storyboard_About_Text_PacketLoss" = "Packet loss occurs when the information sent by your device fails to reach its destination. When packet loss is high, you may find that time sensitive applications such as Voice over IP (VoIP) and online gaming will suffer. Packet loss is recorded here as a percentage (lower is better).";
-"Storyboard_About_Text_Jitter"     = "This test measures how long it takes one packet to be sent to one of our test servers, and then returned back to you.  Latency can be thought of as the responsiveness of the connection from your device and our servers on the Internet. Times are recorded here in milliseconds (lower is better).";
 
-
-// Archived Results screen
-"Storyboard_ArchivedResults_Title" = "Archived Results";
-"Storyboard_ArchivedResults_Archived_Result" = "Archived Result";
-// e.g. 1 of 33 ... this is the "of" bit...
-"Storyboard_ArchivedResults_Of_Separator" = "of";
 
 // Settings screen
 "SETTINGS_Title"         = "Settings";
@@ -337,13 +251,6 @@
 "CTRadioAccessTechnologyLTE" = "LTE";
 
 "UDP blocked" = "Failed";
-"Include screenshot?" = "Include screenshot?";
-"Would you like to include a screenshot with your social media post?" = "Would you like to include a screenshot with your social media post?";
-"Continuous_Tests_Running_Title"   = "Continuous Tests Running";
-"Continuous_Tests_Running_Message" = "Do you want to stop the continuous tests?";
-"RESULTS_Label_Continuous_Start"    = "Start continuous";
-"RESULTS_Label_Continuous_Stop"     = "Stop continuous";
-"RESULTS_Label_Continuous_Stopping" = "Stopping continuous";
 
 //
 // Strings added for the new app!
@@ -365,11 +272,7 @@
 "Press the Start button to run again" = "Press the Start button to run again";
 "Target Selection" = "Target Selection";
 "Latency / Loss / Jitter" = "Latency / Loss / Jitter";
-"Download speed for " = "Download speed for ";
-"Upload speed for " = "Upload speed for ";
-"Latency for " = "Latency for ";
-"Loss for " = "Loss for ";
-"Jitter for " = "Jitter for ";
+
 "Public_IP" = "Your IP";
 "Submission_ID" = "Reference No.";
 "All" = "All";

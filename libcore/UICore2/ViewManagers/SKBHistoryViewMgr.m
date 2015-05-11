@@ -146,6 +146,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealPassiveMetricsFromPanel] == NO) {
+    return;
+  }
+  
   selectedTest = arrTestsList[indexPath.row];
   cell2putBack = (SKBTestOverviewCell*)[tableView cellForRowAtIndexPath:indexPath];
   view2putBack = [cell2putBack getView];
