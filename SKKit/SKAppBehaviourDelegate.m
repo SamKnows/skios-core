@@ -1849,6 +1849,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return nil;
 }
 
+-(BOOL) getShowAboutVersionInSettingsLinksToAboutScreen {
+  return YES;
+}
+
 
 //
 // Splash screen (begin)

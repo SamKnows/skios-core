@@ -129,17 +129,13 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  switch (section)
-  {
-    case 0:
+  if (section == SECTION_INDEX_MAIN) {
       return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
-      
-    case 1:
+  } else if (section == SECTION_INDEX_DATACAP) {
       return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
-      
-    case 2:
+  } else if (section == SECTION_INDEX_LOCATION) {
       return sSKCoreGetLocalisedString(@"last_known_location_info");
-  }
+  } 
   
   SK_ASSERT(false);
   return nil;
@@ -272,9 +268,14 @@ enum {
   if (indexPath.section != SECTION_INDEX_MAIN) {
     return;
   }
- 
+  
   switch (indexPath.row) {
     case 0: { // About
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+        return;
+      }
+ 
+      SK_ASSERT ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == YES);
       if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator) {
         [self performSegueWithIdentifier:@"segueFromSettingsToAbout" sender:self];
       }
@@ -369,8 +370,11 @@ enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (section == SECTION_INDEX_MAIN) {
-    int rows = 5;
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
+    int rows = 4; // We NEVER display ACTIVATE any more!
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+      rows--;
+    }
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
       rows--;
     }
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
@@ -426,9 +430,12 @@ static BOOL sbDidConstraint = NO;
     }
     
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
+   
     switch (indexPath.row) {
       case 0:
+        if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+          cell.accessoryType = UITableViewCellAccessoryNone;
+        }
         cell.mLabel.text = lblAboutCaptionText;
         break;
       case 1:
@@ -444,6 +451,7 @@ static BOOL sbDidConstraint = NO;
         cell.mLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
         break;
       case 4:
+        SK_ASSERT(false);
         cell.mLabel.text = sSKCoreGetLocalisedString(@"Settings_Activate");
         break;
       default:

@@ -217,6 +217,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Returns nil if the about screen should be shown instead.
 -(NSString*) getNewAppUrlForHelpAbout;
 
+-(BOOL) getShowAboutVersionInSettingsLinksToAboutScreen;
+
 // Splash screen (begin)
 //-(UIColor*) getSplashBackgroundColour;
 -(UILabel*) prepareLetterForAnimation:(UIView*)onView inArray:(NSMutableArray*)inArray inText:(NSString*)inText  wordFrame:(CGRect)wordFrame;
