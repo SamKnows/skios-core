@@ -750,4 +750,21 @@
 	return [UIColor colorWithRed:236/255.0f green:214/255.0f blue:197/255.0f alpha:1.0];
 }
 
+// http://stackoverflow.com/questions/7362010/using-objective-c-i-need-to-combine-4-cmyk-colors-into-one
++ (UIColor*)sSKGetColorFromCMYK:(CGFloat)c M:(CGFloat)m Y:(CGFloat)y K:(CGFloat)k {
+  CGColorSpaceRef cmykColorSpace = CGColorSpaceCreateDeviceCMYK();
+  CGFloat colors[5] = {c, m, y, k, 1.0}; // CMYK+Alpha
+  CGColorRef cgColor = CGColorCreate(cmykColorSpace, colors);
+  UIColor *uiColor = [UIColor colorWithCGColor:cgColor];
+  CGColorRelease(cgColor);
+  CGColorSpaceRelease(cmykColorSpace);
+  
+  return uiColor;
+}
+
++ (NSString*)sSKGetHexStringColorFromCMYK:(CGFloat)c M:(CGFloat)m Y:(CGFloat)y K:(CGFloat)k {
+  UIColor *color = [self sSKGetColorFromCMYK:c M:m Y:y K:k];
+  return [self hexStringFromColor:color];
+}
+
 @end

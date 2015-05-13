@@ -153,4 +153,7 @@ typedef enum
 + (UIColor *)sSKCGetColor_siennaColor;
 + (UIColor *)sSKCGetColor_dustColor;
 
++ (UIColor*)sSKGetColorFromCMYK:(CGFloat)c M:(CGFloat)m Y:(CGFloat)y K:(CGFloat)k;
++ (NSString*)sSKGetHexStringColorFromCMYK:(CGFloat)c M:(CGFloat)m Y:(CGFloat)y K:(CGFloat)k;
+
 @end
