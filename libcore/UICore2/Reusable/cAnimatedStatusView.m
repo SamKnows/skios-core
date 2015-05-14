@@ -34,11 +34,11 @@
   UIFont *theFont = [SKAppColourScheme sGetFontWithName:@"Roboto-Light" size:0.85 * self.bounds.size.height];
   
   self.l1n.font = theFont;
-  self.l1n.textColor = [UIColor lightGrayColor];
+  self.l1h.textColor = [SKAppColourScheme sGetMainColourReadyToRunButtonText]; // This is the "Ready to run" text
   self.l1n.textAlignment = NSTextAlignmentCenter;
   
   self.l1h.font = theFont;
-  self.l1h.textColor = [SKAppColourScheme sGetMainColourStatusText];
+  self.l1n.textColor = [UIColor clearColor]; // This is what the "Ready to run" test fades to
   self.l1h.textAlignment = NSTextAlignmentCenter;
   
   self.v2.alpha = 0;

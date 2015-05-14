@@ -91,14 +91,13 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 +(UIColor*)sGetMainColourDialMeasurementText {
   return [[SKAppColourScheme sGetAppColourScheme] getMainColourDialMeasurementText];
 }
+
 +(UIColor*)sGetMainColourPressTheStartButtonText {
   return [[SKAppColourScheme sGetAppColourScheme] getMainColourPressTheStartButtonText];
 }
-+(UIColor*)sGetMainColourStatusText {
-  // TODO
-  return [UIColor whiteColor];
++(UIColor*)sGetMainColourReadyToRunButtonText {
+  return [[SKAppColourScheme sGetAppColourScheme] getMainColourReadyToRunButtonText];
 }
-
 +(UIColor*)sGetPanelColourBackground {
   return [[SKAppColourScheme sGetAppColourScheme] getPanelColourBackground ];
 }
@@ -274,6 +273,9 @@ static NSObject<PSKAppColourScheme> *spAppColourScheme;
 }
 -(UIColor*)getMainColourDialMeasurementText {
   return [UIColor orangeColor];
+}
+-(UIColor*)getMainColourReadyToRunButtonText {
+  return [UIColor lightGrayColor];
 }
 -(UIColor*)getMainColourPressTheStartButtonText {
   // TODO

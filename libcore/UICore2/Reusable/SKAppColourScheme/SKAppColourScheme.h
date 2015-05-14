@@ -27,6 +27,7 @@
 -(UIColor*)getMainColourDialCenterText; // [UIColor colorWithWhite:0.9 alpha:1]
 -(UIColor*)getMainColourDialUnitText; // [UIColor orangeColor]
 -(UIColor*)getMainColourDialMeasurementText; // [UIColor orangeColor]
+-(UIColor*)getMainColourReadyToRunButtonText;
 -(UIColor*)getMainColourPressTheStartButtonText; // [UIColor whiteColor]
 -(UIColor*)getMainColourStatusText;
 -(UIColor*)getPanelColourBackground; // [UIColor whiteColor]
@@ -100,8 +101,8 @@
 +(UIColor*)sGetMainColourDialCenterText; // [UIColor colorWithWhite:0.9 alpha:1]
 +(UIColor*)sGetMainColourDialUnitText; // [UIColor orangeColor]
 +(UIColor*)sGetMainColourDialMeasurementText; // [UIColor orangeColor]
++(UIColor*)sGetMainColourReadyToRunButtonText;
 +(UIColor*)sGetMainColourPressTheStartButtonText; // [UIColor whiteColor]
-+(UIColor*)sGetMainColourStatusText; // [UIColor whiteColor]
 // Table Cells
 +(UIColor*)sGetPanelColourBackground; // [UIColor whiteColor]
 +(UIColor*)sGetTableCellColourText; // [UIColor whiteColor]

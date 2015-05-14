@@ -371,12 +371,9 @@ enum {
 {
   if (section == SECTION_INDEX_MAIN) {
     int rows = 4; // We NEVER display ACTIVATE any more!
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
-      rows--;
-    }
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
-      rows--;
-    }
+//    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+//      rows--;
+//    }
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
       rows--;
     }
