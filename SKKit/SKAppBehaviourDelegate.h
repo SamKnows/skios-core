@@ -237,6 +237,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 +(NSString*)sGet_Prefs_TargetServer;
 +(NSString*)sGetUpload_Url;
 +(NSString*)sGetConfig_Url;
+-(BOOL)getShouldTestResultsBeUploadedToTestSpecificServer;
 
 -(BOOL) getIsAlternativeResultsPanelLayoutRequired;
 -(NSString*)getPrefsAgreedPropertyName;

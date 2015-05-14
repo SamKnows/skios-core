@@ -879,7 +879,9 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   if (error != nil)
   {
-    NSLog(@"Error uploading JSON file : %@", error.description);
+#ifdef DEBUG
+    NSLog(@"DEBUG: Error uploading JSON file : %@", error.description);
+#endif // DEBUG
     SK_ASSERT(false);
   }
   else
@@ -894,6 +896,9 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     
     if ([httpResponse isKindOfClass:[NSHTTPURLResponse class]])
     {
+#ifdef DEBUG
+      NSLog(@"DEBUG: JSON file upload, httpResponse.statusCode: %d", (int)httpResponse.statusCode);
+#endif // DEBUG
       if (httpResponse.statusCode == 200)
       {
         //
@@ -973,10 +978,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
                                                                      options:NSJSONReadingMutableLeaves
                                                                        error:&error];
   NSArray *metricsArray = theDictionaryToSend[@"metrics"];
-  
   NSString *test_id = nil;
   NSNumber *testId = nil;
-  
   for (NSObject *jsonObject in metricsArray) {
     //NSLog(@"DEBUG: description = %@", jsonObject.description);
     if ([jsonObject isKindOfClass:[NSDictionary class]]) {
@@ -987,7 +990,6 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
       }
     }
   }
-  
   if (test_id == nil) {
 #ifdef DEBUG
     NSLog(@"DEBUG: This is an OLD TEST - with no test_id!");
@@ -997,9 +999,53 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     NSLog(@"DEBUG: test_id = %@", testId);
   }
   
-  NSString *server = [self getBaseUrlForUpload];
-  NSString *strUrl = [NSString stringWithFormat:@"%@%@", server, [SKAppBehaviourDelegate sGetUpload_Url]];
-  NSURL *url = [NSURL URLWithString:strUrl];
+  NSString *serverUrlForUpload = [self getBaseUrlForUpload];
+  NSString *fullUploadUrl = [NSString stringWithFormat:@"%@%@", serverUrlForUpload, [SKAppBehaviourDelegate sGetUpload_Url]];
+#ifdef DEBUG
+  NSLog(@"fullUploadUrl=%@", fullUploadUrl);
+#endif // DEBUG
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldTestResultsBeUploadedToTestSpecificServer] == YES) {
+    // TODO: For SOME systems, we need to determine the server to use FROM THE DATA!
+    
+    NSString *targetServerUrl = nil;
+    NSArray *testArray = theDictionaryToSend[@"tests"];
+    for (NSDictionary *theTestDict in testArray) {
+      //NSLog(@"DEBUG: description = %@", jsonObject.description);
+      if ([theTestDict objectForKey:@"target"]) {
+        targetServerUrl = theTestDict[@"target"];
+        break;
+      }
+    }
+    
+    if (targetServerUrl == nil) {
+      SK_ASSERT(false);
+    } else {
+#ifdef DEBUG
+      NSLog(@"targetServerUrl=%@", targetServerUrl);
+#endif // DEBUG
+      
+      NSRange result = [targetServerUrl rangeOfString:@"http:"];
+      if (result.location == 0) {
+        // Already starts http
+      } else {
+        // Need to add http:// prefix!
+        targetServerUrl = [NSString stringWithFormat:@"http://%@", targetServerUrl];
+        result = [targetServerUrl rangeOfString:@"http:"];
+        SK_ASSERT (result.location == 0);
+       
+        // Use this overriding server URL!
+        targetServerUrl = [NSString stringWithFormat:@"%@/log/receive_mobile.php", targetServerUrl];
+        fullUploadUrl = targetServerUrl;
+#ifdef DEBUG
+        NSLog(@"overriding fullUploadUrl=%@", fullUploadUrl);
+#endif // DEBUG
+      }
+    }
+  }
+  
+  NSURL *url = [NSURL URLWithString:fullUploadUrl];
+  SK_ASSERT(url != nil);
   
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
   [request setURL:url];
@@ -1824,6 +1870,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 
 -(BOOL) getIsBestTargetDisplaySupported {
   return YES;
+}
+
+-(BOOL) getShouldTestResultsBeUploadedToTestSpecificServer {
+  return NO;
 }
 
 -(NSArray*)getDownloadSixSegmentMaxValues {
