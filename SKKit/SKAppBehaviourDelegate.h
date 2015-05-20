@@ -46,9 +46,9 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(void)         amdSetClosestTarget:(NSString*)inClosestTarget;
 -(BOOL)         amdGetIsConnected;
 -(NSInteger)    amdGetConnectionStatus;
--(NSString*)    amdGetFileUploadPath;
+-(NSString*)    amdGetFileUploadPath:(int)fileSizeBytes;
 -(void)         amdDoUploadJSON;
--(void)         amdDoCreateUploadFile;
+-(void)         amdDoCreateUploadFile:(int)fileSizeBytes;
 -(void)         amdDoUpdateDataUsage:(int)bytes;
 -(int64_t)      amdGetDataUsageBytes;
 -(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType;
@@ -106,8 +106,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 - (BOOL)getIsConnected;
 -(NSString*)getBaseUrlForUpload;
 
-+ (NSString*)getUploadFilePathNeverNil;
-+ (NSString*)getUploadFilePath;
 - (NSString*)schedulePath;
 
 + (void)setHasAgreed:(BOOL)value;

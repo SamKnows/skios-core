@@ -164,7 +164,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 //  NSLog(@"SKAutotestManagerDelegate::getAutotestIsoCode");
 //  return @"deviceIsoCode";
 //}
--(NSString*)    amdGetFileUploadPath {
+-(NSString*)    amdGetFileUploadPath:(int)fileSizeBytes {
   NSLog(@"SKAutotestManagerDelegate::amdGetFileUploadPath");
   return @"fileUploadPath";
 }
@@ -174,7 +174,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 -(void)         amdDoUploadJSON {
   NSLog(@"SKAutotestManagerDelegate::amdDoUploadJSON");
 }
--(void)         amdDoCreateUploadFile {
+-(void)         amdDoCreateUploadFile:(int)fileSizeBytes {
   NSLog(@"SKAutotestManagerDelegate::amdDoCreateUploadFile");
 }
 -(void)         amdDoUpdateDataUsage:(int)bytes {

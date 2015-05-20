@@ -846,7 +846,7 @@ static TestType GRunTheTestWithThisType;
 - (void)runTests:(TestType)type
 {
   
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetFileUploadPath] == nil) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetFileUploadPath:-1] == nil) {
     // File not yet ready - TODO add an alerts to say "Please wait"...?
     SK_ASSERT(false);
     return;

@@ -347,8 +347,10 @@ static BOOL sbTestIsRunning = NO;
     }
     else
     {
-      [self.autotestManagerDelegate amdDoCreateUploadFile];
-      file = [self.autotestManagerDelegate amdGetFileUploadPath];
+      int postDataLength = [[config paramObjectForKey:@"postdatalength"] intValue];
+      SK_ASSERT(postDataLength > 0);
+      [self.autotestManagerDelegate amdDoCreateUploadFile:postDataLength];
+      file = [self.autotestManagerDelegate amdGetFileUploadPath:postDataLength];
     }
     
     // Set the target, currently the tests are configured for the closest target, but this could change

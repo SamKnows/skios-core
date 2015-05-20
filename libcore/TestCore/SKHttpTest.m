@@ -311,6 +311,33 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     }
 }
 
+//AsyncUdpSocket *spSocket = nil;
+//
+//-(void) sendTestPing:(NSString *)token {
+//  //
+//  @try {
+//    if (spSocket == nil) {
+//      spSocket = [[AsyncUdpSocket alloc] init];
+//    }
+//    const int cPort = 10001;
+//    
+//    @try {
+//      SKUDPDataGram *datagram = [[SKUDPDataGram alloc] initWithTagAndMagicCookie:(int)99 :CLIENTTOSERVERMAGIC];
+//      NSData *data = [[NSData alloc] initWithData:datagram.packetData];
+//      SK_ASSERT(data.length > 0);
+//      if ([spSocket sendData:data toHost:@"192.168.2.105" port:cPort withTimeout:-1 tag:99] == NO) {
+//        SK_ASSERT(false);
+//      }
+//    } @catch (NSException *e) {
+//      SK_ASSERT(false);
+//    }
+//  } @catch (NSException *e2) {
+//    SK_ASSERT(false);
+//  } @finally {
+//    // Keep the socket open!
+//  }
+//}
+
 - (void)startTest
 {
   if (nil != queue)
@@ -337,6 +364,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   testWarmupStartTime = DBL_MAX;
   testWarmupEndTime = DBL_MIN;
   self.warmupDoneCounter = 0;
+  
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    [self sendTestPing:@"TIMING_Start"];
+//  });
   
   [self setRunningStatus:INITIALIZING];
   
@@ -924,6 +955,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)storeOutputResults:(double)bitrateMbps1024Based
 {
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    [self sendTestPing:@"TIMING_Stop"];
+//  });
+
   //    "type": "JHTTPPOSTMT",
   //    "bytes_sec": "167995",
   //    "datetime": "Fri Jan 25 15:35:36 GMT 2013",

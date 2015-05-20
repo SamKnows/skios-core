@@ -12,7 +12,8 @@
 #import "SKAActivationController.h"
 
 // Make this BIG ENOUGH!
-#define FILE_SIZE 52430000
+//                  10485760
+//#define FILE_SIZE 52430000
 
 //FOUNDATION_EXPORT NSString *const Upload_Url;
 //FOUNDATION_EXPORT NSString *const Schedule_Xml;
@@ -132,7 +133,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     
     [self initSettings];
     [self createJSONDirectories];
-    [self amdDoCreateUploadFile];
+    //[self amdDoCreateUploadFile fileSizeBYtes:];
     [self setupReachability];
     //[self startLocationMonitoring];
     [self setDeviceInformation];
@@ -658,27 +659,30 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 #pragma mark - Upload File Creation
 
 //The file is deleted only when the size is different than requested
-- (void)amdDoCreateUploadFile
-{
-  NSString *uploadFilePath = [SKAppBehaviourDelegate getUploadFilePathNeverNil];
+-(void)         amdDoCreateUploadFile:(int)fileSizeBytes  {
   
-  if ([[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath]) {
-    NSError *error = nil;
+  @synchronized(self.class) {
+    NSString *uploadFilePath = [SKAppBehaviourDelegate getUploadFilePathNeverNil];
     
-    // To save time, do not delete the file at every application launch.
-    // Do this only when the existing one is different to that needed.
-    if ([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != FILE_SIZE)
-    {
-      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:uploadFilePath error:&error];
-      SK_ASSERT(bRes);
+    int FILE_SIZE = fileSizeBytes;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath]) {
+      NSError *error = nil;
+      
+      // To save time, do not delete the file at every application launch.
+      // Do this only when the existing one is different to that needed.
+      if ([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != FILE_SIZE)
+      {
+        BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:uploadFilePath error:&error];
+        SK_ASSERT(bRes);
+      }
     }
-  }
-  
-  if (![[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath])
-  {
-    // Perform in background, to prevent hang at app start!
-    //NSLog(@"PREPARE!");
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:uploadFilePath])
+    {
+      // Perform in background, to prevent hang at app start!
+      //NSLog(@"PREPARE!");
+      //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
       //NSLog(@"START!");
       NSMutableData *bodyData = [[NSMutableData alloc] initWithLength:FILE_SIZE];
       [bodyData writeToFile:uploadFilePath atomically:NO];
@@ -686,10 +690,11 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
       
       //NSLog(@"COMPLETE!");
       
-        // Could back to the main thread, if we wanted...
-//      dispatch_sync(dispatch_get_main_queue(), ^{
-//      });
-    });
+      // Could back to the main thread, if we wanted...
+      //      dispatch_sync(dispatch_get_main_queue(), ^{
+      //      });
+      //    });
+    }
   }
 }
 
@@ -1171,7 +1176,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return uploadFilePath;
 }
 
-+ (NSString *)getUploadFilePath
++ (NSString *)getUploadFilePath:(int)fileSizeBytes
 {
   NSString *uploadFilePath = [self getUploadFilePathNeverNil];
  
@@ -1179,10 +1184,12 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     SK_ASSERT(false);
     return nil;
   }
-  
-  if([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != FILE_SIZE) {
-    SK_ASSERT(false);
-    return nil;
+ 
+  if (fileSizeBytes != -1) {
+    if([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != fileSizeBytes) {
+      SK_ASSERT(false);
+      return nil;
+    }
   }
   
   return uploadFilePath;
@@ -1222,8 +1229,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return self.connectionStatus;
 }
 
--(NSString*)     amdGetFileUploadPath {
-  return [self.class getUploadFilePath];
+-(NSString*)     amdGetFileUploadPath:(int)fileSizeBytes {
+  return [self.class getUploadFilePath:fileSizeBytes];
 }
 
 #if TARGET_IPHONE_SIMULATOR
