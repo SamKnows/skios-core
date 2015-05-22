@@ -678,7 +678,7 @@ static BOOL sbTestIsRunning = NO;
 {
   if (testType == ALL_TESTS)
   {
-    return @"all";
+    return C_NETWORKTYPEASSTRING_ALL;
   }
   else if (testType == DOWNLOAD_TEST)
   {

@@ -454,7 +454,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     }
     else if (value == CELLULAR)
     {
-        return @"MOBILE";
+        return C_NETWORKTYPEASSTRING_MOBILE;
     }
     else
     {
@@ -711,7 +711,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     return @"gps";
   }
   
-  return @"network";
+  return C_NETWORKTYPEASSTRING_WIFI;
 }
 
 +(NSString*)getNetworkTypeString {
@@ -723,10 +723,10 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   
   NetworkStatus status = [reachability currentReachabilityStatus];
   if (status == ReachableViaWWAN) {
-    return @"mobile";
+    return C_NETWORKTYPEASSTRING_MOBILE;
   }
   
-  return @"network";
+  return C_NETWORKTYPEASSTRING_WIFI;
 }
 
 + (NSString*)getNetworkType:(int)date networkType:(NSString*)networkType ForConnectionStatus:(ConnectionStatus)inConnectionStatus
@@ -745,13 +745,13 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     }
     else
     {
-      netType = @"MOBILE";
+      netType = C_NETWORKTYPEASSTRING_MOBILE;
       status = [netType isEqualToString:connection] ? @"SUCCESS" : @"FAIL";
     }
   }
   else
   {
-    netType = @"MOBILE";
+    netType = C_NETWORKTYPEASSTRING_MOBILE;
     status = [netType isEqualToString:connection] ? @"SUCCESS" : @"FAIL";
   }
   

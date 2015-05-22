@@ -360,7 +360,7 @@
   {
     // If Mobile, show both passive and active metrics.
     NSString *theType = (NSString*)[self.metricsDictionary objectForKey:@"NETWORK_TYPE"];
-    if ([theType isEqualToString:@"mobile"]) {
+    if ([theType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       return 2;
     }
     
@@ -397,7 +397,7 @@
       NSMutableString *activeMetricsText = [NSMutableString stringWithString:sSKCoreGetLocalisedString(@"Label_Active")];
       // e.g. "Active Metrics (Mobile)" or "Active Metrics (Wifi)"
       NSString *theType = (NSString*)[self.metricsDictionary objectForKey:@"NETWORK_TYPE"];
-      if ([theType isEqualToString:@"mobile"]) {
+      if ([theType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         theType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
       } else {
         theType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
@@ -553,9 +553,9 @@
     if (row == 0) {
       cell.lblTitle.text = sSKCoreGetLocalisedString(@"Network_Type");
       cell.lblDetail.text = sSKCoreGetLocalisedString(@"Unknown");
-      if ([self.networkType isEqualToString:@"network"]) {
+      if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
         cell.lblDetail.text = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
-      } else if ([self.networkType isEqualToString:@"mobile"]) {
+      } else if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         
         NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
        
@@ -670,7 +670,7 @@
   
 //#if TARGET_IPHONE_SIMULATOR
 //#else // TARGET_IPHONE_SIMULATOR
-  if (![self.networkType isEqualToString:@"mobile"]) {
+  if (![self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
     UIAlertView *alert =
     [[UIAlertView alloc]
      initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaMobile")

@@ -178,7 +178,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   self.networkTypeButton.titleLabel.textColor = [UIColor blackColor];
   
   self.networkTypeButton.titleLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_Mobile");
-  [self setNetworkTypeTo:@"mobile"];
+  [self setNetworkTypeTo:C_NETWORKTYPEASSTRING_MOBILE];
 }
 
 +(SKAMainResultsController*)getSKAMainResultsController {
@@ -191,13 +191,13 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
 }
 
 -(void) setNetworkTypeTo:(NSString*)toNetworkType {
-  if ([toNetworkType isEqualToString:@"mobile"]) {
+  if ([toNetworkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
     [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToMobile];
     self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_Mobile"); // : @"WiFi results");
-  } else if ([toNetworkType isEqualToString:@"network"]) {
+  } else if ([toNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
     [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToWiFi];
     self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_WiFi"); // : @"WiFi results");
-  } else if ([toNetworkType isEqualToString:@"all"]) {
+  } else if ([toNetworkType isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
     [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToAll];
     self.networkTypeLabel.text = sSKCoreGetLocalisedString(@"ShowingResults_All"); // : @"WiFi results");
   } else {
@@ -782,13 +782,13 @@ NSMutableArray *GArrayForResultsController;
     // TODO!
     switch (index) {
       case 0: // Mobile
-        [self setNetworkTypeTo:@"mobile"];
+        [self setNetworkTypeTo:C_NETWORKTYPEASSTRING_MOBILE];
         break;
       case 1: // WiFi
-        [self setNetworkTypeTo:@"network"];
+        [self setNetworkTypeTo:C_NETWORKTYPEASSTRING_WIFI];
         break;
       case 2: // All
-        [self setNetworkTypeTo:@"all"];
+        [self setNetworkTypeTo:C_NETWORKTYPEASSTRING_ALL];
         break;
       default:
         break;
@@ -1210,7 +1210,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   int resultsRows = [self getResultsRows];
   for (int j=0; j<resultsRows; j++)
   {
-    NSMutableArray *array = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:(TestDataType)j WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
+    NSMutableArray *array = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:(TestDataType)j WhereNetworkTypeAsStringEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:array forKey:@"DATA"];

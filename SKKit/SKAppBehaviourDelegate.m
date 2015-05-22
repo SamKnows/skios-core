@@ -1146,7 +1146,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   NSDate *previousDate = [SKAppBehaviourDelegate getStartDateForThisRange:range];
   NSDate *dateNow = [SKCore getToday];
   
-  return [SKDatabase getAverageTestDataJoinToMetrics:previousDate toDate:dateNow testDataType:testDataType WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString] RetCount:retCount];
+  return [SKDatabase getAverageTestDataJoinToMetrics:previousDate toDate:dateNow testDataType:testDataType WhereNetworkTypeAsStringEquals:[SKAppBehaviourDelegate getNetworkTypeString] RetCount:retCount];
 }
 
 + (void)setClosestTarget:(NSString*)value
@@ -1280,28 +1280,28 @@ static NSString *networkTypeSwitchValue = nil;
 }
 
 -(BOOL) isNetworkTypeMobile {
-  if ([networkTypeSwitchValue isEqualToString:@"mobile"]) {
+  if ([networkTypeSwitchValue isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
     return YES;
   }
   return NO;
 }
 
 -(BOOL) isNetworkTypeWiFi {
-  if ([networkTypeSwitchValue isEqualToString:@"network"]) {
+  if ([networkTypeSwitchValue isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
     return YES;
   }
   return NO;
 }
 
 -(BOOL) isNetworkTypeAll {
-  if ([networkTypeSwitchValue isEqualToString:@"all"]) {
+  if ([networkTypeSwitchValue isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
     return YES;
   }
   return NO;
 }
 
 -(void) switchNetworkTypeToWiFi {
-  networkTypeSwitchValue = @"network";
+  networkTypeSwitchValue = C_NETWORKTYPEASSTRING_WIFI;
   
   SK_ASSERT(![self isNetworkTypeMobile]);
   SK_ASSERT(![self isNetworkTypeAll]);
@@ -1311,7 +1311,7 @@ static NSString *networkTypeSwitchValue = nil;
 }
 
 -(void) switchNetworkTypeToMobile {
-  networkTypeSwitchValue = @"mobile";
+  networkTypeSwitchValue = C_NETWORKTYPEASSTRING_MOBILE;
   
   SK_ASSERT(![self isNetworkTypeWiFi]);
   SK_ASSERT(![self isNetworkTypeAll]);
@@ -1321,7 +1321,7 @@ static NSString *networkTypeSwitchValue = nil;
 }
 
 -(void) switchNetworkTypeToAll {
-  networkTypeSwitchValue = @"all";
+  networkTypeSwitchValue = C_NETWORKTYPEASSTRING_ALL;
   
   SK_ASSERT(![self isNetworkTypeWiFi]);
   SK_ASSERT(![self isNetworkTypeMobile]);

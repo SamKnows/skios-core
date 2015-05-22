@@ -26,8 +26,8 @@
 @property NSString *mTestPublicIp;
 @property NSString *mTestSubmissionId;
 @property int mNumberOfNonPassiveMetrics;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidthConstraint;
 @property int mNumberOfPassiveMetrics;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnShareSpacing;
 @property  NSTimer *mTimer;
 @end
@@ -532,6 +532,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 }
 
 -(void) selfRunTestAfterUserApprovedToDataCapChecks {
+  
+  [self.tvCurrentResults reloadData];
   
   [self fillPassiveMetrics];
   SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
@@ -1222,7 +1224,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       [self.casStatusView setText:sSKCoreGetLocalisedString(@"Tests executed") forever:YES];
       self.mPressTheStartButtonLabel.text = sSKCoreGetLocalisedString(@"Press the Start button to run again");
       
-      if ( ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"]) &&
+      if ( ([self.mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) &&
           ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isSocialMediaExportSupported] == YES)
           )
       {
@@ -1437,12 +1439,26 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       case SKBShowMetricsRule_ShowPassiveMetrics_Never:
         return 1; // Just the main test result.
       case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts:
-        return 1 + self.mNumberOfPassiveMetrics;
+      {
+        NSInteger result = 1 + self.mNumberOfPassiveMetrics;
+        if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+          // We skip the first 4 items!
+          result -= 4;
+        }
+        return result;
+      }
+        break;
       case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestSubmitted:
         // TODO!
         if (self.mTestPublicIp != nil  || self.mTestSubmissionId != nil)
         {
-          return 1 + self.mNumberOfPassiveMetrics;
+          NSInteger result = 1 + self.mNumberOfPassiveMetrics;
+          //if ([[self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE].value  isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+          if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+            // We skip the first 4 items!
+            result -= 4;
+          }
+          return result;
         }
         return 1;
       default:
@@ -1476,6 +1492,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         return (progressDownload < 0 && progressUpload < 0 && progressLatencyLoss < 0 ? 0 : activeRowHeight);
         break;
       default:
+        if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+          // We HIDE teh last 4 items!A
+          if (indexPath.row >= 6) // 0 12345 6 ...
+          {
+            passiveRowHeight = 0;
+          }
+        }
         return (showPassiveMetrics ? passiveRowHeight : 0);
         break;
     }
@@ -1537,7 +1560,22 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       [cell initCell];
      
       // This is a PASSIVE METRIC. Where are we in the array?
-      [cell setMetrics:[mTestResultsArray objectAtIndex:indexPath.row + self.mNumberOfNonPassiveMetrics - 1 ]];
+      // We have 4 non-passive results e.g. D/U/L/X ... followed by the passive metrics ... PM1/PM2/PM3
+      // The first PM is at index 4.
+      
+      NSInteger indexInTestResultsOfFirstNonPassiveMetric = self.mNumberOfNonPassiveMetrics - 1;
+      NSInteger indexOfThisMetricInTestResults = indexInTestResultsOfFirstNonPassiveMetric + indexPath.row;
+      
+      //if ([[self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE].value  isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+      if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+        // We OFFSET ROUND the first 4 items!
+        indexOfThisMetricInTestResults += 4;
+      }
+     
+      if (indexOfThisMetricInTestResults < mTestResultsArray.count) {
+        SKBTestResultValue *thisMetricTestResultValue =  mTestResultsArray[indexOfThisMetricInTestResults];
+        [cell setMetrics:thisMetricTestResultValue];
+      }
       
       return cell;
     }
@@ -1621,12 +1659,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   {
     if (connectionStatus == WIFI)
     {
-      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = @"network";
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = C_NETWORKTYPEASSTRING_WIFI;
       mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE] = @"";
     }
     else
     {
-      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = @"mobile";
+      mpTestResult.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = C_NETWORKTYPEASSTRING_MOBILE;
       NSString *radioType = [SKGlobalMethods getNetworkType];
       if (radioType == nil) {
         SK_ASSERT(false);

@@ -53,7 +53,7 @@
   [[UIImage imageNamed:@"shareBackground"] drawInRect:CGRectMake(0, 0, C_SHARE_IMAGE_WIDTH, C_SHARE_IMAGE_HEIGHT)];
   
   UIImage* networkSymbol;
-  if ([testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
+  if ([testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:C_NETWORKTYPEASSTRING_MOBILE])
     networkSymbol = [UIImage imageNamed:@"sgsm.png"];
   else
     networkSymbol = [UIImage imageNamed:@"swifi.png"];
@@ -159,7 +159,7 @@
   
   NSString *networkName;
   
-  if ([testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:@"mobile"])
+  if ([testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] isEqualToString:C_NETWORKTYPEASSTRING_MOBILE])
     networkName = testResults_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
   else
     networkName = @"wi-fi";

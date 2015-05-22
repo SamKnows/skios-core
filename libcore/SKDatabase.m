@@ -1010,7 +1010,7 @@ public static String convertConnectivityType(int type) {
   bRes = [db beginTransaction];
   SK_ASSERT(bRes);
   
-  SK_ASSERT([networkType isEqualToString:@"mobile"] || [networkType isEqualToString:@"network"]);
+  SK_ASSERT([networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] || [networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
   
   bRes = [db executeUpdate:
           @"INSERT INTO metrics (test_id, device, os, carrier_name, country_code, iso_country_code, network_code, network_type, radio_type) values (?,?,?,?,?,?,?,?,?)",
@@ -1152,11 +1152,11 @@ public static String convertConnectivityType(int type) {
   SK_ASSERT(bRes);
 }
 
-+ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals  {
-  return [SKDatabase getAverageTestDataJoinToMetrics:fromDate toDate:toDate testDataType:testDataType WhereNetworkTypeEquals:whereNetworkTypeEquals RetCount:NULL];
++ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals  {
+  return [SKDatabase getAverageTestDataJoinToMetrics:fromDate toDate:toDate testDataType:testDataType WhereNetworkTypeAsStringEquals:whereNetworkTypeAsStringEquals RetCount:NULL];
 }
 
-+ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals  RetCount:(int*)retCount
++ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals  RetCount:(int*)retCount
 {
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
@@ -1168,18 +1168,18 @@ public static String convertConnectivityType(int type) {
   double result = 0;
   
   NSString *joinClause = @"";
-  if (whereNetworkTypeEquals != nil) {
-    if ([whereNetworkTypeEquals isEqualToString:@"network"]) {
+  if (whereNetworkTypeAsStringEquals != nil) {
+    if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
       
       // WiFi
       joinClause = @" AS A, metrics WHERE a.test_id = metrics.test_id AND network_type = 'network' AND A.date BETWEEN ? AND ? ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"mobile"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       
       // mobile
       joinClause = @" AS A, metrics WHERE a.test_id = metrics.test_id AND network_type = 'mobile' AND A.date BETWEEN ? AND ? ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"all"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
       joinClause = @" AS A WHERE A.date BETWEEN ? AND ? ";
       
     } else {
@@ -1241,7 +1241,7 @@ public static String convertConnectivityType(int type) {
   return result;
 }
 
-+ (NSMutableArray*)getTestMetaDataWhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals
++ (NSMutableArray*)getTestMetaDataWhereNetworkTypeEquals:(NSString*)whereNetworkTypeAsStringEquals
 {
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
@@ -1250,18 +1250,18 @@ public static String convertConnectivityType(int type) {
   }
   
   NSString *joinClause = @"";
-  if (whereNetworkTypeEquals != nil) {
-    if ([whereNetworkTypeEquals isEqualToString:@"network"]) {
+  if (whereNetworkTypeAsStringEquals != nil) {
+    if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
       
       // WiFi
       joinClause = @", metrics WHERE td.id = metrics.test_id AND network_type = 'network' ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"mobile"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       
       // mobile
       joinClause = @", metrics WHERE td.id = metrics.test_id AND network_type = 'mobile' ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"all"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
       joinClause = @" ";
       
     } else {
@@ -1321,15 +1321,15 @@ public static String convertConnectivityType(int type) {
   
   NSString *whereClause = @"";
   if (networkType_ != nil) {
-    if ([networkType_ isEqualToString:@"network"]) {
+    if ([networkType_ isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
       // WiFi
       whereClause = @"WHERE mt.network_type = 'network' ";
       
-    } else if ([networkType_ isEqualToString:@"mobile"]) {
+    } else if ([networkType_ isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       // mobile
       whereClause = @"WHERE mt.network_type = 'mobile' ";
       
-    } else if ([networkType_ isEqualToString:@"all"]) {
+    } else if ([networkType_ isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
       whereClause = @"";
     } else {
       SK_ASSERT(false);
@@ -1438,8 +1438,8 @@ public static String convertConnectivityType(int type) {
   return results;
 }
 
-//+ (NSMutableArray*)getTestData:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals
-+ (NSMutableArray*)getNonAveragedTestData:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals
+//+ (NSMutableArray*)getTestData:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals
++ (NSMutableArray*)getNonAveragedTestData:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals
 {
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
@@ -1448,18 +1448,18 @@ public static String convertConnectivityType(int type) {
   }
   
   NSString *joinClause = @"";
-  if (whereNetworkTypeEquals != nil) {
-    if ([whereNetworkTypeEquals isEqualToString:@"network"]) {
+  if (whereNetworkTypeAsStringEquals != nil) {
+    if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
       
       // WiFi
       joinClause = @", metrics WHERE A.test_id = B.id AND A.test_id = metrics.test_id AND network_type = 'network'  AND A.date BETWEEN ? AND ? ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"mobile"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       
       // mobile
       joinClause = @", metrics WHERE A.test_id = B.id AND A.test_id = metrics.test_id AND network_type = 'mobile'  AND A.date BETWEEN ? AND ? ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"all"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
       joinClause = @", metrics WHERE A.test_id = B.id AND A.test_id = metrics.test_id AND A.date BETWEEN ? AND ? ";
       
     } else {
@@ -1546,7 +1546,7 @@ public static String convertConnectivityType(int type) {
   return results;
 }
 
-+ (NSDate*)getLastRunDateWhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals {
++ (NSDate*)getLastRunDateWhereNetworkTypeEquals:(NSString*)whereNetworkTypeAsStringEquals {
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
@@ -1556,20 +1556,20 @@ public static String convertConnectivityType(int type) {
   NSString *sql = nil;
 
   NSString *joinClause = @"";
-  if (whereNetworkTypeEquals != nil) {
-    if ([whereNetworkTypeEquals isEqualToString:@"network"]) {
+  if (whereNetworkTypeAsStringEquals != nil) {
+    if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
 
       // WiFi:
       //   SELECT MAX(date) FROM test_data AS A, metrics WHERE a.id = metrics.test_id AND network_type = 'network';
       joinClause = @", metrics WHERE a.id = metrics.test_id AND network_type = 'network'";
 
-    } else if ([whereNetworkTypeEquals isEqualToString:@"mobile"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
 
       // mobile:
       //   SELECT MAX(date) FROM test_data AS A, metrics WHERE a.id = metrics.test_id AND network_type = 'mobile';
       joinClause = @", metrics WHERE a.id = metrics.test_id AND network_type = 'mobile'";
 
-    } else if ([whereNetworkTypeEquals isEqualToString:@"all"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
       // All networks:
       //   SELECT MAX(date) FROM test_data AS A;
 
@@ -1621,7 +1621,7 @@ public static String convertConnectivityType(int type) {
   return theMaxDate;
 }
 
-+ (NSMutableDictionary*)getDailyAveragedTestDataAsDictionaryKeyByDay:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals
++ (NSMutableDictionary*)getDailyAveragedTestDataAsDictionaryKeyByDay:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals
 {
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
@@ -1632,18 +1632,18 @@ public static String convertConnectivityType(int type) {
   NSString *sql = nil;
   
   NSString *joinClause = @"";
-  if (whereNetworkTypeEquals != nil) {
-    if ([whereNetworkTypeEquals isEqualToString:@"network"]) {
+  if (whereNetworkTypeAsStringEquals != nil) {
+    if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
       
       // WiFi
       joinClause = @", metrics WHERE a.test_id = metrics.test_id AND network_type = 'network' AND A.date BETWEEN ? AND ? ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"mobile"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       
       // mobile
       joinClause = @", metrics WHERE a.test_id = metrics.test_id AND network_type = 'mobile' AND A.date BETWEEN ? AND ? ";
       
-    } else if ([whereNetworkTypeEquals isEqualToString:@"all"]) {
+    } else if ([whereNetworkTypeAsStringEquals isEqualToString:C_NETWORKTYPEASSTRING_ALL]) {
       joinClause = @" WHERE A.date BETWEEN ? AND ? ";
       // joinClause = [NSString stringWithFormat:@" WHERE A.date BETWEEN %f AND %f ", fromDate.timeIntervalSince1970, toDate.timeIntervalSince1970];
       
@@ -1719,7 +1719,7 @@ public static String convertConnectivityType(int type) {
 }
 
 + (NSMutableDictionary*)getTestData:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType {
-  return [SKDatabase getDailyAveragedTestDataAsDictionaryKeyByDay:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:nil];
+  return [SKDatabase getDailyAveragedTestDataAsDictionaryKeyByDay:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeAsStringEquals:nil];
 }
 
 @end

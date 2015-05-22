@@ -138,7 +138,7 @@ static NSUInteger s1YearButtonIndex = 0;
       if (buttonIndex == sWiFiButtonIndex) {
         [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_WIFI];
       } else if (buttonIndex == sMobileButtonIndex) {
-        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_GSM];
+        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_MOBILE];
       } else if (buttonIndex == sAllButtonIndex) {
         [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL];
       } else {
@@ -192,7 +192,7 @@ static NSUInteger s1YearButtonIndex = 0;
   
   sWiFiButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_WiFi" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
   
-  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_GSM)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_MOBILE)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
   
   sAllButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_All" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
   
@@ -218,7 +218,7 @@ static NSUInteger s1YearButtonIndex = 0;
   {
     self.casNetworkType = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") WithMultiSelection:NO];
     [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)];
-    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_GSM  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_GSM)];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_MOBILE  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_MOBILE)];
     [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)];
   }
   
@@ -270,7 +270,7 @@ static NSUInteger s1YearButtonIndex = 0;
       [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToWiFi];
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
       break;
-    case C_FILTER_NETWORKTYPE_GSM:
+    case C_FILTER_NETWORKTYPE_MOBILE:
       [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] switchNetworkTypeToMobile];
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
       break;
@@ -563,13 +563,13 @@ static NSUInteger s1YearButtonIndex = 0;
 {
     switch (currentFilterNetworkType) {
         case C_FILTER_NETWORKTYPE_WIFI:
-            return @"network";
+            return C_NETWORKTYPEASSTRING_WIFI;
             break;
-        case C_FILTER_NETWORKTYPE_GSM:
-            return @"mobile";
+        case C_FILTER_NETWORKTYPE_MOBILE:
+            return C_NETWORKTYPEASSTRING_MOBILE;
             break;
         case C_FILTER_NETWORKTYPE_ALL:
-            return @"all";
+            return C_NETWORKTYPEASSTRING_ALL;
             break;
         default:
             break;

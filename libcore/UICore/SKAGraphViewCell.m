@@ -309,7 +309,7 @@
     SK_ASSERT(false);
   }
   
-  NSMutableDictionary *valuesDict = [SKDatabase getDailyAveragedTestDataAsDictionaryKeyByDay:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
+  NSMutableDictionary *valuesDict = [SKDatabase getDailyAveragedTestDataAsDictionaryKeyByDay:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeAsStringEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
   if (valuesDict == nil)
   {
     SK_ASSERT(false);
@@ -339,7 +339,7 @@
     
     SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportOneDayResultView]);
     
-    NSMutableArray *valuesArray24 = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
+    NSMutableArray *valuesArray24 = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:testDataType WhereNetworkTypeAsStringEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
     if (valuesArray24 == nil)
     {
       SK_ASSERT(false);
@@ -446,10 +446,10 @@
       cell.lblLocation.text = target;
       
       NSString *networkType = (NSString*)[dict objectForKey:@"NETWORK_TYPE"];
-      if ([networkType isEqualToString:@"network"]) {
+      if ([networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
         cell.lblIcon.image = [UIImage imageNamed:@"Wifiservice"];
         cell.lblIcon.hidden = NO;
-      } else if ([networkType isEqualToString:@"mobile"]) {
+      } else if ([networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         cell.lblIcon.image = [UIImage imageNamed:@"Cell_phone_icon"];
         cell.lblIcon.hidden = NO;
       } else {

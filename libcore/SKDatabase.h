@@ -50,16 +50,16 @@
 
 + (void)storeData:(NSDictionary*)data dataType:(TestDataType)dataType;
 
-+ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
-+ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals RetCount:(int*)retCount;
++ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals;
++ (double)getAverageTestDataJoinToMetrics:(NSDate*)fromDate toDate:(NSDate*)toDate testDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals RetCount:(int*)retCount;
 
-+ (NSMutableArray*)getTestMetaDataWhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
++ (NSMutableArray*)getTestMetaDataWhereNetworkTypeEquals:(NSString*)whereNetworkTypeAsStringEquals;
 
-+ (NSMutableArray*)getNonAveragedTestData:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
++ (NSMutableArray*)getNonAveragedTestData:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals;
 
-+ (NSMutableDictionary*)getDailyAveragedTestDataAsDictionaryKeyByDay:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
++ (NSMutableDictionary*)getDailyAveragedTestDataAsDictionaryKeyByDay:(NSDate*)fromDate ToDate:(NSDate*)toDate TestDataType:(TestDataType)testDataType WhereNetworkTypeAsStringEquals:(NSString*)whereNetworkTypeAsStringEquals;
 
-+ (NSDate*)getLastRunDateWhereNetworkTypeEquals:(NSString*)whereNetworkTypeEquals;
++ (NSDate*)getLastRunDateWhereNetworkTypeEquals:(NSString*)whereNetworkTypeAsStringEquals;
 
 
 //###HG

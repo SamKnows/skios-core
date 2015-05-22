@@ -237,7 +237,7 @@ static NSUInteger sAllButtonIndex = 0;
       if (buttonIndex == sWiFiButtonIndex) {
         [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_WIFI];
       } else if (buttonIndex == sMobileButtonIndex) {
-        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_GSM];
+        [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_MOBILE];
       } else if (buttonIndex == sAllButtonIndex) {
         [self selectedNetworkTypeOption:C_FILTER_NETWORKTYPE_ALL];
       } else {
@@ -289,7 +289,7 @@ static NSUInteger sAllButtonIndex = 0;
   
   sWiFiButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_WiFi" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
   
-  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_GSM)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_MOBILE)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
   
   sAllButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_All" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
   
@@ -319,7 +319,7 @@ static NSUInteger sAllButtonIndex = 0;
     case C_FILTER_NETWORKTYPE_WIFI:
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") forState:UIControlStateNormal];
       break;
-    case C_FILTER_NETWORKTYPE_GSM:
+    case C_FILTER_NETWORKTYPE_MOBILE:
       [self.btNetworkType setTitle:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") forState:UIControlStateNormal];
       break;
     case C_FILTER_NETWORKTYPE_ALL:
@@ -361,13 +361,13 @@ static NSUInteger sAllButtonIndex = 0;
 {
   switch (currentFilterNetworkType) {
     case C_FILTER_NETWORKTYPE_WIFI:
-      return @"network";
+      return C_NETWORKTYPEASSTRING_WIFI;
       break;
-    case C_FILTER_NETWORKTYPE_GSM:
-      return @"mobile";
+    case C_FILTER_NETWORKTYPE_MOBILE:
+      return C_NETWORKTYPEASSTRING_MOBILE;
       break;
     case C_FILTER_NETWORKTYPE_ALL:
-      return @"all";
+      return C_NETWORKTYPEASSTRING_ALL;
       break;
     default:
       break;
@@ -473,10 +473,35 @@ static SKATestResults* testToShareExternal = nil;
   }
   
   arrPassiveLabelsAndValues = [[NSMutableArray alloc] initWithCapacity:0];
+ 
+  BOOL bIsWiFi = NO;
+  NSString *theNetworkType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
+  if (theNetworkType.length > 0)
+  {
+//    NSString* networkType = sSKCoreGetLocalisedString(@"Unknown");
+    if ([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+      bIsWiFi = YES;
+    }
+  }
   
   NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplay];
   
   for (NSString *thePassiveMetric in passiveResultsArray) {
+    // If WiFi, do NOT show the mobile network metrics! // TODO change me
+    if (bIsWiFi) {
+      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME]) {
+        continue;
+      }
+      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY]) {
+        continue;
+      }
+      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK]) {
+        continue;
+      }
+      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO]) {
+        continue;
+      }
+    }
     [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[thePassiveMetric] withLocalizedLabelTextID:sSKCoreGetLocalisedString(thePassiveMetric)];
   }
   
@@ -493,13 +518,12 @@ static SKATestResults* testToShareExternal = nil;
   self.btShare.hidden = YES;
   [self sendSubviewToBack:self.btShare];
  
-  NSString *theNetworkType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
   if (theNetworkType.length > 0)
   {
 //    NSString* networkType = sSKCoreGetLocalisedString(@"Unknown");
-    if ([theNetworkType isEqualToString:@"network"]) {
+    if ([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
 //      networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
-    } else if ([theNetworkType isEqualToString:@"mobile"]) {
+    } else if ([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       
       // Only allow MOBILE results to be shared - provided social media sharing is enabled!
       
@@ -515,9 +539,9 @@ static SKATestResults* testToShareExternal = nil;
     if (theNetworkType.length > 0)
     {
       NSString* networkType = sSKCoreGetLocalisedString(@"Unknown");
-      if ([theNetworkType isEqualToString:@"network"]) {
+      if ([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
         networkType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
-      } else if ([theNetworkType isEqualToString:@"mobile"]) {
+      } else if ([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         
         NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
         

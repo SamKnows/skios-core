@@ -476,11 +476,11 @@
     return;
   }
   
-  if ([self.networkType isEqualToString:@"mobile"]) {
+  if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isNetworkTypeWiFi]) {
       [[SKAMainResultsController getSKAMainResultsController] setNetworkTypeTo:self.networkType];
     }
-  } else if ([self.networkType isEqualToString:@"network"]) {
+  } else if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isNetworkTypeMobile]) {
       [[SKAMainResultsController getSKAMainResultsController] setNetworkTypeTo:self.networkType];
     }
@@ -981,7 +981,7 @@ static BOOL sbViewIsVisible;
   switch (section) {
     case 0:
       SK_ASSERT(self.networkType != nil);
-      if ([self.networkType isEqualToString:@"mobile"]) {
+      if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         return sSKCoreGetLocalisedString(@"ResultsTestHeader_ActiveMetrics_Mobile");
       }
       return sSKCoreGetLocalisedString(@"ResultsTestHeader_ActiveMetrics_WiFi");
@@ -999,7 +999,7 @@ static BOOL sbViewIsVisible;
   // Passive Metrics - only if currently on "Mobile" network
   
   SK_ASSERT(self.networkType != nil);
-  if ([self.networkType isEqualToString:@"mobile"]) {
+  if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
     return 2;
   }
   
@@ -1171,9 +1171,9 @@ static BOOL sbViewIsVisible;
       cell.lblTitle.text = sSKCoreGetLocalisedString(@"Network_Type");
       cell.lblDetail.text = sSKCoreGetLocalisedString(@"Unknown");
       SK_ASSERT(self.networkType != nil);
-      if ([self.networkType isEqualToString:@"network"]) {
+      if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
         cell.lblDetail.text = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
-      } else if ([self.networkType isEqualToString:@"mobile"]) {
+      } else if ([self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         NSString *mobileString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
         
         NSString *radioType = [SKGlobalMethods getNetworkType];
@@ -1258,7 +1258,7 @@ static BOOL sbViewIsVisible;
     return;
   }
   
-  if (![self.networkType isEqualToString:@"mobile"]) {
+  if (![self.networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
     UIAlertView *alert =
     [[UIAlertView alloc]
      initWithTitle:sSKCoreGetLocalisedString(@"Title_ShareUsingSocialMediaMobile")
