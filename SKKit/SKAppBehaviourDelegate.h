@@ -215,7 +215,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Introduced for New app
 //
 // Optional method!
--(void) setLogoImage:(UIImageView*)uiImage;
+-(void) setTopLeftLogoImage:(UIImageView*)uiImage TopRightLogoImage:(UIImageView*)topRightImage;
 -(SKBShowMetricsRule) getShowMetricsOnMainScreen;
 -(NSArray*)getPassiveMetricsToDisplay;
 -(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;

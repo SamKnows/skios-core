@@ -1843,7 +1843,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   [[NSUserDefaults standardUserDefaults] setObject:deviceId forKey:@"unitID"];
 }
 
--(void) setLogoImage:(UIImageView*)uiImage {
+-(void) setTopLeftLogoImage:(UIImageView*)uiImage TopRightLogoImage:(UIImageView*)topRightImage {
   return;
 }
 

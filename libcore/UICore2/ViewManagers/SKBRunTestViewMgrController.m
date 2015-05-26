@@ -54,7 +54,7 @@
   NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray];
   self.mNumberOfPassiveMetrics = (int)passiveMetricArrayTemp.count;
   
-  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] setLogoImage:self.optionalTopLeftLogoView];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] setTopLeftLogoImage:self.optionalTopLeftLogoView TopRightLogoImage:self.optionalTopRightLogoView];
   
   self.testTypes2Execute = CTTBM_CLOSESTTARGET | CTTBM_DOWNLOAD | CTTBM_UPLOAD | CTTBM_LATENCYLOSSJITTER;
   
@@ -687,6 +687,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     } else {
       [self.tmActivityIndicator setTopText:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
     }
+    
+#ifdef DEBUG
+//    [self.tmActivityIndicator setTopText:@"LTE\n(MyNetwork)"];
+#endif // DEBUG
   }
 }
 
