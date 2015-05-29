@@ -677,6 +677,19 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   return wifiString;
 }
 
+
+-(NSString*) getMobileStringForUIWithCarrierNameIfAvailable {
+  NSString *mobileString = [SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]];
+  
+// // Get the mobile string as (localized) e.g. "LTE" or "LTE (mytelco)"
+//  NSString *carrierName = self.appDelegate.carrierName;
+//  if (carrierName != nil && carrierName.length > 0) {
+//    return [NSMutableString stringWithFormat:@"%@\n(%@)", mobileString, carrierName];
+//  }
+  
+  return mobileString;
+}
+
 -(void)updateRadioType
 {
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected] == NO) {
@@ -688,7 +701,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       // Get the network string as (localized) "WiFi" or "WiFi (SSID)"
       [self.tmActivityIndicator setTopText:[self getWiFiStringForUIWithSSIDIfAvailable]];
     } else {
-      [self.tmActivityIndicator setTopText:[SKGlobalMethods getNetworkTypeLocalized:[SKGlobalMethods getNetworkType]]];
+      [self.tmActivityIndicator setTopText:[self getMobileStringForUIWithCarrierNameIfAvailable]];
     }
     
 #ifdef DEBUG

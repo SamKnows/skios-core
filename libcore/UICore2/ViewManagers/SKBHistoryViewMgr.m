@@ -549,7 +549,14 @@ static SKATestResults* testToShareExternal = nil;
         if ([theRadio isEqualToString:sSKCoreGetLocalisedString(@"CTRadioAccessTechnologyUnknown")]) {
           networkType = mobileString;
         } else {
+          //networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
           networkType = [NSString stringWithFormat:@"%@ (%@)", mobileString, theRadio];
+          
+// // Get the mobile string as (localized) e.g. "Mobile (LTE)" or "Mobile (LTE, mytelco)"
+//          NSString *carrierName = [SKGlobalMethods getNetworkTypeLocalized:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME]];
+//          if (carrierName != nil && carrierName.length > 0) {
+//            networkType = [NSString stringWithFormat:@"%@ (%@, %@)", mobileString, theRadio, carrierName];
+//          }
         }
       }
       
