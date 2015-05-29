@@ -484,7 +484,7 @@ static SKATestResults* testToShareExternal = nil;
     }
   }
   
-  NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplay];
+  NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplayWiFiFlag:bIsWiFi];
   
   for (NSString *thePassiveMetric in passiveResultsArray) {
     // If WiFi, do NOT show the mobile network metrics! // TODO change me

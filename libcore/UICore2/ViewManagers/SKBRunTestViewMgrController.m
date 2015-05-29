@@ -26,7 +26,7 @@
 @property NSString *mTestPublicIp;
 @property NSString *mTestSubmissionId;
 @property int mNumberOfNonPassiveMetrics;
-@property int mNumberOfPassiveMetrics;
+//@property int mNumberOfPassiveMetrics; // This changes when a test is run, depending on if we're on WiFi or not!
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnShareSpacing;
 @property  NSTimer *mTimer;
@@ -51,8 +51,10 @@
   
   NSMutableArray* nonPassiveMetricArrayTemp = [SKBRunTestViewMgrController sGetNonPassiveMetricsInArray];
   self.mNumberOfNonPassiveMetrics = (int)nonPassiveMetricArrayTemp.count;
-  NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray];
-  self.mNumberOfPassiveMetrics = (int)passiveMetricArrayTemp.count;
+  
+  //BOOL bIsWifi = ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
+  //NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray:bIsWifi];
+  //self.mNumberOfPassiveMetrics = (int)passiveMetricArrayTemp.count;
   
   [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] setTopLeftLogoImage:self.optionalTopLeftLogoView TopRightLogoImage:self.optionalTopRightLogoView];
   
@@ -234,7 +236,8 @@
                                                name:@"SKB_public_ip_and_Submission_ID"
                                              object:nil];
   
-  [self prepareResultsArray];
+  BOOL bIsWifi = ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
+  [self prepareResultsArray:bIsWifi];
   
   progressDownload = -1;
   progressUpload = -1;
@@ -1444,11 +1447,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         return 1; // Just the main test result.
       case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts:
       {
-        NSInteger result = 1 + self.mNumberOfPassiveMetrics;
-        if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
-          // We skip the first 4 items!
-          result -= 4;
-        }
+        BOOL bIsWifi = ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
+        NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray:bIsWifi];
+        NSInteger result = 1 + passiveMetricArrayTemp.count;
         return result;
       }
         break;
@@ -1456,12 +1457,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         // TODO!
         if (self.mTestPublicIp != nil  || self.mTestSubmissionId != nil)
         {
-          NSInteger result = 1 + self.mNumberOfPassiveMetrics;
+          BOOL bIsWifi = ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
+          NSMutableArray* passiveMetricArrayTemp = [SKBRunTestViewMgrController sGetPassiveMetricsInArray:bIsWifi];
+          NSInteger result = 1 + passiveMetricArrayTemp.count;
           //if ([[self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE].value  isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
-          if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
-            // We skip the first 4 items!
-            result -= 4;
-          }
           return result;
         }
         return 1;
@@ -1493,18 +1492,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     
     switch (indexPath.row) {
       case 0:
-        return (progressDownload < 0 && progressUpload < 0 && progressLatencyLoss < 0 ? 0 : activeRowHeight);
-        break;
+      {
+        CGFloat result =(progressDownload < 0 && progressUpload < 0 && progressLatencyLoss < 0 ? 0 : activeRowHeight);
+        return result;
+      }
+        
       default:
-        if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
-          // We HIDE teh last 4 items!A
-          if (indexPath.row >= 6) // 0 12345 6 ...
-          {
-            passiveRowHeight = 0;
-          }
-        }
         return (showPassiveMetrics ? passiveRowHeight : 0);
-        break;
     }
   }
   
@@ -1570,12 +1564,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       NSInteger indexInTestResultsOfFirstNonPassiveMetric = self.mNumberOfNonPassiveMetrics - 1;
       NSInteger indexOfThisMetricInTestResults = indexInTestResultsOfFirstNonPassiveMetric + indexPath.row;
       
-      //if ([[self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE].value  isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
-      if ([[SKGlobalMethods getNetworkTypeString] isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
-        // We OFFSET ROUND the first 4 items!
-        indexOfThisMetricInTestResults += 4;
-      }
-     
       if (indexOfThisMetricInTestResults < mTestResultsArray.count) {
         SKBTestResultValue *thisMetricTestResultValue =  mTestResultsArray[indexOfThisMetricInTestResults];
         [cell setMetrics:thisMetricTestResultValue];
@@ -1605,9 +1593,9 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   [testResultsArray addObject:tr0];
 }
 
-+(void)sAddPassiveMetricsToArray:(NSMutableArray*)testResultsArray
++(void)sAddPassiveMetricsToArray:(NSMutableArray*)testResultsArray IsWiFi:(BOOL)bIsWiFi
 {
-  NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplay];
+  NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplayWiFiFlag:bIsWiFi];
   
   for (NSString *thePassiveMetric in passiveResultsArray) {
     SKBTestResultValue* tr0 = [[SKBTestResultValue alloc] initWithResultIdentifier:thePassiveMetric];
@@ -1621,17 +1609,17 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   return theTestResultsArray;
 }
 
-+(NSMutableArray*)sGetPassiveMetricsInArray {
++(NSMutableArray*)sGetPassiveMetricsInArray:(BOOL)bIsWiFi {
   NSMutableArray *theTestResultsArray = [NSMutableArray new];
-  [SKBRunTestViewMgrController sAddPassiveMetricsToArray:theTestResultsArray];
+  [SKBRunTestViewMgrController sAddPassiveMetricsToArray:theTestResultsArray IsWiFi:bIsWiFi];
   return theTestResultsArray;
 }
 
--(void)prepareResultsArray
+-(void)prepareResultsArray:(BOOL)bIsWiFi
 {
   mTestResultsArray = [NSMutableArray new];
   [SKBRunTestViewMgrController sAddNonPassiveMetricsToArray:mTestResultsArray];
-  [SKBRunTestViewMgrController sAddPassiveMetricsToArray:mTestResultsArray];
+  [SKBRunTestViewMgrController sAddPassiveMetricsToArray:mTestResultsArray IsWiFi:bIsWiFi];
 }
 
 -(void)fillPassiveMetrics

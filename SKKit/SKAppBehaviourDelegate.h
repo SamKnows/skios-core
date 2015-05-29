@@ -217,7 +217,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Optional method!
 -(void) setTopLeftLogoImage:(UIImageView*)uiImage TopRightLogoImage:(UIImageView*)topRightImage;
 -(SKBShowMetricsRule) getShowMetricsOnMainScreen;
--(NSArray*)getPassiveMetricsToDisplay;
+-(NSArray*)getPassiveMetricsToDisplayWiFiFlag:(BOOL)bIsWiFi;
 -(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;
 -(BOOL) getIsBestTargetDisplaySupported;
