@@ -9,7 +9,7 @@
 
 @interface SKAAboutController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 @property (weak, nonatomic) IBOutlet UITextView *downloadText;
 @property (weak, nonatomic) IBOutlet UITextView *uploadText;
 @property (weak, nonatomic) IBOutlet UITextView *latencyText;

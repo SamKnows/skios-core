@@ -19,7 +19,14 @@
 {
   [super viewDidLoad];
   
-  self.title = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
+//  NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+//  NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
+//  NSString *displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
+  //self.versionLabel.text = displayVersion;
+  //self.title = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
+  //self.title = [NSString stringWithFormat:@"%@ %@", sSKCoreGetLocalisedString(@"Storyboard_About_Section_AppName"), displayVersion];,
+  // "About MyAppName"
+  self.title = [NSString stringWithFormat:@"%@ %@", sSKCoreGetLocalisedString(@"Storyboard_About_Title"),sSKCoreGetLocalisedString(@"Storyboard_About_Section_AppName")];
   
   self.downloadText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Download");
   self.uploadText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Upload");
@@ -29,10 +36,6 @@
     self.jitterText.text = sSKCoreGetLocalisedString(@"Storyboard_About_Text_Jitter");
   }
 
-  NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-  NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
-  NSString *displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
-  self.versionLabel.text = displayVersion;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -47,21 +50,18 @@
   switch (section)
   {
     case 0:
-    return sSKCoreGetLocalisedString(@"Storyboard_About_Section_AppName"); // "My Speed Test"
-    
-    case 1:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Download"); // "Download"
        
-    case 2:
+    case 1:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Upload"); // "Upload"
        
-    case 3:
+    case 2:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Latency"); // "Latency"
     
-    case 4:
+    case 3:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_PacketLoss"); // "Packet Loss"
     
-    case 5:
+    case 4:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Jitter"); // "Jitter"
   }
   

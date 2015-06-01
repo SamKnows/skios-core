@@ -15,7 +15,7 @@
 @interface SKASettingsController ()
 
 @property  NSString *lblAboutCaptionText;
-@property  NSString *lblAboutVersionText;
+@property  NSString *mAboutVersionTextXptYZ;
 @property  BOOL mbShowAccessoryOnAboutOrVersion;
 @property  (weak, atomic) SKSettingsDataCapCell *dataCapCell;
 @property  NSString *termsAndConditionsLabelText;
@@ -31,7 +31,7 @@
 @implementation SKASettingsController
 
 @synthesize lblAboutCaptionText;
-@synthesize lblAboutVersionText;
+@synthesize mAboutVersionTextXptYZ;
 @synthesize mbShowAccessoryOnAboutOrVersion;
 @synthesize dataCapCell;
 @synthesize termsAndConditionsLabelText;
@@ -65,7 +65,7 @@
   NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
   NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
   NSString *displayVersion = [NSString stringWithFormat:@"%@.%@", appVersion, bundleVersion];
-  self.lblAboutVersionText = displayVersion;
+  self.mAboutVersionTextXptYZ = displayVersion;
   
   NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
   if (theUrlString != nil) {
@@ -130,7 +130,9 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
   if (section == SECTION_INDEX_MAIN) {
-      return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
+    //  return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
+    // "Version 1.04"
+    return [NSString stringWithFormat:@"%@ %@", sSKCoreGetLocalisedString(@"About_Version"), self.mAboutVersionTextXptYZ];
   } else if (section == SECTION_INDEX_DATACAP) {
       return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
   } else if (section == SECTION_INDEX_LOCATION) {
