@@ -1798,6 +1798,14 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return YES;
 }
 
+-(BOOL) canViewPhoneInfoInSettings {
+  return NO;
+}
+
+-(BOOL) canViewNetworkInfoInSettings {
+  return NO;
+}
+
 -(BOOL) getRevealGraphFromSummary {
   return YES;
 }

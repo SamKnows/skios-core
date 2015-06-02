@@ -166,6 +166,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL) supportExportMenuItem;
 -(BOOL) canDisableDataCap;
 -(BOOL) canViewLocationInSettings;
+-(BOOL) canViewPhoneInfoInSettings;
+-(BOOL) canViewNetworkInfoInSettings;
 -(BOOL) getRevealGraphFromSummary;
 -(BOOL) getRevealPassiveMetricsFromPanel;
 -(BOOL) enableTestsSelection;

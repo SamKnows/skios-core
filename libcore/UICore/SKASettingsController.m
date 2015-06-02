@@ -11,6 +11,7 @@
 #import "SKSettingsCellValueWithLabel.h"
 #import "SKSettingsDataCapCell.h"
 #import "SKSettingsLinkCell.h"
+#import "UIDeviceHardware.h"
 
 @interface SKASettingsController ()
 
@@ -19,10 +20,13 @@
 @property  BOOL mbShowAccessoryOnAboutOrVersion;
 @property  (weak, atomic) SKSettingsDataCapCell *dataCapCell;
 @property  NSString *termsAndConditionsLabelText;
+@property  NSInteger mNumberOfSections;
 
 #define SECTION_INDEX_MAIN 0
-@property int SECTION_INDEX_DATACAP;
-@property int SECTION_INDEX_LOCATION;
+@property NSInteger SECTION_INDEX_DATACAP;
+@property NSInteger SECTION_INDEX_PHONE_INFO;
+@property NSInteger SECTION_INDEX_NETWORK_INFO;
+@property NSInteger SECTION_INDEX_LOCATION;
 
 - (void)setLabels;
 
@@ -36,23 +40,40 @@
 @synthesize dataCapCell;
 @synthesize termsAndConditionsLabelText;
 @synthesize SECTION_INDEX_DATACAP;
+@synthesize SECTION_INDEX_PHONE_INFO;
+@synthesize SECTION_INDEX_NETWORK_INFO;
 @synthesize SECTION_INDEX_LOCATION;
+@synthesize mNumberOfSections;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  SK_ASSERT(SECTION_INDEX_MAIN == 0);
   SECTION_INDEX_DATACAP = -1;
+  SECTION_INDEX_PHONE_INFO = -1;
+  SECTION_INDEX_NETWORK_INFO = -1;
   SECTION_INDEX_LOCATION = -1;
+  
+  NSInteger lastUsedIndexSlot = SECTION_INDEX_MAIN;
+ 
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES) {
-    SECTION_INDEX_DATACAP = 1;
+    lastUsedIndexSlot++;
+    SECTION_INDEX_DATACAP = lastUsedIndexSlot;
+  }
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewPhoneInfoInSettings] == YES) {
+    lastUsedIndexSlot++;
+    SECTION_INDEX_PHONE_INFO = lastUsedIndexSlot;
+  }
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewNetworkInfoInSettings] == YES) {
+    lastUsedIndexSlot++;
+    SECTION_INDEX_NETWORK_INFO = lastUsedIndexSlot;
   }
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == YES) {
-    if (SECTION_INDEX_DATACAP == -1) {
-      SECTION_INDEX_LOCATION = 1;
-    } else {
-      SECTION_INDEX_LOCATION = 2;
-    }
+    lastUsedIndexSlot++;
+    SECTION_INDEX_LOCATION = lastUsedIndexSlot;
   }
+  
+  mNumberOfSections = lastUsedIndexSlot + 1;
   
   //SK_ASSERT(self.dateLabel != nil);
   //SK_ASSERT(self.dateValue != nil);
@@ -116,15 +137,20 @@
   
   SK_ASSERT(self.tableView != nil);
   [self.tableView reloadData];
- 
-  UIViewController *parentViewController = self.parentViewController;
-  NSString *classDescription = [parentViewController.class description];
-  NSString *theClassDescription = [NSString stringWithString:classDescription];
-  if ([theClassDescription isEqualToString:@"SKBSettingsTabViewController"]) {
-    // We're embedded - reveal the background when scrolling!
-    [self.tableView setBackgroundView:nil];
-    [self.tableView setBackgroundColor:[UIColor clearColor]];
-  }
+  
+  [self letBackgroundColourShowThroughTheTableBackground];
+}
+
+-(void) letBackgroundColourShowThroughTheTableBackground {
+  // If we keep this in, we get an ugly blue draw-through for the SK Speed Test app.
+//  UIViewController *parentViewController = self.parentViewController;
+//  NSString *classDescription = [parentViewController.class description];
+//  NSString *theClassDescription = [NSString stringWithString:classDescription];
+//  if ([theClassDescription isEqualToString:@"SKBSettingsTabViewController"]) {
+//    // We're embedded - reveal the background when scrolling!
+//    [self.tableView setBackgroundView:nil];
+//    [self.tableView setBackgroundColor:[UIColor clearColor]];
+//  }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -134,9 +160,13 @@
     // "Version 1.04"
     return [NSString stringWithFormat:@"%@ %@", sSKCoreGetLocalisedString(@"About_Version"), self.mAboutVersionTextXptYZ];
   } else if (section == SECTION_INDEX_DATACAP) {
-      return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
+    return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
+  } else if (section == SECTION_INDEX_PHONE_INFO) {
+    return sSKCoreGetLocalisedString(@"phone_info");
+  } else if (section == SECTION_INDEX_NETWORK_INFO) {
+    return sSKCoreGetLocalisedString(@"network_info");
   } else if (section == SECTION_INDEX_LOCATION) {
-      return sSKCoreGetLocalisedString(@"last_known_location_info");
+    return sSKCoreGetLocalisedString(@"last_known_location_info");
   } 
   
   SK_ASSERT(false);
@@ -294,7 +324,7 @@ enum {
     }
       break;
     case 2: { // Clear
-      NSLog(@"TODO - optionally, clear the database!");
+      // NSLog(@"Optionally, clear the database!");
       
       UIAlertView *alert = [[UIAlertView alloc]
                             initWithTitle:sSKCoreGetLocalisedString(@"Settings_ClearAllResults_Title")
@@ -354,18 +384,7 @@ enum {
 //  return sections;
 //}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  int sections = 3;
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == NO)
-  {
-    sections--;
-  }
-  
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == NO)
-  {
-    sections--;
-  }
- 
-  return sections;
+  return mNumberOfSections;
 }
 
 
@@ -383,6 +402,10 @@ enum {
   } else if (section == SECTION_INDEX_DATACAP) {
     SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES);
     return 2;
+  } else if (section == SECTION_INDEX_PHONE_INFO) {
+    return 2; // Phone type, Operating system
+  } else if (section == SECTION_INDEX_NETWORK_INFO) {
+    return 2; // Network type, network operator
   } else if (section == SECTION_INDEX_LOCATION) {
     SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] canViewLocationInSettings] == YES);
     return 3;
@@ -527,6 +550,84 @@ static BOOL sbDidConstraint = NO;
         SK_ASSERT(false);
         return nil;
     }
+  } else if (section == SECTION_INDEX_PHONE_INFO) {
+    static NSString *CellIdentifier = @"SKSettingsCellValueWithLabel";
+    
+    SKSettingsCellValueWithLabel *cell = (SKSettingsCellValueWithLabel*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+      cell = [[SKSettingsCellValueWithLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    // Populate the cell, according to what bit of Phone Info we're interested in!
+    
+    // Phone type, Operating system
+    switch (indexPath.row) {
+      case 0:
+      {
+        //NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        //NSString *build = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+        //NSString *deviceModel = [[UIDevice currentDevice] localizedModel];
+        //NSString *osVersion  = [[UIDevice currentDevice] systemVersion];
+        NSString *phoneText = [SKGlobalMethods getDeviceModel];
+        
+        [cell.mLabel setText:sSKCoreGetLocalisedString(@"Phone")];
+        [cell.mValue setText:phoneText];
+      }
+        break;
+        
+      case 1:
+      default:
+      {
+        NSString *osVersion  = [[UIDevice currentDevice] systemVersion];
+        
+        NSString *osString = [NSString stringWithFormat:@"iOS %@", osVersion];
+        
+        [cell.mLabel setText:sSKCoreGetLocalisedString(@"OS")];
+        [cell.mValue setText:osString];
+      }
+        break;
+    }
+    
+    return cell;
+    
+  } else if (section == SECTION_INDEX_NETWORK_INFO) {
+    static NSString *CellIdentifier = @"SKSettingsCellValueWithLabel";
+    
+    SKSettingsCellValueWithLabel *cell = (SKSettingsCellValueWithLabel*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+      cell = [[SKSettingsCellValueWithLabel alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    // Network type (e.g. LTE), Network Operator (e.g. Vodafone)
+    switch (indexPath.row) {
+      case 0:
+      {
+        [cell.mLabel setText:sSKCoreGetLocalisedString(@"Network_Type")];
+        NSString *radioType = [SKGlobalMethods getNetworkType];
+        NSString *radioTypeToShow = [SKGlobalMethods getNetworkTypeLocalized:radioType];
+        if ([radioTypeToShow isEqualToString:sSKCoreGetLocalisedString(@"NA")]) {
+          radioTypeToShow = sSKCoreGetLocalisedString(@"Unknown");
+        }
+        [cell.mValue setText:radioTypeToShow];
+      }
+        break;
+        
+      case 1:
+      default:
+      {
+        [cell.mLabel setText:sSKCoreGetLocalisedString(@"Network_Operator")];
+        
+        NSString *carrierName = [SKGlobalMethods getCarrierName];
+        if (carrierName.length == 0) {
+          carrierName = sSKCoreGetLocalisedString(@"Unknown");
+        }
+        [cell.mValue setText:carrierName];
+      }
+        break;
+    }
+    
+    return cell;
+    
   } else if (section == SECTION_INDEX_LOCATION) {
     
     static NSString *CellIdentifier = @"SKSettingsCellValueWithLabel";

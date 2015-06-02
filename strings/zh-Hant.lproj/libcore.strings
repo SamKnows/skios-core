@@ -321,6 +321,9 @@
 "latitude" = "緯度";
 "longitude" = "經度";
 "date" = "日期";
+"phone_info" = "Phone Info";
+"network_info" = "Network Info";
+
 
 // Radio technology types...
 "CTRadioAccessTechnologyUnknown" = "未知";

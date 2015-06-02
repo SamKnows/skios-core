@@ -235,6 +235,8 @@
 "latitude" = "Latitude";
 "longitude" = "Longitude";
 "date" = "Date";
+"phone_info" = "Phone Info";
+"network_info" = "Network Info";
 
 // Radio technology types...
 "CTRadioAccessTechnologyUnknown" = "Unknown";
