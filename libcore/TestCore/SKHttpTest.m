@@ -295,7 +295,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     if (isDownstream == NO) {
       // Upload test!
       // Check for unexpectedly large results...
-      SK_ASSERT (bitrateMbps1024Based <= 100);
+      //SK_ASSERT (bitrateMbps1024Based <= 100);
     }
 #endif // DEBUG
     
@@ -357,6 +357,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   multiThreadCount = 0;
   testTotalBytes = 0;
   testTransferTimeMicroseconds = 0;
+//              double dTime = testTransferTimeMicroseconds / 1000000.0;
+//              NSLog(@"testTransferTimeMiroseconds(0)=%g", dTime);
   testTransferTimeFirstBytesAt = nil;
   testTransferBytes = 0;
   testTransferBytes_New = 0;
@@ -480,6 +482,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   if (dTime == 0) {
     return 0;
   }
+  SK_ASSERT(dTime < 120.0); // No more than 2 minutes, or something is VERY wrong...
   double bytesPerSecond = ((double)testTransferBytes) / dTime;
   return bytesPerSecond;
 }
@@ -579,6 +582,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   @synchronized(self) {
       // We will sum them up, and take he final value from this.
       testTransferTimeMicroseconds += transferTimeMicroseconds;
+//              double dTime = testTransferTimeMicroseconds / 1000000.0;
+//              NSLog(@"testTransferTimeMiroseconds(4)=%g", dTime);
       testTotalBytes = testTotalBytes + totalBytes;
       testTransferBytes = testTransferBytes + transferBytes;
   }
@@ -596,7 +601,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     if ([self isMultiThreaded])
     {
       if (bitrateMbps1024Based > 0.0) {
-        [self.mServerUploadTestBitrates addObject:[NSNumber numberWithDouble:bitrateMbps1024Based]];
+        if (self.isDownstream == NO) {
+          [self.mServerUploadTestBitrates addObject:[NSNumber numberWithDouble:bitrateMbps1024Based]];
+        }
       }
       
       multiThreadCount += 1;
@@ -604,6 +611,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       
       // We will sum them up, and take he final value from this.
       testTransferTimeMicroseconds += transferTimeMicroseconds;
+//              double dTime = testTransferTimeMicroseconds / 1000000.0;
+//              NSLog(@"testTransferTimeMiroseconds(5)=%g", dTime);
       testTotalBytes = testTotalBytes + totalBytes;
       testTransferBytes = testTransferBytes + transferBytes;
       
@@ -620,6 +629,11 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
               NSLog(@"DEBUG: We have NO TIMES FROM THE SERVER. So, use our best guess of locally calculated upload time.");
 #endif // DEBUG
               testTransferTimeMicroseconds = [[NSDate date] timeIntervalSinceDate:self.testTransferTimeFirstBytesAt] * 1000000.0;
+              
+              double dTime = testTransferTimeMicroseconds / 1000000.0;
+//              NSLog(@"testTransferTimeMiroseconds(1)=%g", dTime);
+              
+              SK_ASSERT(dTime < 120.0); // No more than 2 minutes, or something is VERY wrong...
               testTransferBytes = testTransferBytes_New;
               
               //double bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
@@ -698,6 +712,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       testTotalBytes = totalBytes;
       testTransferBytes = transferBytes;
       testTransferTimeMicroseconds = transferTimeMicroseconds;
+//              double dTime = testTransferTimeMicroseconds / 1000000.0;
+//              NSLog(@"testTransferTimeMiroseconds(3)=%g", dTime);
       
       
       BOOL bResultIsFromServer;

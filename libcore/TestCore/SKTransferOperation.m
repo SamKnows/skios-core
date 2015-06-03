@@ -1043,7 +1043,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
       theTransferTimeMicroseconds = mpParentHttpTest.transferMaxTimeMicroseconds;
     }
     
-    [self doSendtodDidCompleteTransferOperation:theTransferTimeMicroseconds transferBytes:theTransferBytes totalBytes:theTotalBytes ForceThisBitsPerSecondFromServer:-1.0  threadId:threadId];
+    [self doSendtodDidCompleteTransferOperation:theTransferTimeMicroseconds transferBytes:theTransferBytes totalBytes:theTotalBytes ForceThisBitsPerSecondFromServer:bitrateMbps1024Based  threadId:threadId];
   }
 }
         
@@ -1322,10 +1322,12 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   
+  SK_ASSERT(isDownstream == NO);
+  
 #ifdef DEBUG
-  if (bytesWritten > 0) {
-    NSLog(@"DEBUG %@ - didSendBodyData : %d, %d, %d; bps=%d", [self description], (int)bytesWritten, (int)totalBytesWritten, (int)totalBytesExpectedToWrite, [mpParentHttpTest getBytesPerSecond:totalBytesWritten]);
-  }
+//  if (bytesWritten > 0) {
+//    NSLog(@"DEBUG %@ - didSendBodyData : %d, %d, %d; bps=%d", [self description], (int)bytesWritten, (int)totalBytesWritten, (int)totalBytesExpectedToWrite, [mpParentHttpTest getBytesPerSecond:totalBytesWritten]);
+//  }
 #endif // DEBUG
   
   if ([self isCancelled])
@@ -1343,9 +1345,9 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     float progress = [mpParentHttpTest getProgress];
     
 #ifdef DEBUG
-    if (bytesWritten > 0) {
-      NSLog(@"DEBUG %@ - didSendBodyData, progress=%f, thread=%@", [self description], progress, [[NSThread currentThread] description]);
-    }
+//    if (bytesWritten > 0) {
+//      NSLog(@"DEBUG %@ - didSendBodyData, progress=%f, thread=%@", [self description], progress, [[NSThread currentThread] description]);
+//    }
 #endif // DEBUG
     
     if (bytesWritten > 0) {
@@ -1365,26 +1367,26 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
         [self doSendUpdateStatus:self.status threadId:threadId];
       }
     } else {
-      [self done];
-      
-      [self setStatusToComplete];
-      
-      [self doSendUpdateStatus:self.status threadId:threadId];
-      mpParentHttpTest.mTransferTimeMicroseconds = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mpParentHttpTest.mStartTransfer];
-      
-      // The transfer bytes is the sum of ALL values, across ALL threads!
-      mpParentHttpTest.mTransferBytes = mpParentHttpTest.mTransferBytes + (int)bytesWritten;
-      
-      if (isDownstream == NO ) {
-        // Upload: do NOT send this, until we've seen if we have a better reponse from the server query!
-        
-        // But DO increase the number of bytes...
-        [self.mpParentHttpTest
-         todUploadTestCompletedNotAServeResponseYet:mpParentHttpTest.mTransferTimeMicroseconds
-         transferBytes:mpParentHttpTest.mTransferBytes
-         totalBytes:mpParentHttpTest.mTotalBytes];
-      } else {
-        [self doSendtodDidCompleteTransferOperation:mpParentHttpTest.mTransferTimeMicroseconds transferBytes:mpParentHttpTest.mTransferBytes totalBytes:mpParentHttpTest.mTotalBytes ForceThisBitsPerSecondFromServer:-1.0 threadId:threadId];
+      if (progress >= 100) {
+        if (_Finished == NO) {
+          [self done];
+          
+          [self setStatusToComplete];
+          
+          [self doSendUpdateStatus:self.status threadId:threadId];
+          mpParentHttpTest.mTransferTimeMicroseconds = [self.class sMicroTimeForSeconds:[[SKCore getToday] timeIntervalSince1970] - mpParentHttpTest.mStartTransfer];
+          
+          // The transfer bytes is the sum of ALL values, across ALL threads!
+          mpParentHttpTest.mTransferBytes = mpParentHttpTest.mTransferBytes + (int)bytesWritten;
+          
+          // Upload: do NOT send this, until we've seen if we have a better reponse from the server query!
+          
+          // But DO increase the number of bytes...
+          [self.mpParentHttpTest
+           todUploadTestCompletedNotAServeResponseYet:mpParentHttpTest.mTransferTimeMicroseconds
+           transferBytes:mpParentHttpTest.mTransferBytes
+           totalBytes:mpParentHttpTest.mTotalBytes];
+        }
       }
     }
   }
