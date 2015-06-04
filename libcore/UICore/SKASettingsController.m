@@ -301,7 +301,13 @@ enum {
     return;
   }
   
-  switch (indexPath.row) {
+  NSInteger useRowAs = indexPath.row;
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+    useRowAs++;
+  }
+  
+  
+  switch (useRowAs) {
     case 0: { // About
       if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
         return;
@@ -343,9 +349,6 @@ enum {
       
       [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
     }
-      break;
-    case 4: // Activate
-      SK_ASSERT(false); // This is ONLY in the old-style apps, now!
       break;
     default:
       SK_ASSERT(false);
@@ -392,9 +395,9 @@ enum {
 {
   if (section == SECTION_INDEX_MAIN) {
     int rows = 4; // We NEVER display ACTIVATE any more!
-//    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
-//      rows--;
-//    }
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+      rows--;
+    }
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
       rows--;
     }
@@ -452,8 +455,14 @@ static BOOL sbDidConstraint = NO;
     }
     
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    NSInteger useRowAs = indexPath.row;
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
+      useRowAs++;
+    }
+    
    
-    switch (indexPath.row) {
+    switch (useRowAs) {
       case 0:
         if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
           cell.accessoryType = UITableViewCellAccessoryNone;
@@ -471,10 +480,6 @@ static BOOL sbDidConstraint = NO;
         break;
       case 3:
         cell.mLabel.text = sSKCoreGetLocalisedString(@"Menu_Export");
-        break;
-      case 4:
-        SK_ASSERT(false);
-        cell.mLabel.text = sSKCoreGetLocalisedString(@"Settings_Activate");
         break;
       default:
         SK_ASSERT(false);
