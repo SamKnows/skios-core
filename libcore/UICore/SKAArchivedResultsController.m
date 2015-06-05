@@ -58,6 +58,12 @@
 @synthesize networkType;
 @synthesize radioType;
 
+
+// http://stackoverflow.com/questions/26147424/crash-in-uitableview-sending-message-to-deallocated-uiviewcontroller
+- (void)dealloc {
+  self.tableView.dataSource = nil;
+  self.tableView.delegate = nil;
+}
 - (void)viewDidLoad
 {
   [super viewDidLoad];

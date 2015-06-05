@@ -28,6 +28,10 @@
 
 - (void)dealloc
 {
+  // http://stackoverflow.com/questions/26147424/crash-in-uitableview-sending-message-to-deallocated-uiviewcontroller
+  self.tvTests.dataSource = nil;
+  self.tvTests.delegate = nil;
+  
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

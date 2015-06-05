@@ -41,7 +41,6 @@
 
 #pragma mark ProgressView
 
-
 -(void) viewDidLoad {
   [super viewDidLoad];
   
@@ -255,8 +254,11 @@
 
 }
 
-- (void)dealloc
-{
+// http://stackoverflow.com/questions/26147424/crash-in-uitableview-sending-message-to-deallocated-uiviewcontroller
+- (void)dealloc {
+  self.tvCurrentResults.dataSource = nil;
+  self.tvCurrentResults.delegate = nil;
+  
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

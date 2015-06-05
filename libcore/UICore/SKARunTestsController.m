@@ -785,6 +785,14 @@
 
 #pragma mark - View Cycle
 
+// http://stackoverflow.com/questions/26147424/crash-in-uitableview-sending-message-to-deallocated-uiviewcontroller
+- (void)dealloc {
+  self.tableView.dataSource = nil;
+  self.tableView.delegate = nil;
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:@"StatusChanged" object:nil];
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -942,10 +950,6 @@ static BOOL sbViewIsVisible;
   self.lblClosest.adjustsFontSizeToFitWidth = YES;
 }
 
-- (void)dealloc
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:@"StatusChanged" object:nil];
-}
 
 #pragma mark - Table view data source
 
