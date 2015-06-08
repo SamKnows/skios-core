@@ -454,7 +454,7 @@
 		B2C7A53D1B21941C002DC60F /* SKJTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKJTest.h; sourceTree = "<group>"; };
 		B2C7A53E1B21941C002DC60F /* SKJTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKJTest.m; sourceTree = "<group>"; };
 		B2C7A5401B21943F002DC60F /* SKJHttpTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKJHttpTest.h; sourceTree = "<group>"; };
-		B2C7A5411B21943F002DC60F /* SKJHttpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKJHttpTest.m; sourceTree = "<group>"; };
+		B2C7A5411B21943F002DC60F /* SKJHttpTest.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = SKJHttpTest.mm; sourceTree = "<group>"; };
 		B2C7A5431B219463002DC60F /* SKJUploadTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKJUploadTest.h; sourceTree = "<group>"; };
 		B2C7A5441B219463002DC60F /* SKJUploadTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKJUploadTest.m; sourceTree = "<group>"; };
 		B2C7A5461B21947E002DC60F /* SKJPassiveServerUploadTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKJPassiveServerUploadTest.h; sourceTree = "<group>"; };
@@ -1048,7 +1048,7 @@
 				B2C7A53D1B21941C002DC60F /* SKJTest.h */,
 				B2C7A53E1B21941C002DC60F /* SKJTest.m */,
 				B2C7A5401B21943F002DC60F /* SKJHttpTest.h */,
-				B2C7A5411B21943F002DC60F /* SKJHttpTest.m */,
+				B2C7A5411B21943F002DC60F /* SKJHttpTest.mm */,
 				B2C7A5431B219463002DC60F /* SKJUploadTest.h */,
 				B2C7A5441B219463002DC60F /* SKJUploadTest.m */,
 				B2C7A5461B21947E002DC60F /* SKJPassiveServerUploadTest.h */,
@@ -1533,11 +1533,13 @@
 		B22E88CD17C3678A005D9094 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				DSTROOT = /tmp/SKCore.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SKCore-Prefix.pch";
@@ -1565,11 +1567,13 @@
 		B22E88CE17C3678A005D9094 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				DSTROOT = /tmp/SKCore.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SKCore-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

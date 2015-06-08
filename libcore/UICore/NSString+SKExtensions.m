@@ -33,7 +33,7 @@
 
 -(void)skDrawInRectNoRet:(CGRect)rect withFont:(UIFont *)font withTextColor:(UIColor*)withTextColor {
   NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-  paragraphStyle.lineBreakMode = 0; // NSLineBreakMode.;
+  paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping; // NSLineBreakMode.;
   paragraphStyle.alignment = NSTextAlignmentLeft;
   
   NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -51,7 +51,7 @@
 
 -(void) skDrawAtPointNoRet:(CGPoint)point withFont:(UIFont *)font withTextColor:(UIColor*)withTextColor {
   NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-  paragraphStyle.lineBreakMode = 0; // NSLineBreakMode.;
+  paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping; // NSLineBreakMode.;
   paragraphStyle.alignment = NSTextAlignmentLeft;
   
   NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:

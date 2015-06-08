@@ -41,9 +41,6 @@
   return [theString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-typedef int (^SKJRetIntBlock)();
-typedef BOOL (^SKJRetBoolBlock)();
-
 -(int) getWarmupBytesPerSecond {
   return 100; // TODO!
 }

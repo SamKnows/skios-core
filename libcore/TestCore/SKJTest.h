@@ -16,6 +16,9 @@ typedef enum t_STATUS {
   DONE    = 2
 } STATUS;
 
+typedef int (^SKJRetIntBlock)();
+typedef BOOL (^SKJRetBoolBlock)();
+
 @interface SKJTest : NSObject
 
 
