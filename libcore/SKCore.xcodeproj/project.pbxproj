@@ -68,6 +68,7 @@
 		B24140C717C3C36100ECAE8C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
 		B248E3E81A7A69B6009BC956 /* SKSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B248E3E61A7A67E3009BC956 /* SKSplashView.m */; };
 		B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */ = {isa = PBXBuildFile; fileRef = B249885B1806E2FE00DB57C1 /* SKGraphForResults.m */; };
+		B24C5C401B258D15008B7FB5 /* SKJHttpTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5411B21943F002DC60F /* SKJHttpTest.mm */; };
 		B25001D8188FC9D5004287B1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D5188FC9D5004287B1 /* GCDAsyncSocket.m */; };
 		B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */; };
 		B2672B0C180BEC92004280CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0B180BEC92004280CB /* CoreGraphics.framework */; };
@@ -1350,6 +1351,7 @@
 				B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */,
 				B2AE68161883DA4D00D87FAE /* SKAActivationController.m in Sources */,
 				B2AE68281883DBC900D87FAE /* SKAAppDelegate.m in Sources */,
+				B24C5C401B258D15008B7FB5 /* SKJHttpTest.mm in Sources */,
 				B22E88DF17C3682E005D9094 /* SKDebugAssert.m in Sources */,
 				B248E3E81A7A69B6009BC956 /* SKSplashView.m in Sources */,
 				B2C7A53F1B21941C002DC60F /* SKJTest.m in Sources */,

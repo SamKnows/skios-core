@@ -499,46 +499,44 @@ void threadEntry(SKJHttpTest *pSelf) {
 -(GCDAsyncSocket*) getSocket {															/* Socket initialiser */
   //SKLogger.d(this, "HTTP TEST - getSocket()");
   
-  GCDAsyncSocket *ret = nil;
-  @try {
-    InetSocketAddress sockAddr = new InetSocketAddress(target, port);
-    ipAddress = sockAddr.getAddress().getHostAddress();
-    ret = new Socket();
-    ret.setTcpNoDelay(noDelay);
+  dispatch_queue_t mainQueue = dispatch_get_main_queue();
+  GCDAsyncSocket *retSocket = [[GCDAsyncSocket alloc] initWithDelegate:self
+                                                         delegateQueue:mainQueue];
+  
+  NSError *error = nil;
+  if ([retSocket connectToHost:self.target onPort:self.port withTimeout:CONNECTIONTIMEOUT error:&error] == NO) {
+    // FAILED!
+    SK_ASSERT(false);
+    retSocket = nil;
+  } else {
+    int sockerr = 0;
     
-    if (0 != desiredReceiveBufferSize) {
-      ret.setReceiveBufferSize(desiredReceiveBufferSize);
-    }
-    receiveBufferSize = ret.getReceiveBufferSize();
+    int buff_size = self.socketBufferSize/2;
+    socklen_t socklen = sizeof(buff_size);
+    sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+    SK_ASSERT(sockerr == 0);
     
-    // Experimentation shows a *much* better settling-down on upload speed,
-    // if we force a 32K send buffer size in bytes, rather than relying
-    // on the default send buffer size.
-    
-    // When forcing value in bytes, you must actually divide by two!
-    // https://code.google.com/p/android/issues/detail?id=13898
-    // desiredSendBufferSize = 32768 / 2; // (2 ^ 15) / 2
-    if (0 != socketBufferSize) {
-      ret.setSendBufferSize(socketBufferSize);
-    }
-    sendBufferSize = ret.getSendBufferSize();
-    
-    if (downstream) {
+    if (self.downstream) {
       // Read / download
-      ret.setSoTimeout(READTIMEOUT);
+      //socklen = sizeof(timeout);
+      struct timeval tv;
+      memset(&tv, 0, sizeof(tv));
+      tv.tv_sec  = READTIMEOUT;
+      tv.tv_usec = 0;
+      sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+      SK_ASSERT(sockerr == 0);
     } else {
-      ret.setSoTimeout(WRITETIMEOUT);
+      //socklen = sizeof(timeout);
+      struct timeval tv;
+      memset(&tv, 0, sizeof(tv));
+      tv.tv_sec  = WRITETIMEOUT;
+      tv.tv_usec = 0;
+      sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+      SK_ASSERT(sockerr == 0);
       //ret.setSoTimeout(1);
     }
-    
-    ret.connect(sockAddr, CONNECTIONTIMEOUT); // // 10 seconds connection timeout
-    
-    //SKLogger.d(this, "HTTP TEST - getSocket() completed OK");
-  } @catch (NSException *e) {
-    SKLogger.e(this, "getSocket()", e);
-    ret = null;
   }
-  return ret;
+  return retSocket;
 }
 
 -(void) output {
@@ -628,8 +626,8 @@ static std::atomic_long sBytesPerSecondLast(0);
 static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 
 +(void) sLatestSpeedReset:(NSString *)theReasonId {
-  sLatestSpeedForExternalMonitorBytesPerSecond.set(0);
-  sBytesPerSecondLast.set(0);
+  sLatestSpeedForExternalMonitorBytesPerSecond = 0;
+  sBytesPerSecondLast = 0;
   sLatestSpeedForExternalMonitorTestId = theReasonId;
 }
 
@@ -638,7 +636,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 // Static!
 std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   // use moving average of the last 2 items!
-  double bytesPerSecondToUse = sBytesPerSecondLast.doubleValue() + sLatestSpeedForExternalMonitorBytesPerSecond.doubleValue();
+  double bytesPerSecondToUse = (double)(sBytesPerSecondLast + sLatestSpeedForExternalMonitorBytesPerSecond);
   bytesPerSecondToUse /= 2;
   
   double mbps = (bytesPerSecondToUse * 8.0) / 1000000.0;
@@ -646,11 +644,12 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
 }
 
 static void sSetLatestSpeedForExternalMonitor(long bytesPerSecond, NSString *testId) {
-  sBytesPerSecondLast = sLatestSpeedForExternalMonitorBytesPerSecond;
+  long value = sLatestSpeedForExternalMonitorBytesPerSecond;
+  sBytesPerSecondLast = value;
   if (bytesPerSecond == 0) {
-    SKLogger.sAssert(testId.equals(cReasonUploadEnd));
+    SK_ASSERT([testId isEqualToString:cReasonUploadEnd]);
   }
-  sLatestSpeedForExternalMonitorBytesPerSecond.set(bytesPerSecond);
+  sLatestSpeedForExternalMonitorBytesPerSecond = bytesPerSecond;
   sLatestSpeedForExternalMonitorTestId = testId;
 }
 
@@ -659,11 +658,11 @@ const int extMonitorUpdateInterval = 500000;
 -(void) sSetLatestSpeedForExternalMonitorInterval:(long)pause InId:(NSString *)inId TransferCallback:(SKJRetIntBlock) transferSpeed {
   long updateTime = /*timeElapsedSinceLastExternalMonitorUpdate.get() == 0 ? pause * 5 : */ pause;					/* first update is delayed 3 times of a given pause */
   
-  if (timeElapsedSinceLastExternalMonitorUpdate.get() == 0) {
-    timeElapsedSinceLastExternalMonitorUpdate.set(sGetMicroTime()); 										/* record update time */
+  if (self.timeElapsedSinceLastExternalMonitorUpdate == 0) {
+    *self.timeElapsedSinceLastExternalMonitorUpdate = [SKJHttpTest sGetMicroTime]; 										/* record update time */
   }
   
-  if (sGetMicroTime() - timeElapsedSinceLastExternalMonitorUpdate.get() > updateTime/*uSec*/) {				/* update should be called only if 'pause' is expired */
+  if ([SKJHttpTest sGetMicroTime] - *self.timeElapsedSinceLastExternalMonitorUpdate > updateTime/*uSec*/) {				/* update should be called only if 'pause' is expired */
     int currentSpeed;
     
     @try {
@@ -672,9 +671,9 @@ const int extMonitorUpdateInterval = 500000;
       currentSpeed = 0;
     }
     
-    sSetLatestSpeedForExternalMonitor((long) (currentSpeed /*/ 1000000.0*/), id);							/* update speed parameter + indicative ID */
+    sSetLatestSpeedForExternalMonitor((long) (currentSpeed /*/ 1000000.0*/), inId);							/* update speed parameter + indicative ID */
     
-    timeElapsedSinceLastExternalMonitorUpdate.set(sGetMicroTime());											/* set new update time */
+    *self.timeElapsedSinceLastExternalMonitorUpdate = [SKJHttpTest sGetMicroTime];											/* set new update time */
     
     //			SKLogger.d(TAG(this), "External Monitor updated at " + (new java.text.SimpleDateFormat("HH:mm:ss.SSS")).format(new java.util.Date()) +
     //					" as " +  ( currentSpeed / 1000000.0) +
@@ -691,44 +690,44 @@ const int extMonitorUpdateInterval = 500000;
   BOOL bytesExceeded = false;
   
   if (bytes == BYTESREADERR) {													/* if there is an error the test must stop and report it */
-    setErrorIfEmpty("read error");
+    [super setErrorIfEmpty:@"read error"];
     bytes = 0; 																	/* do not modify the bytes counters ??? */
-    error.set(true);
+    *self.mError = true;
     return true;
   }
   
-  if (mWarmupMicroDuration.get() != 0)											/* if some other thread has already finished warmup there is no need to proceed */
+  if (*self.mWarmupMicroDuration != 0)											/* if some other thread has already finished warmup there is no need to proceed */
     return true;
   
-  addTotalWarmUpBytes(bytes);														/* increment atomic total bytes counter */
+  [self addTotalWarmUpBytes:bytes];														/* increment atomic total bytes counter */
   
-  if (mStartWarmupMicro.get() == 0) {
-    mStartWarmupMicro.set(sGetMicroTime()); 									/* record start up time should be recorded only by one thread */
+  if (*self.mStartWarmupMicro == 0) {
+    *self.mStartWarmupMicro = [SKJHttpTest sGetMicroTime]; 									/* record start up time should be recorded only by one thread */
   }
   
-  setWarmUpTimeMicro(sGetMicroTime() - mStartWarmupMicro.get());					/* current warm up time should be atomic*/
+  [self setWarmUpTimeMicro:([SKJHttpTest sGetMicroTime] - *self.mStartWarmupMicro)];					/* current warm up time should be atomic*/
   
-  if (mWarmupMaxTimeMicro > 0) {													/*if warmup max time is set and time has exceeded its values set time warmup to true */
-    timeExceeded = (mWarmupTimeMicro.get() >= mWarmupMaxTimeMicro);
+  if (self.mWarmupMaxTimeMicro > 0) {													/*if warmup max time is set and time has exceeded its values set time warmup to true */
+    timeExceeded = (*self.mWarmupTimeMicro >= self.mWarmupMaxTimeMicro);
   }
   
-  if (mWarmupMaxBytes > 0) {														/* if warmup max bytes is set and bytes counter exceeded its value set bytesWarmup to true */
-    bytesExceeded = (getTotalWarmUpBytes() >= mWarmupMaxBytes);
+  if (self.mWarmupMaxBytes > 0) {														/* if warmup max bytes is set and bytes counter exceeded its value set bytesWarmup to true */
+    bytesExceeded = ([self getTotalWarmUpBytes] >= self.mWarmupMaxBytes);
   }
   
   if (timeExceeded) {																/* if maximum warmup time is reached */
-    if (mWarmupMicroDuration.get() == 0) {
-      mWarmupMicroDuration.set(sGetMicroTime() - mStartWarmupMicro.get());	/* Register the time duration up to this moment */
+    if (*self.mWarmupMicroDuration == 0) {
+      *self.mWarmupMicroDuration = ([SKJHttpTest sGetMicroTime] - *self.mStartWarmupMicro);	/* Register the time duration up to this moment */
     }
-    warmupDoneCounter.addAndGet(1);												/* and increment warmup counter */
+    self.warmupDoneCounter->fetch_add(1);												/* and increment warmup counter */
     return true;
   }
   
   if (bytesExceeded) {																/* if max warmup bytes transferred */
-    if (mWarmupMicroDuration.get() == 0) {
-      mWarmupMicroDuration.set(sGetMicroTime() - mStartWarmupMicro.get());	/* Register the time duration up to this moment */
+    if (*self.mWarmupMicroDuration == 0) {
+      *self.mWarmupMicroDuration = ([SKJHttpTest sGetMicroTime] - *self.mStartWarmupMicro);	/* Register the time duration up to this moment */
     }
-    warmupDoneCounter.addAndGet(1);												/* and increment warmup counter */
+    self.warmupDoneCounter->fetch_add(1);												/* and increment warmup counter */
     return true;
   }
   
@@ -736,62 +735,68 @@ const int extMonitorUpdateInterval = 500000;
 }
 
 -(BOOL) isTransferDone:(int) bytes {
-  boolean timeExceeded = false;
-  boolean bytesExceeded = false;
+  BOOL timeExceeded = false;
+  BOOL bytesExceeded = false;
   
   //SKLogger.d(this, "isTransferDone("+ bytes+")");
   
   //boolean ret = false;
   if (bytes == BYTESREADERR) {														/* if there is an error the test must stop and report it */
-    setErrorIfEmpty("read error");
+    [super setErrorIfEmpty:@"read error"];
     bytes = 0; 																		/* do not modify the bytes counters ??? */
-    error.set(true);
-    SKLogger.e(this, "isTransferDone, bytes == BYTESREADERR!");
+    *self.mError = true;
+#ifdef DEBUG
+    NSLog(@"DEBUG: isTransferDone, bytes == BYTESREADERR!");
+#endif // DEBUG
+    SK_ASSERT(false);
     return true;
   }
   
-  if (mTransferMicroDuration.get() != 0) {
+  if (*self.mTransferMicroDuration != 0) {
     /* if some other thread has already finished warmup there is no need to proceed */
     //SKLogger.d(this, "isTransferDone, mTransferMicroDuration != 0");
     return true;
   }
   
-  
-  addTotalTransferBytes(bytes);														/* increment atomic total bytes counter */
+ 
+  [self addTotalTransferBytes:bytes];														/* increment atomic total bytes counter */
   
   /* record start up time should be recorded only by one thread */
-  mStartTransferMicro.compareAndSet(0,  sGetMicroTime());
+  long testZero = 0;
+  self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime]);
   //SKLogger.d(TAG(this), "Setting transfer start  == " + mStartTransferMicro.get() + " by thread: " + this.getThreadIndex());//TODO remove in production
   
-  setTransferTimeMicro(sGetMicroTime() - mStartTransferMicro.get());					/* How much time transfer took up to now */
+  [self setTransferTimeMicro:([SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro)];					/* How much time transfer took up to now */
   
-  if (mTransferMaxTimeMicro > 0) {													/* If transfer time is more than max time, then transfer is done */
+  if (self.mTransferMaxTimeMicro > 0) {													/* If transfer time is more than max time, then transfer is done */
     //SKLogger.d(this, "transfer Time so far milli =" + getTransferTimeMicro()/1000);
     
-    timeExceeded = (getTransferTimeMicro() >= mTransferMaxTimeMicro);
+    timeExceeded = ([self getTransferTimeMicro] >= self.mTransferMaxTimeMicro);
   }
   
   //SKLogger.d(this, "transfer Bytes so far =" + getTotalTransferBytes());
-  if (mTransferMaxBytes > 0) {
-    bytesExceeded = (getTotalTransferBytes() >= mTransferMaxBytes);
+  if (self.mTransferMaxBytes > 0) {
+    bytesExceeded = ([self getTotalTransferBytes] >= self.mTransferMaxBytes);
   }
   
-  if (getTotalTransferBytes() > 0) {
-    testStatus = "OK";
+  if ([self getTotalTransferBytes] > 0) {
+    self.testStatus = @"OK";
   }
   
   if (timeExceeded) {																	/* if maximum transfer time is reached */
     /* Register the time duration up to this moment */
-    mTransferMicroDuration.compareAndSet(0, sGetMicroTime() - mStartTransferMicro.get());
-    transferDoneCounter.addAndGet(1);												/* and increment transfer counter */
+    long testZero = 0;
+    self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
+    self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
     //SKLogger.d(this, "isTransferDone, timeExceeded");
     return true;
   }
   
   if (bytesExceeded) {																/* if max transfer bytes transferred */
-    mTransferMicroDuration.compareAndSet(0, sGetMicroTime() - mStartTransferMicro.get());
+    long testZero = 0;
+    self.mTransferMicroDuration->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
     //SKLogger.d(this, "isTransferDone, bytesExceeded");
-    transferDoneCounter.addAndGet(1);												/* and increment transfer counter */
+    self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
     return true;
   }
   
@@ -799,26 +804,31 @@ const int extMonitorUpdateInterval = 500000;
   return false;
 }
 
+#include <pthread.h>
 
 -(int) getThreadIndex {
   int threadIndex = 0;
+  
+  std::thread::id this_id = std::this_thread::get_id();
   
   //@synchronized (mThreads)
   @synchronized (self) {
     
     BOOL bFound = false;
     
-    int i;
-    for (i = 0; i < mThreads.length; i++) {
-      if (Thread.currentThread() == mThreads[i]) {
+    int i = 0;
+    for (auto theThread : *self.mThreads) {
+      if (this_id == theThread->get_id()) {
         threadIndex = i;
         bFound = true;
         break;
       }
+      
+      i++;
     }
     
     if (bFound == false) {
-      SKLogger.e(this, "getThreadIndex()");
+      SK_ASSERT(false);
     }
   }
   return threadIndex;
@@ -838,18 +848,20 @@ const int extMonitorUpdateInterval = 500000;
 //public void setUpstream() {									downstream = false;				}
 
 -(void) setDirection:(NSString *)d {
-  if (d.equalsIgnoreCase(_DOWNSTREAM)) {
-    downstream = true;
-  } else if (d.equalsIgnoreCase(_UPSTREAM)) {
-    downstream = false;
+  if ([d isEqualToString:_DOWNSTREAM]) {
+    self.downstream = true;
+  } else if ([d isEqualToString:_UPSTREAM]) {
+    self.downstream = false;
+  } else {
+    SK_ASSERT(false);
   }
 }
 
 -(BOOL) isProgressAvailable {//TODO check with new interface
   BOOL ret = false;
-  if (mTransferMaxTimeMicro > 0) {
+  if (self.mTransferMaxTimeMicro > 0) {
     ret = true;
-  } else if (mTransferMaxBytes > 0) {
+  } else if (self.mTransferMaxBytes > 0) {
     ret = true;
   }
   return ret;
@@ -858,15 +870,15 @@ const int extMonitorUpdateInterval = 500000;
 -(int) getProgress {//TODO check with new interface
   double ret = 0;
   
-  if (mStartWarmupMicro.get() == 0) {
+  if (*self.mStartWarmupMicro == 0) {
     ret = 0;
-  } else if (mTransferMaxTimeMicro != 0) {
-    long currTime = sGetMicroTime() - mStartWarmupMicro.get();
-    ret = (double) currTime / (mWarmupMaxTimeMicro + mTransferMaxTimeMicro);
+  } else if (self.mTransferMaxTimeMicro != 0) {
+    long currTime = [SKJHttpTest sGetMicroTime] - *self.mStartWarmupMicro;
+    ret = (double) currTime / (self.mWarmupMaxTimeMicro + self.mTransferMaxTimeMicro);
     
   } else {
-    long currBytes = getTotalWarmUpBytes() + getTotalTransferBytes();
-    ret = (double) currBytes / (mWarmupMaxBytes + mTransferMaxBytes);
+    long currBytes = [self getTotalWarmUpBytes] + [self getTotalTransferBytes];
+    ret = (double) currBytes / (self.mWarmupMaxBytes + self.mTransferMaxBytes);
   }
   //}
   ret = ret < 0 ? 0 : ret;
@@ -880,34 +892,33 @@ const int extMonitorUpdateInterval = 500000;
   /*
    * Should be run inside thread
    */
-  if (socket != null) {
+  if (socket != nil) {
     [socket setDelegate:nil];
     [socket disconnect];
-    [socket release];
   }
 }
 
 -(void) myThreadEntry {
   BOOL result = false;
-  int threadIndex = getThreadIndex();
+  int threadIndex = [self getThreadIndex];
   
-  Socket socket = getSocket();
+  GCDAsyncSocket *socket = [self getSocket];
   
-  if (socket == null) {
-    SKLogger.e(TAG(this), "Socket initiation failed, thread: " + threadIndex);
+  if (socket == nil) {
+    SK_ASSERT(false);
     return;
   }
   
-  result = warmup(socket, threadIndex);
+  result = [self warmupToSocket:socket ThreadIndex:threadIndex];
   
   if (!result) {
-    closeConnection(socket);
+    [self closeConnection:socket];
     return;
   }
   
-  result = transfer(socket, threadIndex);
+  result = [self transferToSocket:socket ThreadIndex: threadIndex];
   
-  closeConnection(socket);
+  [self closeConnection:socket];
 }
 
 
@@ -915,59 +926,59 @@ const int extMonitorUpdateInterval = 500000;
  * Accessors to atomic variables
  */
 -(long) getTotalWarmUpBytes {
-  return totalWarmUpBytes.get();
+  return *self.totalWarmUpBytes;
 }
 
 -(long) getTotalTransferBytes {
-  return totalTransferBytes.get();
+  return *self.totalTransferBytes;
 }
 
 -(long) getWarmUpTimeMicro {
-  return mWarmupTimeMicro.get();
+  return *self.mWarmupTimeMicro;
 }
 
 -(long) getWarmUpTimeDurationMicro {
-  return mWarmupMicroDuration.get();
+  return *self.mWarmupMicroDuration;
 }
 
 -(long) getTransferTimeMicro {
-  return transferTimeMicroseconds.get();
+  return *self.transferTimeMicroseconds;
 }
 
 -(long) getTransferTimeDurationMicro {
-  return mTransferMicroDuration.get();
+  return *self.mTransferMicroDuration;
 }
 
 -(long) getStartTransferMicro {
-  return mStartTransferMicro.get();
+  return *self.mStartTransferMicro;
 }
 
 -(long) getStartWarmupMicro {
-  return mStartWarmupMicro.get();
+  return *self.mStartWarmupMicro;
 }
 
 -(void) addTotalTransferBytes:(long) bytes {
-  totalTransferBytes.addAndGet(bytes);
+  self.totalTransferBytes->fetch_add(bytes);
 }
 
 -(void) resetTotalTransferBytesToZero {
-  totalTransferBytes.set(0L);
+  *self.totalTransferBytes = 0;
 }
 
 -(void) addTotalWarmUpBytes:(long) bytes {
-  totalWarmUpBytes.addAndGet(bytes);
+  self.totalWarmUpBytes->fetch_add(bytes);
 }
 
 -(void) setWarmUpTimeMicro:(long) uTime {
-  mWarmupTimeMicro.set(uTime);
+  *self.mWarmupTimeMicro = uTime;
 }
 
 -(void) setTransferTimeMicro:(long) uTime {
-  transferTimeMicroseconds.set(uTime);
+  *self.transferTimeMicroseconds = uTime;
 }
 
 -(int) getThreadsNum {
-  return nThreads;
+  return self.nThreads;
 }														/* Accessor for number of threads */
 
 
@@ -985,17 +996,21 @@ const int extMonitorUpdateInterval = 500000;
 
 
 -(int) getWarmupBytesPerSecond {
-  long btsTotal = getTotalWarmUpBytes();
-  long duration = getWarmUpTimeDurationMicro() == 0 ? (sGetMicroTime() - getStartWarmupMicro()) : getWarmUpTimeDurationMicro();
+  long btsTotal = [self getTotalWarmUpBytes];
+  long duration = [self getWarmUpTimeDurationMicro] == 0 ?
+    ([SKJHttpTest sGetMicroTime] - [self getStartWarmupMicro]) :
+    [self getWarmUpTimeDurationMicro];
   
-  return sGetBytesPerSecond(duration, btsTotal);
+  return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
 }
 
 
 // Returns -1 if not enough time has passed for sensible measurement.
 -(int) getTransferBytesPerSecond {
-  long btsTotal = getTotalTransferBytes();
-  long duration = getTransferTimeDurationMicro() == 0 ? (sGetMicroTime() - getStartTransferMicro()) : getTransferTimeDurationMicro();
+  long btsTotal = [self getTotalTransferBytes];
+  long duration = [self getTransferTimeDurationMicro] == 0 ?
+    ([SKJHttpTest sGetMicroTime] - [self getStartTransferMicro]) :
+    [self getTransferTimeDurationMicro];
   
   if (duration < 1000000.0) // At least a second!
   {
@@ -1003,7 +1018,7 @@ const int extMonitorUpdateInterval = 500000;
     return -1;
   }
   
-  return sGetBytesPerSecond(duration, btsTotal);
+  return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
 }
 
 @end

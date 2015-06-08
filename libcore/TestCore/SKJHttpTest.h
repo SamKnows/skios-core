@@ -60,7 +60,7 @@
 #define cReasonUploadEnd @"Upload End"
 
 
-@interface SKJHttpTest : SKJTest
+@interface SKJHttpTest : SKJTest<GCDAsyncSocketDelegate>
 
 typedef enum t_UploadStrategy {
   ACTIVE  = 0,
@@ -71,13 +71,16 @@ typedef enum t_UploadStrategy {
 @property NSString *target;
 
 /* Abstract methods to be implemented in derived classes */
+//protected abstract boolean transfer(Socket socket, int threadIndex);	/* Generate main traffic for metrics measurements */
 -(BOOL) transferToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex;	/* Generate main traffic for metrics measurements */
-  
+
+//protected abstract boolean warmup(Socket socket, int threadIndex);		/* Generate initial traffic for setting optimal TCP parameters */
 -(BOOL) warmupToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex;		/* Generate initial traffic for setting optimal TCP parameters */
 //protected abstract int getWarmupBytesPerSecond();						/* Initial traffic speed */
 //protected abstract int getTransferBytesPerSecond();						/* Main traffic speed */
 
 +(long) sGetMicroTime;
 +(long) sGetMilliTime;
+
 
 @end
