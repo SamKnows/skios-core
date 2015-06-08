@@ -13,7 +13,7 @@
 @interface SKJUploadTest : SKJHttpTest
 
 @property double bitrateMpbs1024Based;
-@property NSData *buff;
+@property NSMutableData *buff;
 
 - (instancetype)initWithParamArray:(NSArray*)params;
 

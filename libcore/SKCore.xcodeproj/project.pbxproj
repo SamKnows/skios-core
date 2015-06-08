@@ -132,6 +132,7 @@
 		B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2E16BD7181A5D4500B907DE /* SKGraphForResultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */; };
 		B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
+		B2E68C321B25CB32005D5186 /* SKJUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5441B219463002DC60F /* SKJUploadTest.m */; };
 		B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77DC1A88C791009B324A /* SKScheduleParser.m */; };
 		B2EC77E31A88C838009B324A /* SKTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E21A88C838009B324A /* SKTestRunner.m */; };
 		B2EC77E61A88CA07009B324A /* SKKitTestAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */; };
@@ -1342,6 +1343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B22E88DD17C3682E005D9094 /* SKCore.m in Sources */,
+				B2E68C321B25CB32005D5186 /* SKJUploadTest.m in Sources */,
 				B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */,
 				B23B638419ACB7A8003F381C /* NSString+SKExtensions.m in Sources */,
 				B23B638119ACB3F6003F381C /* SKTestResults.m in Sources */,

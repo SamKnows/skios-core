@@ -69,6 +69,11 @@ typedef enum t_UploadStrategy {
 
 @property int port;
 @property NSString *target;
+@property int uploadBufferSize;
+@property BOOL randomEnabled;																			/* Upload buffer randomisation is required */
+@property int postDataLength;
+
+- (instancetype)initWithDirection:(NSString*)direction Parameters:(NSArray*)params;
 
 /* Abstract methods to be implemented in derived classes */
 //protected abstract boolean transfer(Socket socket, int threadIndex);	/* Generate main traffic for metrics measurements */
@@ -82,5 +87,18 @@ typedef enum t_UploadStrategy {
 +(long) sGetMicroTime;
 +(long) sGetMilliTime;
 
+
+-(int) getTransferBytesPerSecond;
+-(int) getThreadsNum;
+-(BOOL) isReady;
+
+-(long) getTotalWarmUpBytes;
+-(long) getTotalTransferBytes;
+-(long) getWarmUpTimeMicro;
+-(long) getWarmUpTimeDurationMicro;
+-(long) getTransferTimeMicro;
+-(long) getTransferTimeDurationMicro;
+-(long) getStartTransferMicro;
+-(long) getStartWarmupMicro;
 
 @end

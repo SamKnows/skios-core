@@ -41,19 +41,6 @@
   return [theString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
--(int) getWarmupBytesPerSecond {
-  return 100; // TODO!
-}
--(int) getTransferBytesPerSecond {
-  return 100; // TODO!
-}
--(BOOL) isWarmupDone:(int)byteCount {
-  return YES; // TODO!
-}
--(BOOL) isTransferDone:(int)byteCount {
-  return YES; // TODO!
-}
-
 -(BOOL) transmitToSocket:(GCDAsyncSocket *)socket ThreadIndex:(int) threadIndex IsWarmup:(BOOL)isWarmup {
 
   SKJRetIntBlock bytesPerSecond = nil;																			/* Generic method returning the current average speed across all thread  since thread started */

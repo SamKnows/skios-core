@@ -43,10 +43,7 @@ using namespace::std;
 @property NSString *infoString;
 @property NSString *ipAddress;
 
-@property BOOL randomEnabled;																			/* Upload buffer randomisation is required */
 //boolean warmUpDone;
-
-@property int postDataLength;
 
 // warmup variables
 @property std::atomic_long *mStartWarmupMicro;												/* Point in time when warm up process starts, uSecs */
@@ -75,7 +72,6 @@ using namespace::std;
 @property int downloadBufferSize;
 @property int desiredReceiveBufferSize;
 @property int socketBufferSize;
-@property int uploadBufferSize;
 
 //private int connectionCounter;
 @property int receiveBufferSize;
