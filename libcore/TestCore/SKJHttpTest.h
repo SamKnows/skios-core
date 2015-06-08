@@ -89,8 +89,15 @@ typedef enum t_UploadStrategy {
 
 
 -(int) getTransferBytesPerSecond;
+-(int) getWarmupBytesPerSecond;
+-(BOOL) isWarmupDone:(int) bytes;
+-(BOOL) isTransferDone:(int) bytes;
 -(int) getThreadsNum;
 -(BOOL) isReady;
+-(void) sSetLatestSpeedForExternalMonitorInterval:(long)pause InId:(NSString *)inId TransferCallback:(SKJRetIntBlock) transferSpeed;
+-(void) resetTotalTransferBytesToZero;
++(void) sSetLatestSpeedForExternalMonitorBytesPerSecond:(long)bytesPerSecond TestId:(NSString *)testId;
+
 
 -(long) getTotalWarmUpBytes;
 -(long) getTotalTransferBytes;
@@ -100,5 +107,9 @@ typedef enum t_UploadStrategy {
 -(long) getTransferTimeDurationMicro;
 -(long) getStartTransferMicro;
 -(long) getStartWarmupMicro;
+-(BOOL) getError;
+
+// Override...
+-(void) setError:(NSString*) error;
 
 @end

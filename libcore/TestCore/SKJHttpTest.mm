@@ -639,7 +639,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   return std::pair<double, NSString*>(mbps, sLatestSpeedForExternalMonitorTestId);
 }
 
-static void sSetLatestSpeedForExternalMonitor(long bytesPerSecond, NSString *testId) {
++(void) sSetLatestSpeedForExternalMonitorBytesPerSecond:(long)bytesPerSecond TestId:(NSString *)testId {
   long value = sLatestSpeedForExternalMonitorBytesPerSecond;
   sBytesPerSecondLast = value;
   if (bytesPerSecond == 0) {
@@ -648,8 +648,6 @@ static void sSetLatestSpeedForExternalMonitor(long bytesPerSecond, NSString *tes
   sLatestSpeedForExternalMonitorBytesPerSecond = bytesPerSecond;
   sLatestSpeedForExternalMonitorTestId = testId;
 }
-
-const int extMonitorUpdateInterval = 500000;
 
 -(void) sSetLatestSpeedForExternalMonitorInterval:(long)pause InId:(NSString *)inId TransferCallback:(SKJRetIntBlock) transferSpeed {
   long updateTime = /*timeElapsedSinceLastExternalMonitorUpdate.get() == 0 ? pause * 5 : */ pause;					/* first update is delayed 3 times of a given pause */
@@ -667,7 +665,7 @@ const int extMonitorUpdateInterval = 500000;
       currentSpeed = 0;
     }
     
-    sSetLatestSpeedForExternalMonitor((long) (currentSpeed /*/ 1000000.0*/), inId);							/* update speed parameter + indicative ID */
+    [self.class sSetLatestSpeedForExternalMonitorBytesPerSecond:(long) (currentSpeed /*/ 1000000.0*/) TestId:inId];							/* update speed parameter + indicative ID */
     
     *self.timeElapsedSinceLastExternalMonitorUpdate = [SKJHttpTest sGetMicroTime];											/* set new update time */
     
@@ -977,6 +975,10 @@ const int extMonitorUpdateInterval = 500000;
   return self.nThreads;
 }														/* Accessor for number of threads */
 
+-(BOOL) getError {
+  return *self.mError;
+}
+
 
 +(int) sGetBytesPerSecond:(long) duration BtsTotal:(long) btsTotal {
   int btsPerSec = 0;
@@ -1015,6 +1017,13 @@ const int extMonitorUpdateInterval = 500000;
   }
   
   return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
+}
+
+-(void) setError:(NSString*) error {
+		@synchronized (self) {
+      [super setError:error];
+      *self.mError = true;
+    }
 }
 
 @end

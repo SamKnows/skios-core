@@ -133,6 +133,7 @@
 		B2E16BD7181A5D4500B907DE /* SKGraphForResultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */; };
 		B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
 		B2E68C321B25CB32005D5186 /* SKJUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5441B219463002DC60F /* SKJUploadTest.m */; };
+		B2E68C341B25D321005D5186 /* SKJPassiveServerUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5471B21947E002DC60F /* SKJPassiveServerUploadTest.m */; };
 		B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77DC1A88C791009B324A /* SKScheduleParser.m */; };
 		B2EC77E31A88C838009B324A /* SKTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E21A88C838009B324A /* SKTestRunner.m */; };
 		B2EC77E61A88CA07009B324A /* SKKitTestAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTestAdaptor.m */; };
@@ -1352,6 +1353,7 @@
 				B22E88DE17C3682E005D9094 /* SKDatabase.m in Sources */,
 				B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */,
 				B2AE68161883DA4D00D87FAE /* SKAActivationController.m in Sources */,
+				B2E68C341B25D321005D5186 /* SKJPassiveServerUploadTest.m in Sources */,
 				B2AE68281883DBC900D87FAE /* SKAAppDelegate.m in Sources */,
 				B24C5C401B258D15008B7FB5 /* SKJHttpTest.mm in Sources */,
 				B22E88DF17C3682E005D9094 /* SKDebugAssert.m in Sources */,

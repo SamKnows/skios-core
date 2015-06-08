@@ -10,6 +10,8 @@
 
 #import "SKJPassiveServerUploadTest.h"
 
+const int extMonitorUpdateInterval = 500000;
+
 @implementation SKJPassiveServerUploadTest
 
 - (instancetype)initWithParamArray:(NSArray*)params
@@ -49,10 +51,10 @@
   if (isWarmup) {
     // If warmup mode is active
     bytesPerSecond = ^{
-      return [self getWarmupBytesPerSecond];
+      return [super getWarmupBytesPerSecond];
     };
-    transmissionDone = ^(){
-      return [self isWarmupDone:(int)super.buff.length];
+    transmissionDone = ^{
+      return [super isWarmupDone:(int)super.buff.length];
     };
   } else {
     // If transmission mode is active
@@ -60,7 +62,7 @@
       return [self getTransferBytesPerSecond];
     };
     transmissionDone = ^() {
-      return [self isTransferDone:(int)super.buff.length];
+      return [super isTransferDone:(int)super.buff.length];
     };
   }
   
@@ -93,7 +95,7 @@
       
       if (bytesPerSecond() >= 0) {
         // -1 would mean no result found (as not enough time yet spent measuring)
-        sSetLatestSpeedForExternalMonitorInterval(extMonitorUpdateInterval, "runUp1Normal", bytesPerSecond);
+        [super sSetLatestSpeedForExternalMonitorInterval:extMonitorUpdateInterval InId:@"runUp1Normal" TransferCallback:bytesPerSecond];
       }
       
       //// DEBUG TESTING!
@@ -102,26 +104,26 @@
       
       //SKLogger.e(TAG(this), "DEBUG: speed in bytes per second" + getSpeedBytesPerSecond() + "<<<");
       //SKLogger.e(TAG(this), "DEBUG: isTransferDone=" + isTransferDone + ", totalTransferBytesSent=>>>" + getTotalTransferBytes() + ", time" + (sGetMicroTime() - start) + "<<<");
-    } while (!transmissionDone.call());
+    } while (!transmissionDone());
     
   } @catch (NSException *e) {
-    NSLog("Exception in setting up output stream, exiting... thread: %d, %@", threadIndex, e);
+    NSLog(@"Exception in setting up output stream, exiting... thread: %d, %@", threadIndex, e);
     
     // EXCEPTION: RECORD ERROR, AND SET BYTES TO 0!!!
-    resetTotalTransferBytesToZero();
-    error.set(true);
+    [super resetTotalTransferBytesToZero];
+    [super setError:@"?"]; //super.mError = true;
     
     // Verify thta we've set everything to zero properly!
-    SK_ASSERT(getTotalTransferBytes() == 0L);
-    try {
-      SK_ASSERT(bytesPerSecond.call() == 0);
-    } catch (Exception e1) {
+    SK_ASSERT([super getTotalTransferBytes] == 0L);
+    @try {
+      SK_ASSERT(bytesPerSecond() == 0);
+    } @catch (NSException *e1) {
       SK_ASSERT(false);
     }
-    int bytesPerSecondMeasurement = Math.max(0, getTransferBytesPerSecond());
+    int bytesPerSecondMeasurement = MAX(0, [super getTransferBytesPerSecond]);
     SK_ASSERT(bytesPerSecondMeasurement == 0);
     
-    sSetLatestSpeedForExternalMonitorInterval(extMonitorUpdateInterval, "runUp1Err", bytesPerSecond);
+    [super sSetLatestSpeedForExternalMonitorInterval:extMonitorUpdateInterval InId:@"runUp1Err" TransferCallback:bytesPerSecond];
     //SKLogger.e(TAG(this), "loop - break 3");//haha
     return false;
   }
@@ -129,21 +131,21 @@
   //
   // If only 1 buffer "SENT": treat this as an error...
   //
-  long btsTotal = getTotalTransferBytes();
-  if (btsTotal == buff.length) {
+  long btsTotal = [super getTotalTransferBytes];
+  if (btsTotal == self.buff.length) {
     // ONLY 1 BUFFER "SENT": TREAT THIS AS AN ERROR, AND SET BYTES TO 0!!!
-    SKLogger.e(this, "Only one buffer sent - treat this as an upload failure");
-    resetTotalTransferBytesToZero();
-    error.set(true);
+    SK_ASSERT(false); // .e(this, "Only one buffer sent - treat this as an upload failure");
+    [super resetTotalTransferBytesToZero];
+    [super setError:@"?"]; //super.mError = true;
     
     // Verify thta we've set everything to zero properly!
-    SK_ASSERT(getTotalTransferBytes() == 0L);
+    SK_ASSERT([super getTotalTransferBytes] == 0L);
     @try {
-      SK_ASSERT(bytesPerSecond.call() == 0);
+      SK_ASSERT(bytesPerSecond() == 0);
     } @catch (NSException *e1) {
       SK_ASSERT(false);
     }
-    int bytesPerSecondMeasurement = Math.max(0, getTransferBytesPerSecond());
+    int bytesPerSecondMeasurement = MAX(0, [super getTransferBytesPerSecond]);
     SK_ASSERT(bytesPerSecondMeasurement == 0);
     return false;
   }
@@ -151,11 +153,11 @@
   //
   // To get here, the test ran OK!
   //
-  int bytesPerSecondMeasurement = max(0, getTransferBytesPerSecond());
+  int bytesPerSecondMeasurement = MAX(0, [self getTransferBytesPerSecond]);
   SK_ASSERT(bytesPerSecondMeasurement >= 0);
   //hahaSKLogger.e(TAG(this), "Result is from the BUILT-IN MEASUREMENT, bytesPerSecondMeasurement= " + bytesPerSecondMeasurement + " thread: " + threadIndex);
   
-  sSetLatestSpeedForExternalMonitor(bytesPerSecondMeasurement, cReasonUploadEnd);											/* Final external interface set up */
+  [super.class sSetLatestSpeedForExternalMonitorBytesPerSecond:bytesPerSecondMeasurement TestId:cReasonUploadEnd];											/* Final external interface set up */
   
   //    if (connIn != null) {
   //      try {
@@ -168,30 +170,28 @@
   return true;
 }
 
-@Override
-protected boolean warmup(Socket socket, int threadIndex) {
+-(BOOL) warmupToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
   //SKLogger.d(this, "PassiveServerUploadTest, warmup()... thread: " + threadIndex);
   
-  boolean isWarmup = true;
-  boolean result = false;
+  BOOL isWarmup = true;
+  BOOL result = false;
   
-  result = transmit(socket, threadIndex, isWarmup);
+  result = [self transmitToSocket:socket ThreadIndex:threadIndex IsWarmup:isWarmup];
   
-  if (error.get()) {
+  if ([super getError]) {
     // Warm up might have set a global error
     //SKLogger.e(TAG(this), "WarmUp Exits: Result FALSE, totalWarmUpBytes=>>> " + getTotalWarmUpBytes());//haha remove in production
+    SK_ASSERT(false);
     return false;
   }
   return result;
 }
 
-@Override
-protected boolean transfer(Socket socket, int threadIndex) {
+-(BOOL) transferToSocket:(GCDAsyncSocket *)socket ThreadIndex:(int)threadIndex {
   //SKLogger.d(this, "PassiveServerUploadTest, transfer()... thread: " + threadIndex);
   
-  boolean isWarmup = false;
-  return transmit(socket, threadIndex, isWarmup);
-}
+  BOOL isWarmupFalse = false;
+  return [self transmitToSocket:socket ThreadIndex:threadIndex IsWarmup:isWarmupFalse];
 }
 
 @end
