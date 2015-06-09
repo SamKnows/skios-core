@@ -130,6 +130,8 @@
 		B2D934E517D4D46D0012C169 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2D934E417D4D46D0012C169 /* CoreTelephony.framework */; };
 		B2DC501E18C75DA100E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
+		B2DD40261B271B16005E5CF2 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DD40251B271B16005E5CF2 /* libc++.dylib */; };
+		B2DD40281B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */; };
 		B2E16BD7181A5D4500B907DE /* SKGraphForResultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */; };
 		B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
 		B2E68C321B25CB32005D5186 /* SKJUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5441B219463002DC60F /* SKJUploadTest.m */; };
@@ -471,6 +473,8 @@
 		B2DC501A18C75DA100E69F36 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		B2DC501C18C75DA100E69F36 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		B2DC501D18C75DA100E69F36 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		B2DD40251B271B16005E5CF2 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTest_SKJPassiveServerUploadTest.m; sourceTree = "<group>"; };
 		B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResultsTests.m; sourceTree = "<group>"; };
 		B2EC77DC1A88C791009B324A /* SKScheduleParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKScheduleParser.m; sourceTree = "<group>"; };
 		B2EC77DD1A88C791009B324A /* SKScheduleParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKScheduleParser.h; sourceTree = "<group>"; };
@@ -539,6 +543,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2DD40261B271B16005E5CF2 /* libc++.dylib in Frameworks */,
 				B29C68331A651699002761DB /* QuickLook.framework in Frameworks */,
 				B29C68321A65166C002761DB /* MobileCoreServices.framework in Frameworks */,
 				B29C68311A651665002761DB /* AssetsLibrary.framework in Frameworks */,
@@ -646,6 +651,7 @@
 		B22E88A917C36789005D9094 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B2DD40251B271B16005E5CF2 /* libc++.dylib */,
 				B2697B281A232A0E0077C360 /* QuickLook.framework */,
 				B2697B261A232A050077C360 /* MobileCoreServices.framework */,
 				B2697B241A2329FD0077C360 /* AssetsLibrary.framework */,
@@ -706,6 +712,7 @@
 		B22E88C117C3678A005D9094 /* SKCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */,
 				B2D49AF217D72F6F00B88FD2 /* SKTestCommon.m */,
 				B2D49AF317D72F7000B88FD2 /* SKTestCommon.h */,
 				B27B0D87181A7F58008D76D6 /* SKCoreTests.m */,
@@ -1453,6 +1460,7 @@
 				B2AF51EF17CF35FF00815146 /* SKTransferOperationTests.m in Sources */,
 				B218BCD518EE952100B076DC /* SKTest_HttpLatencyTestingForClosestTargetTests.m in Sources */,
 				B2AF51F117CF390200815146 /* SKSchedulerTests.m in Sources */,
+				B2DD40281B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m in Sources */,
 				B21A857417D48695006488B1 /* SKAutotestTests.m in Sources */,
 				B2D934E317D4D4240012C169 /* SKGlobalMethodsTest.m in Sources */,
 				B279124B18D88AF000E17EBF /* SKOperatorsTests.m in Sources */,
@@ -1602,6 +1610,7 @@
 		B22E88D017C3678A005D9094 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -1633,6 +1642,7 @@
 		B22E88D117C3678A005D9094 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

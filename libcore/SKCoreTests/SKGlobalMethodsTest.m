@@ -19,6 +19,7 @@
 - (void)setUp
 {
   [super setUp];
+  if ([SKAppBehaviourDelegate sGetAppBehaviourDelegateCanBeNil] == nil) {[[SKAppBehaviourDelegate alloc] init];}
 }
 
 - (void)tearDown

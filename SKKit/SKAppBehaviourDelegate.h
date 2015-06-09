@@ -79,6 +79,9 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // This can be called at any time...
 +(SKAppBehaviourDelegate*) sGetAppBehaviourDelegate;
 
+// Used for testing!
++(SKAppBehaviourDelegate*) sGetAppBehaviourDelegateCanBeNil;
+
 @property (nonatomic, retain) CLLocationManager* locationManager;
 @property (nonatomic, retain) NSString *closestTarget;
 @property double latitude;

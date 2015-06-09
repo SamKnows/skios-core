@@ -24,6 +24,7 @@
 
 - (void)setUp {
   [super setUp];
+  if ([SKAppBehaviourDelegate sGetAppBehaviourDelegateCanBeNil] == nil) {[[SKAppBehaviourDelegate alloc] init];}
   
   self.hostView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
   self.graph = [[SKGraphForResults alloc] init];

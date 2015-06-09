@@ -93,6 +93,11 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return spAppBehaviourDelegate;
 }
 
+// This can be called at any time...
++(SKAppBehaviourDelegate*) sGetAppBehaviourDelegateCanBeNil {
+  return spAppBehaviourDelegate;
+}
+
 - (instancetype)init
 {
   self = [super init];

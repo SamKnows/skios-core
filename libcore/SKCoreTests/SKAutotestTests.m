@@ -92,6 +92,8 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 {
   [super setUp];
   
+  if ([SKAppBehaviourDelegate sGetAppBehaviourDelegateCanBeNil] == nil) {[[SKAppBehaviourDelegate alloc] init];}
+  
   // Set-up code here.
   GGetAutotestScheduleCalls = 0;
   GCallsToRunNextTest = 0;

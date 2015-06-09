@@ -6,22 +6,12 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "OCMock/OCMock.h"
 
-@interface SKScheduler(MockTest)
-
-// PRIVATE properties and methods that are to be tested.
-
-// TODO - test this private method!
-- (NSString*)parseTime:(NSString*)time;
+@interface SKTest_SKJPassiveServerUploadTest : XCTestCase
 
 @end
 
-@interface SKSchedulerTests : XCTestCase
-
-@end
-
-@implementation SKSchedulerTests
+@implementation SKTest_SKJPassiveServerUploadTest
 
 - (void)setUp
 {
@@ -39,12 +29,11 @@
   [super tearDown];
 }
 
-- (void)testSKSchedulerOverrides
+- (void)testIt
 {
-  SKScheduler *scheduler = [[SKScheduler alloc] init];
+  XCTAssertTrue(true);
   
-  XCTAssertFalse([scheduler shouldSortTests], @"");
-  XCTAssertTrue([scheduler shouldStoreScheduleVersion], @"");
+  SKTest_SKJPassiveServerUploadTest *theTest = [[SKTest_SKJPassiveServerUploadTest alloc] init];
   
   NSLog(@"Done!");
   [NSThread sleepForTimeInterval:1.0];
