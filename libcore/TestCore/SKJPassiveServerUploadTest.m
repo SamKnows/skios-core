@@ -89,8 +89,9 @@ const int extMonitorUpdateInterval = 500000;
 //      }
       
       // Write buffer to output socket
-      //SKLogger.d(this, "transmit() calling write() ... thread:" + threadIndex);
+      //NSLog(@"transmit() calling write() with %d bytes, threadIndex=%d", (int)super.buff.length, threadIndex);
       write(sockfd, super.buff.bytes, super.buff.length);
+      //NSLog(@"transmit() called write() with %d bytes, threadIndex=%d", (int)super.buff.length, threadIndex);
       //connOut.flush();
       
       if (bytesPerSecond() >= 0) {

@@ -37,17 +37,23 @@
   XCTAssertTrue(true);
   
   NSDictionary *paramDictionary = @{
-                                    TARGET: @"samknows1.dal1.level3.net",
-                                    PORT: @"8080",
-                                    WARMUPMAXTIME: @"5000000",
-                                    WARMUPMAXBYTES: @"2621440",
-                                    TRANSFERMAXTIME: @"15000000",
-                                    TRANSFERMAXBYTES: @"20971520",
-                                    NTHREADS: @"3",
+                                    //TARGET: @"samknows2.nyc2.level3.net",
+                                    //PORT: @"8080",
+                                    TARGET: @"nbs3.samknows",
+                                    PORT: @"80",
+                                    WARMUPMAXTIME: @"2000000",
+                                    //WARMUPMAXBYTES: @"2621440",
+                                    TRANSFERMAXTIME: @"5000000",
+                                    //TRANSFERMAXBYTES: @"20971520",
+                                    //NTHREADS: @"3",
+                                    NTHREADS: @"1",
                                     BUFFERSIZE: @"512",
-                                    SENDBUFFERSIZE: @"512",
-                                    RECEIVEBUFFERSIZE: @"",
-                                    SENDDATACHUNK: @"512",
+                                    //SENDBUFFERSIZE: @"512",
+                                    //SENDBUFFERSIZE: @"4096",
+                                    SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
+                                    RECEIVEBUFFERSIZE: @"32768",
+                                    //SENDDATACHUNK: @"512",
+                                    SENDDATACHUNK: @"32768",   // This appears to make no difference
                                     POSTDATALENGTH: @"10485760"};
   __block SKJPassiveServerUploadTest *theTest = [[SKJPassiveServerUploadTest alloc] initWithParams:paramDictionary];
   
@@ -56,33 +62,42 @@
   //Start an activity indicator here
   __block BOOL bStopNowFlag = false;
   
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+  //dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+  
+  dispatch_async(queue, ^{
     
     //Call your function or whatever work that needs to be done
     //Code in this part is run on a background thread
     [theTest execute];
     
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-      
-      //Stop your activity indicator or anything else with the GUI
-      //Code here is run on the main thread
-      bStopNowFlag = true;
-      //[expectation fulfill];
-    });
+    bStopNowFlag = true;
+    
+//    dispatch_async(dispatch_get_main_queue(), ^(void) {
+//      
+//      //Stop your activity indicator or anything else with the GUI
+//      //Code here is run on the main thread
+//      bStopNowFlag = true;
+//      //[expectation fulfill];
+//    });
   });
 
   const double cMaxTime = 60.0;
   NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:cMaxTime];
   
   for (;;) {
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
+    sleep(1);
+//    //[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
+//    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0F]];
     if ([timeoutDate timeIntervalSinceNow] < 0.0) {
       NSLog(@"**** TEST Timeout!!");
       break;
     }
     
+    int progress = [theTest getProgress];
     double uploadSpeed = [theTest getTransferBytesPerSecond];
-    NSLog(@"****** TEST uploadSpeed=%g", uploadSpeed);
+    double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+    NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g", progress, uploadSpeed, uploadSpeedMpbs);
     
     if (bStopNowFlag == true) {
       break;
@@ -95,8 +110,10 @@
 //    }
 //  }];
   
+  int progress = [theTest getProgress];
   double uploadSpeed = [theTest getTransferBytesPerSecond];
-  NSLog(@"****** TEST uploadSpeed=%g AT END!", uploadSpeed);
+  double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+  NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
   
   NSLog(@"Done!");
   [NSThread sleepForTimeInterval:1.0];

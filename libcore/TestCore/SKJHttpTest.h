@@ -97,6 +97,7 @@ typedef enum t_UploadStrategy {
 -(void) sSetLatestSpeedForExternalMonitorInterval:(long)pause InId:(NSString *)inId TransferCallback:(SKJRetIntBlock) transferSpeed;
 -(void) resetTotalTransferBytesToZero;
 +(void) sSetLatestSpeedForExternalMonitorBytesPerSecond:(long)bytesPerSecond TestId:(NSString *)testId;
++(double) sGetLatestSpeedForExternalMonitorAsMbps;
 
 
 -(long) getTotalWarmUpBytes;

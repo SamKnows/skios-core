@@ -29,6 +29,8 @@ using namespace::std;
 #include <functional>
 #include <atomic>
 
+#import <netinet/tcp.h> // For TCP_NODELAY
+
 #import "SKJHttpTest.h"
 
 @interface SKJHttpTest()
@@ -497,32 +499,43 @@ void threadEntry(SKJHttpTest *pSelf) {
   //SKLogger.d(this, "HTTP TEST - getSocket()");
   
   int sockfd = [SKTransferOperation sCreateAndConnectRawSocketForTarget:self.target Port:self.port CustomBlock:^(int sockfd) {
-      int sockerr = 0;
-      
-      int buff_size = self.socketBufferSize/2;
-      socklen_t socklen = sizeof(buff_size);
-      sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+    int sockerr = 0;
+    
+    int buff_size = self.socketBufferSize/2;
+    socklen_t socklen = sizeof(buff_size);
+    sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+    SK_ASSERT(sockerr == 0);
+    
+    // This is c.f. the Android code.
+    // We DON"T want "nodelay"... so set the value zero. That should force every block to be written separately.
+    int flag = 0;
+    int result = setsockopt(sockfd,            /* socket affected */
+                            IPPROTO_TCP,     /* set option at TCP level */
+                            TCP_NODELAY,     /* name of option */
+                            (char *) &flag,  /* the cast is historical
+                                              cruft */
+                            sizeof(int));    /* length of option value */
+    SK_ASSERT (result >= 0);
+    
+    if (self.downstream) {
+      // Read / download
+      //socklen = sizeof(timeout);
+      struct timeval tv;
+      memset(&tv, 0, sizeof(tv));
+      tv.tv_sec  = READTIMEOUT;
+      tv.tv_usec = 0;
+      sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
       SK_ASSERT(sockerr == 0);
-      
-      if (self.downstream) {
-        // Read / download
-        //socklen = sizeof(timeout);
-        struct timeval tv;
-        memset(&tv, 0, sizeof(tv));
-        tv.tv_sec  = READTIMEOUT;
-        tv.tv_usec = 0;
-        sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-        SK_ASSERT(sockerr == 0);
-      } else {
-        //socklen = sizeof(timeout);
-        struct timeval tv;
-        memset(&tv, 0, sizeof(tv));
-        tv.tv_sec  = WRITETIMEOUT;
-        tv.tv_usec = 0;
-        sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-        SK_ASSERT(sockerr == 0);
-        //ret.setSoTimeout(1);
-      }
+    } else {
+      //socklen = sizeof(timeout);
+      struct timeval tv;
+      memset(&tv, 0, sizeof(tv));
+      tv.tv_sec  = WRITETIMEOUT;
+      tv.tv_usec = 0;
+      sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+      SK_ASSERT(sockerr == 0);
+      //ret.setSoTimeout(1);
+    }
   }];
   
   return sockfd;
@@ -623,13 +636,15 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 // Report-back a running average, to keep the UI moving...
 // Returns -1 if sample time too short.
 // Static!
-std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
+//std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
++(double) sGetLatestSpeedForExternalMonitorAsMbps {
   // use moving average of the last 2 items!
   double bytesPerSecondToUse = (double)(sBytesPerSecondLast + sLatestSpeedForExternalMonitorBytesPerSecond);
   bytesPerSecondToUse /= 2;
   
   double mbps = (bytesPerSecondToUse * 8.0) / 1000000.0;
-  return std::pair<double, NSString*>(mbps, sLatestSpeedForExternalMonitorTestId);
+  //return std::pair<double, NSString*>(mbps, sLatestSpeedForExternalMonitorTestId);
+  return mbps;
 }
 
 +(void) sSetLatestSpeedForExternalMonitorBytesPerSecond:(long)bytesPerSecond TestId:(NSString *)testId {
@@ -747,6 +762,8 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   
  
   [self addTotalTransferBytes:bytes];														/* increment atomic total bytes counter */
+  
+  //NSLog(@"TOTALBYTESSENT:%d", (int) *self.totalTransferBytes);
   
   /* record start up time should be recorded only by one thread */
   int64_t testZero = 0;
