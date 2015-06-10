@@ -24,6 +24,17 @@
 @synthesize errorString;
 @synthesize status;
 
+- (instancetype)init
+{
+  self = [super init];
+  if (self) {
+    outputFields = nil;
+    errorString = @"";
+    status = WAITING;
+  }
+  return self;
+}
+
 //
 // "Abstract" methods...
 //
@@ -99,16 +110,7 @@
 -(long) unixTimeStamp {
 		return (long)([NSDate timeIntervalSinceReferenceDate] * 1000.0);
 }
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-      outputFields = nil;
-      errorString = @"";
-      status = WAITING;
-    }
-    return self;
-}
+
 
 -(void) start {
   status = RUNNING;

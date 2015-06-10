@@ -73,7 +73,7 @@ typedef enum t_UploadStrategy {
 @property BOOL randomEnabled;																			/* Upload buffer randomisation is required */
 @property int postDataLength;
 
-- (instancetype)initWithDirection:(NSString*)direction Parameters:(NSArray*)params;
+- (instancetype)initWithDirection:(NSString*)direction Parameters:(NSDictionary*)params;
 
 /* Abstract methods to be implemented in derived classes */
 //protected abstract boolean transfer(Socket socket, int threadIndex);	/* Generate main traffic for metrics measurements */

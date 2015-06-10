@@ -15,6 +15,6 @@
 @property double bitrateMpbs1024Based;
 @property NSMutableData *buff;
 
-- (instancetype)initWithParamArray:(NSArray*)params;
+- (instancetype)initWithParams:(NSDictionary*)params;
 
 @end

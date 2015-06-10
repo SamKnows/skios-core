@@ -12,6 +12,6 @@
 
 @interface SKJPassiveServerUploadTest : SKJUploadTest
 
-- (instancetype)initWithParamArray:(NSArray*)params;
+- (instancetype)initWithParams:(NSDictionary*)params;
 
 @end

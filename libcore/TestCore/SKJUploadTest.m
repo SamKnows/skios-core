@@ -15,7 +15,7 @@
 @synthesize bitrateMpbs1024Based;
 @synthesize buff;
 
-- (instancetype)initWithParamArray:(NSArray*)params
+- (instancetype)initWithParams:(NSDictionary*)params
 {
   self = [super initWithDirection:_UPSTREAM Parameters:params];
   if (self) {

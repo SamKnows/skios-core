@@ -14,9 +14,9 @@ const int extMonitorUpdateInterval = 500000;
 
 @implementation SKJPassiveServerUploadTest
 
-- (instancetype)initWithParamArray:(NSArray*)params
+- (instancetype)initWithParams:(NSDictionary*)params
 {
-  self = [super initWithParamArray:params];
+  self = [super initWithParams:params];
   if (self) {
   }
   return self;
@@ -171,7 +171,7 @@ const int extMonitorUpdateInterval = 500000;
 }
 
 -(BOOL) warmupToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
-  //SKLogger.d(this, "PassiveServerUploadTest, warmup()... thread: " + threadIndex);
+  NSLog(@"***PassiveServerUploadTest, warmup()... thread: %d", threadIndex);
   
   BOOL isWarmup = true;
   BOOL result = false;
@@ -180,7 +180,7 @@ const int extMonitorUpdateInterval = 500000;
   
   if ([super getError]) {
     // Warm up might have set a global error
-    //SKLogger.e(TAG(this), "WarmUp Exits: Result FALSE, totalWarmUpBytes=>>> " + getTotalWarmUpBytes());//haha remove in production
+    NSLog(@"WarmUp Exits: Result FALSE, totalWarmUpBytes=%d", (int)[self getTotalWarmUpBytes]);//haha remove in production
     SK_ASSERT(false);
     return false;
   }

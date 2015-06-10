@@ -242,7 +242,7 @@ using namespace::std;
 
 /* Constructor. Accepts list of Param objects, each representing a certain parameter read from settings XML file */
 //  protected HttpTest(String direction, List<Param> params)
-- (instancetype)initWithDirection:(NSString*)direction Parameters:(NSArray*)params
+- (instancetype)initWithDirection:(NSString*)direction Parameters:(NSDictionary*)params
 {
   self = [super init];
   if (self) {
@@ -322,53 +322,49 @@ using namespace::std;
   delete mThreads;
 }
 
--(void) setParams:(NSArray*)params { // List<Param> params) /* Initialisation helper function */
+-(void) setParams:(NSDictionary*)params { // List<Param> params) /* Initialisation helper function */
   self.initialised = true;
-
-  /*
-   !!! TODO TODO TODO !!! TODO TODO TODO !!!
-  try {
-    for (Param param : params) {
-      String value = param.getValue();
-      if (param.contains(TARGET)) {
-        target = value;
-      } else if (param.contains(PORT)) {
-        port = Integer.parseInt(value);
-      } else if (param.contains(FILE)) {
-        file = value;
-      } else if (param.contains(WARMUPMAXTIME)) {
-        mWarmupMaxTimeMicro = Integer.parseInt(value);
-      } else if (param.contains(WARMUPMAXBYTES)) {
-        mWarmupMaxBytes = Integer.parseInt(value);
-      } else if (param.contains(TRANSFERMAXTIME)) {
-        mTransferMaxTimeMicro = Integer.parseInt(value);
-      } else if (param.contains(TRANSFERMAXBYTES)) {
-        mTransferMaxBytes = Integer.parseInt(value);
-      } else if (param.contains(NTHREADS)) {
-        nThreads = Integer.parseInt(value);
-      } else if (param.contains(UPLOADSTRATEGY)) {
-        uploadStrategyServerBased = UploadStrategy.ACTIVE;		// If strategy parameter is present ActiveServerload class is used
-      } else if (param.contains(BUFFERSIZE)) {
-        downloadBufferSize = Integer.parseInt(value);
-      } else if (param.contains(SENDBUFFERSIZE)) {
-        socketBufferSize = Integer.parseInt(value);
-      } else if (param.contains(RECEIVEBUFFERSIZE)) {
-        desiredReceiveBufferSize = Integer.parseInt(value);
-        downloadBufferSize = Integer.parseInt(value);
-      } else if (param.contains(SENDDATACHUNK)) {
-        uploadBufferSize = Integer.parseInt(value);
-      } else if (param.contains(POSTDATALENGTH)) {
-        postDataLength = Integer.parseInt(value);
-      } else {
-        SKLogger.e(this, "setParams()");
-        initialised = false;
-        break;
-      }
+  
+  for (NSString *key in params) {
+    NSString *value = params[key];
+    if ([key isEqualToString:TARGET]) {
+      self.target = value;
+    } else if ([key isEqualToString:PORT]) {
+      self.port = [value intValue];
+    } else if ([key isEqualToString:WARMUPMAXTIME]) {
+      self.mWarmupMaxTimeMicro = [value intValue];
+    } else if ([key isEqualToString:WARMUPMAXBYTES]) {
+      self.mWarmupMaxBytes = [value intValue];
+    } else if ([key isEqualToString:TRANSFERMAXTIME]) {
+      self.mTransferMaxTimeMicro = [value intValue];
+    } else if ([key isEqualToString:TRANSFERMAXBYTES]) {
+      self.mTransferMaxBytes = [value intValue];
+    } else if ([key isEqualToString:NTHREADS]) {
+      self.nThreads = [value intValue];
+    } else if ([key isEqualToString:BUFFERSIZE]) {
+      self.downloadBufferSize = [value intValue];
+    } else if ([key isEqualToString:SENDBUFFERSIZE]) {
+      self.socketBufferSize = [value intValue];
+    } else if ([key isEqualToString:RECEIVEBUFFERSIZE]) {
+      self.desiredReceiveBufferSize = [value intValue];
+      self.downloadBufferSize = [value intValue];
+    } else if ([key isEqualToString:SENDDATACHUNK]) {
+      self.uploadBufferSize = [value intValue];
+    } else if ([key isEqualToString:POSTDATALENGTH]) {
+      self.postDataLength = [value intValue];
+    /*
+    } else if (param.contains(FILE)) {
+      file = value;
+    } else if (param.contains(UPLOADSTRATEGY)) {
+      uploadStrategyServerBased = UploadStrategy.ACTIVE;		// If strategy parameter is present ActiveServerload class is used
     }
-  } catch (NumberFormatException nfe) {
-    initialised = false;
+     */
+    } else {
+      SK_ASSERT(false);
+      self.initialised = false;
+      break;
+    }
   }
-*/
 }
 
 -(int)getNetUsage {												/* Total number of bytes transfered */
@@ -472,6 +468,7 @@ void threadEntry(SKJHttpTest *pSelf) {
   @try {
     for (auto theThread : *self.mThreads) {
       theThread->join();
+      NSLog(@"**** THREAD JOINED!");
     }
   } @catch (NSException *e) {
     //[self setErrorIfEmpty:@"Thread join exception: ", e];
@@ -505,32 +502,34 @@ void threadEntry(SKJHttpTest *pSelf) {
     SK_ASSERT(false);
     retSocket = nil;
   } else {
-    int sockerr = 0;
-    
-    int buff_size = self.socketBufferSize/2;
-    socklen_t socklen = sizeof(buff_size);
-    sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
-    SK_ASSERT(sockerr == 0);
-    
-    if (self.downstream) {
-      // Read / download
-      //socklen = sizeof(timeout);
-      struct timeval tv;
-      memset(&tv, 0, sizeof(tv));
-      tv.tv_sec  = READTIMEOUT;
-      tv.tv_usec = 0;
-      sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-      SK_ASSERT(sockerr == 0);
-    } else {
-      //socklen = sizeof(timeout);
-      struct timeval tv;
-      memset(&tv, 0, sizeof(tv));
-      tv.tv_sec  = WRITETIMEOUT;
-      tv.tv_usec = 0;
-      sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-      SK_ASSERT(sockerr == 0);
-      //ret.setSoTimeout(1);
-    }
+//    [retSocket performBlock:^{
+//      int sockerr = 0;
+//      
+//      int buff_size = self.socketBufferSize/2;
+//      socklen_t socklen = sizeof(buff_size);
+//      sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+//      SK_ASSERT(sockerr == 0);
+//      
+//      if (self.downstream) {
+//        // Read / download
+//        //socklen = sizeof(timeout);
+//        struct timeval tv;
+//        memset(&tv, 0, sizeof(tv));
+//        tv.tv_sec  = READTIMEOUT;
+//        tv.tv_usec = 0;
+//        sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+//        SK_ASSERT(sockerr == 0);
+//      } else {
+//        //socklen = sizeof(timeout);
+//        struct timeval tv;
+//        memset(&tv, 0, sizeof(tv));
+//        tv.tv_sec  = WRITETIMEOUT;
+//        tv.tv_usec = 0;
+//        sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+//        SK_ASSERT(sockerr == 0);
+//        //ret.setSoTimeout(1);
+//      }
+//    }];
   }
   return retSocket;
 }
@@ -893,6 +892,8 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
 }
 
 -(void) myThreadEntry {
+  NSLog(@"**** myThreadEntry!");
+  
   BOOL result = false;
   int threadIndex = [self getThreadIndex];
   
@@ -906,11 +907,13 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   result = [self warmupToSocket:socket ThreadIndex:threadIndex];
   
   if (!result) {
+    NSLog(@"**** myThreadEntry - leave early after call to warmupToSocket!");
     [self closeConnection:socket];
     return;
   }
   
   result = [self transferToSocket:socket ThreadIndex: threadIndex];
+  NSLog(@"**** myThreadEntry - done transferToSocket!");
   
   [self closeConnection:socket];
 }
