@@ -43,7 +43,7 @@ const int extMonitorUpdateInterval = 500000;
   return [theString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
--(BOOL) transmitToSocket:(GCDAsyncSocket *)socket ThreadIndex:(int) threadIndex IsWarmup:(BOOL)isWarmup {
+-(BOOL) transmitToSocket:(int)sockfd ThreadIndex:(int) threadIndex IsWarmup:(BOOL)isWarmup {
 
   SKJRetIntBlock bytesPerSecond = nil;																			/* Generic method returning the current average speed across all thread  since thread started */
   SKJRetBoolBlock transmissionDone = nil;																			/* Generic method returning the transmission state */
@@ -79,7 +79,7 @@ const int extMonitorUpdateInterval = 500000;
     NSData *headerByteArray = [self getPostHeaderRequestStringAsByteArray:threadIndex];
     if (headerByteArray.length > 0) {
       //SKLogger.d(this, "transmit() header write() ... thread:" + threadIndex);
-      [socket writeData:headerByteArray withTimeout:-1.0 tag:0];
+      write(sockfd, headerByteArray.bytes, headerByteArray.length);
       //connOut.flush();
     }
     
@@ -90,7 +90,7 @@ const int extMonitorUpdateInterval = 500000;
       
       // Write buffer to output socket
       //SKLogger.d(this, "transmit() calling write() ... thread:" + threadIndex);
-      [socket writeData:super.buff withTimeout:-1.0 tag:0];
+      write(sockfd, super.buff.bytes, super.buff.length);
       //connOut.flush();
       
       if (bytesPerSecond() >= 0) {
@@ -170,13 +170,13 @@ const int extMonitorUpdateInterval = 500000;
   return true;
 }
 
--(BOOL) warmupToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
+-(BOOL) warmupToSocket:(int)sockfd ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
   NSLog(@"***PassiveServerUploadTest, warmup()... thread: %d", threadIndex);
   
   BOOL isWarmup = true;
   BOOL result = false;
   
-  result = [self transmitToSocket:socket ThreadIndex:threadIndex IsWarmup:isWarmup];
+  result = [self transmitToSocket:sockfd ThreadIndex:threadIndex IsWarmup:isWarmup];
   
   if ([super getError]) {
     // Warm up might have set a global error
@@ -187,11 +187,11 @@ const int extMonitorUpdateInterval = 500000;
   return result;
 }
 
--(BOOL) transferToSocket:(GCDAsyncSocket *)socket ThreadIndex:(int)threadIndex {
+-(BOOL) transferToSocket:(int)sockfd ThreadIndex:(int)threadIndex {
   //SKLogger.d(this, "PassiveServerUploadTest, transfer()... thread: " + threadIndex);
   
   BOOL isWarmupFalse = false;
-  return [self transmitToSocket:socket ThreadIndex:threadIndex IsWarmup:isWarmupFalse];
+  return [self transmitToSocket:sockfd ThreadIndex:threadIndex IsWarmup:isWarmupFalse];
 }
 
 @end

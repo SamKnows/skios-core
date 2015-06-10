@@ -605,12 +605,9 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   }
 }
 
-// We SHARE the body data, to save memory footprint - otherwise, we can run out of memory on e.g. iPhone 4S
-//static NSData *sbBodyData = nil;
-
--(void) startUploadTest {
++(int) sCreateAndConnectRawSocketForTarget:(NSString*)target Port:(int)port CustomBlock:(void (^)(int sockfd))customBlock {
 #ifdef DEBUG
-  NSLog(@"DEBUG startUploadTest: %@ - isUpstream", [self description]);
+  NSLog(@"DEBUG sCreateRawSocketForTarget, target=%@, port=%d", target, port);
 #endif // DEBUG
   
   struct hostent *server = gethostbyname([target UTF8String]);
@@ -618,8 +615,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 #ifdef _DEBUG
     NSLog(@"DEBUG ERROR, no such host\n");
 #endif // _DEBUG
-    [self connection:nil didFailWithError:nil];
-    return;
+    return -1;
   }
   
   //  [SKIPHelper hostIPAddress:target];
@@ -628,14 +624,13 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   //  NSLog(@"ADDRESS: %@", [NSString stringWithCString:inet_ntoa(*list[0]) encoding:NSUTF8StringEncoding]);
   
   /* Create a socket point */
-  __block int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  int sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd < 0)
   {
 #ifdef _DEBUG
     NSLog(@"DEBUG ERROR, failed to create socket\n");
 #endif // _DEBUG
-    [self connection:nil didFailWithError:nil];
-    return;
+    return -1;
   }
   
   struct sockaddr_in serv_addr;
@@ -645,37 +640,14 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
         (char *)&serv_addr.sin_addr.s_addr,
         server->h_length);
   serv_addr.sin_port = htons(port);
-  
-  //  int buff_size = 0;
-  int sockerr = 0;
-  //socklen_t socklen = 0;
-  
-  //  socklen = sizeof(buff_size);
-  //  sockerr = getsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(char*)&buff_size,&socklen);
-  //#ifdef _DEBUG
-  //  NSLog(@"DEBUG: sock buf size was %d\n",buff_size);
-  //#endif // _DEBUG
-  
-  //  buff_size = cBlockDataLength / 2;
-  const int useBlockSize = cDefaultBlockDataLength;
-  if (self.mpParentHttpTest.sendDataChunkSize > 0) {
-    //useBlockSize = self.mpParentHttpTest.sendDataChunkSize;
+ 
+  if (customBlock != nil) {
+    customBlock(sockfd);
   }
   
-  //  buff_size = useBlockSize/2;
-  //  socklen = sizeof(buff_size);
-  //  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
-  
-  int timeoutSeconds = HTTP_UPLOAD_TIMEOUT;
-  //socklen = sizeof(timeout);
-  struct timeval tv;
-  memset(&tv, 0, sizeof(tv));
-  tv.tv_sec  = timeoutSeconds;
-  tv.tv_usec = 0;
-  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-  SK_ASSERT(sockerr == 0);
-  
   // http://stackoverflow.com/questions/15486979/ios-multithreaded-sockets-under-libupnp-hanging-on-send
+  int sockerr = 0;
+  
   int set = 1;
   sockerr = setsockopt(sockfd,SOL_SOCKET,SO_NOSIGPIPE,(const void*)&set,sizeof(set));
   SK_ASSERT(sockerr == 0);
@@ -691,8 +663,64 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     // Must ALWAYS close the sockfd!
     close(sockfd);
     
-    [self connection:nil didFailWithError:nil];
+    return -1;
+  }
+  
+  return sockfd;
+}
+
+// We SHARE the body data, to save memory footprint - otherwise, we can run out of memory on e.g. iPhone 4S
+//static NSData *sbBodyData = nil;
+
+-(void) startUploadTest {
+#ifdef DEBUG
+  NSLog(@"DEBUG startUploadTest: %@ - isUpstream", [self description]);
+#endif // DEBUG
+  
+  const int useBlockSize = cDefaultBlockDataLength;
+  
+  __block int sockfd = [SKTransferOperation sCreateAndConnectRawSocketForTarget:target Port:port CustomBlock:^(int sockfd) {
+    //  int buff_size = 0;
+    int sockerr = 0;
+    //socklen_t socklen = 0;
     
+    //  socklen = sizeof(buff_size);
+    //  sockerr = getsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(char*)&buff_size,&socklen);
+    //#ifdef _DEBUG
+    //  NSLog(@"DEBUG: sock buf size was %d\n",buff_size);
+    //#endif // _DEBUG
+    
+    //  buff_size = cBlockDataLength / 2;
+    if (self.mpParentHttpTest.sendDataChunkSize > 0) {
+      //useBlockSize = self.mpParentHttpTest.sendDataChunkSize;
+    }
+    
+    //  buff_size = useBlockSize/2;
+    //  socklen = sizeof(buff_size);
+    //  sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+    
+    int timeoutSeconds = HTTP_UPLOAD_TIMEOUT;
+    //socklen = sizeof(timeout);
+    struct timeval tv;
+    memset(&tv, 0, sizeof(tv));
+    tv.tv_sec  = timeoutSeconds;
+    tv.tv_usec = 0;
+    sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+    SK_ASSERT(sockerr == 0);
+    
+    // http://stackoverflow.com/questions/15486979/ios-multithreaded-sockets-under-libupnp-hanging-on-send
+    int set = 1;
+    sockerr = setsockopt(sockfd,SOL_SOCKET,SO_NOSIGPIPE,(const void*)&set,sizeof(set));
+    SK_ASSERT(sockerr == 0);
+  }
+                        ];
+                        
+  if (sockfd < 0)
+  {
+#ifdef _DEBUG
+    NSLog(@"DEBUG ERROR, failed to create socket\n");
+#endif // _DEBUG
+    [self connection:nil didFailWithError:nil];
     return;
   }
   

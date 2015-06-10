@@ -60,7 +60,7 @@
 #define cReasonUploadEnd @"Upload End"
 
 
-@interface SKJHttpTest : SKJTest<GCDAsyncSocketDelegate>
+@interface SKJHttpTest : SKJTest
 
 typedef enum t_UploadStrategy {
   ACTIVE  = 0,
@@ -77,15 +77,15 @@ typedef enum t_UploadStrategy {
 
 /* Abstract methods to be implemented in derived classes */
 //protected abstract boolean transfer(Socket socket, int threadIndex);	/* Generate main traffic for metrics measurements */
--(BOOL) transferToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex;	/* Generate main traffic for metrics measurements */
+-(BOOL) transferToSocket:(int)sockfd ThreadIndex:(int)threadIndex;	/* Generate main traffic for metrics measurements */
 
 //protected abstract boolean warmup(Socket socket, int threadIndex);		/* Generate initial traffic for setting optimal TCP parameters */
--(BOOL) warmupToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex;		/* Generate initial traffic for setting optimal TCP parameters */
+-(BOOL) warmupToSocket:(int)sockf ThreadIndex:(int)threadIndex;		/* Generate initial traffic for setting optimal TCP parameters */
 //protected abstract int getWarmupBytesPerSecond();						/* Initial traffic speed */
 //protected abstract int getTransferBytesPerSecond();						/* Main traffic speed */
 
-+(long) sGetMicroTime;
-+(long) sGetMilliTime;
++(int64_t) sGetMicroTime;
++(int64_t) sGetMilliTime;
 
 
 -(int) getTransferBytesPerSecond;
@@ -101,12 +101,12 @@ typedef enum t_UploadStrategy {
 
 -(long) getTotalWarmUpBytes;
 -(long) getTotalTransferBytes;
--(long) getWarmUpTimeMicro;
--(long) getWarmUpTimeDurationMicro;
--(long) getTransferTimeMicro;
--(long) getTransferTimeDurationMicro;
--(long) getStartTransferMicro;
--(long) getStartWarmupMicro;
+-(int64_t) getWarmUpTimeMicro;
+-(int64_t) getWarmUpTimeDurationMicro;
+-(int64_t) getTransferTimeMicro;
+-(int64_t) getTransferTimeDurationMicro;
+-(int64_t) getStartTransferMicro;
+-(int64_t) getStartWarmupMicro;
 -(BOOL) getError;
 
 // Override...

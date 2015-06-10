@@ -37,8 +37,8 @@ using namespace::std;
 /*
  * Atomic variables used as aggregate counters or (errors, etc. ) indicators updated from concurrently running threads
  */
-@property std::atomic_long *totalWarmUpBytes;
-@property std::atomic_long *totalTransferBytes;
+@property std::atomic<int64_t> *totalWarmUpBytes;
+@property std::atomic<int64_t> *totalTransferBytes;
 @property std::atomic_bool *mError;
 @property NSString *infoString;
 @property NSString *ipAddress;
@@ -46,24 +46,24 @@ using namespace::std;
 //boolean warmUpDone;
 
 // warmup variables
-@property std::atomic_long *mStartWarmupMicro;												/* Point in time when warm up process starts, uSecs */
-@property std::atomic_long *mWarmupMicroDuration;											/* Total duration of warm up period, uSecs */
-@property std::atomic_long *mWarmupTimeMicro;												/* Time elapsed since warm up process started, uSecs */
+@property std::atomic<int64_t> *mStartWarmupMicro;												/* Point in time when warm up process starts, uSecs */
+@property std::atomic<int64_t> *mWarmupMicroDuration;											/* Total duration of warm up period, uSecs */
+@property std::atomic<int64_t> *mWarmupTimeMicro;												/* Time elapsed since warm up process started, uSecs */
 @property std::atomic_int *warmupDoneCounter;											/* Counter shows how many threads completed warm up process */
-@property long mWarmupMaxTimeMicro;																	/* Max time warm up is allowed to continue, uSecs */
+@property int64_t mWarmupMaxTimeMicro;																	/* Max time warm up is allowed to continue, uSecs */
 @property int mWarmupMaxBytes;																		/* Max bytes warm up is allowed to send */
 
 
 // transfer variables
-@property std::atomic_long *mStartTransferMicro;												/* Point in time when transfer process starts, uSecs */
-@property std::atomic_long *mTransferMicroDuration;											/* Total duration of transfer period, uSecs */
-@property std::atomic_long *transferTimeMicroseconds;										/* Time elapsed since transfer process started, uSecs */
+@property std::atomic<int64_t> *mStartTransferMicro;												/* Point in time when transfer process starts, uSecs */
+@property std::atomic<int64_t> *mTransferMicroDuration;											/* Total duration of transfer period, uSecs */
+@property std::atomic<int64_t> *transferTimeMicroseconds;										/* Time elapsed since transfer process started, uSecs */
 @property std::atomic_int  *transferDoneCounter;										/* Counter shows how many threads completed trnasfer process */
-@property long mTransferMaxTimeMicro;																/* Max time transfer is allowed to continue, uSecs*/
+@property int64_t mTransferMaxTimeMicro;																/* Max time transfer is allowed to continue, uSecs*/
 @property  int mTransferMaxBytes;																	/* Max bytes transfer is allowed to send */
 
 //external monitor variables
-@property std::atomic_long *timeElapsedSinceLastExternalMonitorUpdate;						/* Time elapsed since external monitor counter was updated last time, uSecs */
+@property std::atomic<int64_t> *timeElapsedSinceLastExternalMonitorUpdate;						/* Time elapsed since external monitor counter was updated last time, uSecs */
 
 // Various HTTP tests variables
 @property int nThreads;																					/* Number of send/receive threads */
@@ -214,12 +214,12 @@ using namespace::std;
  */
 
 /* Abstract methods to be implemented in derived classes */
--(BOOL) transferToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex {	/* Generate main traffic for metrics measurements */
+-(BOOL) transferToSocket:(int)sockfd ThreadIndex:(int)threadIndex {	/* Generate main traffic for metrics measurements */
   SK_ASSERT(NO);
   return NO;
 }
 
--(BOOL) warmupToSocket:(GCDAsyncSocket*)socket ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
+-(BOOL) warmupToSocket:(int)sockfd ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
   SK_ASSERT(NO);
   return NO;
 }
@@ -228,15 +228,19 @@ using namespace::std;
 //protected abstract int getTransferBytesPerSecond();						/* Main traffic speed */
 
 /* Time helper functions */
-+(long) sGetMicroTime {
-  NSTimeInterval seconds = [NSDate timeIntervalSinceReferenceDate];
-  long micro = (long)(seconds * 1000000.0);
++(int64_t) sGetMicroTime {
+  NSTimeInterval seconds = [[NSProcessInfo processInfo] systemUptime];
+  NSTimeInterval fmicro = seconds * 1000000.0;
+  SK_ASSERT(fmicro > 0);
+  int64_t micro = (int64_t)fmicro;
+  SK_ASSERT(micro > 0);
   return micro;
 }
 
-+(long) sGetMilliTime {
-  NSTimeInterval seconds = [NSDate timeIntervalSinceReferenceDate];
-  long milli = (long)(seconds * 1000.0);
++(int64_t) sGetMilliTime {
+  NSTimeInterval seconds = [[NSProcessInfo processInfo] systemUptime];
+  int64_t milli = (int64_t)(seconds * 1000.0);
+  SK_ASSERT(milli > 0);
   return milli;
 }
 
@@ -246,8 +250,8 @@ using namespace::std;
 {
   self = [super init];
   if (self) {
-    self.totalWarmUpBytes = new std::atomic_long(0);		/* Total num of bytes transmitted during warmup period */
-    self.totalTransferBytes = new std::atomic_long(0);	/* Total num of bytes transmitted during trnasfer period */
+    self.totalWarmUpBytes = new std::atomic<int64_t>(0);		/* Total num of bytes transmitted during warmup period */
+    self.totalTransferBytes = new std::atomic<int64_t>(0);	/* Total num of bytes transmitted during trnasfer period */
     self.mError = new std::atomic_bool(false);						/* Global error indicator */
     
     self.infoString = @"";
@@ -259,24 +263,24 @@ using namespace::std;
     self.postDataLength = 0;
     
     // warmup variables
-    self.mStartWarmupMicro = new std::atomic_long(0);												/* Point in time when warm up process starts, uSecs */
-    self.mWarmupMicroDuration = new std::atomic_long(0);											/* Total duration of warm up period, uSecs */
-    self.mWarmupTimeMicro = new std::atomic_long(0);												/* Time elapsed since warm up process started, uSecs */
+    self.mStartWarmupMicro = new std::atomic<int64_t>(0);												/* Point in time when warm up process starts, uSecs */
+    self.mWarmupMicroDuration = new std::atomic<int64_t>(0);											/* Total duration of warm up period, uSecs */
+    self.mWarmupTimeMicro = new std::atomic<int64_t>(0);												/* Time elapsed since warm up process started, uSecs */
     self.warmupDoneCounter = new std::atomic_int(0);											/* Counter shows how many threads completed warm up process */
     self.mWarmupMaxTimeMicro = 0;																	/* Max time warm up is allowed to continue, uSecs */
     self.mWarmupMaxBytes = 0;																		/* Max bytes warm up is allowed to send */
     
     
     // transfer variables
-    self.mStartTransferMicro = new std::atomic_long(0);												/* Point in time when transfer process starts, uSecs */
-    self.mTransferMicroDuration = new std::atomic_long(0);											/* Total duration of transfer period, uSecs */
-    self.transferTimeMicroseconds = new std::atomic_long(0);										/* Time elapsed since transfer process started, uSecs */
+    self.mStartTransferMicro = new std::atomic<int64_t>(0);												/* Point in time when transfer process starts, uSecs */
+    self.mTransferMicroDuration = new std::atomic<int64_t>(0);											/* Total duration of transfer period, uSecs */
+    self.transferTimeMicroseconds = new std::atomic<int64_t>(0);										/* Time elapsed since transfer process started, uSecs */
     self.transferDoneCounter = new std::atomic_int(0);										/* Counter shows how many threads completed trnasfer process */
     self.mTransferMaxTimeMicro = 0;																/* Max time transfer is allowed to continue, uSecs*/
     self.mTransferMaxBytes = 0;																	/* Max bytes transfer is allowed to send */
     
     //external monitor variables
-    self.timeElapsedSinceLastExternalMonitorUpdate = new std::atomic_long(0);						/* Time elapsed since external monitor counter was updated last time, uSecs */
+    self.timeElapsedSinceLastExternalMonitorUpdate = new std::atomic<int64_t>(0);						/* Time elapsed since external monitor counter was updated last time, uSecs */
     
     // Various HTTP tests variables
     self.nThreads = 0;																					/* Number of send/receive threads */
@@ -489,49 +493,39 @@ void threadEntry(SKJHttpTest *pSelf) {
   [self finish];
 }
 
--(GCDAsyncSocket*) getSocket {															/* Socket initialiser */
+-(int) getSocket {															/* Socket initialiser */
   //SKLogger.d(this, "HTTP TEST - getSocket()");
   
-  dispatch_queue_t mainQueue = dispatch_get_main_queue();
-  GCDAsyncSocket *retSocket = [[GCDAsyncSocket alloc] initWithDelegate:self
-                                                         delegateQueue:mainQueue];
+  int sockfd = [SKTransferOperation sCreateAndConnectRawSocketForTarget:self.target Port:self.port CustomBlock:^(int sockfd) {
+      int sockerr = 0;
+      
+      int buff_size = self.socketBufferSize/2;
+      socklen_t socklen = sizeof(buff_size);
+      sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
+      SK_ASSERT(sockerr == 0);
+      
+      if (self.downstream) {
+        // Read / download
+        //socklen = sizeof(timeout);
+        struct timeval tv;
+        memset(&tv, 0, sizeof(tv));
+        tv.tv_sec  = READTIMEOUT;
+        tv.tv_usec = 0;
+        sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+        SK_ASSERT(sockerr == 0);
+      } else {
+        //socklen = sizeof(timeout);
+        struct timeval tv;
+        memset(&tv, 0, sizeof(tv));
+        tv.tv_sec  = WRITETIMEOUT;
+        tv.tv_usec = 0;
+        sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
+        SK_ASSERT(sockerr == 0);
+        //ret.setSoTimeout(1);
+      }
+  }];
   
-  NSError *error = nil;
-  if ([retSocket connectToHost:self.target onPort:self.port withTimeout:CONNECTIONTIMEOUT error:&error] == NO) {
-    // FAILED!
-    SK_ASSERT(false);
-    retSocket = nil;
-  } else {
-//    [retSocket performBlock:^{
-//      int sockerr = 0;
-//      
-//      int buff_size = self.socketBufferSize/2;
-//      socklen_t socklen = sizeof(buff_size);
-//      sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDBUF,(const void*)&buff_size,socklen);
-//      SK_ASSERT(sockerr == 0);
-//      
-//      if (self.downstream) {
-//        // Read / download
-//        //socklen = sizeof(timeout);
-//        struct timeval tv;
-//        memset(&tv, 0, sizeof(tv));
-//        tv.tv_sec  = READTIMEOUT;
-//        tv.tv_usec = 0;
-//        sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-//        SK_ASSERT(sockerr == 0);
-//      } else {
-//        //socklen = sizeof(timeout);
-//        struct timeval tv;
-//        memset(&tv, 0, sizeof(tv));
-//        tv.tv_sec  = WRITETIMEOUT;
-//        tv.tv_usec = 0;
-//        sockerr = setsockopt(retSocket.socketFD,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
-//        SK_ASSERT(sockerr == 0);
-//        //ret.setSoTimeout(1);
-//      }
-//    }];
-  }
-  return retSocket;
+  return sockfd;
 }
 
 -(void) output {
@@ -615,8 +609,8 @@ void threadEntry(SKJHttpTest *pSelf) {
 
 /* The following set of methods relates to a  communication with the external UI TODO move prototypes to test */
 
-static std::atomic_long sLatestSpeedForExternalMonitorBytesPerSecond(0);
-static std::atomic_long sBytesPerSecondLast(0);
+static std::atomic<int64_t> sLatestSpeedForExternalMonitorBytesPerSecond(0);
+static std::atomic<int64_t> sBytesPerSecondLast(0);
 
 static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 
@@ -642,7 +636,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   long value = sLatestSpeedForExternalMonitorBytesPerSecond;
   sBytesPerSecondLast = value;
   if (bytesPerSecond == 0) {
-    SK_ASSERT([testId isEqualToString:cReasonUploadEnd]);
+    //SK_ASSERT([testId isEqualToString:cReasonUploadEnd]);
   }
   sLatestSpeedForExternalMonitorBytesPerSecond = bytesPerSecond;
   sLatestSpeedForExternalMonitorTestId = testId;
@@ -755,7 +749,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   [self addTotalTransferBytes:bytes];														/* increment atomic total bytes counter */
   
   /* record start up time should be recorded only by one thread */
-  long testZero = 0;
+  int64_t testZero = 0;
   self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime]);
   //SKLogger.d(TAG(this), "Setting transfer start  == " + mStartTransferMicro.get() + " by thread: " + this.getThreadIndex());//TODO remove in production
   
@@ -778,7 +772,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   
   if (timeExceeded) {																	/* if maximum transfer time is reached */
     /* Register the time duration up to this moment */
-    long testZero = 0;
+    int64_t testZero = 0;
     self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
     self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
     //SKLogger.d(this, "isTransferDone, timeExceeded");
@@ -786,7 +780,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   }
   
   if (bytesExceeded) {																/* if max transfer bytes transferred */
-    long testZero = 0;
+    int64_t testZero = 0;
     self.mTransferMicroDuration->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
     //SKLogger.d(this, "isTransferDone, bytesExceeded");
     self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
@@ -828,12 +822,12 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
 }
 
 
--(GCDAsyncSocket*) getOutput:(GCDAsyncSocket *)socket {
-  return socket;										/* return output stream */
+-(int) getOutput:(int)sockfd {
+  return sockfd;										/* return output stream */
 }
 
--(GCDAsyncSocket*) getInput:(GCDAsyncSocket *)socket {
-  return socket;										/* return output stream */
+-(int) getInput:(int)sockfd {
+  return sockfd;										/* return output stream */
 }
 
 
@@ -866,7 +860,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   if (*self.mStartWarmupMicro == 0) {
     ret = 0;
   } else if (self.mTransferMaxTimeMicro != 0) {
-    long currTime = [SKJHttpTest sGetMicroTime] - *self.mStartWarmupMicro;
+    int64_t currTime = [SKJHttpTest sGetMicroTime] - *self.mStartWarmupMicro;
     ret = (double) currTime / (self.mWarmupMaxTimeMicro + self.mTransferMaxTimeMicro);
     
   } else {
@@ -879,15 +873,15 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   return (int) (ret * 100);
 }
 
--(void) closeConnection:(GCDAsyncSocket *)socket {											/* Closes connections  and winds socket out*/
+-(void) closeConnection:(int)sockfd {											/* Closes connections  and winds socket out*/
   //SKLogger.d(this, "closeConnection()");
   
   /*
    * Should be run inside thread
    */
-  if (socket != nil) {
-    [socket setDelegate:nil];
-    [socket disconnect];
+  if (sockfd >= 0) {
+    close(sockfd);
+    sockfd = 0;
   }
 }
 
@@ -897,25 +891,25 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   BOOL result = false;
   int threadIndex = [self getThreadIndex];
   
-  GCDAsyncSocket *socket = [self getSocket];
+  int sockfd = [self getSocket];
   
-  if (socket == nil) {
+  if (sockfd < 0) {
     SK_ASSERT(false);
     return;
   }
   
-  result = [self warmupToSocket:socket ThreadIndex:threadIndex];
+  result = [self warmupToSocket:sockfd ThreadIndex:threadIndex];
   
   if (!result) {
     NSLog(@"**** myThreadEntry - leave early after call to warmupToSocket!");
-    [self closeConnection:socket];
+    [self closeConnection:sockfd];
     return;
   }
   
-  result = [self transferToSocket:socket ThreadIndex: threadIndex];
+  result = [self transferToSocket:sockfd ThreadIndex: threadIndex];
   NSLog(@"**** myThreadEntry - done transferToSocket!");
   
-  [self closeConnection:socket];
+  [self closeConnection:sockfd];
 }
 
 
@@ -930,27 +924,27 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
   return *self.totalTransferBytes;
 }
 
--(long) getWarmUpTimeMicro {
+-(int64_t) getWarmUpTimeMicro {
   return *self.mWarmupTimeMicro;
 }
 
--(long) getWarmUpTimeDurationMicro {
+-(int64_t) getWarmUpTimeDurationMicro {
   return *self.mWarmupMicroDuration;
 }
 
--(long) getTransferTimeMicro {
+-(int64_t) getTransferTimeMicro {
   return *self.transferTimeMicroseconds;
 }
 
--(long) getTransferTimeDurationMicro {
+-(int64_t) getTransferTimeDurationMicro {
   return *self.mTransferMicroDuration;
 }
 
--(long) getStartTransferMicro {
+-(int64_t) getStartTransferMicro {
   return *self.mStartTransferMicro;
 }
 
--(long) getStartWarmupMicro {
+-(int64_t) getStartWarmupMicro {
   return *self.mStartWarmupMicro;
 }
 
@@ -998,7 +992,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
 
 -(int) getWarmupBytesPerSecond {
   long btsTotal = [self getTotalWarmUpBytes];
-  long duration = [self getWarmUpTimeDurationMicro] == 0 ?
+  int64_t duration = [self getWarmUpTimeDurationMicro] == 0 ?
     ([SKJHttpTest sGetMicroTime] - [self getStartWarmupMicro]) :
     [self getWarmUpTimeDurationMicro];
   
@@ -1009,7 +1003,7 @@ std::pair<double, NSString*> sGetLatestSpeedForExternalMonitorAsMbps() {
 // Returns -1 if not enough time has passed for sensible measurement.
 -(int) getTransferBytesPerSecond {
   long btsTotal = [self getTotalTransferBytes];
-  long duration = [self getTransferTimeDurationMicro] == 0 ?
+  int64_t duration = [self getTransferTimeDurationMicro] == 0 ?
     ([SKJHttpTest sGetMicroTime] - [self getStartTransferMicro]) :
     [self getTransferTimeDurationMicro];
   

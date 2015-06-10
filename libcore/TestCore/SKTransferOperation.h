@@ -89,5 +89,7 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
 // Used by the owning SKAutotest, to let the SKTransferOperation know what the owning autotest is...
 -(void) setSKAutotest:(SKAutotest*)inSkAutotest;
 
++(int) sCreateAndConnectRawSocketForTarget:(NSString*)target Port:(int)port CustomBlock:(void (^)(int sockfd))customBlock;
+
 @end
 

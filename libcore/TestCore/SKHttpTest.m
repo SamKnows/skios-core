@@ -645,7 +645,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #ifdef DEBUG
         // Debug - dump timings
         for (DebugTiming *value in smDebugSocketSendTimeMicroseconds) {
-          NSLog(@"DEBUG: HttpTest DUMP - threadIndex:%d description:%@ time:%d microsec speed:%g bitsPerSec:%g", value.threadIndex, value.mDescription, (int) (value.time*1000000), value.currentSpeed, value.currentSpeed*8.0);
+          NSLog(@"DEBUG: HttpTest DUMP - threadIndex:%d description:%@ time:%d microsec speed:%f bitsPerSec:%f", value.threadIndex, value.mDescription, (int) (value.time*1000000), value.currentSpeed, value.currentSpeed*8.0);
         }
 #endif // DEBUG
         [self.class sClearDebugSocketSendTimeMicroseconds];
