@@ -221,13 +221,14 @@
   
  
   // TODO - make this a SINGLETON, so we can get progress and stop the test!
-  double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+  double bitrate100BasedForDisplay = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
   //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
-  NSLog(@"****** TEST uploadSpeed mbps=%g ", uploadSpeedMpbs);
-  
-  double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMpbs];
-  [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrateMbps1024Based]];
-  [self.tmActivityIndicator setAngleByValue:bitrateMbps1024Based];
+  //NSLog(@"****** TEST uploadSpeed mbps=%g ", bitrate100BasedForDisplay);
+ 
+  // The "natural" way to display values, is 1000 based.
+  //double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:bitrate100BasedForDisplay];
+  [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate100BasedForDisplay]];
+  [self.tmActivityIndicator setAngleByValue:bitrate100BasedForDisplay];
 }
 
 - (void)initialiseViewOnMasterView
@@ -1078,7 +1079,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodLatencyTestWasCancelled
 {
-  NSLog(@"**** %s", __FUNCTION__);
+  //NSLog(@"**** aodLatencyTestWasCancelled");
   
   //    NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
   //    SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
@@ -1191,10 +1192,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
         // IGNORE this first, dummy event, which means nothing - we don't want 0.00 to be displayed
         // too soon for upload tests!
       } else {
+       
+        // The "natural" way to display values, is 1000 based.
+        double bitrate100BasedForDisplay = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
+        [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate100BasedForDisplay]];
         
-        [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate1024Based]];
-        
-        [self.tmActivityIndicator setAngleByValue:bitrate1024Based];
+        [self.tmActivityIndicator setAngleByValue:bitrate100BasedForDisplay];
       }
       
       [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];

@@ -361,7 +361,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
                                       TRANSFERMAXTIME:[NSString stringWithFormat:@"%ld",(long)transferMaxTimeMicroseconds],
                                       NTHREADS:[NSString stringWithFormat:@"%ld",(long)nThreads],
                                       BUFFERSIZE: @"512",
-                                      SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
+                                      //SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
+                                      SENDBUFFERSIZE: @"100000", // This can give HIGHER score if > 32768!
                                       RECEIVEBUFFERSIZE: @"32768",
                                       SENDDATACHUNK: @"32768",   // This appears to make no difference
                                       POSTDATALENGTH: @"10485760"};
@@ -385,7 +386,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
   
       __block double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMpbs];
-      NSLog(@"****** END TEST uploadSpeed mbps=%g (1024based=%g)", uploadSpeedMpbs, bitrateMbps1024Based);
+#ifdef DEBUG
+      NSLog(@"****** DEBUG: END TEST uploadSpeed mbps=%g (1024based=%g)", uploadSpeedMpbs, bitrateMbps1024Based);
+#endif // DEBUG
       
       dispatch_async(dispatch_get_main_queue(), ^(void) {
         const BOOL cbResultIsFromServerFalse = NO;

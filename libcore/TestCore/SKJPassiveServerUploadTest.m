@@ -174,7 +174,9 @@ const int extMonitorUpdateInterval = 500000;
 }
 
 -(BOOL) warmupToSocket:(int)sockfd ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
-  NSLog(@"***PassiveServerUploadTest, warmup()... thread: %d", threadIndex);
+#ifdef DEBUG
+  NSLog(@"*** DEBUG: PassiveServerUploadTest, warmup()... thread: %d", threadIndex);
+#endif // DEBUG
   
   BOOL isWarmup = true;
   BOOL result = false;

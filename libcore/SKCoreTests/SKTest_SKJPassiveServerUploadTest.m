@@ -106,14 +106,18 @@
 //    //[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
 //    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0F]];
     if ([timeoutDate timeIntervalSinceNow] < 0.0) {
-      NSLog(@"**** TEST Timeout!!");
+#ifdef DEBUG
+      NSLog(@"**** DEBUG: TEST Timeout!!");
+#endif // DEBUG
       break;
     }
     
     int progress = [theTest getProgress];
     double uploadSpeed = [theTest getTransferBytesPerSecond];
     double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
-    NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g", progress, uploadSpeed, uploadSpeedMpbs);
+#ifdef DEBUG
+    NSLog(@"****** DEBUG: TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g", progress, uploadSpeed, uploadSpeedMpbs);
+#endif // DEBUG
     
     if (bStopNowFlag == true) {
       break;
@@ -129,9 +133,11 @@
   int progress = [theTest getProgress];
   double uploadSpeed = [theTest getTransferBytesPerSecond];
   double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
-  NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
+#ifdef DEBUG
+  NSLog(@"****** DEBUG: TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
   
-  NSLog(@"Done!");
+  NSLog(@"DEBUG: SKTest_SKJPassiveServerUploadTest Done!");
+#endif // DEBUG
   [NSThread sleepForTimeInterval:1.0];
 }
 

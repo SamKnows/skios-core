@@ -474,11 +474,15 @@ void threadEntry(SKJHttpTest *pSelf) {
   @try {
     for (auto theThread : *self.mThreads) {
       theThread->join();
-      NSLog(@"**** THREAD JOINED!");
+#ifdef DEBUG
+      NSLog(@"**** DEBUG: THREAD JOINED!");
+#endif // DEBUG
     }
   } @catch (NSException *e) {
     //[self setErrorIfEmpty:@"Thread join exception: ", e];
-    NSLog(@"Thread join exception()");
+#ifdef DEBUG
+    NSLog(@"DEBUG: Thread join exception()");
+#endif // DEBUG
     SK_ASSERT(false);
     self.testStatus = @"FAIL";
   }
@@ -761,8 +765,10 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   }
   
   if (*self.mTransferMicroDuration != 0) {
-    /* if some other thread has already finished warmup there is no need to proceed */
-    NSLog(@"isTransferDone, mTransferMicroDuration != 0");
+    // if some other thread has already finished warmup there is no need to proceed
+#ifdef DEBUG
+    NSLog(@"DEBUG: isTransferDone, mTransferMicroDuration != 0");
+#endif // DEBUG
     return true;
   }
   
@@ -798,14 +804,18 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     int64_t testZero = 0;
     self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
     self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
-    NSLog(@"isTransferDone, timeExceeded");
+#ifdef DEBUG
+    NSLog(@"DEBUG: isTransferDone, timeExceeded");
+#endif // DEBUG
     return true;
   }
   
   if (bytesExceeded) {																/* if max transfer bytes transferred */
     int64_t testZero = 0;
     self.mTransferMicroDuration->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
-    NSLog(@"isTransferDone, bytesExceeded");
+#ifdef DEBUG
+    NSLog(@"DEBUG: isTransferDone, bytesExceeded");
+#endif // DEBUG
     self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
     return true;
   }
@@ -909,7 +919,9 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 }
 
 -(void) myThreadEntry {
-  NSLog(@"**** myThreadEntry!");
+#ifdef DEBUG
+  NSLog(@"**** DEBUG: myThreadEntry!");
+#endif // DEBUG
   
   BOOL result = false;
   int threadIndex = [self getThreadIndex];
@@ -924,13 +936,17 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   result = [self warmupToSocket:sockfd ThreadIndex:threadIndex];
   
   if (!result) {
-    NSLog(@"**** myThreadEntry - leave early after call to warmupToSocket!");
+#ifdef DEBUG
+    NSLog(@"**** DEBUG: myThreadEntry - leave early after call to warmupToSocket!");
+#endif // DEBUG
     [self closeConnection:sockfd];
     return;
   }
   
   result = [self transferToSocket:sockfd ThreadIndex: threadIndex];
-  NSLog(@"**** myThreadEntry - done transferToSocket!");
+#ifdef DEBUG
+  NSLog(@"**** DEBUG: myThreadEntry - done transferToSocket!");
+#endif // DEBUG
   
   [self closeConnection:sockfd];
 }

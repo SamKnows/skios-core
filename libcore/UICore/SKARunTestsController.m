@@ -323,7 +323,7 @@
     
     NSString *test = isDownstream ? @"downstreamthroughput" : @"upstreamthroughput";
     
-    NSLog(@"************ DEBUG: aodTransferTestDidCompleteTransfer - test=%@, bitrate=%@", test, result);
+    //NSLog(@"************ DEBUG: aodTransferTestDidCompleteTransfer - test=%@, bitrate=%@", test, result);
     
     NSIndexPath *ixp = [self getIndexPathForTest:test];
     SKATransferTestCell *cell = (SKATransferTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
