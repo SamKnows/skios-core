@@ -132,33 +132,35 @@ const int extMonitorUpdateInterval = 500000;
   //
   // If only 1 buffer "SENT": treat this as an error...
   //
-  long btsTotal = [super getTotalTransferBytes];
-  if (btsTotal == self.buff.length) {
-    // ONLY 1 BUFFER "SENT": TREAT THIS AS AN ERROR, AND SET BYTES TO 0!!!
-    SK_ASSERT(false); // .e(this, "Only one buffer sent - treat this as an upload failure");
-    [super resetTotalTransferBytesToZero];
-    [super setError:@"?"]; //super.mError = true;
-    
-    // Verify thta we've set everything to zero properly!
-    SK_ASSERT([super getTotalTransferBytes] == 0L);
-    @try {
-      SK_ASSERT(bytesPerSecond() == 0);
-    } @catch (NSException *e1) {
-      SK_ASSERT(false);
+  if (isWarmup == NO) {
+    long btsTotal = [super getTotalTransferBytes];
+    if (btsTotal == self.buff.length) {
+      // ONLY 1 BUFFER "SENT": TREAT THIS AS AN ERROR, AND SET BYTES TO 0!!!
+      SK_ASSERT(false); // .e(this, "Only one buffer sent - treat this as an upload failure");
+      [super resetTotalTransferBytesToZero];
+      [super setError:@"?"]; //super.mError = true;
+      
+      // Verify thta we've set everything to zero properly!
+      SK_ASSERT([super getTotalTransferBytes] == 0L);
+      @try {
+        SK_ASSERT(bytesPerSecond() == 0);
+      } @catch (NSException *e1) {
+        SK_ASSERT(false);
+      }
+      int bytesPerSecondMeasurement = MAX(0, [super getTransferBytesPerSecond]);
+      SK_ASSERT(bytesPerSecondMeasurement == 0);
+      return false;
     }
-    int bytesPerSecondMeasurement = MAX(0, [super getTransferBytesPerSecond]);
-    SK_ASSERT(bytesPerSecondMeasurement == 0);
-    return false;
+    
+    //
+    // To get here, the test ran OK!
+    //
+    int bytesPerSecondMeasurement = MAX(0, [self getTransferBytesPerSecond]);
+    SK_ASSERT(bytesPerSecondMeasurement >= 0);
+    //hahaSKLogger.e(TAG(this), "Result is from the BUILT-IN MEASUREMENT, bytesPerSecondMeasurement= " + bytesPerSecondMeasurement + " thread: " + threadIndex);
+    
+    [super.class sSetLatestSpeedForExternalMonitorBytesPerSecond:bytesPerSecondMeasurement TestId:cReasonUploadEnd];											/* Final external interface set up */
   }
-  
-  //
-  // To get here, the test ran OK!
-  //
-  int bytesPerSecondMeasurement = MAX(0, [self getTransferBytesPerSecond]);
-  SK_ASSERT(bytesPerSecondMeasurement >= 0);
-  //hahaSKLogger.e(TAG(this), "Result is from the BUILT-IN MEASUREMENT, bytesPerSecondMeasurement= " + bytesPerSecondMeasurement + " thread: " + threadIndex);
-  
-  [super.class sSetLatestSpeedForExternalMonitorBytesPerSecond:bytesPerSecondMeasurement TestId:cReasonUploadEnd];											/* Final external interface set up */
   
   //    if (connIn != null) {
   //      try {

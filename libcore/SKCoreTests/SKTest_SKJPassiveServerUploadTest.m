@@ -32,29 +32,45 @@
   [super tearDown];
 }
 
+-(NSDictionary*) getDictionaryForLocalTest {
+  NSDictionary *paramDictionary = @{
+                                    TARGET: @"nbs3.samknows",
+                                    PORT: @"80",
+                                    WARMUPMAXTIME: @"2000000",
+                                    TRANSFERMAXTIME: @"5000000",
+                                    NTHREADS: @"3",
+                                    BUFFERSIZE: @"512",
+                                    SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
+                                    RECEIVEBUFFERSIZE: @"32768",
+                                    SENDDATACHUNK: @"32768",   // This appears to make no difference
+                                    POSTDATALENGTH: @"10485760"};
+
+  return paramDictionary;
+}
+
+-(NSDictionary*) getDictionaryForRemoteTest {
+  NSDictionary *paramDictionary = @{
+                                    TARGET: @"samknows2.nyc2.level3.net",
+                                    PORT: @"8080",
+                                    WARMUPMAXTIME: @"2000000",
+                                    TRANSFERMAXTIME: @"5000000",
+                                    NTHREADS: @"3",
+                                    BUFFERSIZE: @"512",
+                                    SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
+                                    RECEIVEBUFFERSIZE: @"32768",
+                                    SENDDATACHUNK: @"32768",   // This appears to make no difference
+                                    POSTDATALENGTH: @"10485760"};
+
+  return paramDictionary;
+}
+
 - (void)testIt
 {
   XCTAssertTrue(true);
   
-  NSDictionary *paramDictionary = @{
-                                    //TARGET: @"samknows2.nyc2.level3.net",
-                                    //PORT: @"8080",
-                                    TARGET: @"nbs3.samknows",
-                                    PORT: @"80",
-                                    WARMUPMAXTIME: @"2000000",
-                                    //WARMUPMAXBYTES: @"2621440",
-                                    TRANSFERMAXTIME: @"5000000",
-                                    //TRANSFERMAXBYTES: @"20971520",
-                                    //NTHREADS: @"3",
-                                    NTHREADS: @"1",
-                                    BUFFERSIZE: @"512",
-                                    //SENDBUFFERSIZE: @"512",
-                                    //SENDBUFFERSIZE: @"4096",
-                                    SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
-                                    RECEIVEBUFFERSIZE: @"32768",
-                                    //SENDDATACHUNK: @"512",
-                                    SENDDATACHUNK: @"32768",   // This appears to make no difference
-                                    POSTDATALENGTH: @"10485760"};
+  //NSDictionary *paramDictionary = [self getDictionaryForLocalTest];
+  NSDictionary *paramDictionary = [self getDictionaryForRemoteTest];
+  
   __block SKJPassiveServerUploadTest *theTest = [[SKJPassiveServerUploadTest alloc] initWithParams:paramDictionary];
   
   //XCTestExpectation *expectation = [self expectationWithDescription:@"High Expectations"];

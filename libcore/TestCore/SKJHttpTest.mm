@@ -651,6 +651,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   long value = sLatestSpeedForExternalMonitorBytesPerSecond;
   sBytesPerSecondLast = value;
   if (bytesPerSecond == 0) {
+    //SK_ASSERT(false);
     //SK_ASSERT([testId isEqualToString:cReasonUploadEnd]);
   }
   sLatestSpeedForExternalMonitorBytesPerSecond = bytesPerSecond;
@@ -756,7 +757,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   
   if (*self.mTransferMicroDuration != 0) {
     /* if some other thread has already finished warmup there is no need to proceed */
-    //SKLogger.d(this, "isTransferDone, mTransferMicroDuration != 0");
+    NSLog(@"isTransferDone, mTransferMicroDuration != 0");
     return true;
   }
   
@@ -792,14 +793,14 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     int64_t testZero = 0;
     self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
     self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
-    //SKLogger.d(this, "isTransferDone, timeExceeded");
+    NSLog(@"isTransferDone, timeExceeded");
     return true;
   }
   
   if (bytesExceeded) {																/* if max transfer bytes transferred */
     int64_t testZero = 0;
     self.mTransferMicroDuration->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro);
-    //SKLogger.d(this, "isTransferDone, bytesExceeded");
+    NSLog(@"isTransferDone, bytesExceeded");
     self.transferDoneCounter->fetch_add(1);												/* and increment transfer counter */
     return true;
   }
@@ -1024,11 +1025,11 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     ([SKJHttpTest sGetMicroTime] - [self getStartTransferMicro]) :
     [self getTransferTimeDurationMicro];
   
-  if (duration < 1000000.0) // At least a second!
-  {
-    // Not yet possible to return a valid result!
-    return -1;
-  }
+//  if (duration < 1000000.0) // At least a second!
+//  {
+//    // Not yet possible to return a valid result!
+//    return -1;
+//  }
   
   return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
 }
