@@ -108,10 +108,9 @@
   // TODO
 }
                       
-- (void)htdDidTransferData:(NSUInteger)totalBytes
-                                                   bytes:(NSUInteger)bytes
-                                                progress:(float)progress
-                  threadId:(NSUInteger)threadId {
+- (void)htdUpdateDataUsage:(NSUInteger)totalBytes
+                  bytes:(NSUInteger)bytes
+                  progress:(float)progress {
   // TODO
 }
                       
@@ -120,7 +119,9 @@
 }
                       
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
-            ResultIsFromServer:(BOOL)resultIsFromServer {
+            ResultIsFromServer:(BOOL)resultIsFromServer
+               TestDisplayName:(NSString *)testDisplayName
+{
   // TODO
 }
 
@@ -170,10 +171,9 @@
   // TODO
 }
 
-- (void)htdDidTransferData:(NSUInteger)totalBytes
+- (void)htdUpdateDataUsage:(NSUInteger)totalBytes
                      bytes:(NSUInteger)bytes
-                  progress:(float)progress
-                  threadId:(NSUInteger)threadId {
+                  progress:(float)progress {
   // TODO
 }
 
@@ -182,7 +182,9 @@
 }
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
-            ResultIsFromServer:(BOOL)resultIsFromServer {
+            ResultIsFromServer:(BOOL)resultIsFromServer
+               TestDisplayName:(NSString *)testDisplayName
+{
   // TODO
 }
 @end

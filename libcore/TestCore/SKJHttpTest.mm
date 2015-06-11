@@ -656,6 +656,11 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   }
   sLatestSpeedForExternalMonitorBytesPerSecond = bytesPerSecond;
   sLatestSpeedForExternalMonitorTestId = testId;
+//  
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    // Tell the main UI that we have a new upload speed ready to pull-out...
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"UPSPEED" object:nil];
+//  });
 }
 
 -(void) sSetLatestSpeedForExternalMonitorInterval:(long)pause InId:(NSString *)inId TransferCallback:(SKJRetIntBlock) transferSpeed {

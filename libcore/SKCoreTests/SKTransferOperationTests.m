@@ -135,15 +135,19 @@
 - (void)htdUpdateStatus:(TransferStatus)status
                threadId:(NSUInteger)threadId {}
 
-- (void)htdDidTransferData:(NSUInteger)totalBytes
+- (void)htdUpdateDataUsage:(NSUInteger)totalBytes
                      bytes:(NSUInteger)bytes
-                  progress:(float)progress
-                  threadId:(NSUInteger)threadId {}
+                  progress:(float)progress {}
 
 - (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate {}
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
-            ResultIsFromServer:(BOOL)resultIsFromServer {}
+            ResultIsFromServer:(BOOL)resultIsFromServer
+               TestDisplayName:(NSString *)testDisplayName
+{
+  // TODO
+}
+
 #pragma mark - SKHttpTestDelegate (end)
 
 - (SKHttpTest *)createHttpTestInstance {

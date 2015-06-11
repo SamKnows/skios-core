@@ -507,7 +507,7 @@ static BOOL sbTestIsRunning = NO;
 }
 
 #pragma mark SKHttpTestDelegate
-- (void)htdDidTransferData:(NSUInteger)totalBytes bytes:(NSUInteger)bytes progress:(float)progress threadId:(NSUInteger)threadId
+- (void)htdUpdateDataUsage:(NSUInteger)totalBytes bytes:(NSUInteger)bytes progress:(float)progress
 {
   [self.autotestManagerDelegate amdDoUpdateDataUsage:(int)bytes];
 }
@@ -1571,6 +1571,7 @@ static BOOL sbTestIsRunning = NO;
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer
+               TestDisplayName:(NSString*)testDisplayName
 //              transferBytes:(NSUInteger)transferBytes
 //                 totalBytes:(NSUInteger)totalBytes
 //                   threadId:(NSUInteger)threadId
@@ -1581,15 +1582,17 @@ static BOOL sbTestIsRunning = NO;
   
   [self checkTestId];
   
+  SK_ASSERT(testDisplayName != nil);
+  
   if (nil != self.testId)
   {
     if (self.httpTest.isDownstream)
     {
-      [SKDatabase storeDownload:[SKCore getToday] BitrateMbps1024Based:bitrateMbps1024Based testId:self.testId testName:self.httpTest.displayName];
+      [SKDatabase storeDownload:[SKCore getToday] BitrateMbps1024Based:bitrateMbps1024Based testId:self.testId testName:testDisplayName];
     }
     else
     {
-      [SKDatabase storeUpload:[SKCore getToday] BitrateMbps1024Based:bitrateMbps1024Based testId:self.testId testName:self.httpTest.displayName];
+      [SKDatabase storeUpload:[SKCore getToday] BitrateMbps1024Based:bitrateMbps1024Based testId:self.testId testName:testDisplayName];
     }
   }
   

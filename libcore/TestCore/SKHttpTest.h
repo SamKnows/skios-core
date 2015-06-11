@@ -169,15 +169,15 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 - (void)htdUpdateStatus:(TransferStatus)status
             threadId:(NSUInteger)threadId;
 
-- (void)htdDidTransferData:(NSUInteger)totalBytes
+- (void)htdUpdateDataUsage:(NSUInteger)totalBytes
                   bytes:(NSUInteger)bytes
-               progress:(float)progress
-               threadId:(NSUInteger)threadId;
+                  progress:(float)progress;
 
 - (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate;
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
-            ResultIsFromServer:(BOOL)resultIsFromServer;
+            ResultIsFromServer:(BOOL)resultIsFromServer
+               TestDisplayName:(NSString*)testDisplayName;
 //(SKTimeIntervalMicroseconds)transferTimeMicroseconds
 //              transferBytes:(NSUInteger)transferBytes
 //                 totalBytes:(NSUInteger)totalBytes

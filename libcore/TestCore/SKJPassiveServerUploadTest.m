@@ -197,4 +197,17 @@ const int extMonitorUpdateInterval = 500000;
   return [self transmitToSocket:sockfd ThreadIndex:threadIndex IsWarmup:isWarmupFalse];
 }
 
+static BOOL sbTestIsRunning = NO;
+
+-(void) execute {
+  
+  sbTestIsRunning = YES;
+  [super execute];
+  sbTestIsRunning = NO;
+}
+
++(BOOL) sGetTestIsRunning {
+  return sbTestIsRunning;
+}
+
 @end

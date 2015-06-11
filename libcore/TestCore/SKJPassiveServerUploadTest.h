@@ -14,4 +14,6 @@
 
 - (instancetype)initWithParams:(NSDictionary*)params;
 
++(BOOL) sGetTestIsRunning;
+
 @end

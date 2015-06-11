@@ -80,6 +80,7 @@ typedef double SKTimeIntervalMicroseconds;
 +(NSString*) getGraphDateFormat;
 +(NSString*) getGraphTimeFormat;
 
++(double) convertMbps1000BasedToMbps1024Based:(double)mbps1000Based;
 +(double) convertMbps1024BasedToMBps1000Based:(double)value1024Based;
 +(double) convertBytesPerSecondToMbps1024Based:(double)bytesPerSecond;
 +(double) convertMpbs1024BasedToBytesPerSecond:(double)value1024Based;

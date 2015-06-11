@@ -9,6 +9,8 @@
 #import "SKBRunTestViewMgrController.h"
 #import "SKSplashView.h"
 #import "SKBTestResultsSharer.h"
+#import "SKJHttpTest.h"
+#import "SKJPassiveServerUploadTest.h"
 
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
@@ -30,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *iconWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *btnShareSpacing;
 @property  NSTimer *mTimer;
+@property  NSTimer *mTestTimer;
 @end
 
 @implementation SKBRunTestViewMgrController
@@ -38,6 +41,7 @@
 @synthesize mpTestResult;
 @synthesize mpSharer;
 @synthesize mTimer;
+@synthesize mTestTimer;
 
 #pragma mark ProgressView
 
@@ -106,6 +110,20 @@
 
 -(void) setIsRunning:(BOOL)value {
   isRunning = value;
+  
+  if (mTestTimer != nil) {
+    [mTestTimer invalidate];
+    mTestTimer = nil;
+  }
+ 
+  if (value == YES) {
+    mTestTimer = [NSTimer
+                  scheduledTimerWithTimeInterval:0.2
+                  target:self
+                  selector:@selector(handleTestTimer:)
+                  userInfo:0
+                  repeats:YES];
+  }
 }
 
 -(void)resetProgressView
@@ -183,10 +201,33 @@
   [super viewDidAppear:animated];
 }
 
--(void) handleTimer: (NSTimer*)theTimer {
 
-  // Every second, we update the radion type in case the network has changed (e.g. the SSID has updated)
+// Every second or so, update the radio type in case the network has changed (e.g. the SSID has updated)
+-(void) handleTimer: (NSTimer*)theTimer {
   [self updateRadioType];
+}
+
+// Every so often, we can query test result.
+-(void) handleTestTimer: (NSTimer*)theTimer {
+  
+  if ([SKJPassiveServerUploadTest sGetTestIsRunning] == NO) {
+    return;
+  }
+
+  int items = (int)self.tmActivityIndicator.arrSegmentMaxValues.count;
+  if (items == 0) {
+    return;
+  }
+  
+ 
+  // TODO - make this a SINGLETON, so we can get progress and stop the test!
+  double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+  //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
+  NSLog(@"****** TEST uploadSpeed mbps=%g ", uploadSpeedMpbs);
+  
+  double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMpbs];
+  [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrateMbps1024Based]];
+  [self.tmActivityIndicator setAngleByValue:bitrateMbps1024Based];
 }
 
 - (void)initialiseViewOnMasterView

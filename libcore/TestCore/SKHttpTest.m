@@ -12,6 +12,7 @@ NSString *const DOWNSTREAMMULTI     = @"JHTTPGETMT";
 NSString *const UPSTREAMSINGLE      = @"JHTTPPOST";
 NSString *const UPSTREAMMULTI       = @"JHTTPPOSTMT";
 
+#import "SKJPassiveServerUploadTest.h"
 
 @implementation DebugTiming
 - (instancetype)initWithDescription:(NSString*)inDescription ThreadIndex:(int)inThreadIndex Time:(NSTimeInterval)inTime CurrentSpeed:(int)inCurrentSpeed
@@ -44,6 +45,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 @property NSMutableArray* mDescription;
 @property NSMutableArray* mServerUploadTestBitrates;
 @property (weak) SKAutotest* skAutotest;
+
+@property SKJPassiveServerUploadTest *mpNewStyleSKJUploadTest;
 
 - (void)prepareStatus;
 - (BOOL)isMultiThreaded;
@@ -100,6 +103,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 @synthesize skAutotest;
 
+@synthesize mpNewStyleSKJUploadTest;
+
 - (id)initWithTarget:(NSString*)_target
                 port:(int)_port
                 file:(NSString*)_file
@@ -116,6 +121,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   if (self)
   {
     SK_ASSERT ([((NSObject*)_delegate) conformsToProtocol:@protocol(SKHttpTestDelegate)]);
+    mpNewStyleSKJUploadTest = nil;
     
     self.mServerUploadTestBitrates = [NSMutableArray new];
     
@@ -257,6 +263,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)computeMultiThreadProgress
 {
+  SK_ASSERT (mpNewStyleSKJUploadTest == nil);
+  
   float total = 0;
   SKTimeIntervalMicroseconds transferTime = 0;
   // Actually, the total transfer bytes are stored at the HttpTest level, now!
@@ -340,6 +348,67 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)startTest
 {
+  // CODE TO ENABLE THE NEW-STYLE UPLOAD SPEED TEST.
+  // IF YOU DON'T WANT TO USE IT, JUST COMMENT IT OUT!
+  if (isDownstream == NO) {
+#ifdef DEBUG
+    NSLog(@"*** DEBUG: using SKJ UPLOAD SPEED TEST!!!!");
+#endif // DEBUG
+    NSDictionary *paramDictionary = @{
+                                      TARGET:target,
+                                      PORT:[NSString stringWithFormat:@"%ld",(long)port],
+                                      WARMUPMAXTIME:[NSString stringWithFormat:@"%ld",(long)warmupMaxTime],
+                                      TRANSFERMAXTIME:[NSString stringWithFormat:@"%ld",(long)transferMaxTimeMicroseconds],
+                                      NTHREADS:[NSString stringWithFormat:@"%ld",(long)nThreads],
+                                      BUFFERSIZE: @"512",
+                                      SENDBUFFERSIZE: @"200000", // This can give HIGHER score if > 32768!
+                                      RECEIVEBUFFERSIZE: @"32768",
+                                      SENDDATACHUNK: @"32768",   // This appears to make no difference
+                                      POSTDATALENGTH: @"10485760"};
+    
+    mpNewStyleSKJUploadTest = [[SKJPassiveServerUploadTest alloc] initWithParams:paramDictionary];
+    
+    //Start an activity indicator here
+    __block BOOL bStopNowFlag = false;
+    
+    //dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_queue_t theTestQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+    
+    dispatch_async(theTestQueue, ^{
+      
+      //Call your function or whatever work that needs to be done
+      //Code in this part is run on a background thread
+      [mpNewStyleSKJUploadTest execute];
+      
+      bStopNowFlag = true;
+      double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+      //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
+  
+      __block double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMpbs];
+      NSLog(@"****** END TEST uploadSpeed mbps=%g (1024based=%g)", uploadSpeedMpbs, bitrateMbps1024Based);
+      
+      dispatch_async(dispatch_get_main_queue(), ^(void) {
+        const BOOL cbResultIsFromServerFalse = NO;
+       
+        [self stopTest];
+        testOK = ![self.mpNewStyleSKJUploadTest getError];
+        long totalBytes = [mpNewStyleSKJUploadTest getTotalWarmUpBytes] +  [mpNewStyleSKJUploadTest getTotalTransferBytes];
+        SK_ASSERT(totalBytes > 0);
+        mTotalBytes = totalBytes;
+        [[self httpRequestDelegate] htdUpdateDataUsage:self.mTotalBytes bytes:totalBytes progress:100.0];
+        [self setRunningStatus:COMPLETE];
+        [self storeOutputResults:bitrateMbps1024Based];
+        [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
+                                        ResultIsFromServer:cbResultIsFromServerFalse
+                                           TestDisplayName:self.displayName
+         ];
+      });
+    });
+    return;
+  }
+  
+  mpNewStyleSKJUploadTest = nil;
+  
   if (nil != queue)
   {
     [queue cancelAllOperations];
@@ -406,6 +475,13 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (void)stopTest
 {
+  if (mpNewStyleSKJUploadTest != nil) {
+   
+    isRunning = NO;
+    return;
+    
+  }
+  
   if (nil != queue)
   {
 #ifdef DEBUG
@@ -418,6 +494,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 - (BOOL)isReady
 {
+  if (mpNewStyleSKJUploadTest != nil) {
+    return YES;
+  }
+  
     if([target length] == 0)
     {
         return false;
@@ -555,7 +635,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   
   //NSLog(@"DIDTRANSFER THREAD %lu / %lu %lu %lu %lf", (unsigned long)threadId, (unsigned long)totalBytes, (unsigned long)bytes, (unsigned long)transferBytes, transferTime);
   
-  [[self httpRequestDelegate] htdDidTransferData:totalBytes bytes:bytes progress:progress threadId:threadId];
+  [[self httpRequestDelegate] htdUpdateDataUsage:totalBytes bytes:bytes progress:progress];
   
   @synchronized(arrTransferOperations)
   {
@@ -596,6 +676,8 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
        ForceThisBitsPerSecondFromServer:(double)bitrateMbps1024Based // If > 0, use this instead!
                    threadId:(NSUInteger)threadId
 {
+  SK_ASSERT(mpNewStyleSKJUploadTest == nil);
+  
   // This block MUST be synchronized, otherwise the multiple callbacks can all interfere with each other!
   @synchronized(self) {
     if ([self isMultiThreaded])
@@ -700,7 +782,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         [self storeOutputResults:bitrateMbps1024Based];
         
         [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
-                                          ResultIsFromServer:bResultIsFromServer];
+                                        ResultIsFromServer:bResultIsFromServer
+                                           TestDisplayName:self.displayName
+         ];
       }
     }
     else
@@ -741,7 +825,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       [self storeOutputResults:bitrateMbps1024Based];
       
       [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
-                                        ResultIsFromServer:bResultIsFromServer];
+                                      ResultIsFromServer:bResultIsFromServer
+                                         TestDisplayName:self.displayName
+       ];
     }
   }
 }

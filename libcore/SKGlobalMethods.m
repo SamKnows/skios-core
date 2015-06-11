@@ -92,6 +92,11 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   return GGraphTimeFormat;
 }
 
++(double) convertMbps1000BasedToMbps1024Based:(double)mbps1000Based {
+  double result = (mbps1000Based * 1000.0*1000.0) / (1024.0 * 1024.0);
+  return result;
+}
+
 +(double) convertBytesPerSecondToMbps1024Based:(double)bytesPerSecond {
   double result = bytesPerSecond * 8.0 / (1024.0 * 1024.0);
 #ifdef DEBUG
