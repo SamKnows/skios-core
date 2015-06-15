@@ -374,7 +374,7 @@ using namespace::std;
 }
 
 -(int)getNetUsage {												/* Total number of bytes transfered */
-  return (int) [self getTotalTransferBytes] + [self getTotalWarmUpBytes];
+  return (int) ([self getTotalTransferBytes] + [self getTotalWarmUpBytes]);
 }
 
 -(BOOL) isReady {												/* Test sanity checker. Virtual */
