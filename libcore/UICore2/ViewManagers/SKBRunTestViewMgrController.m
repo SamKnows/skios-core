@@ -704,7 +704,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }
 #if TARGET_IPHONE_SIMULATOR
   // This method does not work on the simulator!
-  ssid = @"Simulator";
+  ssid = @"SK1";
 #endif // TARGET_IPHONE_SIMULATOR
   return ssid;
 }
