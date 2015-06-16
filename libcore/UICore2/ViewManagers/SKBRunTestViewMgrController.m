@@ -1501,7 +1501,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   if (tableView == self.tvCurrentResults) {
-    switch ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowMetricsOnMainScreen]) {
+    switch ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealMetricsOnMainScreen]) {
       case SKBShowMetricsRule_ShowPassiveMetrics_Never:
         return 1; // Just the main test result.
       case SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts:

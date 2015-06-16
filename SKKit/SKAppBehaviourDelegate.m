@@ -1815,7 +1815,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return YES;
 }
 
--(BOOL) getRevealPassiveMetricsFromPanel {
+-(BOOL) getRevealPassiveMetricsOnArchiveResultsPanel {
   return YES;
 }
 
@@ -1860,7 +1860,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return;
 }
 
--(SKBShowMetricsRule) getShowMetricsOnMainScreen {
+-(SKBShowMetricsRule) getRevealMetricsOnMainScreen {
   return SKBShowMetricsRule_ShowPassiveMetrics_WhenTestStarts;
 }
 

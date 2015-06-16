@@ -172,7 +172,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL) canViewPhoneInfoInSettings;
 -(BOOL) canViewNetworkInfoInSettings;
 -(BOOL) getRevealGraphFromSummary;
--(BOOL) getRevealPassiveMetricsFromPanel;
 -(BOOL) enableTestsSelection;
 // Datacap - enable/disable
 -(void) setIsDataCapEnabled:(BOOL) value;
@@ -221,7 +220,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 //
 // Optional method!
 -(void) setTopLeftLogoImage:(UIImageView*)uiImage TopRightLogoImage:(UIImageView*)topRightImage;
--(SKBShowMetricsRule) getShowMetricsOnMainScreen;
+-(SKBShowMetricsRule) getRevealMetricsOnMainScreen;
+-(BOOL) getRevealPassiveMetricsOnArchiveResultsPanel;
 -(NSArray*)getPassiveMetricsToDisplayWiFiFlag:(BOOL)bIsWiFi;
 -(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;

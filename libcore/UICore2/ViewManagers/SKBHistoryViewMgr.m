@@ -149,7 +149,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealPassiveMetricsFromPanel] == NO) {
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getRevealPassiveMetricsOnArchiveResultsPanel] == NO) {
     return;
   }
   
