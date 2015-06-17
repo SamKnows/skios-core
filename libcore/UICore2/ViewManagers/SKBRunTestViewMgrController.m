@@ -683,37 +683,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 }
 */
 
-+ (NSString *)sCurrentWifiSSID {
-  NSString *ssid = nil;
-  
-  //NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
-  NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
-#ifdef DEBUG
-//  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
-#endif // DEBUG
-  
-  for (NSString *interfaceName in interfaceNames) {
-    NSDictionary *ssidInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
-    //NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName);
-#ifdef DEBUG
-//    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, ssidInfo);
-#endif // DEBUG
-    if (ssidInfo[@"SSID"]) {
-      ssid = ssidInfo[@"SSID"];
-    }
-  }
-#if TARGET_IPHONE_SIMULATOR
-  // This method does not work on the simulator!
-  ssid = @"SK1";
-#endif // TARGET_IPHONE_SIMULATOR
-  return ssid;
-}
-
 -(NSString*) getWiFiStringForUIWithSSIDIfAvailable {
   // TODO - get the network string as (localized) "WiFi" or "WiFi (SSID)"
   NSString *wifiString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
   
-  NSString *currentSSID = [self.class sCurrentWifiSSID];
+  NSString *currentSSID = [SKGlobalMethods sCurrentWifiSSID];
   if (currentSSID != nil && currentSSID.length > 0) {
     return [NSMutableString stringWithFormat:@"%@\n(%@)", wifiString, currentSSID];
   }
@@ -1760,7 +1734,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME].value = self.appDelegate.carrierName;
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY].value = self.appDelegate.countryCode;
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK].value = self.appDelegate.networkCode;
-  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO].value = self.appDelegate.isoCode;
+  [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_ISO_COUNTRY_CODE].value = self.appDelegate.isoCode;
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_DEVICE].value = self.appDelegate.deviceModel;
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_OS].value = [[UIDevice currentDevice] systemVersion];
   [self getTheTestResultValueForTestIdentifierDoesNotHaveToExist:SKB_TESTVALUERESULT_C_PM_TARGET].value = @"*";

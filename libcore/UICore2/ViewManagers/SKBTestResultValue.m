@@ -23,12 +23,17 @@
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_CARRIER_NAME]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK]) {
-    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_CARRIER_ISO]) {
+    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_ISO_COUNTRY_CODE]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_DEVICE]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_OS]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_TARGET]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_PUBLIC_IP]) {
     } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID]) {
+    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE]) {
+    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_MUNICIPALITY]) {
+    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_WLAN_CARRIER]) {
+    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_WIFI_SSID]) {
+    } else if ([resultIdentifier isEqualToString: SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME]) {
     } else {
       SK_ASSERT(false);
     }

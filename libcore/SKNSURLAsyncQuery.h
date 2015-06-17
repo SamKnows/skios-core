@@ -9,6 +9,7 @@
 
 // If error is nil, there was no error.
 typedef void (^SKQueryCompleted)(NSError *error, NSInteger responseCode, NSMutableData *responseData, NSString *responseDataAsString, NSDictionary *responseHeaders);
+typedef void (^SKQueryCompletedWithJsonDictionary)(NSError *error, NSInteger responseCode, NSDictionary *jsonResponse,  NSDictionary *responseHeaders);
 
 @interface SKNSURLAsyncQuery : NSObject<NSURLConnectionDelegate>
 
@@ -16,5 +17,7 @@ typedef void (^SKQueryCompleted)(NSError *error, NSInteger responseCode, NSMutab
 
 +(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader Callback:(SKQueryCompleted)callback;
 +(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader Callback:(SKQueryCompleted)callback WithTimeout:(NSTimeInterval)timeout;
++(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader JsonCallback:(SKQueryCompletedWithJsonDictionary)callback;
++(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader JsonCallback:(SKQueryCompletedWithJsonDictionary)callback WithTimeout:(NSTimeInterval)timeout;
 
 @end

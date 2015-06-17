@@ -90,6 +90,6 @@ typedef double SKTimeIntervalMicroseconds;
 +(NSString*) bitrateMbps1024BasedLocalNumberStringBasedToString:(NSString*)bitrateMbps1024BasedAsLocalString;
 +(double)getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:(double)transferTimeMicroseconds transferBytes:(double)transferBytes;
 
-
++ (NSString *)sCurrentWifiSSID;
 
 @end

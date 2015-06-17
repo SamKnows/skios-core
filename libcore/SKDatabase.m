@@ -10,6 +10,8 @@
 #import "FMDatabaseAdditions.h"
 #import "SKTestResults.h"
 
+#import <AddressBook/AddressBook.h>
+
 @implementation SKDatabase
 
 + (NSString *)dbPath
@@ -279,6 +281,90 @@
   }
   
   BOOL bRes;
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"wifi_ssid"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN wifi_ssid TEXT NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"municipality"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN municipality TEXT NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"country_string"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN country_string TEXT NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"latitude"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN latitude DOUBLE NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"longitude"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN longitude DOUBLE NULL"];
+    SK_ASSERT(bRes);
+    
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
+  
+  if ([SKDatabase checkExistsTable:@"metrics" Column:@"wlan_carrier"] == NO) {
+    
+    // New column that was not always present in the old version of the application.
+    
+    bRes = [db beginTransaction];
+    SK_ASSERT(bRes);
+    
+    bRes = [db executeUpdate:@"ALTER TABLE metrics ADD COLUMN wlan_carrier TEXT NULL"];
+    SK_ASSERT(bRes);
+
+    bRes = [db commit];
+    SK_ASSERT(bRes);
+  }
   
   if ([SKDatabase checkExistsTable:@"metrics" Column:@"Public_IP"] == NO) {
     
@@ -983,6 +1069,68 @@ public static String convertConnectivityType(int type) {
   SK_ASSERT(bRes);
 }
 
++(void) forTestId:(NSNumber*)testId WriteLocation:(CLLocation*)location Municipality:(NSString*)municipality AndCountryString:(NSString*)countryString {
+  FMDatabase *db = [SKDatabase openDatabase];
+  if (db == NULL) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  BOOL bRes;
+  
+  bRes = [db beginTransaction];
+  SK_ASSERT(bRes);
+  
+  if (location != nil) {
+    bRes = [db executeUpdate:
+            @"UPDATE metrics SET longitude = ?, latitude = ? WHERE test_id=?", [NSNumber numberWithDouble:location.coordinate.longitude], [NSNumber numberWithDouble:location.coordinate.latitude], testId];
+    SK_ASSERT(bRes);
+  }
+ 
+  if (municipality != nil && municipality.length > 0) {
+    bRes = [db executeUpdate:
+            @"UPDATE metrics SET municipality = ? WHERE test_id=?", municipality, testId];
+    SK_ASSERT(bRes);
+  }
+  
+  if (countryString != nil && countryString.length > 0) {
+    bRes = [db executeUpdate:
+            @"UPDATE metrics SET country_string = ? WHERE test_id=?", countryString, testId];
+    SK_ASSERT(bRes);
+  }
+  
+  bRes = [db commit];
+  SK_ASSERT(bRes);
+  
+  bRes = [db close];
+  SK_ASSERT(bRes);
+}
+
++(void) forTestId:(NSNumber*)testId WriteWlanCarrier:wlanCarrier {
+  FMDatabase *db = [SKDatabase openDatabase];
+  if (db == NULL) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  BOOL bRes;
+  
+  bRes = [db beginTransaction];
+  SK_ASSERT(bRes);
+  
+  if (wlanCarrier != nil) {
+    bRes = [db executeUpdate:
+            @"UPDATE metrics SET wlan_carrier = ? WHERE test_id=?", wlanCarrier, testId];
+    SK_ASSERT(bRes);
+  }
+  
+  bRes = [db commit];
+  SK_ASSERT(bRes);
+  
+  bRes = [db close];
+  SK_ASSERT(bRes);
+}
+
 + (void)storeMetrics:(NSNumber*)testId
               device:(NSString*)device
                   os:(NSString*)os
@@ -1012,8 +1160,15 @@ public static String convertConnectivityType(int type) {
   
   SK_ASSERT([networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] || [networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
   
+  NSString *wifi_ssid = [SKGlobalMethods sCurrentWifiSSID];
+  if (wifi_ssid == nil) {
+    wifi_ssid = @"";
+  }
+  
+  SK_ASSERT([networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]);
+  
   bRes = [db executeUpdate:
-          @"INSERT INTO metrics (test_id, device, os, carrier_name, country_code, iso_country_code, network_code, network_type, radio_type) values (?,?,?,?,?,?,?,?,?)",
+          @"INSERT INTO metrics (test_id, device, os, carrier_name, country_code, iso_country_code, network_code, network_type, radio_type, wifi_ssid) values (?,?,?,?,?,?,?,?,?,?)",
           testId,
           device,
           os,
@@ -1022,7 +1177,9 @@ public static String convertConnectivityType(int type) {
           isoCode,
           networkCode,
           networkType,
-          radioType];
+          radioType,
+          wifi_ssid
+          ];
   
   SK_ASSERT(bRes);
   
@@ -1031,6 +1188,66 @@ public static String convertConnectivityType(int type) {
   
   bRes = [db close];
   SK_ASSERT(bRes);
+  
+  if ([CLLocationManager locationServicesEnabled]) {
+    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    SK_ASSERT(locationManager != nil);
+    SK_ASSERT(locationManager.location != nil);
+    
+    CLLocation *location = locationManager.location;
+    if (location != nil) {
+      
+      CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+      
+      [geocoder reverseGeocodeLocation:location completionHandler:
+       ^(NSArray* placemarks, NSError* error){
+         SK_ASSERT([NSThread isMainThread]);
+         
+         for (CLPlacemark *placemark in placemarks) {
+           NSString *municipality = @"";
+           NSString *countryString = @"";
+           
+           if (placemark.addressDictionary != nil) {
+             NSString *cityString = [placemark.addressDictionary objectForKey:(NSString*) kABPersonAddressCityKey];
+             
+             if (cityString != nil) {
+               municipality = cityString;
+             }
+           }
+           if (placemark.country != nil) {
+             countryString = placemark.country;
+           }
+           
+           [SKDatabase forTestId:testId WriteLocation:location Municipality:municipality AndCountryString:countryString];
+           
+           break;
+         }
+       }];
+    }
+  }
+  
+  // TODO - change this query for the wlan_carrier!
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [SKNSURLAsyncQuery fireURLRequest:@"http://ipinfo.io/json" InjectDictionaryIntoHeader:nil JsonCallback:^(NSError *error, NSInteger responseCode, NSDictionary *jsonResponse,  NSDictionary *responseHeaders) {
+      
+      if (jsonResponse == nil) {
+        
+        SK_ASSERT(false);
+        
+      } else {
+        
+        if([jsonResponse objectForKey:@"org"] == nil) {
+          SK_ASSERT(false);
+        } else {
+          __block NSString *wlanCarrier = jsonResponse[@"org"];
+          
+          dispatch_async(dispatch_get_main_queue(), ^{
+            [SKDatabase forTestId:testId WriteWlanCarrier:wlanCarrier];
+          });
+        }
+      }
+    }];
+  });
 }
 
 + (void)removeTestDataForTestId:(NSNumber*)testId
@@ -1345,7 +1562,7 @@ public static String convertConnectivityType(int type) {
     whereClause = [NSString stringWithFormat:@"%@%@", whereClause, @"td.date > ?"];
   }
   
-  NSString * sql = [NSString stringWithFormat:@"SELECT td.id, td.date, td.target, dw.bitrate, ul.bitrate, lt.latency, ls.packet_loss, j.jitter, mt.device, mt.os, mt.carrier_name, mt.country_code, mt.iso_country_code, mt.network_code, mt.network_type, mt.radio_type, mt.public_ip, mt.submission_id FROM test_data AS td LEFT JOIN metrics AS mt ON td.id = mt.test_id LEFT JOIN download AS dw ON td.id = dw.test_id LEFT JOIN upload AS ul ON td.id = ul.test_id LEFT JOIN latency AS lt ON td.id = lt.test_id LEFT JOIN packetloss as ls ON td.id = ls.test_id LEFT JOIN jitter as j ON td.id = j.test_id %@ ORDER BY td.id DESC", whereClause];
+  NSString * sql = [NSString stringWithFormat:@"SELECT td.id, td.date, td.target, dw.bitrate, ul.bitrate, lt.latency, ls.packet_loss, j.jitter, mt.device, mt.os, mt.carrier_name, mt.country_code, mt.iso_country_code, mt.network_code, mt.network_type, mt.radio_type, mt.public_ip, mt.submission_id, mt.wifi_ssid, mt.municipality, mt.country_string, mt.wlan_carrier FROM test_data AS td LEFT JOIN metrics AS mt ON td.id = mt.test_id LEFT JOIN download AS dw ON td.id = dw.test_id LEFT JOIN upload AS ul ON td.id = ul.test_id LEFT JOIN latency AS lt ON td.id = lt.test_id LEFT JOIN packetloss as ls ON td.id = ls.test_id LEFT JOIN jitter as j ON td.id = j.test_id %@ ORDER BY td.id DESC", whereClause];
   
   NSMutableArray *results = [NSMutableArray array];
   
@@ -1402,10 +1619,20 @@ public static String convertConnectivityType(int type) {
       [metricsDictionary setObject:[rs stringForColumnIndex:10] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:11] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:11] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
+      NSString *countryCode = [rs stringForColumnIndex:11];
+      [metricsDictionary setObject:countryCode forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
+      NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:countryCode];
+      if (countryName != nil) {
+        [metricsDictionary setObject:countryName forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+      }
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:12] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:12] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO];
+      NSString *isoCountryCode = [rs stringForColumnIndex:12];
+      [metricsDictionary setObject:isoCountryCode forKey:SKB_TESTVALUERESULT_C_PM_ISO_COUNTRY_CODE];
+      NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:isoCountryCode];
+      if (countryName != nil) {
+        [metricsDictionary setObject:countryName forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+      }
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:13] != [NSNull null]) {
       [metricsDictionary setObject:[rs stringForColumnIndex:13] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
@@ -1414,7 +1641,9 @@ public static String convertConnectivityType(int type) {
       [metricsDictionary setObject:[rs stringForColumnIndex:14] forKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:15] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:15] forKey:SKB_TESTVALUERESULT_C_PM_RADIO_TYPE];
+      NSString *value = [rs stringForColumnIndex:15];
+      SK_ASSERT([value isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [value isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] ||[value isEqualToString:@"NA"]);
+      [metricsDictionary setObject:value forKey:SKB_TESTVALUERESULT_C_PM_RADIO_TYPE];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:16] != [NSNull null])
     {
@@ -1423,6 +1652,22 @@ public static String convertConnectivityType(int type) {
     if ([rs objectForColumnIndexReturnsNullNotNil:17] != [NSNull null])
     {
       [metricsDictionary setObject:[rs stringForColumnIndex:17] forKey:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
+    }
+    if ([rs objectForColumnIndexReturnsNullNotNil:18] != [NSNull null])
+    {
+      [metricsDictionary setObject:[rs stringForColumnIndex:18] forKey:SKB_TESTVALUERESULT_C_PM_WIFI_SSID];
+    }
+    if ([rs objectForColumnIndexReturnsNullNotNil:19] != [NSNull null])
+    {
+      [metricsDictionary setObject:[rs stringForColumnIndex:19] forKey:SKB_TESTVALUERESULT_C_PM_MUNICIPALITY];
+    }
+    if ([rs objectForColumnIndexReturnsNullNotNil:20] != [NSNull null])
+    {
+      [metricsDictionary setObject:[rs stringForColumnIndex:20] forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+    }
+    if ([rs objectForColumnIndexReturnsNullNotNil:21] != [NSNull null])
+    {
+      [metricsDictionary setObject:[rs stringForColumnIndex:21] forKey:SKB_TESTVALUERESULT_C_PM_WLAN_CARRIER];
     }
     
     testResult.metricsDictionary = metricsDictionary;

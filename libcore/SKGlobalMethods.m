@@ -10,6 +10,9 @@
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
+
 #define ARC4RANDOM_MAX 0x100000000
 
 @implementation SKGlobalMethods
@@ -861,5 +864,32 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   }
   return nil;
 }
+
++ (NSString *)sCurrentWifiSSID {
+  NSString *ssid = nil;
+  
+  //NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
+  NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
+#ifdef DEBUG
+  //  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
+#endif // DEBUG
+  
+  for (NSString *interfaceName in interfaceNames) {
+    NSDictionary *ssidInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
+    //NSDictionary *info = (__bridge_transfer id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName);
+#ifdef DEBUG
+    //    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, ssidInfo);
+#endif // DEBUG
+    if (ssidInfo[@"SSID"]) {
+      ssid = ssidInfo[@"SSID"];
+    }
+  }
+#if TARGET_IPHONE_SIMULATOR
+  // This method does not work on the simulator!
+  ssid = @"SK1";
+#endif // TARGET_IPHONE_SIMULATOR
+  return ssid;
+}
+
 
 @end

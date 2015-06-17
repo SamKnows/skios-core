@@ -479,10 +479,14 @@ static SKATestResults* testToShareExternal = nil;
  
   BOOL bIsWiFi = NO;
   NSString *theNetworkType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
+  //SK_ASSERT([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] ||[theNetworkType isEqualToString:@"NA"]);
   if (theNetworkType.length > 0)
   {
 //    NSString* networkType = sSKCoreGetLocalisedString(@"Unknown");
-    if ([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+    if (([theNetworkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) ||
+        ([theNetworkType isEqualToString: sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi")])
+       )
+    {
       bIsWiFi = YES;
     }
   }
@@ -490,8 +494,8 @@ static SKATestResults* testToShareExternal = nil;
   NSArray *passiveResultsArray = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPassiveMetricsToDisplayWiFiFlag:bIsWiFi];
   
   for (NSString *thePassiveMetric in passiveResultsArray) {
-    // If WiFi, do NOT show the mobile network metrics! // TODO change me
     if (bIsWiFi) {
+      // If WiFi, do NOT show the mobile network metrics!
       if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME]) {
         continue;
       }
@@ -501,21 +505,42 @@ static SKATestResults* testToShareExternal = nil;
       if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK]) {
         continue;
       }
-      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_CARRIER_ISO]) {
+      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_ISO_COUNTRY_CODE]) {
+        continue;
+      }
+    } else {
+      // Mobile test...
+      // If Mobile, do NOT show the WiFi SSID!
+      if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_WIFI_SSID]) {
         continue;
       }
     }
+   
+    if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_TARGET]) {
+      if ([testResult_.metricsDictionary objectForKey:SKB_TESTVALUERESULT_C_PM_TARGET] == nil) {
+        testResult_.metricsDictionary[thePassiveMetric] = testResult_.target;
+      }
+    }
+    // C_NETWORKTYPEASSTRING_WIFI
+    if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_DEVICE]) {
+      if ([testResult_.metricsDictionary objectForKey:SKB_TESTVALUERESULT_C_PM_DEVICE] == nil) {
+        testResult_.metricsDictionary[thePassiveMetric] = [SKAppBehaviourDelegate sGetAppBehaviourDelegate].deviceModel;
+      }
+    }
+    
+    if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE]) {
+      if ([testResult_.metricsDictionary objectForKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] != nil) {
+        NSString *theType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
+        if ([theType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
+          testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
+        } else {
+          testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
+        }
+      }
+    }
+    
     [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[thePassiveMetric] withLocalizedLabelTextID:sSKCoreGetLocalisedString(thePassiveMetric)];
   }
-  
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Phone")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_OS] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"OS")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Name")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Country")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_ISO] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_ISO")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Carrier_Network")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_PUBLIC_IP] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Public_IP")];
-//  [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID] withLocalizedLabelTextID:sSKCoreGetLocalisedString(@"Submission_ID")];
   
   // Only allow MOBILE results to be shared!
   self.btShare.hidden = YES;

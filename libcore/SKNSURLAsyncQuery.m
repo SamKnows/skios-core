@@ -183,4 +183,28 @@
   (void)[[SKNSURLAsyncQuery alloc] initWithURLRequest:urlString InjectDictionaryIntoHeader:injectDictionaryIntoHeader Callback:callback WithTimeout:60.0];
 }
 
++(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader JsonCallback:(SKQueryCompletedWithJsonDictionary)callback WithTimeout:(NSTimeInterval)timeout {
+  (void)[[SKNSURLAsyncQuery alloc] initWithURLRequest:urlString InjectDictionaryIntoHeader:injectDictionaryIntoHeader Callback:^(NSError *error, NSInteger responseCode, NSMutableData *responseData, NSString *responseDataAsString, NSDictionary *responseHeaders) {
+    
+    if (responseCode == 200)
+    {
+      NSError *error = nil;
+      NSDictionary *theObject = [NSJSONSerialization JSONObjectWithData:responseData
+                                                                options:NSJSONReadingMutableLeaves
+                                                                  error:&error];
+#ifdef DEBUG
+      NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
+#endif // DEBUG
+      callback(error, responseCode, theObject,  responseHeaders);
+    } else {
+      callback(nil, responseCode, nil,  responseHeaders);
+    }
+    
+  } WithTimeout:timeout];
+}
+
++(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader JsonCallback:(SKQueryCompletedWithJsonDictionary)callback {
+  [SKNSURLAsyncQuery fireURLRequest:urlString InjectDictionaryIntoHeader:injectDictionaryIntoHeader JsonCallback:callback WithTimeout:60.0];
+}
+
 @end
