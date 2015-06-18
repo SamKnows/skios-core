@@ -1226,9 +1226,20 @@ public static String convertConnectivityType(int type) {
     }
   }
   
-  // TODO - change this query for the wlan_carrier!
+  // Query for the wlan_carrier.
+  // This query *must* be kicked-off from the main thread.
+  // The callback might occur in a different thread, so we need our final
+  // handling of the callback to be in the main thread in order to prevent
+  // database locking issues.
   dispatch_async(dispatch_get_main_queue(), ^{
-    [SKNSURLAsyncQuery fireURLRequest:@"http://ipinfo.io/json" InjectDictionaryIntoHeader:nil JsonCallback:^(NSError *error, NSInteger responseCode, NSDictionary *jsonResponse,  NSDictionary *responseHeaders) {
+    
+    //NSString *queryThisUrl = @"http://ipinfo.io/json";
+    //NSString *organisationInThisField = @"org";
+    
+    NSString *queryThisUrl = @"http://dcs-mobile-fcc.samknows.com/mobile/lookup.php";
+    NSString *organisationInThisField = @"organization";
+    
+    [SKNSURLAsyncQuery fireURLRequest:queryThisUrl InjectDictionaryIntoHeader:nil JsonCallback:^(NSError *error, NSInteger responseCode, NSDictionary *jsonResponse,  NSDictionary *responseHeaders) {
       
       if (jsonResponse == nil) {
         
@@ -1236,10 +1247,12 @@ public static String convertConnectivityType(int type) {
         
       } else {
         
-        if([jsonResponse objectForKey:@"org"] == nil) {
+        if([jsonResponse objectForKey:organisationInThisField] == nil) {
           SK_ASSERT(false);
         } else {
-          __block NSString *wlanCarrier = jsonResponse[@"org"];
+          __block NSString *wlanCarrier = jsonResponse[organisationInThisField];
+          SK_ASSERT(wlanCarrier != nil);
+          SK_ASSERT(wlanCarrier.length > 0);
           
           dispatch_async(dispatch_get_main_queue(), ^{
             [SKDatabase forTestId:testId WriteWlanCarrier:wlanCarrier];
