@@ -1651,11 +1651,12 @@ public static String convertConnectivityType(int type) {
       [metricsDictionary setObject:[rs stringForColumnIndex:13] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:14] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:14] forKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
+      NSString *value = [rs stringForColumnIndex:14];
+      SK_ASSERT([value isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [value isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] ||[value isEqualToString:@"NA"]);
+      [metricsDictionary setObject:value forKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:15] != [NSNull null]) {
       NSString *value = [rs stringForColumnIndex:15];
-      SK_ASSERT([value isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [value isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] ||[value isEqualToString:@"NA"]);
       [metricsDictionary setObject:value forKey:SKB_TESTVALUERESULT_C_PM_RADIO_TYPE];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:16] != [NSNull null])

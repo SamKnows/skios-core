@@ -528,17 +528,6 @@ static SKATestResults* testToShareExternal = nil;
       }
     }
     
-    if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE]) {
-      if ([testResult_.metricsDictionary objectForKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] != nil) {
-        NSString *theType = testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
-        if ([theType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
-          testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
-        } else {
-          testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
-        }
-      }
-    }
-    
     [self placeMetricsWithLocalizedText:testResult_.metricsDictionary[thePassiveMetric] withLocalizedLabelTextID:sSKCoreGetLocalisedString(thePassiveMetric)];
   }
   
@@ -596,6 +585,12 @@ static SKATestResults* testToShareExternal = nil;
 
 -(void)placeMetricsWithLocalizedText:(NSString*)text_ withLocalizedLabelTextID:(NSString*)localizedLabelTextID_
 {
+  if ([text_ isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
+    text_ = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
+  } else if ([text_ isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
+    text_ = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
+  }
+  
   UILabel* label;
   if (text_.length > 0)
   {
