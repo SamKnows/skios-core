@@ -392,3 +392,13 @@
 "no_archived_results_yet" = "There are no results yet";
 
 "result_working" = "Working";
+
+
+// - the municipal area (typically a City, I think) in which the test was performed e.g. London
+"Municipality" = "Municipality";
+// - the name of the country in which the test has been run e.g. Brazil
+"Country" = "Country";
+// - the name of the carrier behind the network connection (e.g. Vodafone, Virgin etc.)
+"WLAN Carrier" = "WLAN Carrier";
+// - the local network name (e.g. SK2)
+"SSID" = "SSID";
