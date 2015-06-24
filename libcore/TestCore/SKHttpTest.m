@@ -382,12 +382,25 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       [mpNewStyleSKJUploadTest execute];
       
       bStopNowFlag = true;
-      double uploadSpeedMpbs = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
-      //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
-  
-      __block double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMpbs];
 #ifdef DEBUG
-      NSLog(@"****** DEBUG: END TEST uploadSpeed mbps=%g (1024based=%g)", uploadSpeedMpbs, bitrateMbps1024Based);
+      double uploadSpeedMbpsMovingAverage = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+#endif // DEBUG
+      
+      double bytesPerSecond = [mpNewStyleSKJUploadTest getTransferBytesPerSecond];
+      double uploadSpeedMbps = [SKGlobalMethods convertBytesPerSecondToMbps1000Based:bytesPerSecond];
+#ifdef DEBUG
+      if (uploadSpeedMbps > 0.0) {
+        // Would expect these values to be pretty close to each other - probably around 10%
+        double diffAsFraction = fabs(uploadSpeedMbps-uploadSpeedMbpsMovingAverage) / uploadSpeedMbps;
+        SK_ASSERT(diffAsFraction <= 0.10);
+      }
+#endif // DEBUG
+      //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMbps);
+  
+      __block double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMbps];
+#ifdef DEBUG
+      __block double bitrateMbps1024BasedMovingAverage = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMbpsMovingAverage];
+      NSLog(@"****** DEBUG: END TEST uploadSpeed mbps=%g, movingAverage=%g (1024based=%g)", uploadSpeedMbps, uploadSpeedMbpsMovingAverage, bitrateMbps1024Based);
 #endif // DEBUG
       
       dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -536,7 +549,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     return 0;
   }
   double bytesPerSecond = ((double)testTransferBytes) / dTime;
-  return (int)bytesPerSecond;
+  
+  int intBytesPerSecond = (int)bytesPerSecond;
+  
+  return intBytesPerSecond;
 }
 
 
@@ -1106,9 +1122,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #endif // DEBUG
   
   int bytesPerSecond = [SKGlobalMethods convertMpbs1024BasedToBytesPerSecond:bitrateMbps1024Based];
-  if (bytesPerSecond == 0) {
-    // 30/03/2015 - note that if bytesPerSecond is ZERO, we must also tag this with "success": false
-    // c.f. HttpTest.java on 
+  if (bytesPerSecond <= 0) {
+    // 30/03/2015 - note that if bytesPerSecond is (less than or equal to) ZERO, we must also tag this with "success": false
+    // c.f. HttpTest.java on
+    SK_ASSERT(false);
     self.testOK = NO;
   }
   

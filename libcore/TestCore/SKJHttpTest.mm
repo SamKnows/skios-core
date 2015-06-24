@@ -1024,6 +1024,11 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     btsPerSec = (int) (((double) btsTotal) / timeSeconds);
   }
   
+  if (btsPerSec >= INT_MAX) {
+    SK_ASSERT(false);
+    return -1;
+  }
+  
   //SKLogger.d(TAG(this), "getWarmupSpeedBytesPerSecond, using CLIENT value = " + btsPerSec);//HAHA remove in production
   return btsPerSec;
 }
@@ -1046,11 +1051,10 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     ([SKJHttpTest sGetMicroTime] - [self getStartTransferMicro]) :
     [self getTransferTimeDurationMicro];
   
-//  if (duration < 1000000.0) // At least a second!
-//  {
-//    // Not yet possible to return a valid result!
-//    return -1;
-//  }
+  if (duration <= 0) {
+    // Not yet possible to return a valid result!
+    return -1;
+  }
   
   return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
 }
