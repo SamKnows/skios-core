@@ -958,6 +958,17 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
           SK_ASSERT(thePublicIp != nil);
           NSString *theSubmissionId = theObject[@"submission_id"];
           SK_ASSERT(theSubmissionId != nil);
+         
+          // This is an attempt to cater for the following exception:
+          // "Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[1]'"
+          if (thePublicIp == nil) {
+            SK_ASSERT(false);
+            thePublicIp = @"";
+          }
+          if (theSubmissionId == nil) {
+            SK_ASSERT(false);
+            theSubmissionId = @"";
+          }
           
           [SKDatabase updateMetricForTestId:testId
                                MetricColumn:@"Public_IP"
@@ -968,9 +979,11 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
                                 MetricValue:theSubmissionId];
           
           // Send the notification - it is used ONLY if it matches THE CURRENT TEST ID!
+          NSDictionary *theDictionary = @{@"test_id":testId, @"Public_IP": thePublicIp, @"Submission_ID":theSubmissionId};
+          
           dispatch_async(dispatch_get_main_queue(), ^{
             // Posting to NSNotificationCenter *must* be done in the main thread!
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_Submission_ID" object:testId userInfo:@{@"test_id":testId, @"Public_IP": thePublicIp, @"Submission_ID":theSubmissionId}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SKB_public_ip_and_Submission_ID" object:testId userInfo:theDictionary];
           });
         }
         
