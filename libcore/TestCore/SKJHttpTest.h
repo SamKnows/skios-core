@@ -12,9 +12,9 @@
 
 /* Socket timeout parameters */
 
-#define CONNECTIONTIMEOUT ((int) 10000) 							/* 10 seconds connection timeout */
-#define READTIMEOUT ((int) 10000) 								/* 10 seconds read timeout */
-#define WRITETIMEOUT ((int) 10000) 								/* 10 seconds write timeout */
+//#define CONNECTIONTIMEOUT ((int) 10000) 							/* 10 seconds connection timeout */
+#define READTIMEOUT_SECONDS ((int) 10) 								/* 10 seconds read timeout */
+#define WRITETIMEOUT_SECONDS ((int) 10) 								/* 10 seconds write timeout */
 
 /* Http Status codes */
 #define HTTPOK ((int) 200)

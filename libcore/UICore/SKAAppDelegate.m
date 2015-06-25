@@ -22,6 +22,8 @@
   SKAppBehaviourDelegate *appBehaviourDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   SK_ASSERT(appBehaviourDelegate != nil);
   
+  [appBehaviourDelegate checkDataUsageReset];
+  
   if ([appBehaviourDelegate getIsThisTheNewApp] == NO) {
     
     if (![appBehaviourDelegate hasAgreed]) {

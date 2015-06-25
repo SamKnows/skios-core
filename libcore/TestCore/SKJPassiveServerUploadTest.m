@@ -75,6 +75,8 @@ const int extMonitorUpdateInterval = 500000;
 //    return false;
 //  }
   
+  bool bSuccess = YES;
+  
   @try {
     NSData *headerByteArray = [self getPostHeaderRequestStringAsByteArray:threadIndex];
     if (headerByteArray.length > 0) {
@@ -90,7 +92,20 @@ const int extMonitorUpdateInterval = 500000;
       
       // Write buffer to output socket
       //NSLog(@"transmit() calling write() with %d bytes, threadIndex=%d", (int)super.buff.length, threadIndex);
-      write(sockfd, super.buff.bytes, super.buff.length);
+      ssize_t res = write(sockfd, super.buff.bytes, super.buff.length);
+      if (res != super.buff.length) {
+        bSuccess = NO;
+        
+#ifdef _DEBUG
+        int testError = errno;
+        SK_ASSERT(testError != 0);
+        NSLog(@"Error in stream write (%d), exiting... thread: %d",, testError, threadIndex);
+        SK_ASSERT(false);
+#endif // DEBUG
+        
+        break;
+      }
+      
       //NSLog(@"transmit() called write() with %d bytes, threadIndex=%d", (int)super.buff.length, threadIndex);
       //connOut.flush();
       
@@ -108,9 +123,16 @@ const int extMonitorUpdateInterval = 500000;
     } while (!transmissionDone());
     
   } @catch (NSException *e) {
-    NSLog(@"Exception in setting up output stream, exiting... thread: %d, %@", threadIndex, e);
-    
     // EXCEPTION: RECORD ERROR, AND SET BYTES TO 0!!!
+#ifdef DEBUG
+    NSLog(@"Exception in setting up output stream, exiting... thread: %d, %@", threadIndex, e);
+    SK_ASSERT(false);
+#endif // DEBUG
+    bSuccess = NO;
+  }
+  
+  if (bSuccess == NO) {
+    // ERROR, AND SET BYTES TO 0!!!
     [super resetTotalTransferBytesToZero];
     [super setError:@"?"]; //super.mError = true;
     

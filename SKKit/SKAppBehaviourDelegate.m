@@ -425,6 +425,30 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 #pragma mark - Data Usage Method
 
+- (void)checkDataUsageReset
+{
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSDate *date = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
+  if (date == nil) {
+    date = [NSDate date];
+    [prefs setValue:date forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
+    [prefs synchronize];
+  }
+  NSDate *dateNow = [SKCore getToday];
+  
+  NSTimeInterval interval = [dateNow timeIntervalSinceDate:date];
+  
+  NSTimeInterval oneMonth = 30 * 24 * 60 * 60; // 2592000 seconds in 30 days
+  
+  if (interval > oneMonth)
+  {
+    // reset the data usage
+    [prefs setValue:dateNow forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
+    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+    [prefs synchronize];
+  }
+}
+
 - (void)amdDoUpdateDataUsage:(int)bytes
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

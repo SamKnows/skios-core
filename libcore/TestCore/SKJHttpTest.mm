@@ -526,7 +526,7 @@ void threadEntry(SKJHttpTest *pSelf) {
       //socklen = sizeof(timeout);
       struct timeval tv;
       memset(&tv, 0, sizeof(tv));
-      tv.tv_sec  = READTIMEOUT;
+      tv.tv_sec  = READTIMEOUT_SECONDS;
       tv.tv_usec = 0;
       sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
       SK_ASSERT(sockerr == 0);
@@ -534,7 +534,7 @@ void threadEntry(SKJHttpTest *pSelf) {
       //socklen = sizeof(timeout);
       struct timeval tv;
       memset(&tv, 0, sizeof(tv));
-      tv.tv_sec  = WRITETIMEOUT;
+      tv.tv_sec  = WRITETIMEOUT_SECONDS;
       tv.tv_usec = 0;
       sockerr = setsockopt(sockfd,SOL_SOCKET,SO_SNDTIMEO,(const void*)&tv,sizeof(tv));
       SK_ASSERT(sockerr == 0);
