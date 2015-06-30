@@ -911,9 +911,11 @@ static BOOL sbTestIsRunning = NO;
 
 -(void) rememberThatTestWasRequested:(NSString*)type {
   
-  for (NSString *theTest in self.requestedTests)
+  for (NSObject *theTest in self.requestedTests)
   {
-    if ([theTest isEqualToString:type]) {
+    NSString *compare = [NSString stringWithFormat:@"%@",theTest];
+    if ([compare isEqualToString:type]) {
+    //if ([theTest isEqualToString:type]) {
       // Already exists - nothing to do!
       return;
     }

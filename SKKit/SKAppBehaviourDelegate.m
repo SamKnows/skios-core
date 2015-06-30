@@ -306,6 +306,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 -(void)stopLocationMonitoring {
   @synchronized (self.class) {
     if (locationManager != nil) {
+      [locationManager setDelegate:nil];
       [locationManager stopUpdatingLocation];
       locationManager = nil;
     }
