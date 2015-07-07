@@ -57,6 +57,7 @@
 -(void)initialiseViewOnMasterViewController:(SKBHistoryViewController*)masterViewController_;
 -(void)setColoursAndShowHideElements;
 -(void)performLayout;
+- (void)showNetworkTypeFilterActionSheet;
 
 //@property (weak, nonatomic) IBOutlet UIButton *btNetworkType;
 //@property (weak, nonatomic) IBOutlet UIButton *btPeriod;

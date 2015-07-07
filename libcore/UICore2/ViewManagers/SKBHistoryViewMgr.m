@@ -281,7 +281,7 @@ static NSUInteger sAllButtonIndex = 0;
 }
 
 
-- (IBAction)B_NetworkType:(id)sender {
+- (void)showNetworkTypeFilterActionSheet {
   
   UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") destructiveButtonTitle:nil  otherButtonTitles:nil];
   alert.tag = ACTIONSHEET_NETWORK;

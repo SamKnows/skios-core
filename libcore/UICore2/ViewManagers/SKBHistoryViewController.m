@@ -11,6 +11,7 @@
 #import "SKBHistoryViewMgr.h"
 
 @interface SKBHistoryViewController ()
+@property (weak, nonatomic) IBOutlet UIToolbar *mToolbar;
 
 @end
 
@@ -32,6 +33,9 @@
   self.edgesForExtendedLayout = UIRectEdgeNone;
   self.extendedLayoutIncludesOpaqueBars = NO;
   self.automaticallyAdjustsScrollViewInsets = NO;
+  
+  self.mToolbar.backgroundColor = [SKAppColourScheme sGetOuterColor];
+  self.mToolbar.barTintColor = [UIColor whiteColor];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -50,6 +54,10 @@
   } else {
     self.tv_warning_no_results_yet.hidden = YES;
   }
+}
+
+- (IBAction)networkFilterButton:(id)sender {
+  [self.historyManagerView showNetworkTypeFilterActionSheet];
 }
 
 @end
