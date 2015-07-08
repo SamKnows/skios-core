@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 //#import <MessageUI/MFMailComposeViewController.h>
-//#import "CActionSheet.h"
+#import "../Reusable/CActionSheet/CActionSheet.h"
 #import "../tabCells/SKBTestOverviewCell.h"
 
 @class SKATestResults;
@@ -18,7 +18,7 @@
 
 
 
-@interface SKBHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
+@interface SKBHistoryViewMgr : UIView <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate, pActionSheetDelegate>
 {
   NSMutableArray *arrTestsList;
   
@@ -44,7 +44,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tvTests;
 @property (weak, nonatomic) IBOutlet UIButton *btBack;
 
-//@property (nonatomic, strong) CActionSheet* casNetworkType;
+@property (nonatomic, strong) CActionSheet* casNetworkType;
 //@property (nonatomic, strong) CActionSheet* casPeriod;
 
 +(SKATestResults *) sCreateNewTstToShareExternal;

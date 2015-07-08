@@ -281,22 +281,43 @@ static NSUInteger sAllButtonIndex = 0;
 }
 
 
+-(void)selectedOption:(int)optionTag from:(CActionSheet *)sender WithState:(int)state
+{
+  SK_ASSERT(sender != nil);
+  
+  if (sender == self.casNetworkType)
+  {
+    [self selectedNetworkTypeOption:(C_FILTER_NETWORKTYPE)optionTag];
+  } else {
+    SK_ASSERT(false);
+  }
+}
+
 - (void)showNetworkTypeFilterActionSheet {
+  //if (!self.casNetworkType)
+  {
+    self.casNetworkType = [[CActionSheet alloc] initOnView:self.masterView withDelegate:self mainTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") WithMultiSelection:NO];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi") withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile") withImage:[UIImage imageNamed:@"sgsm.png"] andTag:C_FILTER_NETWORKTYPE_MOBILE  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_MOBILE)];
+    [self.casNetworkType addOption:sSKCoreGetLocalisedString(@"NetworkTypeMenu_All") withImage:nil andTag:C_FILTER_NETWORKTYPE_ALL  AndSelected:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)];
+  }
   
-  UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") destructiveButtonTitle:nil  otherButtonTitles:nil];
-  alert.tag = ACTIONSHEET_NETWORK;
+  [self.casNetworkType expand];
   
-  // TODO - what about WiFi/Mobile icons, if any, via Unicode?
-  
-  // Note tha the CANCEL BUTTON has index ZERO!
-  
-  sWiFiButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_WiFi" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-  
-  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_MOBILE)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-  
-  sAllButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_All" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
-  
-  [alert showInView:self];
+//  UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel") destructiveButtonTitle:nil  otherButtonTitles:nil];
+//  alert.tag = ACTIONSHEET_NETWORK;
+//  
+//  // TODO - what about WiFi/Mobile icons, if any, via Unicode?
+//  
+//  // Note tha the CANCEL BUTTON has index ZERO!
+//  
+//  sWiFiButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_WiFi" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_WIFI)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+//  
+//  sMobileButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_Mobile" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_MOBILE)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+//  
+//  sAllButtonIndex = [alert addButtonWithTitle:[self getStringBasedOn:@"NetworkTypeMenu_All" WithTickAtIfTrue:(currentFilterNetworkType == C_FILTER_NETWORKTYPE_ALL)]]; //  withImage:[UIImage imageNamed:@"swifi.png"] andTag:C_FILTER_NETWORKTYPE_WIFI];
+//  
+//  [alert showInView:self];
 }
 
 /*
