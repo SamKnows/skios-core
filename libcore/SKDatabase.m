@@ -1206,16 +1206,35 @@ public static String convertConnectivityType(int type) {
          for (CLPlacemark *placemark in placemarks) {
            NSString *municipality = @"";
            NSString *countryString = @"";
-           
-           if (placemark.addressDictionary != nil) {
-             NSString *cityString = [placemark.addressDictionary objectForKey:(NSString*) kABPersonAddressCityKey];
-             
-             if (cityString != nil) {
-               municipality = cityString;
-             }
-           }
+          
            if (placemark.country != nil) {
              countryString = placemark.country;
+             NSLog(@"countryString from placemark.country = %@", countryString);
+           }
+           if (placemark.locality != nil) {
+             municipality = placemark.locality;
+             NSLog(@"municipality from placemark.location = %@", municipality);
+           }
+           
+           if (placemark.addressDictionary != nil) {
+             NSString *addressCityString = [placemark.addressDictionary objectForKey:(NSString*) kABPersonAddressCityKey];
+           
+             if (addressCityString != nil) {
+               NSLog(@"addressCityString = %@", addressCityString);
+               if (municipality.length == 0) {
+                 municipality = addressCityString;
+                 NSLog(@"municipality from addressCityString = %@", municipality);
+               }
+             }
+             
+             NSString *addressCountryString = [placemark.addressDictionary objectForKey:(NSString*) kABPersonAddressCountryKey];
+             if (addressCountryString == nil) {
+               NSLog(@"addressCountryString = %@", addressCountryString);
+               if (countryString.length != 0) {
+                 countryString = addressCountryString;
+                 NSLog(@"country from addressCountryString = %@", countryString);
+               }
+             }
            }
            
            [SKDatabase forTestId:testId WriteLocation:location Municipality:municipality AndCountryString:countryString];
