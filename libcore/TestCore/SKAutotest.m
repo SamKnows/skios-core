@@ -1019,8 +1019,10 @@ static BOOL sbTestIsRunning = NO;
   [network setObject:simOperatorCodeMCCAndMNC
               forKey:@"sim_operator_code"];
   
-  [network setObject:[SKGlobalMethods getCarrierName]
-              forKey:@"network_operator_name"];
+  NSString *carrierName = [SKGlobalMethods getCarrierName];
+  //carrierName = @"SamKnows测试移动运营商"; @"SamKnows Test Mobile Operator"
+  [network setObject:carrierName forKey:@"network_operator_name"];
+  
   [network setObject:@"NA"
               forKey:@"network_type_code"];
   //[network setObject:[SKGlobalMethods getConnectionResultString:[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
@@ -1031,8 +1033,11 @@ static BOOL sbTestIsRunning = NO;
 #ifdef DEBUG
   NSLog(@"DEBUG: sim_operator_code=%@", [SKGlobalMethods getSimOperatorCodeMCCAndMNC]);
 #endif // DEBUG
-  [network setObject:[SKGlobalMethods getCarrierName]
+  //[network setObject:[SKGlobalMethods getCarrierName]
+  //            forKey:@"sim_operator_name"];
+  [network setObject:carrierName
               forKey:@"sim_operator_name"];
+
   [network setObject:[SKGlobalMethods getTimeStamp]
               forKey:@"timestamp"];
   [network setObject:[SKGlobalMethods getDeviceModel]
