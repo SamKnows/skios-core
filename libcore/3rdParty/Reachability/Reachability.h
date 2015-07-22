@@ -192,4 +192,7 @@ extern NSString *const kReachabilityChangedNotification;
 
 - (SCNetworkReachabilityFlags) reachabilityFlags;
 
+// Added by SamKnows...
++ (NSString *) makeAddressKey: (in_addr_t) addr;
+
 @end

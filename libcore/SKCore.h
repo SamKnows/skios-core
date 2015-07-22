@@ -16,6 +16,7 @@
 #import "./SKIPHelper.h"
 #import "./SKUDPDataGram.h"
 #import "./UIDevice+SKExtension.h"
+#import "../SKKit/SKGateway.h"
 #import "./3rdParty/cocoaasyncsocket/AsyncUdpSocket.h"
 #import "./3rdParty/cocoaasyncsocket/GCD/GCDAsyncSocket.h"
 #import "./3rdParty/cocoaasyncsocket/GCD/GCDAsyncUdpSocket.h"
