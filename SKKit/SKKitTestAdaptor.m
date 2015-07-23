@@ -75,6 +75,7 @@
 @implementation SKKitTestDownload
 
 @synthesize mpDownloadTest;
+@synthesize mProgressBlock;
 
 - (instancetype)initWithDownloadTestDescriptor:(SKScheduleTest_Descriptor_Download*)downloadTest {
   self = [super init];
@@ -92,7 +93,7 @@
                       transferMaxBytes:0
                       nThreads:(int)downloadTest.mNumberOfThreads
                       HttpTestDelegate:self];
-                      }
+  }
   return self;
 }
 
@@ -100,29 +101,38 @@
   NSLog(@"DEBUG: SKKitTestDownload - dealloc");
   mpDownloadTest = nil;
 }
-                      
+
+- (void) start:(TSKDownloadTestProgressUpdate)progressBlock {
+  self.mProgressBlock = progressBlock;
+  [mpDownloadTest startTest];
+}
+
+- (void) stop {
+  [mpDownloadTest stopTest];
+}
+
 // Pragma SKHttpTestDelegate
-                      
+
 - (void)htdUpdateStatus:(TransferStatus)status
                threadId:(NSUInteger)threadId {
   // TODO
 }
-                      
+
 - (void)htdUpdateDataUsage:(NSUInteger)totalBytes
-                  bytes:(NSUInteger)bytes
+                     bytes:(NSUInteger)bytes
                   progress:(float)progress {
   // TODO
 }
-                      
+
 - (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate {
-  
+  mProgressBlock(progress, currentBitrate);
 }
-                      
+
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer
                TestDisplayName:(NSString *)testDisplayName
 {
-  // TODO
+  mProgressBlock(100.0, bitrateMbps1024Based);
 }
 
 @end
@@ -145,16 +155,16 @@
   if (self) {
     NSLog(@"DEBUG: SKKitTestUpload - init");
     mpUploadTest = [[SKHttpTest alloc]
-                      initWithTarget:uploadTest.mTarget
-                      port:(int)uploadTest.mPort
-                      file:@"" // uploadTest.mFile
-                      isDownstream:NO
-                      warmupMaxTime:uploadTest.mWarmupMaxTimeSeconds*1000000.0
-                      warmupMaxBytes:0
-                      TransferMaxTimeMicroseconds:uploadTest.mTransferMaxTimeSeconds*1000000.0
-                      transferMaxBytes:0
-                      nThreads:(int)uploadTest.mNumberOfThreads
-                      HttpTestDelegate:self];
+                    initWithTarget:uploadTest.mTarget
+                    port:(int)uploadTest.mPort
+                    file:@"" // uploadTest.mFile
+                    isDownstream:NO
+                    warmupMaxTime:uploadTest.mWarmupMaxTimeSeconds*1000000.0
+                    warmupMaxBytes:0
+                    TransferMaxTimeMicroseconds:uploadTest.mTransferMaxTimeSeconds*1000000.0
+                    transferMaxBytes:0
+                    nThreads:(int)uploadTest.mNumberOfThreads
+                    HttpTestDelegate:self];
   }
   return self;
 }
@@ -225,23 +235,23 @@
 }
 
 // Pragma SKLatencyTestDelegate
-                     - (void)ltdTestDidFail {
-                       
-                     }
-                     - (void)ltdTestDidSucceed {
-                       
-                     }
-                     - (void)ltdTestWasCancelled {
-                       
-                     }
-                     - (void)ltdUpdateProgress:(float)progress latency:(float)latency {
-                       
-                     }
-                     - (void)ltdUpdateStatus:(LatencyStatus)status {
-                       
-                     }
-                     - (void)ltdTestDidSendPacket:(NSUInteger)bytes {
-                       
-                     }
+- (void)ltdTestDidFail {
+  
+}
+- (void)ltdTestDidSucceed {
+  
+}
+- (void)ltdTestWasCancelled {
+  
+}
+- (void)ltdUpdateProgress:(float)progress latency:(float)latency {
+  
+}
+- (void)ltdUpdateStatus:(LatencyStatus)status {
+  
+}
+- (void)ltdTestDidSendPacket:(NSUInteger)bytes {
+  
+}
 
 @end

@@ -6,6 +6,7 @@
 //
 
 #import "SKAAppDelegate.h"
+#import "NSDate+Helper.h"
 
 NSString *const DOWNSTREAMSINGLE    = @"JHTTPGET";
 NSString *const DOWNSTREAMMULTI     = @"JHTTPGETMT";

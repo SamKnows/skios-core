@@ -30,7 +30,7 @@
 
 #import "NSDate+Helper.h"
 
-@implementation NSDate (Helper)
+@implementation NSDate (SKDateAdditions)
 
 /*
  * This guy can be a little unreliable and produce unexpected results,
