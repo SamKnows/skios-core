@@ -14,5 +14,6 @@
 @interface SKGateway : NSObject
 - (instancetype)init;
 +(NSString *)sGetDefaultGateway;
++(BOOL) sGetIsNetworkWiFi;
 @end
 //#endif // SKGATEWAY_H 1

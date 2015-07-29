@@ -98,7 +98,10 @@
 }
 
 -(void)dealloc {
+#ifdef DEBUG
   NSLog(@"DEBUG: SKKitTestDownload - dealloc");
+#endif // DEBUG
+  
   mpDownloadTest = nil;
 }
 
@@ -115,7 +118,24 @@
 
 - (void)htdUpdateStatus:(TransferStatus)status
                threadId:(NSUInteger)threadId {
-  // TODO
+  
+  switch (status) {
+    case FAILED:
+#ifdef DEBUG
+  NSLog(@"DEBUG: SKKitTestDownload - failed!");
+#endif // DEBUG
+      mProgressBlock(100.0, -1.0);
+      break;
+    case CANCELLED:
+    case INITIALIZING:
+    case WARMING:
+    case TRANSFERRING:
+    case COMPLETE:
+    case FINISHED:
+    case IDLE:
+    default:
+      break;
+  }
 }
 
 - (void)htdUpdateDataUsage:(NSUInteger)totalBytes
