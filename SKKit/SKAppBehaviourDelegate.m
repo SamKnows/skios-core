@@ -1942,6 +1942,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
+-(BOOL) getShouldDisplayWifiWlanCarrierNameInRunTestScreen {
+  return NO;
+}
+
 -(NSArray*)getDownloadSixSegmentMaxValues {
   return @[@1.0, @2.0, @5.0, @10.0, @30.0, @100.0];
 }

@@ -48,6 +48,8 @@
 -(void) viewDidLoad {
   [super viewDidLoad];
   
+  self.optionalWlanCarrierNameLabel.hidden = YES;
+  
   [self.tmActivityIndicator setSixSegmentMaxValues:@[@100.0, @200.0, @300, @400.0, @500.0, @600.0]];
 
   // Calculate how many passive metrics we have!
@@ -579,6 +581,18 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 }
 
 -(void) selfRunTestAfterUserApprovedToDataCapChecks {
+  
+  // Query for the wlan_carrier.
+  self.optionalWlanCarrierNameLabel.hidden = YES;
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldDisplayWifiWlanCarrierNameInRunTestScreen] == YES) {
+    if ([SKAppBehaviourDelegate sGetAppBehaviourDelegate].connectionStatus == WIFI) {
+      [SKGlobalMethods sQueryWlanCarrier:^(NSString *wlanCarrier) {
+        self.optionalWlanCarrierNameLabel.hidden = NO;
+        self.optionalWlanCarrierNameLabel.text = wlanCarrier;
+      }];
+    }
+  }
   
   [self.tvCurrentResults reloadData];
   

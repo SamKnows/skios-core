@@ -99,6 +99,7 @@
 //@property (weak, nonatomic) IBOutlet UIViewWithGradient *vC5;
 @property (weak, nonatomic) IBOutlet UIImageView *optionalTopLeftLogoView;
 @property (weak, nonatomic) IBOutlet UIImageView *optionalTopRightLogoView;
+@property (weak, nonatomic) IBOutlet UILabel *optionalWlanCarrierNameLabel;
 
 @end
 
