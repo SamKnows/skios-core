@@ -1237,6 +1237,10 @@ public static String convertConnectivityType(int type) {
              }
            }
            
+           if ([countryString caseInsensitiveCompare:@"bretão"]) {
+             countryString = @"Brazil";
+           }
+           
            [SKDatabase forTestId:testId WriteLocation:location Municipality:municipality AndCountryString:countryString];
            
            break;
@@ -1665,7 +1669,11 @@ public static String convertConnectivityType(int type) {
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:20] != [NSNull null])
     {
-      [metricsDictionary setObject:[rs stringForColumnIndex:20] forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+      NSString *countryString = [rs stringForColumnIndex:20];
+      if ([countryString caseInsensitiveCompare:@"bretão"]) {
+        countryString = @"Brazil";
+      }
+      [metricsDictionary setObject:countryString forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:21] != [NSNull null])
     {

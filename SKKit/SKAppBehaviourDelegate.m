@@ -1942,7 +1942,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return NO;
 }
 
--(BOOL) getShouldDisplayWifiWlanCarrierNameInRunTestScreen {
+-(BOOL) getShouldDisplayWlanCarrierNameInRunTestScreen {
   return NO;
 }
 
