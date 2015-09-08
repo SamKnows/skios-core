@@ -33,9 +33,25 @@ using namespace::std;
 
 #import "SKJHttpTest.h"
 
+typedef void (^MyThreadBlock)(void);
+@interface MyThread : NSThread
+
+@property (nonatomic,copy) MyThreadBlock mBlock;
+
+@end
+
+@implementation MyThread
+
+- (void)main {
+  SK_ASSERT(self.mBlock != nil);
+  self.mBlock();
+}
+  
+@end
+
 @interface SKJHttpTest()
 //private Thread[] mThreads = null;										/* Array of all running threads */
-@property std::vector<std::thread*> *mThreads;
+@property NSMutableArray *mThreads;
 /*
  * Atomic variables used as aggregate counters or (errors, etc. ) indicators updated from concurrently running threads
  */
@@ -309,7 +325,7 @@ using namespace::std;
     
     self.downstream = true;
     
-    mThreads = new std::vector<std::thread*>();
+    mThreads = [NSMutableArray new];
     
     [self setDirection:direction];											/* Legacy. To be removed */
     [self.class sLatestSpeedReset:(self.downstream ? cReasonResetDownload : cReasonResetUpload)];
@@ -322,10 +338,10 @@ using namespace::std;
 
 - (void)dealloc
 {
-  for (auto theThread : *self.mThreads) {
-    delete theThread;
-  }
-  delete mThreads;
+//  for (NSThread *theThread in self.mThreads) {
+//  }
+  [mThreads removeAllObjects];
+  mThreads = nil;
 }
 
 -(void) setParams:(NSDictionary*)params { // List<Param> params) /* Initialisation helper function */
@@ -461,19 +477,25 @@ void threadEntry(SKJHttpTest *pSelf) {
   
   [self start];
   
-  for (auto theThread : *self.mThreads) {
-    delete theThread;
+  for (NSThread *theThread in self.mThreads) {
+    //delete theThread;
   }
-  mThreads->clear();
+  [mThreads removeAllObjects];
   
   for (int i = 0; i < self.nThreads; i++) {
-    std::thread *newThread = new std::thread(threadEntry, self);
-    self.mThreads->push_back(newThread);
+    MyThread *newThread = [[MyThread alloc] init];
+    newThread.mBlock = ^() {
+      [self myThreadEntry];
+    };
+    [self.mThreads addObject:newThread];
+    [newThread start];
   }
   
   @try {
-    for (auto theThread : *self.mThreads) {
-      theThread->join();
+    for (NSThread *theThread in self.mThreads) {
+      while ([theThread isFinished] == NO) {
+        usleep(1000);
+      }
 #ifdef DEBUG
       NSLog(@"**** DEBUG: THREAD JOINED!");
 #endif // DEBUG
@@ -829,16 +851,14 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 -(int) getThreadIndex {
   int threadIndex = 0;
   
-  std::thread::id this_id = std::this_thread::get_id();
-  
   //@synchronized (mThreads)
   @synchronized (self) {
     
     BOOL bFound = false;
     
     int i = 0;
-    for (auto theThread : *self.mThreads) {
-      if (this_id == theThread->get_id()) {
+    for (NSThread *theThread in self.mThreads) {
+      if ([theThread isEqual:[NSThread currentThread]]) {
         threadIndex = i;
         bFound = true;
         break;

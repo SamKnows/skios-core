@@ -240,16 +240,18 @@ static BOOL sbTestIsRunning = NO;
     //SK_ASSERT([self.autotestManagerDelegate respondsToSelector@selector(getAutotestDelegate)]);
     
     double latitude = [autotestManagerDelegate amdGetLatitude];
-    NSLog(@"latitude=%g", latitude);
+    //NSLog(@"latitude=%g", latitude);
     double longitude = [autotestManagerDelegate amdGetLongitude];
-    NSLog(@"longitude=%g", latitude);
+    //NSLog(@"longitude=%g", latitude);
     SKScheduler *schedule = [autotestManagerDelegate amdGetSchedule];
-    NSLog(@"schedule=%@", schedule);
+    //NSLog(@"schedule=%@", schedule);
     NSString *closestTargetName = [autotestManagerDelegate amdGetClosestTarget];
-    NSLog(@"closestTargetName=%@", closestTargetName);
+    SK_ASSERT(closestTargetName != nil);
+    //NSLog(@"closestTargetName=%@", closestTargetName);
     NSString *targetName = [schedule getClosestTargetName:closestTargetName];
-    NSLog(@"targetName=%@", targetName);
-    
+    SK_ASSERT(targetName != nil);
+    //NSLog(@"targetName=%@", targetName);
+   
     self.testId = [SKDatabase
                    storeBatchTestMapData:latitude
                    longitude:longitude

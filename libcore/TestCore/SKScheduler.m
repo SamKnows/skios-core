@@ -109,8 +109,15 @@
 
 - (NSString*)getClosestTargetName:(NSString*)dns
 {
-  if (nil == hosts) return nil;
-  if ([hosts count] == 0) return nil;
+  if (hosts == nil) {
+    SK_ASSERT(false);
+    return nil;
+  }
+  
+  if ([hosts count] == 0) {
+    SK_ASSERT(false);
+    return nil;
+  }
   
   bool bFound = false;
   NSString *result = nil;
