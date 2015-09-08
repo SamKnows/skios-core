@@ -13,6 +13,8 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
 
+#import "NSDate+Helper.h"
+
 #define ARC4RANDOM_MAX 0x100000000
 
 @implementation SKGlobalMethods
@@ -944,6 +946,10 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
       }
     }];
   });
+}
+
++(NSString *)sGetDateAsIso8601String:(NSDate*)date {
+  return [NSDate sGetDateAsIso8601String:date];
 }
 
 @end

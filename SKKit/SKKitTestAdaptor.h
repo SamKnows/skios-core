@@ -22,7 +22,7 @@
 - (instancetype)initWithClosestTargetTestDescriptor:(SKScheduleTest_Descriptor_ClosestTarget*)closestTarget;
 @end
 
-typedef void (^TSKDownloadTestProgressUpdate)(float progress, double currentBitrate);
+typedef void (^TSKDownloadTestProgressUpdate)(float progress, double bitrateMbps1024Based);
 
 @interface SKKitTestDownload : NSObject
 @property (copy) TSKDownloadTestProgressUpdate mProgressBlock;

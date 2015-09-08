@@ -144,8 +144,8 @@
   // TODO
 }
 
-- (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate {
-  mProgressBlock(progress, currentBitrate);
+- (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {
+  mProgressBlock(progress, bitrateMbps1024Based);
 }
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
@@ -207,7 +207,7 @@
   // TODO
 }
 
-- (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate {
+- (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {
   
 }
 

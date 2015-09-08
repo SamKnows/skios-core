@@ -94,4 +94,6 @@ typedef double SKTimeIntervalMicroseconds;
 + (NSString *)sCurrentWifiSSID;
 +(void) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion;
 
++(NSString *)sGetDateAsIso8601String:(NSDate*)date;
+  
 @end

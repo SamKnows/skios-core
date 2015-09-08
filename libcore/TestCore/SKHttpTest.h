@@ -173,7 +173,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
                   bytes:(NSUInteger)bytes
                   progress:(float)progress;
 
-- (void)htdDidUpdateTotalProgress:(float)progress currentBitrate:(double)currentBitrate;
+- (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based;
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer
