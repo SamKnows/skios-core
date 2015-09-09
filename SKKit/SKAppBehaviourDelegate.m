@@ -951,7 +951,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 #ifdef DEBUG
         NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
 #endif // DEBUG
-        if (testId != nil) {
+        if (testId != nil && ![testId isEqual:[NSNull null]])
+        {
           // Write the data to the database, along with the
           // other passive metrics associated with the test!
           // Notify the app, in case it is interested in showing it.
@@ -962,14 +963,20 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
          
           // This is an attempt to cater for the following exception:
           // "Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[1]'"
-          if (thePublicIp == nil) {
+          if ((thePublicIp == nil) || ([thePublicIp isEqual:[NSNull null]]))
+          {
             SK_ASSERT(false);
             thePublicIp = @"";
           }
-          if (theSubmissionId == nil) {
+          if ((theSubmissionId == nil) || ([theSubmissionId isEqual:[NSNull null]]))
+          {
             SK_ASSERT(false);
             theSubmissionId = @"";
           }
+       
+          // For testing only.
+          //theSubmissionId = (NSString*)[NSNull null];
+          //thePublicIp = (NSString*)[NSNull null];
           
           [SKDatabase updateMetricForTestId:testId
                                MetricColumn:@"Public_IP"
