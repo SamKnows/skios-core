@@ -1232,7 +1232,12 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   //    [self.tvCurrentResults reloadData];
   [self.tvCurrentResults beginUpdates];
-  [self.tvCurrentResults endUpdates];
+  
+  @try {
+    [self.tvCurrentResults endUpdates];
+  } @catch (NSException *e) {
+    SK_ASSERT(false);
+  }
 }
 
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based

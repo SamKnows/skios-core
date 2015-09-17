@@ -270,7 +270,7 @@
   // Success!
   //    if (SK_VERIFY(true) == false) {
   //      #ifdef DEBUG
-  //        println("DEBUG: fix some import data...")
+  //        print("DEBUG: fix some import data...")
   //      #endif // DEBUG
   //      return false
   //    }
@@ -279,7 +279,7 @@
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-  //println("DEBUG: XML DID END elementName: \(elementName)")
+  //print("DEBUG: XML DID END elementName: \(elementName)")
   if ([elementName isEqualToString:@"init"]) {
     mbInInitBlock = false;
   } else if ([elementName isEqualToString:@"tests"]) {
@@ -297,7 +297,7 @@
 }
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
-  //println("DEBUG: XML DID START elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
+  //print("DEBUG: XML DID START elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
   if ([elementName isEqualToString:@"init"]) {
     mbInInitBlock = true;
   } else if ([elementName isEqualToString:@"tests"]) {
@@ -313,8 +313,8 @@
     mbInScheduledTestsBlock = true;
     SK_ASSERT(mbInManualTestsBlock == false);
   }
-  //println("Element's name is \(elementName)")
-  //println("Element's attributes are \(attributeDict)")
+  //print("Element's name is \(elementName)")
+  //print("Element's attributes are \(attributeDict)")
   
   // We might get outer FXM element
   // We might get inner UNIT elements
@@ -468,7 +468,7 @@
     }
   } else if ([elementName isEqualToString:@"param"]) {
     
-    //println("DEBUG: param: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
+    //print("DEBUG: param: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
     NSString *tName = [attributeDict objectForKey:@"name"];
     SK_ASSERT(tName != nil);
     NSString *valueString = [attributeDict objectForKey:@"value"];
@@ -555,13 +555,13 @@
     }
     
   } else if ([elementName isEqualToString:@"condition"]) {
-    //println("TODO: condition? For Android: but not on iOS")
-    //println("DEBUG: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
+    //print("TODO: condition? For Android: but not on iOS")
+    //print("DEBUG: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
   } else if ([elementName isEqualToString:@"conditions"]) {
-    //println("DEBUG: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
+    //print("DEBUG: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
   } else if ([elementName isEqualToString:@"condition-group"]) {
-    //println("TODO: condition-group? For Android: but not on iOS")
-    //println("DEBUG: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
+    //print("TODO: condition-group? For Android: but not on iOS")
+    //print("DEBUG: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
   } else {
     
 #ifdef DEBUG
@@ -668,7 +668,7 @@
   //      return true
   //    }
   
-  //println("POST sort: mTestArray=\(mTestArray)")
+  //print("POST sort: mTestArray=\(mTestArray)")
   
 }
   

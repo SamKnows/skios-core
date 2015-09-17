@@ -477,9 +477,9 @@ void threadEntry(SKJHttpTest *pSelf) {
   
   [self start];
   
-  for (NSThread *theThread in self.mThreads) {
-    //delete theThread;
-  }
+//  for (NSThread *theThread in self.mThreads) {
+//    //delete theThread;
+//  }
   [mThreads removeAllObjects];
   
   for (int i = 0; i < self.nThreads; i++) {
