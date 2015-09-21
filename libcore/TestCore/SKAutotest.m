@@ -1122,7 +1122,8 @@ static BOOL sbTestIsRunning = NO;
   [phone setObject:[SKGlobalMethods getDeviceModel]
             forKey:@"model"];
   
-  [phone setObject:[[UIDevice currentDevice] systemName]
+  //NSString *oldSystemName =  [[UIDevice currentDevice] systemName];
+  [phone setObject:@"iPhone OS" // Override, as iOS 9 reports iOS rather than "iPhone OS" as reported by iOS 8...
             forKey:@"os_type"];
   
   [phone setObject:[[UIDevice currentDevice] systemVersion]
