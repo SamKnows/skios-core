@@ -52,6 +52,7 @@ int getdefaultgateway(in_addr_t * addr)
   if(l>0) {
     buf = malloc(l);
     if(sysctl(mib, sizeof(mib)/sizeof(int), buf, &l, 0, 0) < 0) {
+      free(buf);
       return -1;
     }
     for(p=buf; p<buf+l; p+=rt->rtm_msglen) {
