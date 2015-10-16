@@ -767,4 +767,16 @@
   return [self hexStringFromColor:color];
 }
 
+// http://stackoverflow.com/questions/30341224/ios-custom-status-bar-background-color-not-displaying
++ (UIImage *) sAsImageWithColor:(UIColor*) color {
+  CGRect rect = CGRectMake(0, 0, 1, 1);
+  UIGraphicsBeginImageContext(rect.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSetFillColorWithColor(context, color.CGColor);
+  CGContextFillRect(context, rect);
+  UIImage *colorImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return colorImage;
+}
+
 @end

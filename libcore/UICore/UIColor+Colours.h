@@ -156,4 +156,7 @@ typedef enum
 + (UIColor*)sSKGetColorFromCMYK:(CGFloat)c M:(CGFloat)m Y:(CGFloat)y K:(CGFloat)k;
 + (NSString*)sSKGetHexStringColorFromCMYK:(CGFloat)c M:(CGFloat)m Y:(CGFloat)y K:(CGFloat)k;
 
+// Get 1-pixel image with given color
++ (UIImage *) sAsImageWithColor:(UIColor*) color;
+
 @end
