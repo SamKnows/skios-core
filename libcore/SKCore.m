@@ -94,25 +94,30 @@ static SKCore *sbCore = nil;
 NSBundle *getCurrentLanguageBundle(NSString *localeIdentifier) {
   
   // THis gets e.g. en_US, en_GB, pt_BR, pt, zh_HANS, zh_HANT etc.
-  
+ 
+  //NSLog(@"Load bundle for %@", localeIdentifier);
   NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
   if (bundle != nil) {
     // Found match for e.g. en_GB
+    //NSLog(@"Bundle matched for %@", localeIdentifier);
     return bundle;
   }
   
   // Split into e.g. [en, GB] and just use the en part.
   NSArray *stringArray = [localeIdentifier componentsSeparatedByString: @"_"];
   localeIdentifier = stringArray[0];
+  //NSLog(@"Load bundle (2) for %@", localeIdentifier);
   bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
   if (bundle != nil) {
 #ifdef DEBUG
     //NSLog(@"DEBUG: localeIdentifier#2=%@", localeIdentifier);
 #endif // DEBUG
+    //NSLog(@"Bundle matched (2) for %@", localeIdentifier);
     return bundle;
   }
   
   // Nothing found - default to English.
+  //NSLog(@"Load bundle for ENGLISH (default)");
   localeIdentifier = @"en";
   bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:localeIdentifier ofType:@"lproj"]];
   SK_ASSERT(bundle != nil);
@@ -126,14 +131,25 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
   // always seems to return the correct value.
   // This returns e.g. en-GB, zh-Hans, zh-Hant etc.
   NSString *language =  [[NSLocale preferredLanguages] objectAtIndex:0];
+  NSString *localisation =  [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+  //NSLog(@"DEBUG: preferredLanguages=%@", language);
+  //NSLog(@"DEBUG: preferredLocalizations=%@", localisation);
+  // Oct 22 08:44:22 Pete-Coles-iPhone-6 EAQNewApp[784] <Warning>: DEBUG: preferredLanguages=pt-BR
+  // Oct 22 08:44:22 Pete-Coles-iPhone-6 EAQNewApp[784] <Warning>: DEBUG: preferredLocalizations=pt
 #ifdef DEBUG
-  //NSLog(@"DEBUG: preferredLang=%@", language);
 #endif // DEBUG
   if ([language isEqualToString:@"zh-HK"]) {
 #ifdef DEBUG
     //NSLog(@"DEBUG: warning: preferred language is HK! %@", language);
 #endif // DEBUG
     language = @"zh-Hant";
+  }
+  
+  // Required by iOS 9!
+  // change e.g. pt-br to pt!
+  if ([language hasPrefix:@"pt-"]) {
+    language = @"pt";
+    //NSLog(@"DEBUG: preferredLanguage changed to =%@", language);
   }
   
 //#ifdef DEBUG
@@ -147,10 +163,12 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
   
   // Allow the string to be looked-up from the app.
   NSString *theResult = NSLocalizedString(theString, nil);
+  //NSLog(@"DEBUG: theResult for (%@) = (%@)", theString, theResult);
   // If the app doesn't override, use the internal default!
   if ([theResult isEqualToString:theString]) {
     NSString *theResult2 = NSLocalizedStringFromTableInBundle(theString, @"libcore", getCurrentLanguageBundle(localeIdentifier), @"");
     //NSLog(@"theResult=%@", theResult3);
+    //NSLog(@"DEBUG: theResult2 for (%@) = (%@)", theString, theResult2);
     if (theResult2 != nil) {
       theResult = theResult2;
     }

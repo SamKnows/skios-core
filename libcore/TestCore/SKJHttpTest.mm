@@ -487,7 +487,9 @@ void threadEntry(SKJHttpTest *pSelf) {
     newThread.mBlock = ^() {
       [self myThreadEntry];
     };
-    [self.mThreads addObject:newThread];
+    @synchronized (self) {
+      [self.mThreads addObject:newThread];
+    }
     [newThread start];
   }
   
@@ -944,7 +946,10 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 #endif // DEBUG
   
   BOOL result = false;
-  int threadIndex = [self getThreadIndex];
+  int threadIndex = 0;
+  @synchronized (self) {
+    threadIndex = [self getThreadIndex];
+  }
   
   int sockfd = [self getSocket];
   
