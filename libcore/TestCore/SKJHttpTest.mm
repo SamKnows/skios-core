@@ -487,10 +487,15 @@ void threadEntry(SKJHttpTest *pSelf) {
     newThread.mBlock = ^() {
       [self myThreadEntry];
     };
-    @synchronized (self) {
-      [self.mThreads addObject:newThread];
-    }
-    [newThread start];
+    // Add the thread, but do  NOT start until we have accumulated all threads.
+    // That is in order to prevent __NSFastEnumerationMutationHandler ...!
+    [self.mThreads addObject:newThread];
+  }
+  
+  // Now safe to start all the threads.
+  // This is in order to prevent __NSFastEnumerationMutationHandler ...!
+  for (NSThread *theThread in self.mThreads) {
+    [theThread start];
   }
   
   @try {
