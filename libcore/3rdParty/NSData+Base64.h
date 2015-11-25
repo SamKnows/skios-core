@@ -40,3 +40,5 @@ char *NewBase64Encode(
 - (NSString *)base64EncodedString;
 
 @end
+
+NSString *sBase64EncodedStringForData(NSData *forData);

@@ -513,7 +513,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 #endif // DEBUG
   
     NSData *authData = [authStr dataUsingEncoding:NSASCIIStringEncoding];
-    NSString *authHeader = [NSString stringWithFormat:@"Basic %@", [authData base64EncodedString]];
+    NSString *authHeader = [NSString stringWithFormat:@"Basic %@", sBase64EncodedStringForData(authData)];
   
 #ifdef DEBUG
   NSLog(@"DEBUG: authHeader=%@", authHeader);

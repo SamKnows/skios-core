@@ -296,9 +296,14 @@ char *NewBase64Encode(
 //
 - (NSString *)base64EncodedString
 {
+  return sBase64EncodedStringForData(self);
+}
+
+@end
+
+NSString *sBase64EncodedStringForData(NSData *forData) {
 	size_t outputLength = 1;
-	char *outputBuffer =
-		NewBase64Encode([self bytes], [self length], true, &outputLength);
+	char *outputBuffer = NewBase64Encode([forData bytes], [forData length], true, &outputLength);
 	
 	NSString *result =
 		[[NSString alloc]
@@ -307,6 +312,5 @@ char *NewBase64Encode(
 			encoding:NSASCIIStringEncoding];
 	free(outputBuffer);
 	return result;
+  
 }
-
-@end
