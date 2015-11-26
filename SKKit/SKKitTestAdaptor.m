@@ -168,6 +168,7 @@
 @implementation SKKitTestUpload
 
 @synthesize mpUploadTest;
+@synthesize mProgressBlock;
 
 - (instancetype)initWithUploadTestDescriptor:(SKScheduleTest_Descriptor_Upload*)uploadTest {
   self = [super init];
@@ -194,11 +195,36 @@
   mpUploadTest = nil;
 }
 
+- (void) start:(TSKUploadTestProgressUpdate)progressBlock {
+  self.mProgressBlock = progressBlock;
+  [mpUploadTest startTest];
+}
+
+- (void) stop {
+  [mpUploadTest stopTest];
+}
+
 // Pragma SKHttpTestDelegate
 
 - (void)htdUpdateStatus:(TransferStatus)status
                threadId:(NSUInteger)threadId {
-  // TODO
+  switch (status) {
+    case FAILED:
+#ifdef DEBUG
+      NSLog(@"DEBUG: SKKitTestDownload - failed!");
+#endif // DEBUG
+      mProgressBlock(100.0, -1.0);
+      break;
+    case CANCELLED:
+    case INITIALIZING:
+    case WARMING:
+    case TRANSFERRING:
+    case COMPLETE:
+    case FINISHED:
+    case IDLE:
+    default:
+      break;
+  }
 }
 
 - (void)htdUpdateDataUsage:(NSUInteger)totalBytes
@@ -208,14 +234,14 @@
 }
 
 - (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {
-  
+  mProgressBlock(progress, bitrateMbps1024Based);
 }
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer
                TestDisplayName:(NSString *)testDisplayName
 {
-  // TODO
+  mProgressBlock(100.0, bitrateMbps1024Based);
 }
 @end
 
@@ -265,7 +291,6 @@
   
 }
 - (void)ltdUpdateProgress:(float)progress latency:(float)latency {
-  
 }
 - (void)ltdUpdateStatus:(LatencyStatus)status {
   

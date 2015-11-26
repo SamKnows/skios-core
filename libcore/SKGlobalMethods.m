@@ -232,7 +232,10 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 {     
   double time = transferTimeMicroseconds / 1000000.0;   // convert microseconds -> seconds
   
-  double bytesPerSecond = ((double)transferBytes) / time;
+  double bytesPerSecond = 0.001;
+  if (time > 0) {
+    bytesPerSecond = ((double)transferBytes) / time;
+  }
   
   double bitrate1024Based = [SKGlobalMethods convertBytesPerSecondToMbps1024Based:bytesPerSecond];
   

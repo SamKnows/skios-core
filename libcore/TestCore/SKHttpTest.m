@@ -391,9 +391,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       double uploadSpeedMbps = [SKGlobalMethods convertBytesPerSecondToMbps1000Based:bytesPerSecond];
 #ifdef DEBUG
       if (uploadSpeedMbps > 0.0) {
-        // Would expect these values to be pretty close to each other - probably around 10%
+        // Would expect these values to be pretty close to each other - probably around 20%
         double diffAsFraction = fabs(uploadSpeedMbps-uploadSpeedMbpsMovingAverage) / uploadSpeedMbps;
-        SK_ASSERT(diffAsFraction <= 0.10);
+        SK_ASSERT(diffAsFraction <= 0.20);
       }
 #endif // DEBUG
       //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMbps);
@@ -1126,7 +1126,9 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   if (bytesPerSecond <= 0) {
     // 30/03/2015 - note that if bytesPerSecond is (less than or equal to) ZERO, we must also tag this with "success": false
     // c.f. HttpTest.java on
-    SK_ASSERT(false);
+#ifdef DEBUG
+  NSLog(@"DEBUG: WARNING: bytesPerSecond = 0");
+#endif // DEBUG
     self.testOK = NO;
   }
   

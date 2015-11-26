@@ -139,7 +139,9 @@ const int extMonitorUpdateInterval = 500000;
     // Verify thta we've set everything to zero properly!
     SK_ASSERT([super getTotalTransferBytes] == 0L);
     @try {
-      SK_ASSERT(bytesPerSecond() == 0);
+      if (isWarmup == NO) {
+        SK_ASSERT(bytesPerSecond() == 0);
+      }
     } @catch (NSException *e1) {
       SK_ASSERT(false);
     }
@@ -207,8 +209,10 @@ const int extMonitorUpdateInterval = 500000;
   
   if ([super getError]) {
     // Warm up might have set a global error
-    NSLog(@"WarmUp Exits: Result FALSE, totalWarmUpBytes=%d", (int)[self getTotalWarmUpBytes]);//haha remove in production
-    SK_ASSERT(false);
+#ifdef DEBUG
+    NSLog(@"*** DEBUG: WARNING: WarmUp Exits: Result FALSE, totalWarmUpBytes=%d", (int)[self getTotalWarmUpBytes]);//haha remove in production
+#endif // DEBUG
+    //SK_ASSERT(false);
     return false;
   }
   return result;
