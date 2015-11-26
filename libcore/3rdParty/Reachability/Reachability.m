@@ -259,7 +259,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	
 	// Post a notification to notify the client that the network reachability changed.
   // Posting to NSNotificationCenter *must* be done in the main thread!
-  SK_ASSERT([NSThread isMainThread]);
+  //SK_ASSERT([NSThread isMainThread]);
 	[[NSNotificationCenter defaultCenter] postNotificationName: kReachabilityChangedNotification 
 														object: (Reachability *) info];
 	
