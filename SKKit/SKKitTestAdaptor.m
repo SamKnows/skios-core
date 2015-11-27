@@ -306,7 +306,7 @@
   double latency = mpLatencyTest.latency;
   double packetLoss = mpLatencyTest.packetLoss;
   double jitter = mpLatencyTest.jitter;
-  self.mProgressBlock(100.0, latency, packetLoss, jitter);
+  self.mProgressBlock(YES, 100.0, latency, packetLoss, jitter);
   
 }
 - (void)ltdTestWasCancelled {
@@ -322,7 +322,7 @@
   //double latency = mpLatencyTest.latency;
   double packetLoss = mpLatencyTest.packetLoss;
   double jitter = mpLatencyTest.jitter;
-  self.mProgressBlock(progress, latency, packetLoss, jitter);
+  self.mProgressBlock(NO, progress, latency, packetLoss, jitter);
 }
 
 - (void)ltdUpdateStatus:(LatencyStatus)status {
@@ -331,7 +331,7 @@
 #ifdef DEBUG
       NSLog(@"DEBUG: SKKitTestLatency - failed!");
 #endif // DEBUG
-      self.mProgressBlock(100.0, -1.0, -1.0, -1.0);
+      self.mProgressBlock(YES, 100.0, -1.0, -1.0, -1.0);
       break;
   case IDLE_STATUS:
   case INITIALIZING_STATUS:
