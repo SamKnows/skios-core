@@ -43,6 +43,13 @@ typedef void (^TSKUploadTestProgressUpdate)(float progress, double bitrateMbps10
 -(CGFloat) getLatestSpeedAs1000BasedMbps;
 @end
 
+typedef void (^TSKLatencyTestProgressUpdate)(float progress, double latency, double packetLoss, double jitter);
+
 @interface SKKitTestLatency : NSObject
+@property (copy) TSKLatencyTestProgressUpdate mProgressBlock;
+
 - (instancetype)initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)latencyTest;
+- (void) start:(TSKLatencyTestProgressUpdate)progressBlock;
+- (void) stop;
+- (void) getLatencyUpdate;
 @end

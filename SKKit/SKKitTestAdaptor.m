@@ -260,6 +260,7 @@
 
 @implementation SKKitTestLatency
 
+@synthesize mProgressBlock;
 @synthesize mpLatencyTest;
 
 - (instancetype)initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)latencyTest {
@@ -286,19 +287,63 @@
   mpLatencyTest = nil;
 }
 
+- (void) start:(TSKLatencyTestProgressUpdate)progressBlock {
+  self.mProgressBlock = progressBlock;
+  [mpLatencyTest startTest];
+}
+
+- (void) stop {
+  [mpLatencyTest stopTest];
+}
+
 // Pragma SKLatencyTestDelegate
 - (void)ltdTestDidFail {
   
 }
+
 - (void)ltdTestDidSucceed {
+  
+  double latency = mpLatencyTest.latency;
+  double packetLoss = mpLatencyTest.packetLoss;
+  double jitter = mpLatencyTest.jitter;
+  self.mProgressBlock(100.0, latency, packetLoss, jitter);
   
 }
 - (void)ltdTestWasCancelled {
   
 }
+
 - (void)ltdUpdateProgress:(float)progress latency:(float)latency {
+  
+  if (progress > 100.0) {
+    progress = 100.0;
+  }
+  //SK_ASSERT(progress < 100.0);
+  //double latency = mpLatencyTest.latency;
+  double packetLoss = mpLatencyTest.packetLoss;
+  double jitter = mpLatencyTest.jitter;
+  self.mProgressBlock(progress, latency, packetLoss, jitter);
 }
+
 - (void)ltdUpdateStatus:(LatencyStatus)status {
+  switch (status) {
+  case FAILED_STATUS:
+#ifdef DEBUG
+      NSLog(@"DEBUG: SKKitTestLatency - failed!");
+#endif // DEBUG
+      self.mProgressBlock(100.0, -1.0, -1.0, -1.0);
+      break;
+  case IDLE_STATUS:
+  case INITIALIZING_STATUS:
+  case RUNNING_STATUS:
+  case COMPLETE_STATUS:
+  case FINISHED_STATUS:
+  case CANCELLED_STATUS:
+  case TIMEOUT_STATUS:
+  case SEARCHING_STATUS:
+  default:
+    break;
+  }
   
 }
 - (void)ltdTestDidSendPacket:(NSUInteger)bytes {
