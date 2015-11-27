@@ -40,6 +40,7 @@ typedef void (^TSKUploadTestProgressUpdate)(float progress, double bitrateMbps10
 - (instancetype)initWithUploadTestDescriptor:(SKScheduleTest_Descriptor_Upload*)uploadTest;
 - (void) start:(TSKUploadTestProgressUpdate)progressBlock;
 - (void) stop;
+-(CGFloat) getLatestSpeedAs1000BasedMbps;
 @end
 
 @interface SKKitTestLatency : NSObject

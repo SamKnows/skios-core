@@ -10,6 +10,7 @@
 
 #import "../../skios-core/libcore/SKCore.h"
 #import "../../skios-core/libcore/TestCore/SKClosestTargetTest.h"
+#import "../../skios-core/libcore/TestCore/SKJHttpTest.h"
 
 // Without this call, we can't use Swift classes from our objective C.
 // The file is AUTO-GENERATED and is under the build folder, you won't find it in the project area!
@@ -203,6 +204,11 @@
 - (void) stop {
   [mpUploadTest stopTest];
 }
+
+-(CGFloat) getLatestSpeedAs1000BasedMbps {
+  return [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+}
+
 
 // Pragma SKHttpTestDelegate
 

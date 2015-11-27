@@ -210,8 +210,12 @@
 }
 
 // Every so often, we can query test result.
+// Note that (within the timer method) we use the timer tick *only* if the upload test is running;
+// because callbacks from the *download* test happen periodically (and thy do *not* appear periodically
+// for the upload test!)
 -(void) handleTestTimer: (NSTimer*)theTimer {
-  
+ 
+  // This query is done ONLY for the upload test!
   if ([SKJPassiveServerUploadTest sGetTestIsRunning] == NO) {
     return;
   }
@@ -221,16 +225,15 @@
     return;
   }
   
- 
   // TODO - make this a SINGLETON, so we can get progress and stop the test!
-  double bitrate100BasedForDisplay = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
+  double bitrate1000BasedForDisplay = [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
   //NSLog(@"****** TEST progress=%d, uploadSpeed bytes persec=%g, mbps=%g AT END", progress, uploadSpeed, uploadSpeedMpbs);
-  //NSLog(@"****** TEST uploadSpeed mbps=%g ", bitrate100BasedForDisplay);
+  //NSLog(@"****** TEST uploadSpeed mbps=%g ", bitrate1000BasedForDisplay);
  
   // The "natural" way to display values, is 1000 based.
-  //double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:bitrate100BasedForDisplay];
-  [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate100BasedForDisplay]];
-  [self.tmActivityIndicator setAngleByValue:bitrate100BasedForDisplay];
+  //double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:bitrate1000BasedForDisplay];
+  [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate1000BasedForDisplay]];
+  [self.tmActivityIndicator setAngleByValue:bitrate1000BasedForDisplay];
 }
 
 - (void)initialiseViewOnMasterView
@@ -1183,10 +1186,10 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       } else {
        
         // The "natural" way to display values, is 1000 based.
-        double bitrate100BasedForDisplay = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
-        [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate100BasedForDisplay]];
+        double bitrate1000BasedForDisplay = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrate1024Based];
+        [self.tmActivityIndicator setCenterText:[NSString localizedStringWithFormat:@"%.02f", bitrate1000BasedForDisplay]];
         
-        [self.tmActivityIndicator setAngleByValue:bitrate100BasedForDisplay];
+        [self.tmActivityIndicator setAngleByValue:bitrate1000BasedForDisplay];
       }
       
       [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
