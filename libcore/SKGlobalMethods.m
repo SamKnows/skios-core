@@ -249,16 +249,20 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   return result;
 }
 
++(NSString*) bitrateMbps1000BasedLocalNumberStringBasedToString:(NSString*)bitrateMbps1000BasedAsLocalString {
+  double bitrateMbps1000Based = [SKGlobalMethods convertLocalNumberStringToDouble:bitrateMbps1000BasedAsLocalString];
+  NSString *result1 = [SKGlobalMethods bitrateMbps1000BasedToString:(double)bitrateMbps1000Based];
+  return result1;
+}
+
 +(NSString*) bitrateMbps1024BasedLocalNumberStringBasedToString:(NSString*)bitrateMbps1024BasedAsLocalString {
   double bitrateMbps1024Based = [SKGlobalMethods convertLocalNumberStringToDouble:bitrateMbps1024BasedAsLocalString];
   NSString *result1 = [SKGlobalMethods bitrateMbps1024BasedToString:(double)bitrateMbps1024Based];
   return result1;
 }
 
-
-+(NSString*) bitrateMbps1024BasedToString:(double)bitrateMbps1024Based {
++(NSString*) bitrateMbps1000BasedToString:(double)bitrateMbps1000Based {
   
-  double bitrateMbps1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrateMbps1024Based];
   double bitrateBitsPerSecond = 1000000.0 * bitrateMbps1000Based;
   
   NSString *result;
@@ -271,6 +275,12 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 			result = [NSString stringWithFormat:@"%@ Mbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000000.0]];
 		}
     return result;
+}
+
++(NSString*) bitrateMbps1024BasedToString:(double)bitrateMbps1024Based {
+  
+  double bitrateMbps1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrateMbps1024Based];
+  return [SKGlobalMethods bitrateMbps1000BasedToString:bitrateMbps1000Based];
 }
 
 +(NSString*)sGet3DigitsNumber:(float)number_
