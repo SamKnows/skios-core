@@ -1,12 +1,12 @@
 //
-//  SKKitTestAdaptor.m
+//  SKKitTest.m
 //  SKKit
 //
 //  Created by Pete Cole on 26/01/2015.
 //  Copyright (c) 2015 SamKnows. All rights reserved.
 //
 
-#import "SKKitTestAdaptor.h"
+#import "SKKitTest.h"
 
 #import "../../skios-core/libcore/SKCore.h"
 #import "../../skios-core/libcore/TestCore/SKClosestTargetTest.h"

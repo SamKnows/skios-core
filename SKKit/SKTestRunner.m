@@ -16,7 +16,7 @@
 
 #import "SKCore.h"
 #import "SKScheduleParser.h"
-#import "SKKitTestAdaptor.h"
+#import "SKKitTest.h"
 
 @interface SKTestRunner()
 @end

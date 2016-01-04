@@ -1,5 +1,5 @@
 //
-//  SKKitTestAdaptor.h
+//  SKKitTest.h
 //  SKKit
 //
 //  Created by Pete Cole on 26/01/2015.
@@ -51,5 +51,4 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 - (instancetype)initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)latencyTest;
 - (void) start:(TSKLatencyTestProgressUpdate)progressBlock;
 - (void) stop;
-- (void) getLatencyUpdate;
 @end
