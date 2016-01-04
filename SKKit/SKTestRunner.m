@@ -15,7 +15,7 @@
 //#import <SKKit/SKKit-Swift.h>
 
 #import "SKCore.h"
-#import "SKScheduleParser.h"
+#import "SKKitTestDescriptor.h"
 #import "SKKitTest.h"
 
 @interface SKTestRunner()
@@ -28,32 +28,32 @@
   if (self) {
     NSMutableArray *testArray = [fromScheduleParser getTestArray];
     
-    for (SKScheduleTest *testDescriptor in testArray) {
+    for (SKKitTestDescriptor *testDescriptor in testArray) {
       switch ([testDescriptor getType]) {
-        case SKTestType_Closest:
+        case SKKitTestType_Closest:
         {
-          SKKitTestClosestTarget *closestTest = [[SKKitTestClosestTarget alloc] initWithClosestTargetTestDescriptor:(SKScheduleTest_Descriptor_ClosestTarget*)testDescriptor];
+          SKKitTestClosestTarget *closestTest = [[SKKitTestClosestTarget alloc] initWithClosestTargetTestDescriptor:(SKKitTestDescriptor_ClosestTarget*)testDescriptor];
           // TODO!
           SK_ASSERT(closestTest != nil);
         }
           break;
-        case SKTestType_Download:
+        case SKKitTestType_Download:
         {
-          SKKitTestDownload *downloadTest = [[SKKitTestDownload alloc] initWithDownloadTestDescriptor:(SKScheduleTest_Descriptor_Download*)testDescriptor];
+          SKKitTestDownload *downloadTest = [[SKKitTestDownload alloc] initWithDownloadTestDescriptor:(SKKitTestDescriptor_Download*)testDescriptor];
           // TODO!
           SK_ASSERT(downloadTest != nil);
         }
           break;
-        case SKTestType_Upload:
+        case SKKitTestType_Upload:
         {
-          SKKitTestUpload *uploadTest = [[SKKitTestUpload alloc] initWithUploadTestDescriptor:(SKScheduleTest_Descriptor_Upload*)testDescriptor];
+          SKKitTestUpload *uploadTest = [[SKKitTestUpload alloc] initWithUploadTestDescriptor:(SKKitTestDescriptor_Upload*)testDescriptor];
           // TODO!
           SK_ASSERT(uploadTest != nil);
         }
           break;
-        case SKTestType_Latency:
+        case SKKitTestType_Latency:
         {
-          SKKitTestLatency *latencyTest = [[SKKitTestLatency alloc] initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)testDescriptor];
+          SKKitTestLatency *latencyTest = [[SKKitTestLatency alloc] initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)testDescriptor];
           // TODO!
           SK_ASSERT(latencyTest != nil);
         }

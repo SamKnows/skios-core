@@ -13,13 +13,13 @@
 
 //#import <SKKit/SKKit-Swift.h>
 
-@class SKScheduleTest_Descriptor_ClosestTarget;
-@class SKScheduleTest_Descriptor_Download;
-@class SKScheduleTest_Descriptor_Upload;
-@class SKScheduleTest_Descriptor_Latency;
+@class SKKitTestDescriptor_ClosestTarget;
+@class SKKitTestDescriptor_Download;
+@class SKKitTestDescriptor_Upload;
+@class SKKitTestDescriptor_Latency;
 
 @interface SKKitTestClosestTarget : NSObject
-- (instancetype)initWithClosestTargetTestDescriptor:(SKScheduleTest_Descriptor_ClosestTarget*)closestTarget;
+- (instancetype)initWithClosestTargetTestDescriptor:(SKKitTestDescriptor_ClosestTarget*)closestTarget;
 @end
 
 typedef void (^TSKDownloadTestProgressUpdate)(float progress, double bitrateMbps1024Based);
@@ -27,7 +27,7 @@ typedef void (^TSKDownloadTestProgressUpdate)(float progress, double bitrateMbps
 @interface SKKitTestDownload : NSObject
 @property (copy) TSKDownloadTestProgressUpdate mProgressBlock;
 
-- (instancetype)initWithDownloadTestDescriptor:(SKScheduleTest_Descriptor_Download*)downloadTest;
+- (instancetype)initWithDownloadTestDescriptor:(SKKitTestDescriptor_Download*)downloadTest;
 - (void) start:(TSKDownloadTestProgressUpdate)progressBlock;
 - (void) stop;
 @end
@@ -37,7 +37,7 @@ typedef void (^TSKUploadTestProgressUpdate)(float progress, double bitrateMbps10
 @interface SKKitTestUpload : NSObject
 @property (copy) TSKUploadTestProgressUpdate mProgressBlock;
 
-- (instancetype)initWithUploadTestDescriptor:(SKScheduleTest_Descriptor_Upload*)uploadTest;
+- (instancetype)initWithUploadTestDescriptor:(SKKitTestDescriptor_Upload*)uploadTest;
 - (void) start:(TSKUploadTestProgressUpdate)progressBlock;
 - (void) stop;
 -(CGFloat) getLatestSpeedAs1000BasedMbps;
@@ -48,7 +48,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 @interface SKKitTestLatency : NSObject
 @property (copy) TSKLatencyTestProgressUpdate mProgressBlock;
 
-- (instancetype)initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)latencyTest;
+- (instancetype)initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)latencyTest;
 - (void) start:(TSKLatencyTestProgressUpdate)progressBlock;
 - (void) stop;
 @end

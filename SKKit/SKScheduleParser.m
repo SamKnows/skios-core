@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKScheduleParser.h"
+#import "SKKitTestDescriptor.h"
 #import "SKTestRunner.h"
 
 // https://developer.apple.com/library/mac/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html
@@ -44,13 +44,13 @@
 
 //====
 
-@interface SKScheduleTest()
+@interface SKKitTestDescriptor()
 @property NSString *mId;
-@property SKTestType mType;
+@property SKKitTestType mType;
 @end
 
-@implementation SKScheduleTest
-- (instancetype)initWithId:(NSString*)identifier TestType:(SKTestType)testType{
+@implementation SKKitTestDescriptor
+- (instancetype)initWithId:(NSString*)identifier TestType:(SKKitTestType)testType{
 
   self = [super init];
   if (self) {
@@ -64,20 +64,20 @@
   return self.mId;
 }
 
-- (SKTestType)getType {
+- (SKKitTestType)getType {
   return self.mType;
 }
 
 
 -(NSString*) getDisplayName {
   switch (self.mType) {
-    case SKTestType_Closest:
+    case SKKitTestType_Closest:
       return @"Closest";
-    case SKTestType_Download:
+    case SKKitTestType_Download:
       return @"Download";
-    case SKTestType_Upload:
+    case SKKitTestType_Upload:
       return @"Upload";
-    case SKTestType_Latency:
+    case SKKitTestType_Latency:
     defualt:
       return @"Latency";
   }
@@ -85,10 +85,10 @@
 @end
 
 
-@implementation SKScheduleTest_Descriptor_ClosestTarget
+@implementation SKKitTestDescriptor_ClosestTarget
 - (instancetype)initWithId:(NSString*)identifier
 {
-  self = [super initWithId:identifier TestType:SKTestType_Closest];
+  self = [super initWithId:identifier TestType:SKKitTestType_Closest];
   if (self) {
     self.mTargetArray = [NSMutableArray new];
   }
@@ -96,11 +96,11 @@
 }
 @end
 
-@implementation SKScheduleTest_Descriptor_Download
+@implementation SKKitTestDescriptor_Download
 
 - (instancetype)initWithId:(NSString*)identifier
 {
-  self = [super initWithId:identifier TestType:SKTestType_Download];
+  self = [super initWithId:identifier TestType:SKKitTestType_Download];
   if (self) {
     self.mTarget = @"";
     self.mPort = 0;
@@ -117,11 +117,11 @@
 @end
 
 
-@implementation SKScheduleTest_Descriptor_Latency
+@implementation SKKitTestDescriptor_Latency
 
 - (instancetype)initWithId:(NSString*)identifier
 {
-  self = [super initWithId:identifier TestType:SKTestType_Latency];
+  self = [super initWithId:identifier TestType:SKKitTestType_Latency];
   if (self) {
     self.mTarget = @"";
     self.mPort = 0;
@@ -137,11 +137,11 @@
 @end
 
 
-@implementation SKScheduleTest_Descriptor_Upload
+@implementation SKKitTestDescriptor_Upload
 
 - (instancetype)initWithId:(NSString*)identifier
 {
-  self = [super initWithId:identifier TestType:SKTestType_Upload];
+  self = [super initWithId:identifier TestType:SKKitTestType_Upload];
   if (self) {
     self.mTarget = @"";
     self.mPort = 0;
@@ -166,7 +166,7 @@
 
 @property NSString * mSubmitDcsHost; // String = "dcs.samknows.com" // Default value!
 @property NSMutableArray * mHostArray; // :Array<SKScheduleHost> = []
-@property NSMutableArray * mTestArray; // :Array<SKScheduleTest> = []
+@property NSMutableArray * mTestArray; // :Array<SKKitTestDescriptor> = []
 @property NSMutableArray * mManualTestArray; // :Array<String> = []
 @property double mDataCapMbps;
 @property BOOL mbParseError;
@@ -175,10 +175,10 @@
 @property BOOL mbInTestsBlock;
 @property BOOL mbInManualTestsBlock;
 @property BOOL mbInScheduledTestsBlock;
-@property SKScheduleTest_Descriptor_ClosestTarget *mInTest_ClosestTarget;
-@property SKScheduleTest_Descriptor_Download *mInTest_Download;
-@property SKScheduleTest_Descriptor_Upload *mInTest_Upload;
-@property SKScheduleTest_Descriptor_Latency *mInTest_Latency;
+@property SKKitTestDescriptor_ClosestTarget *mInTest_ClosestTarget;
+@property SKKitTestDescriptor_Download *mInTest_Download;
+@property SKKitTestDescriptor_Upload *mInTest_Upload;
+@property SKKitTestDescriptor_Latency *mInTest_Latency;
 @end
 
 @implementation SKScheduleParser
@@ -373,28 +373,28 @@
       NSString *tTestId = [attributeDict objectForKey:@"test-id"];
       SK_ASSERT(tTestId != nil);
       
-      SKScheduleTest *theTest = nil;
+      SKKitTestDescriptor *theTest = nil;
       
       if ([tTestType isEqualToString:@"closestTarget"]) {
         // These are never given an id. So, we give them an arbitrary id!
         tTestId = closestTargetId;
         
-        SKScheduleTest_Descriptor_ClosestTarget *thisTest = [[SKScheduleTest_Descriptor_ClosestTarget alloc] initWithId:tTestId];
+        SKKitTestDescriptor_ClosestTarget *thisTest = [[SKKitTestDescriptor_ClosestTarget alloc] initWithId:tTestId];
         theTest = thisTest;
         mInTest_ClosestTarget = thisTest;
       } else if ([tTestType isEqualToString:@"downstreamthroughput"]) {
         SK_ASSERT(tTestId != nil);
-        SKScheduleTest_Descriptor_Download*thisTest = [[SKScheduleTest_Descriptor_Download alloc] initWithId:tTestId];
+        SKKitTestDescriptor_Download*thisTest = [[SKKitTestDescriptor_Download alloc] initWithId:tTestId];
         theTest = thisTest;
         mInTest_Download = thisTest;
       } else if ([tTestType isEqualToString:@"upstreamthroughput"]) {
         SK_ASSERT(tTestId != nil);
-        SKScheduleTest_Descriptor_Upload*thisTest = [[SKScheduleTest_Descriptor_Upload alloc] initWithId:tTestId];
+        SKKitTestDescriptor_Upload*thisTest = [[SKKitTestDescriptor_Upload alloc] initWithId:tTestId];
         theTest = thisTest;
         mInTest_Upload = thisTest;
       } else if ([tTestType isEqualToString:@"latency"]) {
         SK_ASSERT(tTestId != nil);
-        SKScheduleTest_Descriptor_Latency*thisTest = [[SKScheduleTest_Descriptor_Latency alloc] initWithId:tTestId];
+        SKKitTestDescriptor_Latency*thisTest = [[SKKitTestDescriptor_Latency alloc] initWithId:tTestId];
         theTest = thisTest;
         mInTest_Latency = thisTest;
       } else {
@@ -406,7 +406,7 @@
       
       if (theTest != nil) {
         // Verify that this doesn't already exist with a matching test id...
-        for (SKScheduleTest *checkTest in mTestArray) {
+        for (SKKitTestDescriptor *checkTest in mTestArray) {
           SK_ASSERT(![[checkTest getId] isEqualToString:[theTest getId]]);
         }
         
@@ -578,14 +578,14 @@
   NSLog(@"DEBUG: PRE sort: mTestArray=\(mTestArray)");
 #endif // DEBUG
   
-  NSMutableArray *sortedArray = [NSMutableArray new]; // :Array<SKScheduleTest> = []
+  NSMutableArray *sortedArray = [NSMutableArray new]; // :Array<SKKitTestDescriptor> = []
   
   // We MUST ensure that we always have a closest target test, and that it is always run first!
   // So: if we have a closest target test, make it first in our sorted array.
   // If we don't have a closest target test, add one, and make it first in our sorted array.
   BOOL foundClosestTargetTest = false;
-  for (SKScheduleTest *theTest in mTestArray) {
-    if ([theTest getType] == SKTestType_Closest) {
+  for (SKKitTestDescriptor *theTest in mTestArray) {
+    if ([theTest getType] == SKKitTestType_Closest) {
       // We have a closest target test!
       // Always make it first!
       [sortedArray addObject:theTest];
@@ -597,7 +597,7 @@
     // There was no closest target test.
     // Make sure we always have one, and make it first!
     SK_ASSERT(false);
-    SKScheduleTest_Descriptor_ClosestTarget *thisTest = [[SKScheduleTest_Descriptor_ClosestTarget alloc] initWithId:closestTargetId];
+    SKKitTestDescriptor_ClosestTarget *thisTest = [[SKKitTestDescriptor_ClosestTarget alloc] initWithId:closestTargetId];
     [mTestArray addObject:thisTest];
     [sortedArray addObject:thisTest];
   }
@@ -607,14 +607,14 @@
   //
   for (NSString *manualTestId in mManualTestArray) {
     BOOL foundThisTest = false;
-    for (SKScheduleTest *theTest in mTestArray) {
+    for (SKKitTestDescriptor *theTest in mTestArray) {
       if ([[theTest getId] isEqualToString: manualTestId]) {
         // Got the test!
         foundThisTest = true;
         
         // Don't add it, if we already have it in the array...
         BOOL alreadyListed = false;
-        for (SKScheduleTest *sortedArrayItem in sortedArray) {
+        for (SKKitTestDescriptor *sortedArrayItem in sortedArray) {
           if ([manualTestId isEqualToString:[sortedArrayItem getId]]) {
             alreadyListed = true;
             SK_ASSERT(false);
@@ -634,9 +634,9 @@
   
   // Finally, add any tests we've not already got...
   // Note that there should not be any of these...
-  for (SKScheduleTest *theTest in mTestArray) {
+  for (SKKitTestDescriptor *theTest in mTestArray) {
     BOOL foundThisTest = false;
-    for (SKScheduleTest *sortedTest in sortedArray) {
+    for (SKKitTestDescriptor *sortedTest in sortedArray) {
       if ([[sortedTest getId] isEqualToString:[theTest getId]]) {
         foundThisTest = true;
         break;

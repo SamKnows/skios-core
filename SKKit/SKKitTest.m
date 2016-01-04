@@ -17,20 +17,20 @@
 // Note that *only* swift code marked with @objc is put in this file...
 //#import <SKKit/SKKit-Swift.h>
 
-#import "SKScheduleParser.h"
+#import "SKKitTestDescriptor.h"
 //
-// Test: Closest Target
+// Test: Closest Target - TODO - this has yet to be implemented fully.
 //
 @interface SKKitTestClosestTarget () <SKClosestTargetDelegate>
 @property SKClosestTargetTest *mpClosestTargetTest;
-@property SKScheduleTest_Descriptor_ClosestTarget *abc;
+//@property SKKitTestDescriptor_ClosestTarget *abc;
 @end
 
 @implementation SKKitTestClosestTarget
 
 @synthesize mpClosestTargetTest;
 
-- (instancetype)initWithClosestTargetTestDescriptor:(SKScheduleTest_Descriptor_ClosestTarget*)closestTarget {
+- (instancetype)initWithClosestTargetTestDescriptor:(SKKitTestDescriptor_ClosestTarget*)closestTarget {
   self = [super init];
   
   if (self) {
@@ -78,7 +78,7 @@
 @synthesize mpDownloadTest;
 @synthesize mProgressBlock;
 
-- (instancetype)initWithDownloadTestDescriptor:(SKScheduleTest_Descriptor_Download*)downloadTest {
+- (instancetype)initWithDownloadTestDescriptor:(SKKitTestDescriptor_Download*)downloadTest {
   self = [super init];
   
   if (self) {
@@ -171,7 +171,7 @@
 @synthesize mpUploadTest;
 @synthesize mProgressBlock;
 
-- (instancetype)initWithUploadTestDescriptor:(SKScheduleTest_Descriptor_Upload*)uploadTest {
+- (instancetype)initWithUploadTestDescriptor:(SKKitTestDescriptor_Upload*)uploadTest {
   self = [super init];
   
   if (self) {
@@ -263,7 +263,7 @@
 @synthesize mProgressBlock;
 @synthesize mpLatencyTest;
 
-- (instancetype)initWithLatencyTestDescriptor:(SKScheduleTest_Descriptor_Latency*)latencyTest {
+- (instancetype)initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)latencyTest {
   self = [super init];
   
   if (self) {

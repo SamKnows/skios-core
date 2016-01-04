@@ -1,5 +1,5 @@
 //
-//  SKScheduleParser.h
+//  SKKitTestDescriptor.h
 //  SKKit
 //
 //  Created by Pete Cole on 26/01/2015.
@@ -17,24 +17,24 @@
 - (NSString *)getDisplayName;
 @end
 
-@interface SKScheduleTest : NSObject
-typedef enum SKTestType_t {
-  SKTestType_Closest=0,
-  SKTestType_Download=1,
-  SKTestType_Upload=2,
-  SKTestType_Latency=3
-} SKTestType;
+@interface SKKitTestDescriptor : NSObject
+typedef enum SKKitTestType_t {
+  SKKitTestType_Closest=0,
+  SKKitTestType_Download=1,
+  SKKitTestType_Upload=2,
+  SKKitTestType_Latency=3
+} SKKitTestType;
 
 -(NSString *)getId;
--(SKTestType)getType;
+-(SKKitTestType)getType;
 -(NSString*)getDisplayName;
 @end
 
-@interface SKScheduleTest_Descriptor_ClosestTarget : SKScheduleTest
+@interface SKKitTestDescriptor_ClosestTarget : SKKitTestDescriptor
 @property (nonatomic, retain) NSMutableArray * mTargetArray;
 @end
 
-@interface SKScheduleTest_Descriptor_Download : SKScheduleTest
+@interface SKKitTestDescriptor_Download : SKKitTestDescriptor
 @property (nonatomic, copy) NSString * mTarget;
 @property (nonatomic) NSInteger mPort;
 @property (nonatomic, copy) NSString * mFile;
@@ -47,7 +47,7 @@ typedef enum SKTestType_t {
 @end
 
 
-@interface SKScheduleTest_Descriptor_Latency : SKScheduleTest
+@interface SKKitTestDescriptor_Latency : SKKitTestDescriptor
 @property (nonatomic, copy) NSString * mTarget;
 @property (nonatomic) NSInteger mPort;
 @property (nonatomic) NSTimeInterval mInterPacketTimeSeconds;
@@ -58,7 +58,7 @@ typedef enum SKTestType_t {
 @end
 
 
-@interface SKScheduleTest_Descriptor_Upload : SKScheduleTest
+@interface SKKitTestDescriptor_Upload : SKKitTestDescriptor
 @property (nonatomic, copy) NSString * mTarget;
 @property (nonatomic) NSInteger mPort;
 @property (nonatomic) NSTimeInterval mWarmupMaxTimeSeconds;
