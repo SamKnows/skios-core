@@ -84,6 +84,7 @@
 - (void)startTest;
 - (void)stopTest;
 - (BOOL)isSuccessful;
+- (float)getProgress0To100;
 
 // Must be overridden!
 +(SKLatencyOperation*) createLatencyOperationWithTarget:(NSString*)_target

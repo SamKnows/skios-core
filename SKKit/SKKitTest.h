@@ -51,4 +51,5 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 - (instancetype)initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)latencyTest;
 - (void) start:(TSKLatencyTestProgressUpdate)progressBlock;
 - (void) stop;
+//- (double) getProgress0To100;
 @end

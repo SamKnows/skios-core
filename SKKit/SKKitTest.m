@@ -350,4 +350,9 @@
   
 }
 
+//// This value isn't very accurate; an external timer gives a smoother value.
+//- (double) getProgress0To100 {
+//  return [mpLatencyTest getProgress0To100];
+//}
+
 @end

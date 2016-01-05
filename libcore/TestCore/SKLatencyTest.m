@@ -221,7 +221,8 @@
   isRunning = NO;
 }
 
-- (float)getProgress
+// This value isn't very accurate; an external timer gives a smoother value.
+- (float)getProgress0To100
 {
   return self.progress;
 }
