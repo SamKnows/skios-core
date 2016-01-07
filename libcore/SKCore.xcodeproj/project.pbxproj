@@ -115,6 +115,7 @@
 		B2B2B4BD18AB7A8500592FEF /* SKOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B2B4BC18AB7A8500592FEF /* SKOperators.m */; };
 		B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = B2B2B4BF18AB98F800592FEF /* SKNSURLAsyncQuery.m */; };
 		B2BAC53518A90ECE00A66A06 /* UIDevice+SKExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BAC53418A90ECE00A66A06 /* UIDevice+SKExtension.m */; };
+		B2BCE56A1C3E69B9002C21FA /* SKASettingsControllerOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BCE5691C3E69B9002C21FA /* SKASettingsControllerOld.m */; };
 		B2BE448917C7610F00C96D58 /* SKTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BE448317C7610E00C96D58 /* SKTest.m */; };
 		B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BE448717C7610F00C96D58 /* SKTestConfig.m */; };
 		B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C5A06917CE39AB009A9244 /* SKScheduler.m */; };
@@ -444,6 +445,8 @@
 		B2B2B4BF18AB98F800592FEF /* SKNSURLAsyncQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKNSURLAsyncQuery.m; sourceTree = "<group>"; };
 		B2BAC53318A90ECE00A66A06 /* UIDevice+SKExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+SKExtension.h"; sourceTree = "<group>"; };
 		B2BAC53418A90ECE00A66A06 /* UIDevice+SKExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+SKExtension.m"; sourceTree = "<group>"; };
+		B2BCE5691C3E69B9002C21FA /* SKASettingsControllerOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKASettingsControllerOld.m; sourceTree = "<group>"; };
+		B2BCE56B1C3E6A0E002C21FA /* SKASettingsControllerOld.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKASettingsControllerOld.h; sourceTree = "<group>"; };
 		B2BE448317C7610E00C96D58 /* SKTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTest.m; sourceTree = "<group>"; };
 		B2BE448417C7610E00C96D58 /* SKTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTest.h; sourceTree = "<group>"; };
 		B2BE448617C7610F00C96D58 /* SKTestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestConfig.h; sourceTree = "<group>"; };
@@ -932,6 +935,8 @@
 				B2AE68081883DA4D00D87FAE /* SKARunTestsController.m */,
 				B2AE68091883DA4D00D87FAE /* SKASettingsController.h */,
 				B2AE680A1883DA4D00D87FAE /* SKASettingsController.m */,
+				B2BCE56B1C3E6A0E002C21FA /* SKASettingsControllerOld.h */,
+				B2BCE5691C3E69B9002C21FA /* SKASettingsControllerOld.m */,
 				B2AE680B1883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.h */,
 				B2AE680C1883DA4D00D87FAE /* SKASummaryTermsAndConditionsController.m */,
 				B2AE680D1883DA4D00D87FAE /* SKATermsAndConditionsController.h */,
@@ -1412,6 +1417,7 @@
 				B297CE7A18E0541800964CD3 /* UIView+SKView.m in Sources */,
 				B22E892C17C37339005D9094 /* AsyncUdpSocket.m in Sources */,
 				B20BCEB71A28873400A45AD4 /* SKAFooterCell.m in Sources */,
+				B2BCE56A1C3E69B9002C21FA /* SKASettingsControllerOld.m in Sources */,
 				B2FB032E19B75D09007AA3C2 /* CAnimatedStatusView.m in Sources */,
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,

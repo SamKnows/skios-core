@@ -19,10 +19,14 @@
 {
   [super viewDidLoad];
   
-//  NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-//  NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
-//  NSString *displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
-  //self.versionLabel.text = displayVersion;
+  if (self.versionLabel != nil) {
+    // Old-style About screen...
+    
+    NSString *appVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *bundleVersion = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString *displayVersion = [NSString stringWithFormat:@"%@: %@.%@", sSKCoreGetLocalisedString(@"About_Version"), appVersion, bundleVersion];
+    self.versionLabel.text = displayVersion;
+  }
   //self.title = sSKCoreGetLocalisedString(@"Storyboard_About_Title");
   //self.title = [NSString stringWithFormat:@"%@ %@", sSKCoreGetLocalisedString(@"Storyboard_About_Section_AppName"), displayVersion];,
   // "About MyAppName"

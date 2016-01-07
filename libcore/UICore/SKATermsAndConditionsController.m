@@ -289,7 +289,7 @@
   } @catch (NSException *ex) {
     if ([ex.name isEqualToString:NSInvalidArgumentException]) {
 #ifdef DEBUG
-      NSLog(@"DEBUG: WARNING: Trapped rare runtime error on iOS - see the documentaiton for pushViewController ...");
+      NSLog(@"DEBUG: WARNING: Trapped rare runtime error on iOS - see the documentation for pushViewController ...");
 #endif //  DEBUG
       SK_ASSERT(false);
     } else {
@@ -300,21 +300,7 @@
 
 - (void)moveToActivationScreen
 {
-  [self SKSafePerformSegueWithIdentifier:@"segueToActivation" sender:self];
-}
-
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  
-  if ([segue.identifier isEqualToString:@"segueToActivation"]) {
-    
-    UINavigationController *nc = (UINavigationController*)segue.destinationViewController;
-    SKAActivationController *cnt = (SKAActivationController*)nc.viewControllers[0];
-    [cnt setDelegate:self];
-    
-  } else {
-    SK_ASSERT(false);
-  }
-  
+  [SKAAppDelegate sResetUserInterfaceBackToMainScreen];
 }
 
 #pragma mark - Show Information
