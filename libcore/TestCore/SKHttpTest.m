@@ -400,7 +400,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   
       __block double bitrateMbps1024Based = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMbps];
 #ifdef DEBUG
-      __block double bitrateMbps1024BasedMovingAverage = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMbpsMovingAverage];
+      //__block double bitrateMbps1024BasedMovingAverage = [SKGlobalMethods convertMbps1000BasedToMbps1024Based:uploadSpeedMbpsMovingAverage];
       NSLog(@"****** DEBUG: END TEST uploadSpeed mbps=%g, movingAverage=%g (1024based=%g)", uploadSpeedMbps, uploadSpeedMbpsMovingAverage, bitrateMbps1024Based);
 #endif // DEBUG
       
