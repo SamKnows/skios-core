@@ -815,4 +815,11 @@ static const SCNetworkReachabilityFlags kOnDemandConnection = kSCNetworkReachabi
 } // connectionRequired
 #endif
 
+// Simple test for Internet reachability!
++ (BOOL) sGetIsReachable { // Could also be called sGetIsConnected...?
+  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  BOOL test = [reachability isReachable];
+  return test;
+}
+
 @end

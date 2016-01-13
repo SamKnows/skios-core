@@ -195,4 +195,6 @@ extern NSString *const kReachabilityChangedNotification;
 // Added by SamKnows...
 + (NSString *) makeAddressKey: (in_addr_t) addr;
 
++ (BOOL) sGetIsReachable;
+
 @end
