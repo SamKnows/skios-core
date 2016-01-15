@@ -82,7 +82,7 @@
 - (void)reset;
 - (BOOL)isReady;
 - (void)startTest;
-- (void)stopTest;
+- (void)cancel;
 - (BOOL)isSuccessful;
 - (float)getProgress0To100;
 

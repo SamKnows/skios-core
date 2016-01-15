@@ -434,12 +434,12 @@ const int cQueryCountPerServer = 3;
   isRunning = YES;
 }
 
-- (void)stopTest
+- (void)cancel
 {
   if (nil != queue)
   {
 #ifdef DEBUG
-    NSLog(@"DEBUG: cancelling %d closest target operations!", (int)[queue operationCount]);
+    NSLog(@"DEBUG: SKClosestTargetTest cancelling %d closest target operations!", (int)[queue operationCount]);
 #endif // DEBUG
     [queue cancelAllOperations];
   }

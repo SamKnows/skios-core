@@ -926,8 +926,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       // OK button pressed - try to stop the tests!
       if (!isRunning) return;
       [self setIsRunning:NO];
-      [self stopTestFromAlertResponse:YES];
-      //            [autoTest stopTheTests]; //HG - already done in [self stopTestFromAlertResponse:YES];
+      [self cancelTestFromAlertResponse:YES];
+      //            [autoTest stopTheTests]; //HG - already done in [self cancelTestFromAlertResponse:YES];
       autoTest = nil;
       [self restoreButton];
       return;
@@ -1007,7 +1007,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 #ifdef DEBUG
   NSLog(@"DEBUG: %s", __FUNCTION__);
 #endif // DEBUG
-  [self stopTestFromAlertResponse:NO];
+  [self cancelTestFromAlertResponse:NO];
   [self setIsRunning:NO];
   [self.mPressTheStartButtonLabel setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
 }
@@ -1037,7 +1037,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 - (void)aodLatencyTestDidFail:(NSString*)message
 {
   dispatch_async(dispatch_get_main_queue(), ^{
-    [self stopTestFromAlertResponse:NO];
+    [self cancelTestFromAlertResponse:NO];
     [self setIsRunning:NO];
     
     [self setErrorMessage];
@@ -1219,7 +1219,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   dispatch_async(dispatch_get_main_queue(), ^{
     
-    [self stopTestFromAlertResponse:NO];
+    [self cancelTestFromAlertResponse:NO];
     [self setIsRunning:NO];
     
     [self setErrorMessage];
@@ -1325,7 +1325,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 #pragma mark - Actions
 
-- (void)stopTestFromAlertResponse:(BOOL)fromAlertResponse {
+- (void)cancelTestFromAlertResponse:(BOOL)fromAlertResponse {
   
   if ([[self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value isEqualToString:@"r"])
     [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_DOWNLOAD_TEST].value = nil;

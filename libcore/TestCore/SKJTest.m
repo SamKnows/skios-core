@@ -16,6 +16,7 @@
 //private String errorString = "";
 @property NSString *errorString;
 //private JSONObject json_output = null;
+@property BOOL mbShouldCancel;
 @end
 
 @implementation SKJTest
@@ -23,6 +24,7 @@
 @synthesize outputFields;
 @synthesize errorString;
 @synthesize status;
+@synthesize mbShouldCancel;
 
 - (instancetype)init
 {
@@ -31,6 +33,7 @@
     outputFields = nil;
     errorString = @"";
     status = WAITING;
+    mbShouldCancel = false;
   }
   return self;
 }
@@ -178,5 +181,20 @@
       errorString = error;
     }
 }
+
+#pragma mark Test Cancel control (begin)
+// The SKJPassiveServerUploadTest class detect this stage and allow quick Cancelling of the test
+// even while it is running.
+// Other implementations of SJKTest do not yet support this approach.
+
+-(BOOL) getShouldCancel {
+		return mbShouldCancel;
+}
+
+-(void) setShouldCancel {
+		mbShouldCancel = true;
+}
+
+#pragma mark Test Cancel control (end)
 
 @end

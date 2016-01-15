@@ -1096,5 +1096,11 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     }
 }
 
+-(void) cancel {
+  
+  // Call method in base SKJTest class...
+  [self setShouldCancel];
+}
+
 @end
 

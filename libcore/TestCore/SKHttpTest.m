@@ -407,7 +407,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
       dispatch_async(dispatch_get_main_queue(), ^(void) {
         const BOOL cbResultIsFromServerFalse = NO;
        
-        [self stopTest];
+        [self cancel];
         testOK = ![self.mpNewStyleSKJUploadTest getError];
         long totalBytes = [mpNewStyleSKJUploadTest getTotalWarmUpBytes] +  [mpNewStyleSKJUploadTest getTotalTransferBytes];
         SK_ASSERT(totalBytes > 0);
@@ -490,19 +490,20 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   return runAsynchronously;
 }
 
-- (void)stopTest
+- (void)cancel
 {
   if (mpNewStyleSKJUploadTest != nil) {
+    
+    [mpNewStyleSKJUploadTest cancel];
    
     isRunning = NO;
     return;
-    
   }
   
   if (nil != queue)
   {
 #ifdef DEBUG
-    NSLog(@"DEBUG: cancelling %d http test operations!", (int)[queue operationCount]);
+    NSLog(@"DEBUG: %@ SKHttpTest cancelling %d http test operations!", isDownstream ? @"Download" : @"Upload", (int)[queue operationCount]);
 #endif // DEBUG
     [queue cancelAllOperations];
   }
@@ -625,7 +626,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #endif // DEBUG
       [self setRunningStatus:status];
       [self setWarmupDoneCounter:nThreads];
-      [self stopTest];
+      [self cancel];
       [[self httpRequestDelegate] htdUpdateStatus:status threadId:threadId];
     }
     else if (status == FAILED)

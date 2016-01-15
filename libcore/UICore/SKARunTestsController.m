@@ -81,7 +81,7 @@
 #ifdef DEBUG
   NSLog(@"DEBUG: %s", __FUNCTION__);
 #endif // DEBUG
-  [self stopTestFromAlertResponse:NO];
+  [self cancelTestFromAlertResponse:NO];
   testsComplete = YES;
   [self.lblClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
   
@@ -308,7 +308,7 @@
     [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
     [self updateResultsArray:[SKTransferOperation getStatusFailed] key:@"RESULT_1" testType:test];
     
-    [self stopTestFromAlertResponse:NO];
+    [self cancelTestFromAlertResponse:NO];
     testsComplete = YES;
   });
 }
@@ -378,7 +378,7 @@
 
 #pragma mark - Actions
 
-- (void)stopTestFromAlertResponse:(BOOL)fromAlertResponse {
+- (void)cancelTestFromAlertResponse:(BOOL)fromAlertResponse {
   if (testsComplete) {
     return;
   }
@@ -425,7 +425,7 @@
 -(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   if (buttonIndex != alertView.cancelButtonIndex) {
     // OK button pressed - try to stop the tests!
-    [self stopTestFromAlertResponse:YES];
+    [self cancelTestFromAlertResponse:YES];
     if (self.continuousTesting == YES) {
       // In continuous testing mode, stopping the test automatically dismisses the view controller.
       [self dismissViewControllerAnimated:YES completion:nil];

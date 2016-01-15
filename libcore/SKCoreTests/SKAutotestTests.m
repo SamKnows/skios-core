@@ -344,7 +344,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   XCTAssertTrue(autotest.isCancelled == NO, @"");
 
   // Verify that calling stopTheTests has the expected behaviour.
-  // Note: we verify that this calls stopTest on the child tests in a SEPARATE test.
+  // Note: we verify that this calls cancel on the child tests in a SEPARATE test.
   [autotestMock stopTheTests];
 
   XCTAssertTrue(autotest.isRunning == NO, @"");
@@ -360,7 +360,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 
 // GIVEN: [autotest initAndRunWithAutotestManagerDelegate]
 // WHEN: [autotest stopTheTests]
-// THEN: the child http etc. tests have stopTest called
+// THEN: the child http etc. tests have cancel called
 - (void)testSKAutotestStopsTheChildTests {
   
   // Load-up the scheduler with real test data!
@@ -383,9 +383,9 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   autoTest.httpTest = [[SKHttpTest alloc] init];
   OCMockObject *mockHttpTest = [OCMockObject partialMockForObject:autoTest.httpTest];
 
-  [[mockLatencyTest expect] stopTest];
-  [[mockTargetTest expect] stopTest];
-  [[mockHttpTest expect] stopTest];
+  [[mockLatencyTest expect] cancel];
+  [[mockTargetTest expect] cancel];
+  [[mockHttpTest expect] cancel];
   
   // Run the test manually.
   [autotestMock runTheTests];
@@ -393,7 +393,7 @@ static int GLastTestIndexPassedToRunTheTests = -99;
   XCTAssertTrue(autoTest.isRunning == YES, @"");
   XCTAssertTrue(autoTest.isCancelled == NO, @"");
   
-  // Verify that calling stopTheTests calls stopTest on the child tests.
+  // Verify that calling stopTheTests calls cancel on the child tests.
   [autotestMock stopTheTests];
 
   XCTAssertTrue(autoTest.isRunning == NO, @"");

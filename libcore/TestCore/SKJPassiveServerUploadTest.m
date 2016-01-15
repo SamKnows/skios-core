@@ -54,6 +54,12 @@ const int extMonitorUpdateInterval = 500000;
       return [super getWarmupBytesPerSecond];
     };
     transmissionDone = ^{
+      if ([self getShouldCancel]) {
+#ifdef DEBUG
+       NSLog(@"DEBUG: SKJPassiveServerUploadTest - getTransmissionDone - warmup - cancel test!");
+#endif // DEBUG
+        return YES;
+      }
       return [super isWarmupDone:(int)super.buff.length];
     };
   } else {
@@ -62,6 +68,12 @@ const int extMonitorUpdateInterval = 500000;
       return [self getTransferBytesPerSecond];
     };
     transmissionDone = ^() {
+      if ([self getShouldCancel]) {
+#ifdef DEBUG
+       NSLog(@"DEBUG: SKJPassiveServerUploadTest - getTransmissionDone - main loop - cancel test!");
+#endif // DEBUG
+        return YES;
+      }
       return [super isTransferDone:(int)super.buff.length];
     };
   }

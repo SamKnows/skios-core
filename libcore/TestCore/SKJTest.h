@@ -54,4 +54,12 @@ typedef BOOL (^SKJRetBoolBlock)(void);
 -(void) setError:(NSString*) error;
 -(BOOL) setErrorIfEmpty:(NSString*) error Exception:(NSException *)e;
 -(BOOL) setErrorIfEmpty:(NSString *)error;
+
+#pragma mark Test Cancel control (begin)
+// The SKJHttpTest class detects this stage and allow quick Cancelling of the test
+// even while it is running.
+// Other implements of SKJTest do not yet support this approach.
+-(BOOL) getShouldCancel;
+-(void) setShouldCancel;
+#pragma mark Test Cancel control (end)
 @end

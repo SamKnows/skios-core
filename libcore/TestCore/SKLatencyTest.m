@@ -209,12 +209,12 @@
   isRunning = YES;
 }
 
-- (void)stopTest
+- (void)cancel
 {
   if (nil != queue)
   {
 #ifdef DEBUG
-    NSLog(@"DEBUG: cancelling %d latency test operations!", (int)[queue operationCount]);
+    NSLog(@"DEBUG: SKLatencyTest cancelling %d latency test operations!", (int)[queue operationCount]);
 #endif // DEBUG
     [queue cancelAllOperations];
   }

@@ -109,7 +109,7 @@ FOUNDATION_EXPORT NSString *const UPSTREAMMULTI;
 
 - (BOOL)isReady;
 - (void)startTest;
-- (void)stopTest;
+- (void)cancel;
 - (void)reset;
 - (BOOL)isSuccessful;
 - (double)getBytesPerSecondRealTimeUpload;

@@ -29,7 +29,7 @@ typedef void (^TSKDownloadTestProgressUpdate)(float progress, double bitrateMbps
 
 - (instancetype)initWithDownloadTestDescriptor:(SKKitTestDescriptor_Download*)downloadTest;
 - (void) start:(TSKDownloadTestProgressUpdate)progressBlock;
-- (void) stop;
+- (void) cancel;
 @end
 
 typedef void (^TSKUploadTestProgressUpdate)(float progress, double bitrateMbps1024Based);
@@ -39,7 +39,7 @@ typedef void (^TSKUploadTestProgressUpdate)(float progress, double bitrateMbps10
 
 - (instancetype)initWithUploadTestDescriptor:(SKKitTestDescriptor_Upload*)uploadTest;
 - (void) start:(TSKUploadTestProgressUpdate)progressBlock;
-- (void) stop;
+- (void) cancel;
 -(CGFloat) getLatestSpeedAs1000BasedMbps;
 @end
 
@@ -50,6 +50,6 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 
 - (instancetype)initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)latencyTest;
 - (void) start:(TSKLatencyTestProgressUpdate)progressBlock;
-- (void) stop;
+- (void) cancel;
 //- (double) getProgress0To100;
 @end

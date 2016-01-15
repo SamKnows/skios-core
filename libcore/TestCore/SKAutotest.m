@@ -431,7 +431,7 @@ static BOOL sbTestIsRunning = NO;
 #ifdef DEBUG
           NSLog(@"DEBUG: ********* stopping the test that already exists...");
 #endif // DEBUG
-          [self.httpTest stopTest];
+          [self.httpTest cancel];
         }
         
 #ifdef DEBUG
@@ -571,7 +571,7 @@ static BOOL sbTestIsRunning = NO;
       {
         if ([self.latencyTest isRunning])
         {
-          [self.latencyTest stopTest];
+          [self.latencyTest cancel];
         }
         
         [self.latencyTest setTarget:target];
@@ -658,19 +658,19 @@ static BOOL sbTestIsRunning = NO;
   
   if (self.httpTest)
   {
-    [self.httpTest stopTest];
+    [self.httpTest cancel];
     self.httpTest = nil;
   }
   
   if (self.targetTest)
   {
-    [self.targetTest stopTest];
+    [self.targetTest cancel];
     self.targetTest = nil;
   }
   
   if (self.latencyTest)
   {
-    [self.latencyTest stopTest];
+    [self.latencyTest cancel];
     self.latencyTest = nil;
   }
 }

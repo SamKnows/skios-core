@@ -83,7 +83,7 @@
 
 - (void)reset;
 - (void)startTest;
-- (void)stopTest;
+- (void)cancel;
 
 - (BOOL)isReady;
 

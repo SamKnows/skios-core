@@ -111,8 +111,8 @@
   [mpDownloadTest startTest];
 }
 
-- (void) stop {
-  [mpDownloadTest stopTest];
+- (void) cancel {
+  [mpDownloadTest cancel];
 }
 
 // Pragma SKHttpTestDelegate
@@ -201,8 +201,8 @@
   [mpUploadTest startTest];
 }
 
-- (void) stop {
-  [mpUploadTest stopTest];
+- (void) cancel {
+  [mpUploadTest cancel];
 }
 
 -(CGFloat) getLatestSpeedAs1000BasedMbps {
@@ -292,8 +292,8 @@
   [mpLatencyTest startTest];
 }
 
-- (void) stop {
-  [mpLatencyTest stopTest];
+- (void) cancel {
+  [mpLatencyTest cancel];
 }
 
 // Pragma SKLatencyTestDelegate

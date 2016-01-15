@@ -113,4 +113,7 @@ typedef enum t_UploadStrategy {
 // Override...
 -(void) setError:(NSString*) error;
 
+// Used to cancel a test dynamically...
+-(void) cancel;
+
 @end
