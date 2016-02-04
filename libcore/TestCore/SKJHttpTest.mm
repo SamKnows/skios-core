@@ -43,8 +43,11 @@ typedef void (^MyThreadBlock)(void);
 @implementation MyThread
 
 - (void)main {
-  SK_ASSERT(self.mBlock != nil);
-  self.mBlock();
+  if (self.mBlock == nil) {
+    SK_ASSERT(false);
+  } else {
+    self.mBlock();
+  }
 }
   
 @end

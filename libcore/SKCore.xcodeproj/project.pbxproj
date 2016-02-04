@@ -1601,6 +1601,7 @@
 					"$(SRCROOT)/../core-plot/build/Release-universal",
 					"$(SRCROOT)/../core-plot-build",
 				);
+				OTHER_CFLAGS = "NS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
