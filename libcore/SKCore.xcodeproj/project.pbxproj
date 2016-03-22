@@ -1298,7 +1298,8 @@
 		B22E889F17C36789005D9094 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastSwiftMigration = 0730;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = SamKnows;
 			};
 			buildConfigurationList = B22E88A217C36789005D9094 /* Build configuration list for PBXProject "SKCore" */;
@@ -1502,6 +1503,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
