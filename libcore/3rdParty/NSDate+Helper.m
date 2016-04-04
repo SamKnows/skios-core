@@ -119,6 +119,9 @@ static NSDateFormatter* sIso8601DateFormat = nil;
     // https://stackoverflow.com/questions/4088418/nsdateformatter-returns-nil-for-dd-mm-yy-in-ios-3-0
     NSLocale *theLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     [sIso8601DateFormat setLocale:theLocale];
+   
+    // http://stackoverflow.com/questions/32408898/nsdateformatter-datefromstring-returns-nil-for-specific-dates-in-specific-langua
+    sIso8601DateFormat.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
   }
   
   NSString *result = [sIso8601DateFormat stringFromDate:date];
@@ -138,6 +141,9 @@ static NSDateFormatter* sIso8601DateFormatMilliZ = nil;
     
     // https://stackoverflow.com/questions/4088418/nsdateformatter-returns-nil-for-dd-mm-yy-in-ios-3-0
     sIso8601DateFormatMilliZ.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    
+    // http://stackoverflow.com/questions/32408898/nsdateformatter-datefromstring-returns-nil-for-specific-dates-in-specific-langua
+    sIso8601DateFormatMilliZ.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
   }
   
   NSString *result = [sIso8601DateFormatMilliZ stringFromDate:date];
