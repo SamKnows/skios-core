@@ -10,4 +10,6 @@
 
 @interface SKBSplashVC : UIViewController
 
+-(void) segueFromSplashToMainVC;
+
 @end

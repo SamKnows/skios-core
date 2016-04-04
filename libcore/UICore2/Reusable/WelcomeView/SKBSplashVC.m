@@ -34,20 +34,24 @@
   [self.vWelcomeView initializeWelcomeText];
 }
 
--(void) viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-  
-  [self.vWelcomeView callWhenViewControllerResized:^{
-
+// This can be overridden!
+-(void) segueFromSplashToMainVC {
   SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   if ( ([appDelegate getNewAppShowInitialTermsAndConditions] == YES) &&
-       ([appDelegate hasNewAppAgreed] == NO)
-     )
+      ([appDelegate hasNewAppAgreed] == NO)
+      )
   {
     [self performSegueWithIdentifier:@"segueFromSplashVCToTerms" sender:self];
   } else {
     [self SKSafePerformSegueWithIdentifier:@"segueFromSplashVCToMain" sender:self];
   }
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  
+  [self.vWelcomeView callWhenViewControllerResized:^{
+    [self segueFromSplashToMainVC];
 //
 //    [UIView animateWithDuration:0.3 animations:^{
 //      
