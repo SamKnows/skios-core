@@ -2042,7 +2042,7 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
 //
 // Added for the SKMobile app versions
 //
--(BOOL) getSKMAppShowActivityFromSelectNetwork {
+-(BOOL) getSKMAppShowActivityFromChooseNetwork {
   return NO;
 }
 
