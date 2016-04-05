@@ -251,6 +251,8 @@ static BOOL sbLastKnownPingStatus = YES;
 	{
 		CFRelease(_reachabilityRef);
 	}
+  
+  [super dealloc];
 }
 
 
