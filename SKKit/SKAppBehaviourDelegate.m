@@ -730,8 +730,9 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 #pragma mark - Reachability
 
-- (void)updateReachabilityStatus:(Reachability*)curReach
+- (void)updateReachabilityStatus:(NSObject*)inReach
 {
+  Reachability *curReach = (Reachability*)inReach;
   NetworkStatus netStatus = [curReach currentReachabilityStatus];
   
   switch (netStatus)

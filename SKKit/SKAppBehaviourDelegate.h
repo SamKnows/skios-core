@@ -29,7 +29,7 @@ typedef enum C_FILTER_PERIOD_T {
 #define C_NETWORKTYPEASSTRING_MOBILE @"mobile"
 #define C_NETWORKTYPEASSTRING_ALL    @"all"
 
-@class Reachability;
+//@class Reachability;
 
 typedef enum SKBShowMetricsRule
 {
@@ -153,7 +153,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 + (NSString*)sBuildSocialMediaMessageForCarrierName:(NSString*)carrierName SocialNetwork:(NSString *)socialNetwork Upload:(NSString *)upload Download:(NSString *)download ThisDataIsAveraged:(BOOL)thisDataIsAveraged;
 
-- (void)updateReachabilityStatus:(Reachability*)curReach;
+- (void)updateReachabilityStatus:(NSObject*)curReach;
 
 // Configuration - must be overriden by child class!
 -(NSString *) getEnterpriseId;

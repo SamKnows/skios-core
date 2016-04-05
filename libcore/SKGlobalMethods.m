@@ -739,13 +739,13 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 }
 
 +(NSString*)getNetworkOrGps {
-  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  Reachability *reach = [Reachability reachabilityForInternetConnection];
   if ([NSThread isMainThread]) {
     // Only safe to do this in the MAIN UI THREAD!
-    [reachability startNotifier];
+    [reach startNotifier];
   }
   
-  NetworkStatus status = [reachability currentReachabilityStatus];
+  NetworkStatus status = [reach currentReachabilityStatus];
   if (status == ReachableViaWWAN) {
     return @"gps";
   }
