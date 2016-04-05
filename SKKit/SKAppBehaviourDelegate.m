@@ -2039,6 +2039,13 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   return @"PREFS_AGREED_V2";
 }
 
+//
+// Added for the SKMobile app versions
+//
+-(BOOL) getSKMAppShowActivityFromSelectNetwork {
+  return NO;
+}
+
 @end
 
 NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath) {

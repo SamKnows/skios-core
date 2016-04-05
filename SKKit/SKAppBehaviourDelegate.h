@@ -265,6 +265,11 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(NSString*)getPrefsAgreedPropertyName;
 
 -(BOOL) getShouldDisplayWlanCarrierNameInRunTestScreen;
+
+//
+// Added for the SKMobile app versions
+//
+-(BOOL) getSKMAppShowActivityFromSelectNetwork;
 @end
 
 
