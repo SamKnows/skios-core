@@ -206,7 +206,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   [formatter setMaximumFractionDigits:decimalPlaces];
   [formatter setMinimumFractionDigits:decimalPlaces];
   [formatter setGeneratesDecimalNumbers:YES];
-  [formatter setAlwaysShowsDecimalSeparator:YES];
+  [formatter setAlwaysShowsDecimalSeparator:(decimalPlaces > 0)];
   [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
   [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
   
@@ -293,22 +293,28 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   else return [NSString localizedStringWithFormat:@"%.00f", number_];
 }
 
-
-+ (NSString *)bytesToString:(double)value
++ (NSString *)bytesToString:(double)value WithDecimalPlaces:(int)decimalPlaces
 {
   const double cOneMegaByte = 1000.0 * 1000.0;
   double mb = value / cOneMegaByte;
   
-  NSString *result = [NSString stringWithFormat:@"%@ MB", [SKGlobalMethods format2DecimalPlaces:mb]];
+  NSString *result = [NSString stringWithFormat:@"%@ MB", [SKGlobalMethods formatDouble:mb DecimalPlaces:decimalPlaces]];
   
-  if ([result isEqualToString:@"0.00 MB"]) {
+  NSString *checkForZeroMb = [NSString stringWithFormat:@"%@ MB", [SKGlobalMethods formatDouble:0.0 DecimalPlaces:decimalPlaces]];
+  if ([result isEqualToString:checkForZeroMb])
+  {
     const double cOneKiloByte = 1000.0;
     double kb = value / cOneKiloByte;
     
-    result = [NSString stringWithFormat:@"%@ kB", [SKGlobalMethods format2DecimalPlaces:kb]];
+    result = [NSString stringWithFormat:@"%@ kB", [SKGlobalMethods formatDouble:kb DecimalPlaces:decimalPlaces]];
   }
   
   return result;
+}
+
++ (NSString *)bytesToString:(double)value
+{
+  return [self bytesToString:value WithDecimalPlaces:2];
 }
 
 #pragma mark - Miscellaneous

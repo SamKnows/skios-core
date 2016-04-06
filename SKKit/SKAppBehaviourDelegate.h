@@ -177,6 +177,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(void) setIsDataCapEnabled:(BOOL) value;
 -(BOOL) isDataCapEnabled;
 -(void) checkDataUsageReset;
+-(void)resetDataCapStartDate:(NSDate*)baseOnStartDate;
+-(NSDate*) generateDataCapPeriodStartDate:(NSDate*)baseOnOptionalLastDate;
 
 
 // User interface special behaviours - you can override if you want!

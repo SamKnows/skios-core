@@ -33,6 +33,7 @@ typedef double SKTimeIntervalMicroseconds;
 
 + (NSString *)format2Milliseconds:(double)number;
 
++ (NSString *)bytesToString:(double)value WithDecimalPlaces:(int)decimalPlaces;
 + (NSString *)bytesToString:(double)value;
 
 + (NSString *)getTimeStampForTimeInteralSince1970:(NSTimeInterval)timeIntervalSince1970;
