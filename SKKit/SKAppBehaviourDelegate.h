@@ -174,6 +174,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL) getRevealGraphFromSummary;
 -(BOOL) enableTestsSelection;
 // Datacap - enable/disable
+-(BOOL) isDataCapSupported;
 -(void) setIsDataCapEnabled:(BOOL) value;
 -(BOOL) isDataCapEnabled;
 -(void) checkDataUsageReset;

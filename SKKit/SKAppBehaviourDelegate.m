@@ -1845,6 +1845,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   [prefs synchronize];
 }
 
+-(BOOL) isDataCapSupported {
+  return YES;
+}
+
 -(BOOL) isDataCapEnabled {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   

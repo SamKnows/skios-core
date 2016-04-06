@@ -53,7 +53,7 @@
   // TODO
 }
 - (void)ctdDidSendPacket:(NSUInteger)bytes {
-  // TODO
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
 }
 
 - (void)ctdDidStartTargetTesting {
@@ -142,7 +142,7 @@
 - (void)htdUpdateDataUsage:(NSUInteger)totalBytes
                      bytes:(NSUInteger)bytes
                   progress:(float)progress {
-  // TODO
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
 }
 
 - (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {
@@ -236,7 +236,7 @@
 - (void)htdUpdateDataUsage:(NSUInteger)totalBytes
                      bytes:(NSUInteger)bytes
                   progress:(float)progress {
-  // TODO
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
 }
 
 - (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {
@@ -347,7 +347,7 @@
   
 }
 - (void)ltdTestDidSendPacket:(NSUInteger)bytes {
-  
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
 }
 
 //// This value isn't very accurate; an external timer gives a smoother value.
