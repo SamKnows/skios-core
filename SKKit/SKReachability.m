@@ -335,7 +335,7 @@ static BOOL sbLastKnownPingStatus = YES;
 }
 
 
-- (NetworkStatus)currentReachabilityStatus
+- (int)currentReachabilityStatus
 {
 	NSAssert(_reachabilityRef != NULL, @"currentNetworkStatus called with NULL SCNetworkReachabilityRef");
 	NetworkStatus returnValue = NotReachable;
@@ -397,6 +397,13 @@ static BOOL sbLastKnownPingStatus = YES;
   return NO;
   
 } // isReachable
+
+// Added by SamKnows...
++ (NSString *) makeAddressKey: (in_addr_t) addr {
+  // TODO!
+  SK_ASSERT(false);
+  return nil;
+}
 
 
 // Simple test for Internet reachability!

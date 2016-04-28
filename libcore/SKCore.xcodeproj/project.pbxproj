@@ -64,6 +64,9 @@
 		B23B638419ACB7A8003F381C /* NSString+SKExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B23B638319ACB7A8003F381C /* NSString+SKExtensions.m */; };
 		B24140C517C3C30900ECAE8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C417C3C30900ECAE8C /* UIKit.framework */; };
 		B24140C717C3C36100ECAE8C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
+		B244AD131CD2371B00455CED /* SKKitTestDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = B244AD101CD2371B00455CED /* SKKitTestDownload.m */; };
+		B244AD141CD2371B00455CED /* SKKitTestLatency.m in Sources */ = {isa = PBXBuildFile; fileRef = B244AD111CD2371B00455CED /* SKKitTestLatency.m */; };
+		B244AD151CD2371B00455CED /* SKKitTestUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = B244AD121CD2371B00455CED /* SKKitTestUpload.m */; };
 		B248E3E81A7A69B6009BC956 /* SKSplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = B248E3E61A7A67E3009BC956 /* SKSplashView.m */; };
 		B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */ = {isa = PBXBuildFile; fileRef = B249885B1806E2FE00DB57C1 /* SKGraphForResults.m */; };
 		B24C5C401B258D15008B7FB5 /* SKJHttpTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5411B21943F002DC60F /* SKJHttpTest.mm */; };
@@ -132,7 +135,7 @@
 		B2E68C341B25D321005D5186 /* SKJPassiveServerUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5471B21947E002DC60F /* SKJPassiveServerUploadTest.m */; };
 		B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77DC1A88C791009B324A /* SKScheduleParser.m */; };
 		B2EC77E31A88C838009B324A /* SKTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E21A88C838009B324A /* SKTestRunner.m */; };
-		B2EC77E61A88CA07009B324A /* SKKitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTest.m */; };
+		B2EC77E61A88CA07009B324A /* SKKitTestClosestTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTestClosestTarget.m */; };
 		B2EC77F41A88D4ED009B324A /* SKAppBehaviourDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */; };
 		B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */; };
 		B2FB032C19B75D09007AA3C2 /* CActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB02FC19B75D09007AA3C2 /* CActionSheet.m */; };
@@ -283,6 +286,9 @@
 		B23B638319ACB7A8003F381C /* NSString+SKExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SKExtensions.m"; sourceTree = "<group>"; };
 		B24140C417C3C30900ECAE8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B244AD101CD2371B00455CED /* SKKitTestDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitTestDownload.m; sourceTree = "<group>"; };
+		B244AD111CD2371B00455CED /* SKKitTestLatency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitTestLatency.m; sourceTree = "<group>"; };
+		B244AD121CD2371B00455CED /* SKKitTestUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitTestUpload.m; sourceTree = "<group>"; };
 		B248E3E61A7A67E3009BC956 /* SKSplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSplashView.m; sourceTree = "<group>"; };
 		B249885A1806E2FE00DB57C1 /* SKGraphForResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKGraphForResults.h; sourceTree = "<group>"; };
 		B249885B1806E2FE00DB57C1 /* SKGraphForResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResults.m; sourceTree = "<group>"; };
@@ -476,10 +482,10 @@
 		B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTest_SKJPassiveServerUploadTest.m; sourceTree = "<group>"; };
 		B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResultsTests.m; sourceTree = "<group>"; };
 		B2EC77DC1A88C791009B324A /* SKScheduleParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKScheduleParser.m; sourceTree = "<group>"; };
-		B2EC77DD1A88C791009B324A /* SKKitTestDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKKitTestDescriptor.h; sourceTree = "<group>"; };
+		B2EC77DD1A88C791009B324A /* SKScheduleParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKScheduleParser.h; sourceTree = "<group>"; };
 		B2EC77E11A88C838009B324A /* SKTestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestRunner.h; sourceTree = "<group>"; };
 		B2EC77E21A88C838009B324A /* SKTestRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTestRunner.m; sourceTree = "<group>"; };
-		B2EC77E41A88CA07009B324A /* SKKitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitTest.m; sourceTree = "<group>"; };
+		B2EC77E41A88CA07009B324A /* SKKitTestClosestTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitTestClosestTarget.m; sourceTree = "<group>"; };
 		B2EC77E51A88CA07009B324A /* SKKitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKKitTest.h; sourceTree = "<group>"; };
 		B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppBehaviourDelegate.m; sourceTree = "<group>"; };
 		B2EF5B1517CC8E2900ED3D24 /* SKHttpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKHttpTest.m; sourceTree = "<group>"; };
@@ -887,8 +893,11 @@
 				B27CFAA81A84CA1800C410B8 /* SKAppBehaviourDelegate.h */,
 				B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */,
 				B2EC77E51A88CA07009B324A /* SKKitTest.h */,
-				B2EC77E41A88CA07009B324A /* SKKitTest.m */,
-				B2EC77DD1A88C791009B324A /* SKKitTestDescriptor.h */,
+				B2EC77DD1A88C791009B324A /* SKScheduleParser.h */,
+				B2EC77E41A88CA07009B324A /* SKKitTestClosestTarget.m */,
+				B244AD101CD2371B00455CED /* SKKitTestDownload.m */,
+				B244AD121CD2371B00455CED /* SKKitTestUpload.m */,
+				B244AD111CD2371B00455CED /* SKKitTestLatency.m */,
 				B2EC77DC1A88C791009B324A /* SKScheduleParser.m */,
 				B2EC77E11A88C838009B324A /* SKTestRunner.h */,
 				B2EC77E21A88C838009B324A /* SKTestRunner.m */,
@@ -1409,7 +1418,7 @@
 				B2AE681E1883DA4D00D87FAE /* SKAMainResultsController.m in Sources */,
 				B2FB032D19B75D09007AA3C2 /* CActivityBlinking.m in Sources */,
 				B221AEE318FFDFFA00323923 /* UIAlertView+SKExtensions.m in Sources */,
-				B2EC77E61A88CA07009B324A /* SKKitTest.m in Sources */,
+				B2EC77E61A88CA07009B324A /* SKKitTestClosestTarget.m in Sources */,
 				B22E892317C371DD005D9094 /* UIDeviceHardware.m in Sources */,
 				B22E892817C37243005D9094 /* SMXMLDocument.m in Sources */,
 				B221AEDA18FFC21600323923 /* unzip.c in Sources */,
@@ -1422,6 +1431,7 @@
 				B2FB032E19B75D09007AA3C2 /* CAnimatedStatusView.m in Sources */,
 				B22E892F17C37A6C005D9094 /* SKIPHelper.m in Sources */,
 				B2AE68171883DA4D00D87FAE /* SKAArchivedResultsController.m in Sources */,
+				B244AD141CD2371B00455CED /* SKKitTestLatency.m in Sources */,
 				B2B2B4C018AB98F800592FEF /* SKNSURLAsyncQuery.m in Sources */,
 				B22B60F21B00B6FF00CEB36B /* SKSettingsDataCapCell.m in Sources */,
 				B271658A19EEA86D005FAECA /* SKBSettingsTabViewController.m in Sources */,
@@ -1449,8 +1459,10 @@
 				B2BE448A17C7610F00C96D58 /* SKTestConfig.m in Sources */,
 				B2EF5B1617CC8E2900ED3D24 /* SKHttpTest.m in Sources */,
 				B218A02C17CCD3300048B3E0 /* SKLatencyTest.m in Sources */,
+				B244AD151CD2371B00455CED /* SKKitTestUpload.m in Sources */,
 				B2BAC53518A90ECE00A66A06 /* UIDevice+SKExtension.m in Sources */,
 				B218A02F17CCDE880048B3E0 /* SKLatencyOperation.m in Sources */,
+				B244AD131CD2371B00455CED /* SKKitTestDownload.m in Sources */,
 				B28006E019C970300008DF5F /* SKBRunTestViewMgrController.m in Sources */,
 				B218A04417CCF1550048B3E0 /* SKClosestTargetTest.m in Sources */,
 				B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */,

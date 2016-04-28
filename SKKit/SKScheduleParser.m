@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKKitTestDescriptor.h"
+#import "SKScheduleParser.h"
 #import "SKTestRunner.h"
 
 // https://developer.apple.com/library/mac/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html
@@ -16,6 +16,7 @@
 //#import <SKKit/SKKit-Swift.h>
 
 #import "SKCore.h"
+#import "SKKitTest.h"
 
 @interface SKScheduleHost()
 @property NSString *dnsName;

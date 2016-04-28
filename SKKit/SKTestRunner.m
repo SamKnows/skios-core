@@ -15,8 +15,10 @@
 //#import <SKKit/SKKit-Swift.h>
 
 #import "SKCore.h"
-#import "SKKitTestDescriptor.h"
+#import "SKScheduleParser.h"
 #import "SKKitTest.h"
+
+// TODO - this class is incomplete, as it doesn't yet run!
 
 @interface SKTestRunner()
 @end
