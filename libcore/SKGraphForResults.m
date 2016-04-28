@@ -330,7 +330,8 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
   CGPoint viewPoint = CGPointMake(plotAreaBounds.origin.x+10,
                                   plotAreaBounds.origin.y + plotAreaBounds.size.height + 20);
   NSDecimal plotPoint[2];
-  [plotSpace plotPoint:plotPoint forPlotAreaViewPoint:viewPoint];
+  //[plotSpace plotPoint:plotPoint forPlotAreaViewPoint:viewPoint];
+  [plotSpace plotPoint:plotPoint numberOfCoordinates:2 forPlotAreaViewPoint:viewPoint];
   y.titleLocation = plotPoint[CPTCoordinateY];
   y.titleRotation = M_PI*2;
   

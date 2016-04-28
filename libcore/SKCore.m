@@ -131,7 +131,7 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
   // always seems to return the correct value.
   // This returns e.g. en-GB, zh-Hans, zh-Hant etc.
   NSString *language =  [[NSLocale preferredLanguages] objectAtIndex:0];
-  NSString *localisation =  [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+  //NSString *localisation =  [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
   //NSLog(@"DEBUG: preferredLanguages=%@", language);
   //NSLog(@"DEBUG: preferredLocalizations=%@", localisation);
   // Oct 22 08:44:22 Pete-Coles-iPhone-6 EAQNewApp[784] <Warning>: DEBUG: preferredLanguages=pt-BR

@@ -113,7 +113,7 @@
   
 }
 - (void)ltdTestDidSendPacket:(NSUInteger)bytes {
-  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:(int)bytes];
 }
 
 //// This value isn't very accurate; an external timer gives a smoother value.

@@ -52,7 +52,7 @@
   // TODO
 }
 - (void)ctdDidSendPacket:(NSUInteger)bytes {
-  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:(int)bytes];
 }
 
 - (void)ctdDidStartTargetTesting {

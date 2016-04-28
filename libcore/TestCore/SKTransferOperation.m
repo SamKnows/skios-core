@@ -672,6 +672,10 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 // We SHARE the body data, to save memory footprint - otherwise, we can run out of memory on e.g. iPhone 4S
 //static NSData *sbBodyData = nil;
 
+-(void) failedConnection:(NSURLConnection*)connection didFailWithError:(NSError*)error {
+  [self connection:connection didFailWithError:error];
+}
+
 -(void) startUploadTest {
 #ifdef DEBUG
   NSLog(@"DEBUG startUploadTest: %@ - isUpstream", [self description]);
@@ -720,7 +724,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 #ifdef _DEBUG
     NSLog(@"DEBUG ERROR, failed to create socket\n");
 #endif // _DEBUG
-    [self connection:nil didFailWithError:nil];
+    [self failedConnection:nil didFailWithError:nil];
     return;
   }
   
@@ -798,7 +802,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     NSLog(@"DEBUG: theErrNo3=%d", theErrNo);
 #endif // DEBUG
     SK_ASSERT(false);
-    [self connection:nil didFailWithError:nil];
+    [self failedConnection:nil didFailWithError:nil];
     close(sockfd);
     return;
   }
@@ -838,7 +842,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
         NSLog(@"DEBUG: reponseCode=%d", responseCode);
 #endif // DEBUG
         SK_ASSERT(false);
-        [self connection:nil didFailWithError:nil];
+        [self failedConnection:nil didFailWithError:nil];
       } else {
 #ifdef DEBUG
         NSLog(@"DEBUG: reponseCode=%d, responseString=>>>\n%@\n<<<", responseCode, responseString);
@@ -996,7 +1000,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     totalBytesWritten += bytesWritten; // blockDataLength;
     
     // This is a DUMMY call... 
-    [self connection:nil didSendBodyData:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
+    [self connection:(NSURLConnection*)[NSObject new] didSendBodyData:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
     if (bytesWritten == 0) {
       // Allow other threads a chance!
       [NSThread sleepForTimeInterval:0.001];
@@ -1311,7 +1315,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
       
       if (![self isWarmupDone:(int)bytesLength])
       {
-        if (!self.status == WARMING)
+        if (!(self.status == WARMING))
         {
           self.status = WARMING;
           [self doSendUpdateStatus:self.status threadId:threadId];
@@ -1383,7 +1387,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     }
     
     if (![self isWarmupDone:(int)bytesWritten]){
-      if (!self.status == WARMING) {
+      if (!(self.status == WARMING)) {
         self.status = WARMING;
         [self doSendUpdateStatus:self.status threadId:threadId];
       }

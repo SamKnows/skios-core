@@ -95,7 +95,7 @@
 - (void)htdUpdateDataUsage:(NSUInteger)totalBytes
                      bytes:(NSUInteger)bytes
                   progress:(float)progress {
-  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:bytes];
+  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:(int)bytes];
 }
 
 - (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {

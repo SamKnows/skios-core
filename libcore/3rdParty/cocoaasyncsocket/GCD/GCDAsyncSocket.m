@@ -5842,12 +5842,19 @@ enum GCDAsyncSocketConfig
 			NSDictionary *tlsSettings = tlsPacket->tlsSettings;
 			
 			NSNumber *value;
-			
+
+      // DEPRECATED checks - see https://github.com/robbiehanson/CocoaAsyncSocket/blob/master/Source/GCD/GCDAsyncSocket.m
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 			value = [tlsSettings objectForKey:(NSString *)kCFStreamSSLAllowsAnyRoot];
+#pragma clang diagnostic pop
 			if (value && [value boolValue] == YES)
 				canUseSecureTransport = NO;
 			
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 			value = [tlsSettings objectForKey:(NSString *)kCFStreamSSLAllowsExpiredRoots];
+#pragma clang diagnostic pop
 			if (value && [value boolValue] == YES)
 				canUseSecureTransport = NO;
 			
@@ -5855,7 +5862,10 @@ enum GCDAsyncSocketConfig
 			if (value && [value boolValue] == NO)
 				canUseSecureTransport = NO;
 			
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 			value = [tlsSettings objectForKey:(NSString *)kCFStreamSSLAllowsExpiredCertificates];
+#pragma clang diagnostic pop
 			if (value && [value boolValue] == YES)
 				canUseSecureTransport = NO;
 		}
@@ -6207,7 +6217,10 @@ static OSStatus SSLWriteFunction(SSLConnectionRef connection, const void *data, 
 	
 	// 2. kCFStreamSSLAllowsAnyRoot
 	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	value = [tlsSettings objectForKey:(NSString *)kCFStreamSSLAllowsAnyRoot];
+#pragma clang diagnostic pop
 	if (value)
 	{
 		#if TARGET_OS_IPHONE
@@ -6228,7 +6241,10 @@ static OSStatus SSLWriteFunction(SSLConnectionRef connection, const void *data, 
 	
 	// 3. kCFStreamSSLAllowsExpiredRoots
 	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	value = [tlsSettings objectForKey:(NSString *)kCFStreamSSLAllowsExpiredRoots];
+#pragma clang diagnostic pop
 	if (value)
 	{
 		#if TARGET_OS_IPHONE
@@ -6269,8 +6285,11 @@ static OSStatus SSLWriteFunction(SSLConnectionRef connection, const void *data, 
 	}
 	
 	// 5. kCFStreamSSLAllowsExpiredCertificates
-	
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	value = [tlsSettings objectForKey:(NSString *)kCFStreamSSLAllowsExpiredCertificates];
+#pragma clang diagnostic pop
 	if (value)
 	{
 		#if TARGET_OS_IPHONE
