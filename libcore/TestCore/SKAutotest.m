@@ -1562,10 +1562,12 @@ static BOOL sbTestIsRunning = NO;
   }
   
   [self writeJSON_TestResultsDictionary:self.latencyTest.outputResultsDictionary];
-  
-  [self.autotestObserverDelegate aodLatencyTestDidSucceed:self.latencyTest];
-  
-  [self runNextTest:self.latencyTest.testIndex];
+ 
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // Posting to NSNotificationCenter *must* be done in the main thread!
+    [self.autotestObserverDelegate aodLatencyTestDidSucceed:self.latencyTest];
+    [self runNextTest:self.latencyTest.testIndex];
+  });
 }
 
 - (void)htdUpdateStatus:(TransferStatus)status threadId:(NSUInteger)threadId {

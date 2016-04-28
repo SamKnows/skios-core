@@ -966,7 +966,13 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     return;
   }
   
+#ifdef DEBUG
+  NSDate *startDate = [NSDate date];
+#endif // DEBUG
   result = [self warmupToSocket:sockfd ThreadIndex:threadIndex];
+#ifdef DEBUG
+  NSDate *endDate = [NSDate date];
+#endif // DEBUG
   
   if (!result) {
 #ifdef DEBUG
@@ -976,9 +982,20 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     return;
   }
   
-  result = [self transferToSocket:sockfd ThreadIndex: threadIndex];
 #ifdef DEBUG
-  NSLog(@"**** DEBUG: myThreadEntry - done transferToSocket!");
+  NSLog(@"**** DEBUG: myThreadEntry - done warmupToSocket, after %0.1f seconds", [endDate timeIntervalSinceDate:startDate]);
+#endif // DEBUG
+ 
+#ifdef DEBUG
+  NSLog(@"*** DEBUG: PassiveServerUploadTest, call transferToSocket() ... thread: %d", threadIndex);
+#endif // DEBUG
+  
+  startDate = [NSDate date];
+  result = [self transferToSocket:sockfd ThreadIndex: threadIndex];
+  endDate = [NSDate date];
+  
+#ifdef DEBUG
+  NSLog(@"**** DEBUG: myThreadEntry - done transferToSocket, after %0.1f seconds", [endDate timeIntervalSinceDate:startDate]);
 #endif // DEBUG
   
   [self closeConnection:sockfd];

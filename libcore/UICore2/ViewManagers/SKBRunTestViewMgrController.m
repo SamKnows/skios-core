@@ -1046,6 +1046,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest
 {
+  SK_ASSERT([NSThread isMainThread]);
   double latency = latencyTest.latency;
   double packetLoss = latencyTest.packetLoss;
   double jitter = latencyTest.jitter;
