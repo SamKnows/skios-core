@@ -990,9 +990,13 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   NSLog(@"*** DEBUG: PassiveServerUploadTest, call transferToSocket() ... thread: %d", threadIndex);
 #endif // DEBUG
   
+#ifdef DEBUG
   startDate = [NSDate date];
+#endif // DEBUG
   result = [self transferToSocket:sockfd ThreadIndex: threadIndex];
+#ifdef DEBUG
   endDate = [NSDate date];
+#endif // DEBUG
   
 #ifdef DEBUG
   NSLog(@"**** DEBUG: myThreadEntry - done transferToSocket, after %0.1f seconds", [endDate timeIntervalSinceDate:startDate]);
