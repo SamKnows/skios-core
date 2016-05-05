@@ -109,16 +109,16 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 
 
 #pragma mark SKAutotestManagerDelegate
--(double)       amdGetLatitude {
-  NSLog(@"SKAutotestManagerDelegate::amdGetLatitude");
+-(double)       amdLocationGetLatitude {
+  NSLog(@"SKAutotestManagerDelegate::amdLocationGetLatitude");
   return 1.0;
 }
--(double)       amdGetLongitude {
-  NSLog(@"SKAutotestManagerDelegate::amdGetLongitude");
+-(double)       amdLocationGetLongitude {
+  NSLog(@"SKAutotestManagerDelegate::amdLocationGetLongitude");
   return 2.0;
 }
--(double)       amdGetDateAsTimeIntervalSince1970 {
-  NSLog(@"SKAutotestManagerDelegate::amdGetDateAsTimeIntervalSince1970");
+-(double)       amdLocationGetDateAsTimeIntervalSince1970 {
+  NSLog(@"SKAutotestManagerDelegate::amdLocationGetDateAsTimeIntervalSince1970");
   return 1.0;
 }
 -(SKScheduler*) amdGetSchedule {
@@ -182,9 +182,6 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 -(int64_t)   amdGetDataUsageBytes {
   NSLog(@"SKAutotestManagerDelegate::amdGetDataUsageBytes");
   return 100;
-}
--(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType {
-  NSLog(@"SKAutotestManagerDelegate::amdDoAppendOutputResultsArrayToLogFile, results==%@, networkType=%@", results, networkType);
 }
 
 #pragma mark SKAutotestObserverDelegate

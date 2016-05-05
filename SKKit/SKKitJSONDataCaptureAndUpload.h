@@ -13,9 +13,9 @@
 
 @protocol SKAutotestManagerDelegate
 
--(double)       amdGetLatitude;
--(double)       amdGetLongitude;
--(NSTimeInterval)       amdGetDateAsTimeIntervalSince1970;
+-(double)         amdLocationGetLatitude;
+-(double)         amdLocationGetLongitude;
+-(NSTimeInterval) amdLocationGetDateAsTimeIntervalSince1970;
 
 -(SKScheduler*) amdGetSchedule;
 -(NSString*)    amdGetClosestTarget;
@@ -26,7 +26,8 @@
 -(void)         amdDoCreateUploadFile:(int)fileSizeBytes;
 -(void)         amdDoUpdateDataUsage:(int)bytes;
 -(int64_t)      amdGetDataUsageBytes;
--(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType;
+
+-(SKKitLocationMonitor*) amdGetSKKitLocationMonitor;
 
 @end
 
@@ -54,8 +55,8 @@
 //
 // Metric collection into the jsonDictionary!
 //
-+ (void)sWriteJSON_TestResultsDictionary:(NSDictionary*)results ToDictionary:(NSMutableDictionary*)jsonDictionary AutoTestManagerDelegate:(id<SKAutotestManagerDelegate>)autotestManagerDelegate AccumulateNetworkTypeLocationMetricsToHere:(NSMutableArray*)accumulatedNetworkTypeLocationMetrics;
-+ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId AutoTestManagerDelegate:(id<SKAutotestManagerDelegate>)autoTestManagerDelegate  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics;
++ (void)sWriteJSON_TestResultsDictionary:(NSDictionary*)results ToDictionary:(NSMutableDictionary*)jsonDictionary SKKitLocationMonitor:(SKKitLocationMonitor*)locationManager AccumulateNetworkTypeLocationMetricsToHere:(NSMutableArray*)accumulatedNetworkTypeLocationMetrics;
++ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationMonitor:(SKKitLocationMonitor*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics;
 
 @end // SKKitJSONDataCaptureAndUpload
 

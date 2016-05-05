@@ -9,8 +9,8 @@
 
 @interface SKKitJSONDataCaptureAndUpload()
 // Private methods...
-+ (NSMutableDictionary *)sCreateNetworkTypeMetric:(id<SKAutotestManagerDelegate>)autotestManagerDelegate;
-+ (NSMutableDictionary *)sCreateLocationMetric:(id<SKAutotestManagerDelegate>)autotestManagerDelegate;
++ (NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationMonitor*)locationManager;
++ (NSMutableDictionary *)sCreateLocationMetric:(SKKitLocationMonitor*)locationManager;
 @end // SKKitJSONDataCaptureAndUpload
 
 @implementation SKKitJSONDataCaptureAndUpload
@@ -543,7 +543,7 @@
 // Metric collection into the jsonDictionary!
 //
 
-+ (void)sWriteJSON_TestResultsDictionary:(NSDictionary*)results ToDictionary:(NSMutableDictionary*)jsonDictionary AutoTestManagerDelegate:(id<SKAutotestManagerDelegate>)autotestManagerDelegate AccumulateNetworkTypeLocationMetricsToHere:(NSMutableArray*)accumulatedNetworkTypeLocationMetrics
++ (void)sWriteJSON_TestResultsDictionary:(NSDictionary*)results ToDictionary:(NSMutableDictionary*)jsonDictionary SKKitLocationMonitor:(SKKitLocationMonitor*)locationManager AccumulateNetworkTypeLocationMetricsToHere:(NSMutableArray*)accumulatedNetworkTypeLocationMetrics
 {
   // if results is nil, that historically would result in an assertion when adding to tests
   // at the end of the function. This was seen historically, and should be detected at runtime.
@@ -566,7 +566,7 @@
   // Generate a pair of METRICS to capture "location" and "network_type"...
   
   // These are added to the passive METRICS
-  NSMutableDictionary *locationDictionary = [self sCreateLocationMetric:autotestManagerDelegate];
+  NSMutableDictionary *locationDictionary = [self sCreateLocationMetric:locationManager];
   if (results[@"timestamp"] != nil) {
     locationDictionary[@"timestamp"] = results[@"timestamp"];
   }
@@ -576,7 +576,7 @@
   
   [accumulatedNetworkTypeLocationMetrics  addObject:locationDictionary];
   
-  NSMutableDictionary *networkTypeDictionary = [self sCreateNetworkTypeMetric:autotestManagerDelegate];
+  NSMutableDictionary *networkTypeDictionary = [self sCreateNetworkTypeMetric:locationManager];
   if (results[@"timestamp"] != nil) {
     networkTypeDictionary[@"timestamp"] = results[@"timestamp"];
   }
@@ -593,7 +593,7 @@
   [jsonDictionary setObject:tests forKey:@"tests"];
 }
 
-+ (NSMutableDictionary *)sCreateNetworkTypeMetric:(id<SKAutotestManagerDelegate>)autotestManagerDelegate
++ (NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationMonitor*)locationManager
 {
   /*
    
@@ -666,7 +666,7 @@
 }
 
 
-+ (NSMutableDictionary *)sCreateLocationMetric:(id<SKAutotestManagerDelegate>)autotestManagerDelegate
++ (NSMutableDictionary *)sCreateLocationMetric:(SKKitLocationMonitor*)locationManager
 {
   /*
    
@@ -690,22 +690,19 @@
   
   [location setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
   
-  [location setObject:[NSString localizedStringWithFormat:@"%f", [autotestManagerDelegate amdGetLatitude]]
-               forKey:@"latitude"];
+  [location setObject:[NSString localizedStringWithFormat:@"%f", locationManager.locationLatitude] forKey:@"latitude"];
   
-  [location setObject:[NSString localizedStringWithFormat:@"%f", [autotestManagerDelegate amdGetLongitude]]
-               forKey:@"longitude"];
+  [location setObject:[NSString localizedStringWithFormat:@"%f", locationManager.locationLongitude] forKey:@"longitude"];
   
-  [location setObject:[SKGlobalMethods getNetworkOrGps]
-               forKey:@"location_type"];
+  [location setObject:[SKGlobalMethods getNetworkOrGps] forKey:@"location_type"];
   
-  [location setObject:[SKGlobalMethods getTimeStampForTimeInteralSince1970:[autotestManagerDelegate amdGetDateAsTimeIntervalSince1970]]
-               forKey:@"timestamp"];
+  [location setObject:[SKGlobalMethods getTimeStampForTimeInteralSince1970:locationManager.locationDateAsTimeIntervalSince1970] forKey:@"timestamp"];
+  
   return location;
 }
 
 // Returns array of metrics!
-+ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId AutoTestManagerDelegate:(id<SKAutotestManagerDelegate>)autoTestManagerDelegate  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics
++ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationMonitor:(SKKitLocationMonitor*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics
 {
   // Phone info ////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -750,7 +747,7 @@
   // Location ////////////////////////////////////////////////////////////////////////////////////////////////
   
   NSMutableDictionary *location;
-  location = [self.class sCreateLocationMetric:autoTestManagerDelegate];
+  location = [self.class sCreateLocationMetric:locationManager];
   
   
   // Last Known Location /////////////////////////////////////////////////////////////////////////////////////
@@ -796,7 +793,7 @@
   // Network ////////////////////////////////////////////////////////////////////////////////////////////////
   
   NSMutableDictionary *network;
-  network = [self sCreateNetworkTypeMetric:autoTestManagerDelegate];
+  network = [self sCreateNetworkTypeMetric:locationManager];
   
   NSMutableArray *metrics = [NSMutableArray array];
   [metrics addObject:phone];

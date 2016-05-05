@@ -47,6 +47,102 @@ NSString *const cPrefs_DateRange = @"DATE_RANGE";
 NSString *const cPrefs_LastLocation = @"LAST_LOCATION";
 NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
+
+@implementation SKKitLocationMonitor
+
+// Location...
+@synthesize locationManager;
+@synthesize locationLatitude;
+@synthesize locationLongitude;
+@synthesize locationDateAsTimeIntervalSince1970;
+@synthesize hasLocation;
+
+//
+// Location monitoring!
+//
+
+#pragma mark - Location Manager delegate methods
+
+- (void)startLocationMonitoring
+{
+  @synchronized (self.class) {
+    SK_ASSERT([CLLocationManager locationServicesEnabled]);
+    
+    locationManager = [[CLLocationManager alloc] init];
+    SK_ASSERT(locationManager != nil);
+    
+    [locationManager setDelegate:self];
+    [locationManager setDistanceFilter:kCLHeadingFilterNone];
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    //[locationManager setPausesLocationUpdatesAutomatically:NO];
+    
+    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+    // http://stackoverflow.com/questions/24062509/ios-8-location-services-not-working
+    if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+      [locationManager requestWhenInUseAuthorization];
+    }
+    
+    [locationManager startUpdatingLocation];
+    [locationManager stopUpdatingLocation];
+    [locationManager startUpdatingLocation];
+  }
+}
+
+-(void)stopLocationMonitoring {
+  @synchronized (self.class) {
+    if (locationManager != nil) {
+      [locationManager setDelegate:nil];
+      [locationManager stopUpdatingLocation];
+      locationManager = nil;
+    }
+  }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+  SK_ASSERT(false);
+  
+  self.hasLocation = NO;
+  
+  NSLog(@"%s %d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:@"Location Manager Fail %@", [error localizedDescription]]);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations {
+  
+  SK_ASSERT(locationManager != nil);
+  
+  for (CLLocation * newLocation in locations) {
+    
+    self.hasLocation = YES;
+    //self.locationTimeStamp = newLocation.timestamp;
+    
+    if (self.locationLatitude == newLocation.coordinate.latitude) {
+      if (self.locationLongitude == newLocation.coordinate.longitude) {
+        continue;
+      }
+    }
+    self.locationLatitude = newLocation.coordinate.latitude;
+    self.locationLongitude = newLocation.coordinate.longitude;
+    self.locationDateAsTimeIntervalSince1970 = [SKGlobalMethods getTimeNowAsTimeIntervalSince1970];
+    
+    // Update the last known location. If the device restarts, with Location Services turned off,
+    // we can use this location for the 'last_location' field in the Submitted JSON.
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
+    [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
+    [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
+    [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
+    [prefs setObject:loc forKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
+    [prefs synchronize];
+  }
+}
+
+//
+// Location monitoring (end)
+//
+@end // SKKitLocationMonitor
+
 @interface SKAppBehaviourDelegate ()
 
 @property BOOL isConnected;
@@ -64,13 +160,6 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 @implementation SKAppBehaviourDelegate
 
-@synthesize locationManager;
-
-// Location...
-@synthesize locationLatitude;
-@synthesize locationLongitude;
-@synthesize locationDateAsTimeIntervalSince1970;
-@synthesize hasLocation;
 
 @synthesize schedule;
 @synthesize connectionStatus;
@@ -82,6 +171,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 @synthesize countryCode;
 @synthesize networkCode;
 @synthesize isoCode;
+@synthesize mLocationManager;
 
 static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
@@ -105,6 +195,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   if (self) {
     SK_ASSERT(spAppBehaviourDelegate == nil);
     spAppBehaviourDelegate = self;
+    
+    mLocationManager = [[SKKitLocationMonitor alloc] init];
     
     // Initialise SKCore!
     SKCore *libCore = [SKCore getInstance];
@@ -226,90 +318,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     return [libraryPath stringByAppendingPathComponent:@"LOG.txt"];
 }
 
-//
-// Location monitoring!
-//
 
-#pragma mark - Location Manager delegate methods
-
-- (void)startLocationMonitoring
-{
-  @synchronized (self.class) {
-    SK_ASSERT([CLLocationManager locationServicesEnabled]);
-    
-    locationManager = [[CLLocationManager alloc] init];
-    SK_ASSERT(locationManager != nil);
-    
-    [locationManager setDelegate:self];
-    [locationManager setDistanceFilter:kCLHeadingFilterNone];
-    [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-    //[locationManager setPausesLocationUpdatesAutomatically:NO];
-    
-    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-    // http://stackoverflow.com/questions/24062509/ios-8-location-services-not-working
-    if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-      [locationManager requestWhenInUseAuthorization];
-    }
-    
-    [locationManager startUpdatingLocation];
-    [locationManager stopUpdatingLocation];
-    [locationManager startUpdatingLocation];
-  }
-}
-
--(void)stopLocationMonitoring {
-  @synchronized (self.class) {
-    if (locationManager != nil) {
-      [locationManager setDelegate:nil];
-      [locationManager stopUpdatingLocation];
-      locationManager = nil;
-    }
-  }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-  SK_ASSERT(false);
-  
-  self.hasLocation = NO;
-  
-  NSLog(@"%s %d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:@"Location Manager Fail %@", [error localizedDescription]]);
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-     didUpdateLocations:(NSArray *)locations {
-  
-  SK_ASSERT(locationManager != nil);
-  
-  for (CLLocation * newLocation in locations) {
-    
-    self.hasLocation = YES;
-    //self.locationTimeStamp = newLocation.timestamp;
-    
-    if (self.locationLatitude == newLocation.coordinate.latitude) {
-      if (self.locationLongitude == newLocation.coordinate.longitude) {
-        continue;
-      }
-    }
-    self.locationLatitude = newLocation.coordinate.latitude;
-    self.locationLongitude = newLocation.coordinate.longitude;
-    self.locationDateAsTimeIntervalSince1970 = [SKGlobalMethods getTimeNowAsTimeIntervalSince1970];
-    
-    // Update the last known location. If the device restarts, with Location Services turned off,
-    // we can use this location for the 'last_location' field in the Submitted JSON.
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *loc = [NSMutableDictionary dictionary];
-    [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
-    [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
-    [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
-    [prefs setObject:loc forKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
-    [prefs synchronize];
-  }
-}
-
-//
-// Location monitoring (end)
-//
 
 - (void)addReachabilityStatus:(NSString*)route {
   // TODO - not required in SKA
@@ -462,14 +471,6 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 - (NSString*)getNetworkType:(int)date networkType:(NSString*)inNetworkType {
   return [self.class getNetworkType:date networkType:inNetworkType ForConnectionStatus:(ConnectionStatus)self.connectionStatus];
 }
-- (NSString*)getLocationInformationForDate:(int)date
-{
-  NSString *str = [NSString stringWithFormat:@"LOCATION;%f;%@;%f;%f;NA;", self.locationDateAsTimeIntervalSince1970, [SKGlobalMethods getNetworkOrGps], self.locationLatitude, self.locationLongitude];
-#ifdef DEBUG
-  NSLog(@"getLocationInformation=%@", str);
-#endif // DEBUG
-  return str;
-}
 
 - (NSString*)getNetworkState:(int)date {
   return [SKGlobalMethods getNetworkState:date ForConnectionStatus:(ConnectionStatus)self.connectionStatus];
@@ -509,11 +510,6 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     
     return currentBytes;
   }
-}
-
-- (void)amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType
-{
-  SK_ASSERT(false);
 }
 
 -(void) createFolderAtPathIfNotExists:(NSString*)thePath {
@@ -874,14 +870,14 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 #pragma mark SKAutotestManagerDelegate
 
--(double)       amdGetLatitude {
-  return self.locationLatitude;
+-(double)       amdLocationGetLatitude {
+  return self.mLocationManager.locationLatitude;
 }
--(double)       amdGetLongitude {
-  return self.locationLongitude;
+-(double)       amdLocationGetLongitude {
+  return self.mLocationManager.locationLongitude;
 }
--(NSTimeInterval)       amdGetDateAsTimeIntervalSince1970{
-  return self.locationDateAsTimeIntervalSince1970;
+-(NSTimeInterval)       amdLocationGetDateAsTimeIntervalSince1970{
+  return self.mLocationManager.locationDateAsTimeIntervalSince1970;
 }
 
 -(SKScheduler *)amdGetSchedule {
@@ -1670,6 +1666,20 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
 //
 -(BOOL) getSKMAppShowActivityFromChooseNetwork {
   return NO;
+}
+
+
+// Location!
+- (void)startLocationMonitoring {
+  [mLocationManager startLocationMonitoring];
+}
+
+- (void)stopLocationMonitoring {
+  [mLocationManager stopLocationMonitoring];
+}
+
+-(SKKitLocationMonitor*) amdGetSKKitLocationMonitor {
+  return mLocationManager;
 }
 
 @end

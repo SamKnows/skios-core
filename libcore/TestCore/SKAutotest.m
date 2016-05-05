@@ -239,9 +239,9 @@ static BOOL sbTestIsRunning = NO;
     
     //SK_ASSERT([self.autotestManagerDelegate respondsToSelector@selector(getAutotestDelegate)]);
     
-    double latitude = [autotestManagerDelegate amdGetLatitude];
+    double latitude = [autotestManagerDelegate amdLocationGetLatitude];
     //NSLog(@"latitude=%g", latitude);
-    double longitude = [autotestManagerDelegate amdGetLongitude];
+    double longitude = [autotestManagerDelegate amdLocationGetLongitude];
     //NSLog(@"longitude=%g", latitude);
     SKScheduler *schedule = [autotestManagerDelegate amdGetSchedule];
     //NSLog(@"schedule=%@", schedule);
@@ -911,7 +911,7 @@ static BOOL sbTestIsRunning = NO;
   
   // Write metric data to the json dictionary!
   NSString *testIdAsString = [self.testId stringValue];
-  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString AutoTestManagerDelegate:self.autotestManagerDelegate   AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics];
+  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor] AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics];
   
   // If we fired a throttle query, upload the response...
   if ( (self.mpThrottledQueryResult != nil) &&
@@ -1161,7 +1161,7 @@ static BOOL sbTestIsRunning = NO;
 {
   if (status == FAILED)
   {
-    [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary AutoTestManagerDelegate:self.autotestManagerDelegate AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
+    [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
     
     [self.autotestObserverDelegate aodTransferTestDidFail:self.httpTest.isDownstream];
     
@@ -1182,7 +1182,7 @@ static BOOL sbTestIsRunning = NO;
     [SKDatabase storeJitter:dt jitter:self.latencyTest.jitter testId:self.testId testName:self.latencyTest.displayName];
   }
   
-  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:self.latencyTest.outputResultsDictionary ToDictionary:self.jsonDictionary AutoTestManagerDelegate:self.autotestManagerDelegate  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
+  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:self.latencyTest.outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor]  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
  
   dispatch_async(dispatch_get_main_queue(), ^{
     // Posting to NSNotificationCenter *must* be done in the main thread!
@@ -1231,7 +1231,7 @@ static BOOL sbTestIsRunning = NO;
   
   [self.autotestObserverDelegate aodTransferTestDidCompleteTransfer:self.httpTest Bitrate1024Based:bitrateMbps1024Based];
   
-  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary AutoTestManagerDelegate:self.autotestManagerDelegate  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
+  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
   
   [self htdDidCompleteHttpTest];
 }

@@ -53,10 +53,25 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 @class SKScheduler;
 
+@interface SKKitLocationMonitor : NSObject<CLLocationManagerDelegate>
+
+@property (nonatomic, retain) CLLocationManager* locationManager;
+@property double latitude;
+@property double longitude;
+@property (assign, nonatomic) double locationLatitude;
+@property (assign, nonatomic) double locationLongitude;
+@property (assign, nonatomic) NSTimeInterval locationDateAsTimeIntervalSince1970;
+@property (assign, nonatomic) BOOL hasLocation;
+
+// Start/stop location monitoring!
+// Only a test should invoke these methods.
+- (void)startLocationMonitoring;
+- (void)stopLocationMonitoring;
+@end // SKKitLocationMonitor
+
 #import "SKKitJSONDataCaptureAndUpload.h"
 
-
-@interface SKAppBehaviourDelegate : NSObject<CLLocationManagerDelegate, UIActionSheetDelegate, SKAutotestManagerDelegate>
+@interface SKAppBehaviourDelegate : NSObject<UIActionSheetDelegate, SKAutotestManagerDelegate>
 
 // An instance of one of these MUST be called FROM main()... *before* the app fully starts-up.
 // This can be called at any time...
@@ -65,10 +80,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Used for testing!
 +(SKAppBehaviourDelegate*) sGetAppBehaviourDelegateCanBeNil;
 
-@property (nonatomic, retain) CLLocationManager* locationManager;
 @property (nonatomic, retain) NSString *closestTarget;
-@property double latitude;
-@property double longitude;
 
 @property (nonatomic, strong) NSString *deviceModel;
 @property (nonatomic, strong) NSString *devicePlatform;
@@ -77,10 +89,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 @property (nonatomic, strong) NSString *networkCode;
 @property (nonatomic, strong) NSString *isoCode;
 
-@property (assign, nonatomic) double locationLatitude;
-@property (assign, nonatomic) double locationLongitude;
-@property (assign, nonatomic) NSTimeInterval locationDateAsTimeIntervalSince1970;
-@property (assign, nonatomic) BOOL hasLocation;
+@property (retain, atomic) SKKitLocationMonitor *mLocationManager;
 
 @property (strong, nonatomic) SKScheduler *schedule;
 
@@ -97,11 +106,9 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 - (NSString*)getNetworkType:(int)date networkType:(NSString*)networkType;
 - (NSString*)getNetworkState:(int)date;
 //- (NSString*)getLocationInformation:(int)date;
-- (NSString*)getLocationInformationForDate:(int)date;
 - (NSString*)getPhoneIdentity:(int)date;
 - (NSString*)getSimOperator:(int)date;
 -(void)   amdSetClosestTarget:(NSString*)inClosestTarget;
-
 
 - (BOOL)hasAgreed;
 - (BOOL)hasNewAppAgreed;
@@ -193,11 +200,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL) isSocialMediaImageExportSupported;
 
 
-// Start/stop location monitoring!
-// Only a test should invoke these methods.
-- (void)startLocationMonitoring;
-- (void)stopLocationMonitoring;
-
 //
 // Introduced for New app
 //
@@ -249,6 +251,10 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Added for the SKMobile app versions
 //
 -(BOOL) getSKMAppShowActivityFromChooseNetwork;
+
+// Location!
+- (void)startLocationMonitoring;
+- (void)stopLocationMonitoring;
 @end
 
 
