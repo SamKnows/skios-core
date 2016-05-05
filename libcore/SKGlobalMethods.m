@@ -971,4 +971,12 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   return [NSDate sGetDateAsIso8601String:date];
 }
 
++ (BOOL)sIsWholeNumber:(double)number
+{
+  double integral;
+  double fractional = modf(number, &integral);
+  
+  return fractional == 0.00 ? YES : NO;
+}
+
 @end

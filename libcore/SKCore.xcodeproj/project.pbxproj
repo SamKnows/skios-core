@@ -22,6 +22,7 @@
 		B221AEE518FFE24800323923 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
 		B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2246C7917CF691700E1DC79 /* SKAutotest.m */; };
 		B224BE2F1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m in Sources */ = {isa = PBXBuildFile; fileRef = B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */; };
+		B227ED7B1CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = B227ED7A1CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.m */; };
 		B22B60EF1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B22B60EE1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m */; };
 		B22B60F21B00B6FF00CEB36B /* SKSettingsDataCapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B22B60F11B00B6FE00CEB36B /* SKSettingsDataCapCell.m */; };
 		B22B60F51B00BF1000CEB36B /* SKSettingsLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B22B60F41B00BF1000CEB36B /* SKSettingsLinkCell.m */; };
@@ -211,6 +212,8 @@
 		B2246C7917CF691700E1DC79 /* SKAutotest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAutotest.m; sourceTree = "<group>"; };
 		B224BE2D1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKATermsAndConditionsWithButtonController.h; path = UICore2/ViewManagers/SKATermsAndConditionsWithButtonController.h; sourceTree = SOURCE_ROOT; };
 		B224BE2E1A6D21CA0026225A /* SKATermsAndConditionsWithButtonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKATermsAndConditionsWithButtonController.m; path = UICore2/ViewManagers/SKATermsAndConditionsWithButtonController.m; sourceTree = SOURCE_ROOT; };
+		B227ED791CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKKitJSONDataCaptureAndUpload.h; sourceTree = "<group>"; };
+		B227ED7A1CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKKitJSONDataCaptureAndUpload.m; sourceTree = "<group>"; };
 		B22B60ED1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsCellValueWithLabel.h; sourceTree = "<group>"; };
 		B22B60EE1B00B65D00CEB36B /* SKSettingsCellValueWithLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSettingsCellValueWithLabel.m; sourceTree = "<group>"; };
 		B22B60F01B00B6FE00CEB36B /* SKSettingsDataCapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSettingsDataCapCell.h; sourceTree = "<group>"; };
@@ -892,6 +895,8 @@
 			children = (
 				B27CFAA81A84CA1800C410B8 /* SKAppBehaviourDelegate.h */,
 				B2EC77F31A88D4ED009B324A /* SKAppBehaviourDelegate.m */,
+				B227ED791CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.h */,
+				B227ED7A1CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.m */,
 				B2EC77E51A88CA07009B324A /* SKKitTest.h */,
 				B2EC77DD1A88C791009B324A /* SKScheduleParser.h */,
 				B2EC77E41A88CA07009B324A /* SKKitTestClosestTarget.m */,
@@ -1465,6 +1470,7 @@
 				B244AD131CD2371B00455CED /* SKKitTestDownload.m in Sources */,
 				B28006E019C970300008DF5F /* SKBRunTestViewMgrController.m in Sources */,
 				B218A04417CCF1550048B3E0 /* SKClosestTargetTest.m in Sources */,
+				B227ED7B1CDB6DB100DC0075 /* SKKitJSONDataCaptureAndUpload.m in Sources */,
 				B2C5A06B17CE39AB009A9244 /* SKScheduler.m in Sources */,
 				B2246C7A17CF691700E1DC79 /* SKAutotest.m in Sources */,
 				B22E5EDA19D9715B00666F16 /* SKBTermsViewController.m in Sources */,

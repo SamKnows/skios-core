@@ -66,6 +66,12 @@
   [mpDownloadTest cancel];
 }
 
+// TODO - capture data into a supplied JSON saver instance class, which must be extracted
+// as a class from SKAppBehaviourDelegate ... and exported as a public SKKit class.
+//-(void) saveToJSON {
+//  NSLog(@"Download json: %@", mpDownloadTest.outputResultsDictionary);
+//}
+
 // Pragma SKHttpTestDelegate
 
 - (void)htdUpdateStatus:(TransferStatus)status

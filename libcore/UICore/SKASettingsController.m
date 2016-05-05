@@ -224,7 +224,7 @@
       // Empty the database
       [SKDatabase sEmptyTheDatabase];
       // Delete any archived files!
-      [SKAppBehaviourDelegate deleteAllArchivedJSONFiles];
+      [SKKitJSONDataCaptureAndUpload sDeleteAllArchivedJSONFiles];
       
       // Notify the rest of the UI!
       [[NSNotificationCenter defaultCenter]

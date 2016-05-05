@@ -53,25 +53,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 @class SKScheduler;
 
-@protocol SKAutotestManagerDelegate
+#import "SKKitJSONDataCaptureAndUpload.h"
 
--(double)       amdGetLatitude;
--(double)       amdGetLongitude;
--(NSTimeInterval)       amdGetDateAsTimeIntervalSince1970;
-
--(SKScheduler*) amdGetSchedule;
--(NSString*)    amdGetClosestTarget;
--(void)         amdSetClosestTarget:(NSString*)inClosestTarget;
--(BOOL)         amdGetIsConnected;
--(NSInteger)    amdGetConnectionStatus;
--(NSString*)    amdGetFileUploadPath:(int)fileSizeBytes;
--(void)         amdDoUploadJSON;
--(void)         amdDoCreateUploadFile:(int)fileSizeBytes;
--(void)         amdDoUpdateDataUsage:(int)bytes;
--(int64_t)      amdGetDataUsageBytes;
--(void)         amdDoAppendOutputResultsArrayToLogFile:(NSMutableArray*)results networkType:(NSString*)networkType;
-
-@end
 
 @interface SKAppBehaviourDelegate : NSObject<CLLocationManagerDelegate, UIActionSheetDelegate, SKAutotestManagerDelegate>
 
@@ -209,10 +192,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL) isSocialMediaExportSupported;
 -(BOOL) isSocialMediaImageExportSupported;
 
-// Zip file archiving!
-+ (NSString*)getJSONArchiveZipFilePath;
-+(BOOL) exportArchivedJSONFilesToZip:(int*)RpFiles;
-+(void) deleteAllArchivedJSONFiles;
 
 // Start/stop location monitoring!
 // Only a test should invoke these methods.
@@ -249,9 +228,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(UILabel*) prepareLetterForAnimation:(UIView*)onView inArray:(NSMutableArray*)inArray inText:(NSString*)inText  wordFrame:(CGRect)wordFrame;
 -(NSMutableArray *) getSplashLabelArray:(UIView*)onView;
 // Splash screen (end)
-
-+(NSString*)getNewJSONFilePath;
-+(NSString*)getNewJSONArchiveFilePath;
 
 +(NSString*)sGet_Prefs_LastTestSelection;
 +(NSString*)sGet_Prefs_DateRange;

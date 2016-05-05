@@ -97,5 +97,8 @@ typedef double SKTimeIntervalMicroseconds;
 +(void) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion;
 
 +(NSString *)sGetDateAsIso8601String:(NSDate*)date;
-  
+
+// Utility
++ (BOOL)sIsWholeNumber:(double)number;
+
 @end

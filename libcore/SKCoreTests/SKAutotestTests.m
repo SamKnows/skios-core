@@ -173,9 +173,6 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 -(void)         amdDoSaveJSON:(NSString*)jsonString {
   NSLog(@"SKAutotestManagerDelegate::amdDoSaveJSON=%@", jsonString);
 }
--(void)         amdDoUploadJSON {
-  NSLog(@"SKAutotestManagerDelegate::amdDoUploadJSON");
-}
 -(void)         amdDoCreateUploadFile:(int)fileSizeBytes {
   NSLog(@"SKAutotestManagerDelegate::amdDoCreateUploadFile");
 }

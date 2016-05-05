@@ -734,15 +734,23 @@ static BOOL sbTestIsRunning = NO;
   return self;
 }
 
+
 -(void) doInit:(BOOL)isContinuousTesting {
   
   self.mbIsContinuousTesting = isContinuousTesting;
   self.accumulatedNetworkTypeLocationMetrics = [NSMutableArray new];
-  jsonDictionary = [[NSMutableDictionary alloc] init];
-  self.requestedTests = [NSMutableArray new];
-  [self writeJSON_TestHeader:[self.autotestManagerDelegate amdGetSchedule]];
-  self.testId = nil;
   
+  self.testId = nil;
+  self.requestedTests = [NSMutableArray new];
+  self.jsonDictionary = [SKKitJSONDataCaptureAndUpload sCreateJSONDictionary_IsContinuousTest:isContinuousTesting];
+ 
+  SKScheduler*scheduler = [self.autotestManagerDelegate amdGetSchedule];
+  SK_ASSERT(scheduler != nil);
+  if (scheduler.scheduleVersion != nil) {
+    [jsonDictionary setObject:scheduler.scheduleVersion forKey:@"schedule_config_version"];
+  } else {
+    SK_ASSERT(false);
+  }
 }
 
 -(void)startOfTestRunThrottleQuery {
@@ -833,83 +841,6 @@ static BOOL sbTestIsRunning = NO;
   [self.latencyTest setSKAutotest:self];
 }
 
-- (void)writeJSON_TestHeader:(SKScheduler*)scheduler
-{
-  NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
-  [jsonDictionary setObject:enterpriseId forKey:@"enterprise_id"];
-  
-  [jsonDictionary setObject:[SKGlobalMethods getSimOperatorCodeMCCAndMNC]
-                     forKey:@"sim_operator_code"];
-#ifdef DEBUG
-  NSLog(@"DEBUG: sim_operator_code=%@", [SKGlobalMethods getSimOperatorCodeMCCAndMNC]);
-#endif // DEBUG
-  
-  if (self.mbIsContinuousTesting) {
-    [jsonDictionary setObject:@"continuous_testing" forKey:@"submission_type"];
-  } else {
-    [jsonDictionary setObject:@"manual_test" forKey:@"submission_type"];
-  }
-  
-  NSString *appVersionName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-  [jsonDictionary setObject:appVersionName forKey:@"app_version_name"];
-#ifdef DEBUG
-  NSLog(@"DEBUG: app_version_name=%@", appVersionName);
-#endif // DEBUG
-  
-  NSString *appVersionCode = [appVersionName stringByReplacingOccurrencesOfString:@"." withString:@""];
-  [jsonDictionary setObject:appVersionCode forKey:@"app_version_code"];
-#ifdef DEBUG
-  NSLog(@"DEBUG: app_version_code=%@", appVersionCode);
-#endif // DEBUG
-  
-  SK_ASSERT(scheduler != nil);
-  SK_ASSERT(scheduler.scheduleVersion != nil);
-  
-  if (scheduler.scheduleVersion != nil) {
-    [jsonDictionary setObject:scheduler.scheduleVersion
-                       forKey:@"schedule_config_version"];
-  } else {
-    SK_ASSERT(false);
-  }
-  
-  [jsonDictionary setObject:[SKGlobalMethods getTimeStamp]
-                     forKey:@"timestamp"];
-  
-  [jsonDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  
-  NSTimeZone *tz = [NSTimeZone systemTimeZone];
-  NSTimeInterval ti = [tz secondsFromGMT];
-  
-  ti = ti / 3600; // convert to hours
-  
-  NSString *result = nil;
-  
-  if ([self isWholeNumber:ti])
-  {
-    result = [NSString stringWithFormat:@"%d", (int)ti];
-  }
-  else
-  {
-    result = [NSString stringWithFormat:@"%@", [SKGlobalMethods format2DecimalPlaces:ti]];
-  }
-  
-  NSString *prefix = (ti <= 0) ? @"" : @"+";
-  NSString *timeZone = [NSString stringWithFormat:@"%@%@", prefix, result];
-  
-  [jsonDictionary setObject:timeZone forKey:@"timezone"];
-  
-#ifdef DEBUG
-  NSLog(@"DEBUG: jsonDictionary=%@", [jsonDictionary description]);
-#endif // DEBUG
-}
-
-- (BOOL)isWholeNumber:(double)number
-{
-  double integral;
-  double fractional = modf(number, &integral);
-  
-  return fractional == 0.00 ? YES : NO;
-}
 
 -(void) rememberThatTestWasRequested:(NSString*)type {
   
@@ -926,307 +857,6 @@ static BOOL sbTestIsRunning = NO;
   [self.requestedTests addObject:type];
 }
 
-- (void)writeJSON_TestResultsDictionary:(NSDictionary*)results
-{
-  // if results is nil, that historically would result in an assertion when adding to tests
-  // at the end of the function. This was seen historically, and should be detected at runtime.
-  // Note that the code now checks that results is not nil before trying to add it to the
-  // tests array.
-  SK_ASSERT(results != nil);
-  
-  NSMutableArray *tests;
-  
-  if ([jsonDictionary objectForKey:@"tests"] == nil)
-  {
-    // Create a new, empty array of tests.
-    tests = [NSMutableArray array];
-  }
-  else {
-    // Use the already part-populated array of tests.
-    tests = [jsonDictionary objectForKey:@"tests"];
-  }
-  
-  // Generate a pair of METRICS to capture "location" and "network_type"...
-  
-  // These are added to the passive METRICS
-  NSMutableDictionary *locationDictionary = [self createLocationMetric];
-  if (results[@"timestamp"] != nil) {
-    locationDictionary[@"timestamp"] = results[@"timestamp"];
-  }
-  if (results[@"datetime"] != nil) {
-    locationDictionary[@"datetime"] = results[@"datetime"];
-  }
-  
-  [self.accumulatedNetworkTypeLocationMetrics  addObject:locationDictionary];
-  
-  NSMutableDictionary *networkTypeDictionary = [self createNetworkTypeMetric];
-  if (results[@"timestamp"] != nil) {
-    networkTypeDictionary[@"timestamp"] = results[@"timestamp"];
-  }
-  if (results[@"datetime"] != nil) {
-    networkTypeDictionary[@"datetime"] = results[@"datetime"];
-  }
-  
-  [self.accumulatedNetworkTypeLocationMetrics  addObject:networkTypeDictionary];
-  
-  if (results != nil) {
-    [tests addObject:results];
-  }
-  
-  [jsonDictionary setObject:tests forKey:@"tests"];
-}
-
-
-- (NSMutableDictionary *)createNetworkTypeMetric
-{
-  /*
-   
-   "type":"network_data",
-   "active_network_type":api android.net.ConnectivityManager.getActiveNetworkInfo().getTypeName(),
-   "active_network_type_code":api android.net.ConnectivityManager.getActiveNetworkInfo().getType(),
-   "connected":api android.net.ConnectivityManager.getActiveNetworkInfo().isConnected(),
-   "datetime":"Fri Jan 25 15:35:07 GMT 2013",
-   "network_operator_code":api android.telephony.TelephonyManager.getNetworkOperator(),
-   "network_operator_name":api android.telephony.TelephonyManager.getNetworkOperatorName(),
-   "network_type_code":api android.telephony.TelephonyManager.getNetworkType(),
-   "network_type":"HSDPA",
-   "phone_type_code":api android.telephony.TelephonyManager.getPhoneType(),
-   "phone_type":"GSM",
-   "roaming":api android.telephony.TelephonyManager.isNetworkRoaming(),
-   "sim_operator_code":api android.telephony.TelephonyManager.getSimOperator(),
-   "sim_operator_name":api android.telephony.TelephonyManager.getSimOperatorName(),
-   "timestamp":"1359128107"
-   
-   */
-  
-  // Updates the reachability status...
-  [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected];
-  
-  NSMutableDictionary *network = [NSMutableDictionary dictionary];
-  [network setObject:@"network_data"
-              forKey:@"type"];
-  [network setObject:@"true"
-              forKey:@"connected"];   // must be true, seeing as we completed the test(s)
-  [network setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  [network setObject:[SKGlobalMethods getConnectionResultString:(ConnectionStatus)[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
-              forKey:@"active_network_type"];
-  [network setObject:@"NA"
-              forKey:@"active_network_type_code"];
-  
-  // Note: the sim_operator_code and network_operator_code values should both be the same,
-  // i.e. they should both be the result of a call to getSimOperatorCodeMCCAndMNC...
-  NSString *simOperatorCodeMCCAndMNC = [SKGlobalMethods getSimOperatorCodeMCCAndMNC];
-  [network setObject:simOperatorCodeMCCAndMNC
-              forKey:@"network_operator_code"];
-  [network setObject:simOperatorCodeMCCAndMNC
-              forKey:@"sim_operator_code"];
-  
-  NSString *carrierName = [SKGlobalMethods getCarrierName];
-  //carrierName = @"SamKnows测试移动运营商"; @"SamKnows Test Mobile Operator"
-  [network setObject:carrierName forKey:@"network_operator_name"];
-  
-  [network setObject:@"NA"
-              forKey:@"network_type_code"];
-  //[network setObject:[SKGlobalMethods getConnectionResultString:[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
-  [network setObject:[SKGlobalMethods getNetworkType]
-              forKey:@"network_type"];
-  [network setObject:[SKGlobalMethods getDevicePlatform]
-              forKey:@"phone_type_code"];
-#ifdef DEBUG
-  NSLog(@"DEBUG: sim_operator_code=%@", [SKGlobalMethods getSimOperatorCodeMCCAndMNC]);
-#endif // DEBUG
-  //[network setObject:[SKGlobalMethods getCarrierName]
-  //            forKey:@"sim_operator_name"];
-  [network setObject:carrierName
-              forKey:@"sim_operator_name"];
-
-  [network setObject:[SKGlobalMethods getTimeStamp]
-              forKey:@"timestamp"];
-  [network setObject:[SKGlobalMethods getDeviceModel]
-              forKey:@"phone_type"];
-  [network setObject:@"NA"
-              forKey:@"roaming"];
-  return network;
-}
-
-- (NSMutableDictionary *)createLocationMetric
-{
-  /*
-   
-   "type":"location",
-   "accuracy":api android.location.Location.getAccuracy(),
-   "datetime":"Thu Jan 24 22:40:05 EST 2013",
-   "latitude":api android.location.Location.getLatitude(),
-   "location_type":gps
-   "longitude":api android.location.Location.getLongitude(),
-   "timestamp":api android.location.Location.getTime()
-   
-   */
-  
-  NSMutableDictionary *location = [NSMutableDictionary dictionary];
-  
-  [location setObject:@"location"
-               forKey:@"type"];
-  
-  [location setObject:@"NA"
-               forKey:@"accuracy"];
-  
-  [location setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  
-  [location setObject:[NSString localizedStringWithFormat:@"%f", [self.autotestManagerDelegate amdGetLatitude]]
-               forKey:@"latitude"];
-  
-  [location setObject:[NSString localizedStringWithFormat:@"%f", [self.autotestManagerDelegate amdGetLongitude]]
-               forKey:@"longitude"];
-  
-  [location setObject:[SKGlobalMethods getNetworkOrGps]
-               forKey:@"location_type"];
-  
-  [location setObject:[SKGlobalMethods getTimeStampForTimeInteralSince1970:[self.autotestManagerDelegate amdGetDateAsTimeIntervalSince1970]]
-               forKey:@"timestamp"];
-  return location;
-}
-
-- (void)writeJSON_Metrics
-{
-  
-  // Phone info ////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  /*
-   
-   "type":"phone_identity",
-   "datetime":"Fri Jan 25 15:35:07 GMT 2013",
-   "manufacturer":api android.os.Build.MANUFACTURER,
-   "model":api android.os.Build.MODEL,
-   "os_type":"android",
-   "os_version":api android.os.Build.VERSION.SDK_INT,
-   "timestamp":1359128107
-   "test_id":"190329108"
-   */
-  
-  NSMutableDictionary *phone = [NSMutableDictionary dictionary];
-  
-  [phone setObject:@"phone_identity"
-            forKey:@"type"];
-  
-  // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants.
-  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldUploadDeviceId]) {
-    [phone setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"app_id"];
-  }
-  
-  [phone setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  
-  [phone setObject:@"Apple"
-            forKey:@"manufacturer"];
-  
-  [phone setObject:[SKGlobalMethods getDeviceModel]
-            forKey:@"model"];
-  
-  //NSString *oldSystemName =  [[UIDevice currentDevice] systemName];
-  [phone setObject:@"iPhone OS" // Override, as iOS 9 reports iOS rather than "iPhone OS" as reported by iOS 8...
-            forKey:@"os_type"];
-  
-  [phone setObject:[[UIDevice currentDevice] systemVersion]
-            forKey:@"os_version"];
-  
-  [phone setObject:[SKGlobalMethods getTimeStamp]
-            forKey:@"timestamp"];
-  
-  [phone setObject:[self.testId stringValue]
-            forKey:@"test_id"];
-  
-  
-  // Location ////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  NSMutableDictionary *location;
-  location = [self createLocationMetric];
-  
-  
-  // Last Known Location /////////////////////////////////////////////////////////////////////////////////////
-  
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  double latitude = 0.0;
-  double longitude = 0.0;
-  //NSTimeInterval locationdate = 0;
-  NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
-  if (loc != nil) {
-    latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
-    longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
-    //locationdate = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
-  }
-  
-  //  if (locationdate == 0) {
-  //    locationdate = [[SKCore getToday] timeIntervalSince1970];
-  //  }
-  
-  NSMutableDictionary *lastLocation = [NSMutableDictionary dictionary];
-  
-  [lastLocation setObject:@"last_known_location"
-                   forKey:@"type"];
-  
-  [lastLocation setObject:@"NA"
-                   forKey:@"accuracy"];
-  
-  [lastLocation setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  
-  [lastLocation setObject:[NSString localizedStringWithFormat:@"%f", latitude]
-                   forKey:@"latitude"];
-  
-  [lastLocation setObject:[NSString localizedStringWithFormat:@"%f", longitude]
-                   forKey:@"longitude"];
-  
-  [lastLocation setObject:[SKGlobalMethods getNetworkOrGps]
-                   forKey:@"location_type"];
-  
-  [lastLocation setObject:[SKGlobalMethods getTimeStamp]
-                   forKey:@"timestamp"];
-  
-  
-  // Network ////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  NSMutableDictionary *network;
-  network = [self createNetworkTypeMetric];
-  
-  NSMutableArray *metrics = [NSMutableArray array];
-  [metrics addObject:phone];
-  [metrics addObject:location];
-  [metrics addObject:lastLocation];
-  [metrics addObject:network];
-  
-  for (NSDictionary *accumulatedMetric in self.accumulatedNetworkTypeLocationMetrics) {
-    [metrics  addObject:accumulatedMetric];
-  }
-  
-  // If we fired a throttle query, upload the response...
-  if ( (self.mpThrottledQueryResult != nil) &&
-      (self.mpThrottledQueryResult.returnCode != SKOperators_Return_NoThrottleQuery)
-      )
-  {
-    NSMutableDictionary *carrierStatus = [NSMutableDictionary dictionary];
-    [carrierStatus setObject:@"carrier_status"
-                      forKey:@"type"];
-    // timestamp of the operator status check...
-    [carrierStatus setObject:self.mpThrottledQueryResult.timestamp
-                      forKey:@"timestamp"];
-    // date/time of the operator status check...
-    [carrierStatus setObject:self.mpThrottledQueryResult.datetimeUTCSimple forKey:@"datetime"];
-    // operator name that matched by our status check
-    [carrierStatus setObject:self.mpThrottledQueryResult.carrier
-                      forKey:@"carrier"];
-    // status response from our status check
-    [carrierStatus setObject:self.mpThrottleResponse
-                      forKey:@"status"];
-    
-    [metrics addObject:carrierStatus];
-  }
-  
-  if (nil != cpuCondition)
-  {
-    [metrics addObject:cpuCondition];
-  }
-  
-  [jsonDictionary setObject:metrics forKey:@"metrics"];
-}
 
 - (BOOL)testIsIncluded:(NSString*)testType
 {
@@ -1259,15 +889,10 @@ static BOOL sbTestIsRunning = NO;
 #ifdef DEBUG
   NSLog(@"DEBUG - SKAutotest: doSaveAndUploadJson");
 #endif // DEBUG
-  
-  [self writeJSON_Metrics];
-  
-  // Append data on the requested tests!
-  [jsonDictionary setObject:self.requestedTests forKey:@"requested_tests"];
-  
-  if (self.conditionBreaches != nil) {
-    [jsonDictionary setObject:self.conditionBreaches forKey:@"condition_breach"];
-  }
+ 
+  //
+  // Save metrics!
+  //
   
   [SKDatabase storeMetrics:self.testId
                     device:[SKGlobalMethods getDeviceModel]
@@ -1279,58 +904,54 @@ static BOOL sbTestIsRunning = NO;
                networkType:[SKGlobalMethods getNetworkTypeString]
                  radioType:[SKGlobalMethods getNetworkType]
                     target:self.selectedTarget];
+
+  //
+  // Prepare the JSON dictionary for upload... and then save/upload it!
+  //
   
-  NSError *error;
-  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
-                                                     options:NSJSONWritingPrettyPrinted
-                                                       error:&error];
+  // Write metric data to the json dictionary!
+  NSString *testIdAsString = [self.testId stringValue];
+  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString AutoTestManagerDelegate:self.autotestManagerDelegate   AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics];
   
-  NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-#ifdef DEBUG
-  //NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
-  NSLog(@"DEBUG: doSaveAndUploadJson...");
-#endif // DEBUG
+  // If we fired a throttle query, upload the response...
+  if ( (self.mpThrottledQueryResult != nil) &&
+       (self.mpThrottledQueryResult.returnCode != SKOperators_Return_NoThrottleQuery)
+      )
+  {
+    NSMutableDictionary *carrierStatus = [NSMutableDictionary dictionary];
+    [carrierStatus setObject:@"carrier_status"
+                      forKey:@"type"];
+    // timestamp of the operator status check...
+    [carrierStatus setObject:self.mpThrottledQueryResult.timestamp
+                      forKey:@"timestamp"];
+    // date/time of the operator status check...
+    [carrierStatus setObject:self.mpThrottledQueryResult.datetimeUTCSimple forKey:@"datetime"];
+    // operator name that matched by our status check
+    [carrierStatus setObject:self.mpThrottledQueryResult.carrier
+                      forKey:@"carrier"];
+    // status response from our status check
+    [carrierStatus setObject:self.mpThrottleResponse
+                      forKey:@"status"];
+    
+    [metrics addObject:carrierStatus];
+  }
   
-  [self privateDoSaveJSON:jsonStr];
-  [self.autotestManagerDelegate amdDoUploadJSON];
+  if (self.conditionBreaches != nil) {
+    [self.jsonDictionary setObject:self.conditionBreaches forKey:@"condition_breach"];
+  }
+  
+  if (nil != cpuCondition)
+  {
+    [metrics addObject:cpuCondition];
+  }
+ 
+  //
+  // Write the Dictionary as JSON file, and upload to the server!
+  //
+  [SKKitJSONDataCaptureAndUpload sWriteTestDataAsJSONAndUploadToServer:self.jsonDictionary RequestedTests:self.requestedTests];
 }
 
-- (void) privateDoSaveJSON:(NSString*)jsonString {
-  
-  // 1. Write to JSON file for upload
-  {
-    NSString *path = [SKAppBehaviourDelegate getNewJSONFilePath];
-    NSError *error = nil;
-    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
-    {
-      //NSLog(@"Wrote JSON Successfully");
-    }
-    else
-    {
-#ifdef DEBUG
-      NSLog(@"Error writing JSON : %@", error.localizedDescription);
-      SK_ASSERT(false);
-#endif // DEBUG
-    }
-  }
-  
-  // 2. Write to JSON file for archive (for subsequent export!)
-  {
-    NSString *path = [SKAppBehaviourDelegate getNewJSONArchiveFilePath];
-    NSError *error = nil;
-    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
-    {
-      NSLog(@"Wrote Archive JSON Successfully");
-    }
-    else
-    {
-#ifdef DEBUG
-      NSLog(@"Error writing archive JSON : %@", error.localizedDescription);
-      SK_ASSERT(false);
-#endif // DEBUG
-    }
-  }
-}
+
 
 - (void)runNextTest:(int)testIndex
 {
@@ -1540,7 +1161,7 @@ static BOOL sbTestIsRunning = NO;
 {
   if (status == FAILED)
   {
-    [self writeJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary];
+    [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary AutoTestManagerDelegate:self.autotestManagerDelegate AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
     
     [self.autotestObserverDelegate aodTransferTestDidFail:self.httpTest.isDownstream];
     
@@ -1561,7 +1182,7 @@ static BOOL sbTestIsRunning = NO;
     [SKDatabase storeJitter:dt jitter:self.latencyTest.jitter testId:self.testId testName:self.latencyTest.displayName];
   }
   
-  [self writeJSON_TestResultsDictionary:self.latencyTest.outputResultsDictionary];
+  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:self.latencyTest.outputResultsDictionary ToDictionary:self.jsonDictionary AutoTestManagerDelegate:self.autotestManagerDelegate  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
  
   dispatch_async(dispatch_get_main_queue(), ^{
     // Posting to NSNotificationCenter *must* be done in the main thread!
@@ -1610,7 +1231,7 @@ static BOOL sbTestIsRunning = NO;
   
   [self.autotestObserverDelegate aodTransferTestDidCompleteTransfer:self.httpTest Bitrate1024Based:bitrateMbps1024Based];
   
-  [self writeJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary];
+  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary AutoTestManagerDelegate:self.autotestManagerDelegate  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
   
   [self htdDidCompleteHttpTest];
 }

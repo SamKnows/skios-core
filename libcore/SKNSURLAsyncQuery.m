@@ -193,7 +193,7 @@
                                                                 options:NSJSONReadingMutableLeaves
                                                                   error:&error];
 #ifdef DEBUG
-      NSLog(@"DEBUG: postResultsJsonToServer - resultDictionaryFromJson=%@", theObject);
+      NSLog(@"DEBUG: fireURLRequest - resultDictionaryFromJson=%@", theObject);
 #endif // DEBUG
       callback(error, responseCode, theObject,  responseHeaders);
     } else {

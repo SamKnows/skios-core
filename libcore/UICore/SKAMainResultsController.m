@@ -647,7 +647,7 @@ NSMutableArray *GArrayForResultsController;
   [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
     int items = 0;
     
-    if ([SKAppBehaviourDelegate exportArchivedJSONFilesToZip:&items] == NO) {
+    if ([SKKitJSONDataCaptureAndUpload sExportArchivedJSONFilesToZip:&items] == NO) {
       UIAlertView *alert = [[UIAlertView alloc]
                             initWithTitle:sSKCoreGetLocalisedString(@"Export_Failed_Title")
                             message:sSKCoreGetLocalisedString(@"Export_Failed_Body")
@@ -674,7 +674,7 @@ NSMutableArray *GArrayForResultsController;
         NSDate *now = [NSDate date];
         NSString *lpReadableDate = [dateFormatter stringFromDate:now];
         
-        NSString *zipPath = [SKAppBehaviourDelegate getJSONArchiveZipFilePath];
+        NSString *zipPath = [SKKitJSONDataCaptureAndUpload sGetJSONArchiveZipFilePath];
         NSString *lpFileNameWithExtension = [NSString stringWithFormat:@"export_%@.zip",lpReadableDate];
         // Ensure that there are no :/, characters in the name!
         lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@":" withString:@"_"];
