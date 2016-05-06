@@ -626,78 +626,6 @@ NSMutableArray *GArrayForResultsController;
 
 #pragma mark - Action Sheet Delegate
 
-+ (void)sMenuSelectedExportResults:(id<MFMailComposeViewControllerDelegate>)thisMailDelegate fromThisVC:(UIViewController *)fromThisVC
-{
-  if (![MFMailComposeViewController canSendMail]) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Email not enabled")
-                                                    message:sSKCoreGetLocalisedString(@"In order to send emails, you must first configure email on your device.")
-                                                   delegate:nil
-                                          cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
-                                          otherButtonTitles:nil];
-    [alert show];
-    return;
-  }
-  
-  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:sSKCoreGetLocalisedString(@"Export_Title")
-                                                  message:sSKCoreGetLocalisedString(@"Export_Body")
-                                                 delegate:nil
-                                        cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")
-                                        otherButtonTitles:sSKCoreGetLocalisedString(@"MenuAlert_OK"), nil];
-  
-  [alert showWithBlock:^(UIAlertView *inView, NSInteger buttonIndex) {
-    int items = 0;
-    
-    if ([SKKitJSONDataCaptureAndUpload sExportArchivedJSONFilesToZip:&items] == NO) {
-      UIAlertView *alert = [[UIAlertView alloc]
-                            initWithTitle:sSKCoreGetLocalisedString(@"Export_Failed_Title")
-                            message:sSKCoreGetLocalisedString(@"Export_Failed_Body")
-                            delegate:nil
-                            cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
-                            otherButtonTitles:nil];
-      [alert show];
-    } else {
-      // Succeeded!
-      // If there are no items, tell the user - otherwise, the zip file is malformed!
-      if (items == 0) {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:sSKCoreGetLocalisedString(@"Export_NoItems_Title")
-                              message:sSKCoreGetLocalisedString(@"Export_NoItems_Body")
-                              delegate:nil
-                              cancelButtonTitle:sSKCoreGetLocalisedString(@"MenuAlert_OK")
-                              otherButtonTitles:nil];
-        [alert show];
-      } else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-        
-        NSDate *now = [NSDate date];
-        NSString *lpReadableDate = [dateFormatter stringFromDate:now];
-        
-        NSString *zipPath = [SKKitJSONDataCaptureAndUpload sGetJSONArchiveZipFilePath];
-        NSString *lpFileNameWithExtension = [NSString stringWithFormat:@"export_%@.zip",lpReadableDate];
-        // Ensure that there are no :/, characters in the name!
-        lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@":" withString:@"_"];
-        lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
-        lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@"," withString:@"_"];
-        lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@" " withString:@"_"];
-        lpFileNameWithExtension = [lpFileNameWithExtension stringByReplacingOccurrencesOfString:@"__" withString:@"_"];
-        
-        [SKAMainResultsController sLaunchEmailWithAttachment:@""
-                                                     subject:[NSString stringWithFormat:@"%@ - %@", sSKCoreGetLocalisedString(@"MenuExport_Mail_Subject"), lpReadableDate]
-                                                    bodyText:[NSString stringWithFormat:@"%@\n\n%@", sSKCoreGetLocalisedString(@"MenuExport_Mail_Body"), lpFileNameWithExtension]
-                                                fileToAttach:zipPath
-                                              attachWithName:lpFileNameWithExtension
-                                      FromThisViewController:fromThisVC
-                                        WithThisMailDelegate:thisMailDelegate];
-      }
-    }
-  } cancelBlock:^(UIAlertView *inView) {
-    // Nothing to do!
-  }];
-}
-
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)index {
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)index {
   if (index == [actionSheet cancelButtonIndex]) {
     return;
@@ -817,11 +745,7 @@ NSMutableArray *GArrayForResultsController;
         [self SKSafePerformSegueWithIdentifier:@"segueFromMainToTAndCController" sender:self];
       });
     } else if ([buttonText isEqualToString:sSKCoreGetLocalisedString(@"Menu_Export")]) {
-      
-      UIViewController *fromThisVC = self;
-      id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
-      
-      [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
+      SK_ASSERT(false);// Deprecated!
     } else {
       // Unexpected menu item!
       SK_ASSERT(false);

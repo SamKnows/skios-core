@@ -8,27 +8,45 @@
 #import "SKAppBehaviourDelegate.h"
 
 @interface SKKitJSONDataCaptureAndUpload()
+
 // Private methods...
-+ (NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationMonitor*)locationManager;
-+ (NSMutableDictionary *)sCreateLocationMetric:(SKKitLocationMonitor*)locationManager;
++(NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationManager*)locationManager;
++(NSMutableDictionary *)sCreateLocationMetric:(SKKitLocationManager*)locationManager;
++(void) sDoSaveJSONStringToNewFile:(NSString*)jsonString;
+
++(NSString*) sGetJsonDirectory;
++(NSString*) sGetNewJSONFilePath;
+
 @end // SKKitJSONDataCaptureAndUpload
 
 @implementation SKKitJSONDataCaptureAndUpload
+
++(void) sCreateFolderAtPathIfNotExists:(NSString*)thePath {
+  if (![[NSFileManager defaultManager] fileExistsAtPath:thePath])
+  {
+    if ([[NSFileManager defaultManager] createDirectoryAtPath:thePath
+                                  withIntermediateDirectories:NO
+                                                   attributes:nil
+                                                        error:NULL])
+    {
+#ifdef DEBUG
+      NSLog(@"Created Directory at %@", thePath);
+#endif // DEBUG
+    }
+    else
+    {
+      SK_ASSERT(false);
+    }
+  }
+}
 
 + (NSString*)sGetJsonDirectory
 {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
   NSString *libraryPath = [paths objectAtIndex:0];
-  NSString *docPath = [libraryPath stringByAppendingPathComponent:@"JSON"];
   
-  return docPath;
-}
-
-+ (NSString*)sGetJsonArchiveDirectory
-{
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-  NSString *libraryPath = [paths objectAtIndex:0];
-  NSString *docPath = [libraryPath stringByAppendingPathComponent:@"JSONArchive"];
+  NSString *docPath = [libraryPath stringByAppendingPathComponent:@"JSON"];
+  [self sCreateFolderAtPathIfNotExists:docPath];
   
   return docPath;
 }
@@ -43,30 +61,10 @@
   return [docPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", strDate]];
 }
 
-+ (NSString*)sGetNewJSONArchiveFilePath
-{
-  NSString *docPath = [self sGetJsonArchiveDirectory];
-  
-  NSTimeInterval ti = [[SKCore getToday] timeIntervalSince1970];
-  NSString *strDate = [NSString stringWithFormat:@"%d", (int)ti];
-  
-  return [docPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", strDate]];
-}
-
-+ (NSString*)sGetJSONArchiveZipFilePath
-{
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-  NSString *libraryPath = [paths objectAtIndex:0];
-  NSString *docPath = [libraryPath stringByAppendingPathComponent:@"export.zip"];
-  return docPath;
-}
-
-+(void) sDeleteAllArchivedJSONFiles {
-  
-  // Write to zip of JSON files!
++(void) sDeleteAllSavedJSONFiles {
   
   NSError *error = nil;
-  NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[SKKitJSONDataCaptureAndUpload sGetJsonArchiveDirectory] error:&error];
+  NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[SKKitJSONDataCaptureAndUpload sGetJsonDirectory] error:&error];
   if (dirFiles == nil) {
     SK_ASSERT(false);
     return;
@@ -77,79 +75,26 @@
     return;
   }
   
-  int itemCount = 0;
+  if (dirFiles.count == 0) {
+    // Nothing to do!
+    return;
+  }
+  
   for (NSString *theFile in dirFiles) {
     NSURL *url = [NSURL URLWithString:theFile];
     if ([[url pathExtension] isEqualToString:@"json"]) {
-      NSString *fullFilePath = [[SKKitJSONDataCaptureAndUpload sGetJsonArchiveDirectory] stringByAppendingPathComponent:theFile];
+      NSString *fullFilePath = [[SKKitJSONDataCaptureAndUpload sGetJsonDirectory] stringByAppendingPathComponent:theFile];
       SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
       
       error = nil;
       BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
       SK_ASSERT(bRes == YES);
       SK_ASSERT(error == nil);
-      
-      itemCount++;
     }
   }
 }
 
-+(BOOL) sExportArchivedJSONFilesToZip:(int*)RpFiles {
-  
-  // Write to zip of JSON files!
-  
-  NSString *zipFilePath = [SKKitJSONDataCaptureAndUpload sGetJSONArchiveZipFilePath];
-  
-  NSError *error = nil;
-  NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[SKKitJSONDataCaptureAndUpload sGetJsonArchiveDirectory] error:&error];
-  if (dirFiles == nil) {
-    SK_ASSERT(false);
-    return NO;
-  }
-  
-  if (error != nil) {
-    SK_ASSERT(false);
-    return NO;
-  }
-  
-  ZipArchive *zipArchive = [[ZipArchive alloc] init];
-  BOOL bRes = [zipArchive CreateZipFile2:zipFilePath];
-  if (bRes == NO) {
-    SK_ASSERT(false);
-    return NO;
-  }
-  
-  int itemCount = 0;
-  for (NSString *theFile in dirFiles) {
-    NSURL *url = [NSURL URLWithString:theFile];
-    if ([[url pathExtension] isEqualToString:@"json"]) {
-      NSString *fullFilePath = [[SKKitJSONDataCaptureAndUpload sGetJsonArchiveDirectory] stringByAppendingPathComponent:theFile];
-      SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
-      
-      NSString *writeAsFile = [[url pathComponents] lastObject];
-      bRes = [zipArchive addFileToZip:fullFilePath newname:writeAsFile];
-      SK_ASSERT(bRes);
-      
-      itemCount++;
-    }
-  }
-  
-  [zipArchive CloseZipFile2];
-  
-  // Note that the zip file seems to be invalid, if there are zero items!
-  *RpFiles = itemCount;
-  
-#ifdef DEBUG
-  NSLog(@"DEBUG: Wrote zip file to %@, with %d items", zipFilePath, itemCount);
-#endif // DEBUG
-  
-  zipArchive = nil;
-  
-  return YES;
-}
-
-
-+(void) sWriteTestDataAsJSONAndUploadToServer:(NSMutableDictionary*)jsonDictionary RequestedTests:(NSArray*)requestedTests {
++(void) sWriteJSONDictionaryToFileAndUploadFilesToServer:(NSMutableDictionary*)jsonDictionary RequestedTests:(NSArray*)requestedTests {
   //
   // Save the JSON data, and write for upload to the server!
   //
@@ -195,22 +140,22 @@
     }
   }
   
-  // 2. Write to JSON file for archive (for subsequent export!)
-  {
-    NSString *path = [SKKitJSONDataCaptureAndUpload sGetNewJSONArchiveFilePath];
-    NSError *error = nil;
-    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
-    {
-      NSLog(@"Wrote Archive JSON Successfully");
-    }
-    else
-    {
-#ifdef DEBUG
-      NSLog(@"Error writing archive JSON : %@", error.localizedDescription);
-      SK_ASSERT(false);
-#endif // DEBUG
-    }
-  }
+//  // 2. Write to JSON file for archive (for subsequent export!)
+//  {
+//    NSString *path = [SKKitJSONDataCaptureAndUpload sGetNewJSONArchiveFilePath];
+//    NSError *error = nil;
+//    if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
+//    {
+//      NSLog(@"Wrote Archive JSON Successfully");
+//    }
+//    else
+//    {
+//#ifdef DEBUG
+//      NSLog(@"Error writing archive JSON : %@", error.localizedDescription);
+//      SK_ASSERT(false);
+//#endif // DEBUG
+//    }
+//  }
 }
 
 +(void) sDoUploadAllJSONFiles {
@@ -219,33 +164,36 @@
   
   NSError *error = nil;
   NSArray *jsonFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:jsonDirectory error:&error];
+  SK_ASSERT(error == nil);
   
-  if (nil == error)
+  if (jsonFiles == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  if (jsonFiles.count == 0) {
+    return;
+  }
+  
+  for (NSString *fileName in jsonFiles)
   {
-    //NSLog(@"JSON Files to Upload : %d", [jsonFiles count]);
+    NSString *pathToFile = [jsonDirectory stringByAppendingPathComponent:fileName];
     
-    for (int j=0; j<[jsonFiles count]; j++)
+    if ([[NSFileManager defaultManager] fileExistsAtPath:pathToFile]) // ultra paranoid
     {
-      NSString *fileName = [jsonFiles objectAtIndex:j];
+      NSURL *fileUrl = [NSURL fileURLWithPath:pathToFile];
       
-      NSString *pathToFile = [jsonDirectory stringByAppendingPathComponent:fileName];
+      NSData *json = [NSData dataWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
       
-      if ([[NSFileManager defaultManager] fileExistsAtPath:pathToFile]) // ultra paranoid
-      {
-        NSURL *fileUrl = [NSURL fileURLWithPath:pathToFile];
-        
-        NSData *json = [NSData dataWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
-        
-        if (nil == json) {
-          break;
-        }
-        
-        if ([json length] == 0) {
-          break;
-        }
-        
-        [self sPostResultsJsonToServer:json filePath:pathToFile];
+      if (nil == json) {
+        break;
       }
+      
+      if ([json length] == 0) {
+        break;
+      }
+      
+      [self sPostResultsJsonToServer:json filePath:pathToFile];
     }
   }
 }
@@ -341,14 +289,14 @@
         if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])
         {
 #ifdef DEBUG
-          NSLog(@"DEBUG: Unable to remove JSON file");
+          NSLog(@"DEBUG: Uploaded JSON file, but unable to remove JSON file from the file system!");
 #endif // DEBUG
           SK_ASSERT(false);
         }
         else
         {
 #ifdef DEBUG
-          NSLog(@"DEBUG: Uploaded JSON File");
+          NSLog(@"DEBUG: Uploaded JSON File, and removed from the file system!");
 #endif // DEBUG
         }
       }
@@ -543,7 +491,7 @@
 // Metric collection into the jsonDictionary!
 //
 
-+ (void)sWriteJSON_TestResultsDictionary:(NSDictionary*)results ToDictionary:(NSMutableDictionary*)jsonDictionary SKKitLocationMonitor:(SKKitLocationMonitor*)locationManager AccumulateNetworkTypeLocationMetricsToHere:(NSMutableArray*)accumulatedNetworkTypeLocationMetrics
++ (void)sAppendTestResultsDictionaryToJSONDictionary:(NSDictionary*)results ToDictionary:(NSMutableDictionary*)jsonDictionary SKKitLocationManager:(SKKitLocationManager*)locationManager AccumulateNetworkTypeLocationMetricsToHere:(NSMutableArray*)accumulatedNetworkTypeLocationMetrics
 {
   // if results is nil, that historically would result in an assertion when adding to tests
   // at the end of the function. This was seen historically, and should be detected at runtime.
@@ -593,7 +541,7 @@
   [jsonDictionary setObject:tests forKey:@"tests"];
 }
 
-+ (NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationMonitor*)locationManager
++ (NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationManager*)locationManager
 {
   /*
    
@@ -666,7 +614,7 @@
 }
 
 
-+ (NSMutableDictionary *)sCreateLocationMetric:(SKKitLocationMonitor*)locationManager
++ (NSMutableDictionary *)sCreateLocationMetric:(SKKitLocationManager*)locationManager
 {
   /*
    
@@ -702,7 +650,7 @@
 }
 
 // Returns array of metrics!
-+ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationMonitor:(SKKitLocationMonitor*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics
++ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationManager:(SKKitLocationManager*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics
 {
   // Phone info ////////////////////////////////////////////////////////////////////////////////////////////////
   

@@ -48,7 +48,7 @@ NSString *const cPrefs_LastLocation = @"LAST_LOCATION";
 NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 
-@implementation SKKitLocationMonitor
+@implementation SKKitLocationManager
 
 // Location...
 @synthesize locationManager;
@@ -141,7 +141,7 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 //
 // Location monitoring (end)
 //
-@end // SKKitLocationMonitor
+@end // SKKitLocationManager
 
 @interface SKAppBehaviourDelegate ()
 
@@ -196,7 +196,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     SK_ASSERT(spAppBehaviourDelegate == nil);
     spAppBehaviourDelegate = self;
     
-    mLocationManager = [[SKKitLocationMonitor alloc] init];
+    mLocationManager = [[SKKitLocationManager alloc] init];
     
     // Initialise SKCore!
     SKCore *libCore = [SKCore getInstance];
@@ -229,10 +229,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     }
     
     [self initSettings];
-    [self createJSONDirectories];
-    //[self amdDoCreateUploadFile fileSizeBYtes:];
     [self setupReachability];
-    //[self startLocationMonitoring];
     [self setDeviceInformation];
     [self setCarrierInformation];
     
@@ -251,7 +248,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     //  }
 #endif // DEBUG
     
-    
+   
+    // Upload any accumulated JSON Files, that have not yet been pushed for some reason.
     [SKKitJSONDataCaptureAndUpload sDoUploadAllJSONFiles];
     
     if (![self hasAgreed]) {
@@ -529,14 +527,6 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
       SK_ASSERT(false);
     }
   }
-}
-
-- (void)createJSONDirectories {
-  NSString *jsonFolderPath = [SKKitJSONDataCaptureAndUpload sGetJsonDirectory];
-  [self createFolderAtPathIfNotExists:jsonFolderPath];
-  
-  NSString *jsonArchiveFolderPath = [SKKitJSONDataCaptureAndUpload sGetJsonArchiveDirectory];
-  [self createFolderAtPathIfNotExists:jsonArchiveFolderPath];
 }
 
 - (void)populateSchedule
@@ -1560,10 +1550,6 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController {
 }
 
--(BOOL) getIsExportResultsSupported {
-  return YES;
-}
-
 -(BOOL) getIsBestTargetDisplaySupported {
   return YES;
 }
@@ -1678,7 +1664,7 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   [mLocationManager stopLocationMonitoring];
 }
 
--(SKKitLocationMonitor*) amdGetSKKitLocationMonitor {
+-(SKKitLocationManager*) amdGetSKKitLocationManager {
   return mLocationManager;
 }
 

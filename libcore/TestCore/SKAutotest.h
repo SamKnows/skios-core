@@ -30,7 +30,7 @@ typedef enum
 #define CTTBM_ALL  31
 
 
-@interface SKAutotest : NSObject <SKClosestTargetDelegate, SKLatencyTestDelegate, SKHttpTestDelegate, SKTestConfigDelegate>
+@interface SKAutotest : NSObject <SKClosestTargetDelegate, SKLatencyTestDelegate, SKHttpTestDelegate>
 
 //
 // Properties
@@ -43,7 +43,6 @@ typedef enum
 @property (atomic, retain) SKClosestTargetTest *targetTest;
 @property (atomic, retain) SKHttpTest *httpTest;
 @property (atomic, retain) NSMutableArray *requestedTests;
-@property (atomic, retain) NSMutableArray *conditionBreaches;
 
 // @public
 @property (nonatomic, assign) BOOL isRunning;
@@ -62,7 +61,6 @@ typedef enum
 @property (nonatomic, retain) SKThrottledQueryResult *mpThrottledQueryResult;
 @property (nonatomic, retain) NSString *mpThrottleResponse;
 @property (nonatomic, retain) NSMutableDictionary *jsonDictionary;
-@property (nonatomic, retain) NSMutableDictionary *cpuCondition;
 @property (nonatomic, retain) NSMutableArray *accumulatedNetworkTypeLocationMetrics;
 @property BOOL mbIsContinuousTesting;
 

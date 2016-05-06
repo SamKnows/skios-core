@@ -7,13 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-@protocol SKTestConfigDelegate
-
-- (void)tcdSetCPUConditionResult:(int)maxCPU avgCPU:(int)avgCPU Success:(BOOL)bSuccess Type:(NSString*)type;
-
-@end
-
 @interface SKTestConfig : NSObject
 {
     NSDictionary *info;
@@ -27,8 +20,6 @@
     NSMutableArray *params;
     NSMutableDictionary *output;
     NSMutableDictionary *conditions;
-    
-    id <SKTestConfigDelegate> testConfigDelegate;
 }
 
 @property (nonatomic, strong) NSDictionary *info;
@@ -39,7 +30,6 @@
 @property (nonatomic, strong) NSMutableDictionary *output;
 @property (nonatomic, strong) NSMutableDictionary *conditions;
 @property (nonatomic, strong) NSMutableArray *params;
-@property (atomic, strong) id <SKTestConfigDelegate> testConfigDelegate;
 
 - (id)initWithDictionary:(NSDictionary*)dictionary;
 

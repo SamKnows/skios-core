@@ -21,7 +21,6 @@
 @synthesize params;
 @synthesize output;
 @synthesize conditions;
-@synthesize testConfigDelegate;
 
 - (BOOL)checkTestConditions
 {
@@ -31,89 +30,6 @@
   // And as the CPU measurement condition was the only remaining condition test used on iOS,
   // this method now simply returns YES...
   return YES;
-  
-  /*
-   if (conditions == nil) {
-   // if there are no conditions for this test, then pass it!
-   return YES;
-   }
-   
-   NSArray *cnds = [conditions objectForKey:@"condition_types"];
-   
-   if (cnds == nil)
-   {
-   // if there are no conditions for this test, then pass it!
-   return YES;
-   }
-   
-   for (int m=0; m<[cnds count]; m++)
-   {
-   NSDictionary *cond = [cnds objectAtIndex:m];
-   
-   if (cond == nil)
-   {
-   continue;
-   }
-   
-   NSString *condType = [cond objectForKey:@"type"];
-   if (condType == nil) {
-   continue;
-   }
-   
-   if ([condType isEqualToString:@"CpuActivity"])
-   {
-   if ([cond objectForKey:@"maxAvg"])
-   {
-   int maxCpu = [[cond objectForKey:@"maxAvg"] intValue];
-   int currentCpu = (int)[SKGlobalMethods getCpuUsage];
-   NSLog(@"Max CPU: %d, Current CPU: %d", maxCpu, currentCpu);
-   
-   BOOL bSuccess = YES;
-   if (currentCpu > maxCpu)
-   {
-   // On a iPhone 5, run just as a test has completed, the CPU test can return a value
-   // of 50...
-   // when the maximum allowed by a condition might only be 25; that can lead to
-   // a condition test failure; which can lead to tests not being run, for
-   // reasons that would never be clear to the end user!
-   
-   // It is essential to SLEEP for a bit; otherwise, the other threads interfere to give
-   // a misleading CPU measurement on iOS - which can lead tests to fail, leading to much
-   // confusion for the end user.
-   // The CPU measurement is intended to be a measure of how much the overall device
-   // is under load; repeating this measurement, after a very short sleep, gives a much
-   // more useful measurement of this value.
-   // Bottom line - there is no way that a 25% CPU threshold check should cause a
-   // lightly-loaded iPhone 5 to fail the test due to the CPU usage check!
-   [NSThread sleepForTimeInterval:0.5];
-   currentCpu = (int)[SKGlobalMethods getCpuUsage];
-   NSLog(@"Max CPU: %d, re-measured CPU: %d", maxCpu, currentCpu);
-   }
-   
-   if (currentCpu > maxCpu) {
-   bSuccess = NO;
-   NSLog(@"Failed CPU condition (!): Max CPU: %d, Current CPU: %d", maxCpu, currentCpu);
-   }
-   
-   //NSLog(@"***** HORRIBLE HACK FOR TESTING!"); bSuccess = NO;
-   
-   if (nil != self.testConfigDelegate)
-   {
-   [self.testConfigDelegate tcdSetCPUConditionResult:maxCpu avgCPU:currentCpu Success:bSuccess  Type:condType];
-   }
-   
-   if (bSuccess == NO)
-   {
-   // FAILED!
-   return NO;
-   }
-   }
-   }
-   }
-   
-   // Passed.
-   return YES;
-   */
 }
 
 // Special case for closestTarget test, return all the targets

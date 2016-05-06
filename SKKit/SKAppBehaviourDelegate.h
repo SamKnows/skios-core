@@ -53,7 +53,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 @class SKScheduler;
 
-@interface SKKitLocationMonitor : NSObject<CLLocationManagerDelegate>
+@interface SKKitLocationManager : NSObject<CLLocationManagerDelegate>
 
 @property (nonatomic, retain) CLLocationManager* locationManager;
 @property double latitude;
@@ -67,7 +67,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Only a test should invoke these methods.
 - (void)startLocationMonitoring;
 - (void)stopLocationMonitoring;
-@end // SKKitLocationMonitor
+@end // SKKitLocationManager
 
 #import "SKKitJSONDataCaptureAndUpload.h"
 
@@ -89,7 +89,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 @property (nonatomic, strong) NSString *networkCode;
 @property (nonatomic, strong) NSString *isoCode;
 
-@property (retain, atomic) SKKitLocationMonitor *mLocationManager;
+@property (retain, atomic) SKKitLocationManager *mLocationManager;
 
 @property (strong, nonatomic) SKScheduler *schedule;
 
@@ -211,7 +211,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL)showNetworkTypeAndTargetAtEndOfHistoryPassiveMetrics;
 -(void) overrideTabBarColoursOnStart:(UITabBarController*)inTabBarController;
 -(BOOL) getIsBestTargetDisplaySupported;
--(BOOL) getIsExportResultsSupported;
 
 -(NSArray*)getDownloadSixSegmentMaxValues;
 -(NSArray*)getUploadSixSegmentMaxValues;

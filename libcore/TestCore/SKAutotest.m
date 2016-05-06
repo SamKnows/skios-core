@@ -16,8 +16,6 @@ static BOOL sbTestIsRunning = NO;
 
 @implementation SKAutotest
 
-@synthesize conditionBreaches;
-
 @synthesize isRunning;
 @synthesize isCancelled;
 @synthesize testId;
@@ -38,7 +36,6 @@ static BOOL sbTestIsRunning = NO;
 @synthesize udpClosestTargetTestSucceeded;
 
 @synthesize jsonDictionary;
-@synthesize cpuCondition;
 
 -(id) initWithAutotestManagerDelegate:(id<SKAutotestManagerDelegate>)inAutotestManagerDelegate AndAutotestObserverDelegate:(id<SKAutotestObserverDelegate>)inAutotestObserverDelegate AndTestType:(TestType)inTestType  IsContinuousTesting:(BOOL)isContinuousTesting {
   
@@ -911,7 +908,8 @@ static BOOL sbTestIsRunning = NO;
   
   // Write metric data to the json dictionary!
   NSString *testIdAsString = [self.testId stringValue];
-  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor] AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics];
+  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager] AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics];
+  SK_ASSERT(metrics != nil);
   
   // If we fired a throttle query, upload the response...
   if ( (self.mpThrottledQueryResult != nil) &&
@@ -935,20 +933,11 @@ static BOOL sbTestIsRunning = NO;
     
     [metrics addObject:carrierStatus];
   }
-  
-  if (self.conditionBreaches != nil) {
-    [self.jsonDictionary setObject:self.conditionBreaches forKey:@"condition_breach"];
-  }
-  
-  if (nil != cpuCondition)
-  {
-    [metrics addObject:cpuCondition];
-  }
  
   //
   // Write the Dictionary as JSON file, and upload to the server!
   //
-  [SKKitJSONDataCaptureAndUpload sWriteTestDataAsJSONAndUploadToServer:self.jsonDictionary RequestedTests:self.requestedTests];
+  [SKKitJSONDataCaptureAndUpload sWriteJSONDictionaryToFileAndUploadFilesToServer:self.jsonDictionary RequestedTests:self.requestedTests];
 }
 
 
@@ -985,8 +974,6 @@ static BOOL sbTestIsRunning = NO;
         
         if (nil != config)
         {
-          config.testConfigDelegate = self;
-          
           NSString *tstType = config.type;
 #ifdef DEBUG
           NSLog(@"DEBUG **** - SKAutotest: about to run next test - tstType=%@", tstType);
@@ -1081,62 +1068,6 @@ static BOOL sbTestIsRunning = NO;
   }
 }
 
-#pragma mark -Test Config Delegate
-
-- (void)tcdSetCPUConditionResult:(int)maxCPU avgCPU:(int)avgCPU Success:(BOOL)bSuccess Type:(NSString*)type
-{
-  SK_ASSERT([type isEqualToString:@"CpuActivity"]);
-  
-  // Force this as the CpuActivity string!
-  NSString *cpuActivityType = @"CPUACTIVITY";
-  
-  if (cpuCondition == nil)
-  {
-    cpuCondition = [[NSMutableDictionary alloc] init];
-    
-    /*
-     "type": "CPUACTIVITY",
-     "datetime": "Fri Jan 25 10:23:16 EST 2013",
-     "max_average": "25",
-     "read_average": "5",
-     "success": "true",
-     "timestamp": "1359127396"
-     */
-    
-    [cpuCondition setObject:cpuActivityType forKey:@"type"];
-    [cpuCondition setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-    [cpuCondition setObject:[NSString stringWithFormat:@"%d", maxCPU] forKey:@"max_average"];
-    [cpuCondition setObject:[NSString stringWithFormat:@"%d", avgCPU] forKey:@"read_average"];
-    [cpuCondition setObject:(bSuccess) ? @"true" : @"false" forKey:@"success"];
-    [cpuCondition setObject:[SKGlobalMethods getTimeStamp] forKey:@"timestamp"];
-  }
-  
-  if (bSuccess == NO) {
-    //
-    // Failed!
-    //
-    
-    // Record this condition failure - we'll upload it in the JSON later!
-    if (self.conditionBreaches == nil)
-    {
-      self.conditionBreaches = [NSMutableArray new];
-    }
-    
-    // Add this item, if we don't already have a duplicate.
-    BOOL matchFound = NO;
-    for (NSString *theType in self.conditionBreaches) {
-      if ([theType isEqualToString:cpuActivityType]) {
-        matchFound = YES;
-        break;
-      }
-    }
-    
-    if (matchFound == NO) {
-      [self.conditionBreaches addObject:cpuActivityType];
-    }
-  }
-}
-
 #pragma mark - HTTP Test Method
 
 - (void)createHttpTest:(SKTestConfig *)config isDownload:(BOOL)isDownload file:(NSString *)file target:(NSString *)target
@@ -1161,7 +1092,7 @@ static BOOL sbTestIsRunning = NO;
 {
   if (status == FAILED)
   {
-    [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
+    [SKKitJSONDataCaptureAndUpload sAppendTestResultsDictionaryToJSONDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
     
     [self.autotestObserverDelegate aodTransferTestDidFail:self.httpTest.isDownstream];
     
@@ -1182,7 +1113,7 @@ static BOOL sbTestIsRunning = NO;
     [SKDatabase storeJitter:dt jitter:self.latencyTest.jitter testId:self.testId testName:self.latencyTest.displayName];
   }
   
-  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:self.latencyTest.outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor]  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
+  [SKKitJSONDataCaptureAndUpload sAppendTestResultsDictionaryToJSONDictionary:self.latencyTest.outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager]  AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
  
   dispatch_async(dispatch_get_main_queue(), ^{
     // Posting to NSNotificationCenter *must* be done in the main thread!
@@ -1231,7 +1162,7 @@ static BOOL sbTestIsRunning = NO;
   
   [self.autotestObserverDelegate aodTransferTestDidCompleteTransfer:self.httpTest Bitrate1024Based:bitrateMbps1024Based];
   
-  [SKKitJSONDataCaptureAndUpload sWriteJSON_TestResultsDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationMonitor:[self.autotestManagerDelegate amdGetSKKitLocationMonitor] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
+  [SKKitJSONDataCaptureAndUpload sAppendTestResultsDictionaryToJSONDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
   
   [self htdDidCompleteHttpTest];
 }

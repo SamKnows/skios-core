@@ -223,8 +223,9 @@
     } else {
       // Empty the database
       [SKDatabase sEmptyTheDatabase];
-      // Delete any archived files!
-      [SKKitJSONDataCaptureAndUpload sDeleteAllArchivedJSONFiles];
+      
+      // Delete any saved JSON files!
+      [SKKitJSONDataCaptureAndUpload sDeleteAllSavedJSONFiles];
       
       // Notify the rest of the UI!
       [[NSNotificationCenter defaultCenter]
@@ -343,12 +344,8 @@ enum {
       [alert show];
     }
       break;
-    case 3: { // Export
-      UIViewController *fromThisVC = self;
-      id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
-      
-      [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
-    }
+    case 3: // Export
+      SK_ASSERT(false); // This is no longer supported!
       break;
     default:
       SK_ASSERT(false);
@@ -398,9 +395,9 @@ enum {
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
       rows--;
     }
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
-      rows--;
-    }
+    // ALWAYS hide the export results row, as that is now deprecated behaviour (the files
+    // are always deleted after sending)
+    rows--;
     return rows;
   } else if (section == SECTION_INDEX_DATACAP) {
     SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES);
@@ -420,19 +417,6 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//  UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
-//  if (cell == self.activateTableViewCell) {
-//    // Hide the activation row?
-//    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isActivationSupported] == NO) {
-//      return 0;
-//    }
-//  } else if (cell == self.exportResultsTableViewCell) {
-//    // Hide the export results row
-//    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
-//      return 0;
-//    }
-//  }
-  
   return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 

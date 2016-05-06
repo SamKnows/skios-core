@@ -250,8 +250,9 @@
     } else {
       // Empty the database
       [SKDatabase sEmptyTheDatabase];
-      // Delete any archived files!
-      [SKKitJSONDataCaptureAndUpload sDeleteAllArchivedJSONFiles];
+      
+      // Delete any saved JSON files!
+      [SKKitJSONDataCaptureAndUpload sDeleteAllSavedJSONFiles];
       
       // Notify the rest of the UI!
       [[NSNotificationCenter defaultCenter]
@@ -380,10 +381,7 @@ enum {
     SK_ASSERT(false);
     [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
   } else if ([cell.reuseIdentifier isEqualToString:@"export_results"]) {
-    UIViewController *fromThisVC = self;
-    id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
-    
-    [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
+    SK_ASSERT(false);// Deprecated!
   } else if ([cell.reuseIdentifier isEqualToString:@"terms_or_about_url"]) {
     
     NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];
@@ -465,10 +463,9 @@ enum {
       return 0;
     }
   } else if (cell == self.exportResultsTableViewCell) {
-    // Hide the export results row
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsExportResultsSupported] == NO) {
-      return 0;
-    }
+    // ALWAYS hide the the export results row, as that is deprecated behaviour
+    // (the files are always deleted after uploading)
+    return 0;
   }
   
   return [super tableView:tableView heightForRowAtIndexPath:indexPath];
