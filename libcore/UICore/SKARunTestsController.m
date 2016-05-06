@@ -259,7 +259,7 @@
   
 }
 
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
+- (void)aodTransferTestDidUpdateProgressPercent:(float)progress0To100Percent isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
 {
   dispatch_async(dispatch_get_main_queue(), ^{
     
@@ -269,18 +269,18 @@
     
 #ifdef DEBUG
     static int sDebugLastValue = 0;
-    if ( ((int)progress) != sDebugLastValue) {
-      NSLog(@"DEBUG: aodTransferTestDidUpdateProgress, test=%@, progress=%g", test, progress);
-      sDebugLastValue = (int) progress;
+    if ( ((int)progress0To100Percent) != sDebugLastValue) {
+      NSLog(@"DEBUG: aodTransferTestDidUpdateProgressPercent, test=%@, progress0To100Percent=%g", test, progress0To100Percent);
+      sDebugLastValue = (int) progress0To100Percent;
     }
 #endif // DEBUG
     
     if (nil != cell)
     {
-      [cell.progressView setProgress:(progress/100.0F) animated:YES];
+      [cell.progressView setProgress:(progress0To100Percent/100.0F) animated:YES];
     }
     
-    [self updateResultsArray:[NSNumber numberWithFloat:progress] key:@"PROGRESS" testType:test];
+    [self updateResultsArray:[NSNumber numberWithFloat:progress0To100Percent] key:@"PROGRESS" testType:test];
   });
 }
 

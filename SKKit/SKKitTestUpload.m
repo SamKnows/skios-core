@@ -104,8 +104,14 @@
   [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:(int)bytes];
 }
 
-- (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based {
-  mProgressBlock(progress, bitrateMbps1024Based);
+- (void)htdDidUpdateTotalProgressPercent:(float)progress0To100Percent BitrateMbps1024Based:(double)bitrateMbps1024Based {
+  // We must NOT allow the test to complete until htdDidCompleteHttpTest is called;
+  // as only at that point is the output result available.
+  if (progress0To100Percent >= 99.0) {
+    progress0To100Percent = 99.0;
+  }
+
+  mProgressBlock(progress0To100Percent, bitrateMbps1024Based);
 }
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based

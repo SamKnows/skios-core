@@ -174,7 +174,7 @@ FOUNDATION_EXPORT NSString *const UDPLATENCY;
                   bytes:(NSUInteger)bytes
                   progress:(float)progress;
 
-- (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based;
+- (void)htdDidUpdateTotalProgressPercent:(float)progress0To100Percent BitrateMbps1024Based:(double)bitrateMbps1024Based;
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer

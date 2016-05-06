@@ -125,7 +125,7 @@ typedef enum
 
 - (void)aodTransferTestDidFail:(BOOL)isDownstream;
 - (void)aodTransferTestDidStart:(BOOL)isDownstream;
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based;
+- (void)aodTransferTestDidUpdateProgressPercent:(float)progress0To100Percent isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based;
 
 //- (void)aodTransferTestDidFinish:(NSString*)message isDownstream:(BOOL)isDownstream;
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based;

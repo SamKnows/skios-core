@@ -213,8 +213,8 @@ static int GLastTestIndexPassedToRunTheTests = -99;
 - (void)aodTransferTestDidStart:(BOOL)isDownstream {
   NSLog(@"SKAutotestObserverDelegate::transferTestDidStart");
 }
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based {
-  NSLog(@"SKAutotestObserverDelegate::aodTransferTestDidUpdateProgress");
+- (void)aodTransferTestDidUpdateProgressPercent:(float)progress0To100Percent isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based {
+  NSLog(@"SKAutotestObserverDelegate::aodTransferTestDidUpdateProgressPercent");
 }
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based {
   NSLog(@"SKAutotestObserverDelegate::transferTestDidComplete");

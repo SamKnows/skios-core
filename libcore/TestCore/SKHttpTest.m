@@ -309,7 +309,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     }
 #endif // DEBUG
     
-    [[self httpRequestDelegate] htdDidUpdateTotalProgress:(total / arrTransferOperations.count) BitrateMbps1024Based:bitrateMbps1024Based];
+    [[self httpRequestDelegate] htdDidUpdateTotalProgressPercent:(total / arrTransferOperations.count) BitrateMbps1024Based:bitrateMbps1024Based];
   }
 }
 

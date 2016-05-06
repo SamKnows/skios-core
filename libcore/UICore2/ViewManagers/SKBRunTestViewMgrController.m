@@ -1160,28 +1160,28 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   });
 }
 
-- (void)aodTransferTestDidUpdateProgress:(float)progress isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
+- (void)aodTransferTestDidUpdateProgressPercent:(float)progress0To100Percent isDownstream:(BOOL)isDownstream bitrate1024Based:(double)bitrate1024Based
 {
   dispatch_async(dispatch_get_main_queue(), ^{
     if (isDownstream)
     {
-      progressDownload = progress/100.0F;
+      progressDownload = progress0To100Percent/100.0F;
     }
     else
     {
-      progressUpload = progress/100.0F;
+      progressUpload = progress0To100Percent/100.0F;
     }
     
     if (CACurrentMediaTime() - self.timeOfLastUIUpdate > C_GUI_UPDATE_INTERVAL)
     {
       self.timeOfLastUIUpdate = CACurrentMediaTime();
       
-      //if ((isDownstream == NO) && (progress == 0) && (bitrate1024Based == 0)) {
-      if ((isDownstream == NO) && (progress == 0 && bitrate1024Based == 0)) {
+      //if ((isDownstream == NO) && (progress0To100Percent == 0) && (bitrate1024Based == 0)) {
+      if ((isDownstream == NO) && (progress0To100Percent == 0 && bitrate1024Based == 0)) {
         NSLog(@"DEBUG: Remove me!");
       }
       
-      if ((progress == 0) && (bitrate1024Based == 0)) {
+      if ((progress0To100Percent == 0) && (bitrate1024Based == 0)) {
         // IGNORE this first, dummy event, which means nothing - we don't want 0.00 to be displayed
         // too soon for upload tests!
       } else {

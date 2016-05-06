@@ -512,9 +512,9 @@ static BOOL sbTestIsRunning = NO;
 }
 
 //###HG
-- (void)htdDidUpdateTotalProgress:(float)progress BitrateMbps1024Based:(double)bitrateMbps1024Based
+- (void)htdDidUpdateTotalProgressPercent:(float)progress0To100Percent BitrateMbps1024Based:(double)bitrateMbps1024Based
 {
-  [self.autotestObserverDelegate aodTransferTestDidUpdateProgress:progress isDownstream:self.httpTest.isDownstream bitrate1024Based:bitrateMbps1024Based];
+  [self.autotestObserverDelegate aodTransferTestDidUpdateProgressPercent:progress0To100Percent isDownstream:self.httpTest.isDownstream bitrate1024Based:bitrateMbps1024Based];
 }
 
 #pragma mark - Latency Test Method

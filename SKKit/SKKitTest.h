@@ -73,8 +73,8 @@ typedef enum SKKitTestType_t {
 -(NSDictionary*) getTestResultsDictionary;
 @end
 
-typedef void (^TSKDownloadTestProgressUpdate)(float progress, double bitrateMbps1024Based);
-typedef void (^TSKUploadTestProgressUpdate)(float progress, double bitrateMbps1024Based);
+typedef void (^TSKDownloadTestProgressUpdate)(float progress0To100Percent, double bitrateMbps1024Based);
+typedef void (^TSKUploadTestProgressUpdate)(float progress0To100Percent, double bitrateMbps1024Based);
 typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, double latency, double packetLoss, double jitter);
 
 @interface SKKitTestClosestTarget : NSObject<SKKitTestProtocol>
