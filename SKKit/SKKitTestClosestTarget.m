@@ -63,9 +63,16 @@
   // TODO
 }
 
+// MARK: pragma SKKitTestProtocol
+
 - (void) cancel {
   // TODO!
   SK_ASSERT(false);
+}
+
+-(NSDictionary*) getTestResultsDictionary {
+  SK_ASSERT(mpClosestTargetTest.outputResultsDictionary != nil);
+  return mpClosestTargetTest.outputResultsDictionary;
 }
 
 @end

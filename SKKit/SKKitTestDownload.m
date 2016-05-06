@@ -62,9 +62,17 @@
   [mpDownloadTest startTest];
 }
 
+// MARK: pragma SKKitTestProtocol
+
 - (void) cancel {
   [mpDownloadTest cancel];
 }
+
+-(NSDictionary*) getTestResultsDictionary {
+  SK_ASSERT(mpDownloadTest.outputResultsDictionary != nil);
+  return mpDownloadTest.outputResultsDictionary;
+}
+
 
 // TODO - capture data into a supplied JSON saver instance class, which must be extracted
 // as a class from SKAppBehaviourDelegate ... and exported as a public SKKit class.
@@ -72,7 +80,7 @@
 //  NSLog(@"Download json: %@", mpDownloadTest.outputResultsDictionary);
 //}
 
-// Pragma SKHttpTestDelegate
+// MARK: pragma SKHttpTestDelegate
 
 - (void)htdUpdateStatus:(TransferStatus)status
                threadId:(NSUInteger)threadId {

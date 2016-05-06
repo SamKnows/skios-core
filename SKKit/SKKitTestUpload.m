@@ -60,16 +60,22 @@
   [mpUploadTest startTest];
 }
 
-- (void) cancel {
-  [mpUploadTest cancel];
-}
-
 -(CGFloat) getLatestSpeedAs1000BasedMbps {
   return [SKJHttpTest sGetLatestSpeedForExternalMonitorAsMbps];
 }
 
+// MARK: pragma SKKitTestProtocol
 
-// Pragma SKHttpTestDelegate
+- (void) cancel {
+  [mpUploadTest cancel];
+}
+
+-(NSDictionary*) getTestResultsDictionary {
+  SK_ASSERT( mpUploadTest.outputResultsDictionary != nil);
+  return mpUploadTest.outputResultsDictionary;
+}
+
+// MARK: pragma SKHttpTestDelegate
 
 - (void)htdUpdateStatus:(TransferStatus)status
                threadId:(NSUInteger)threadId {

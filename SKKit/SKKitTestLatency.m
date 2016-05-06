@@ -58,11 +58,19 @@
   [mpLatencyTest startTest];
 }
 
+// MARK: pragma SKKitTestProtocol
+
 - (void) cancel {
   [mpLatencyTest cancel];
 }
 
-// Pragma SKLatencyTestDelegate
+-(NSDictionary*) getTestResultsDictionary {
+  SK_ASSERT( mpLatencyTest.outputResultsDictionary != nil);
+  return mpLatencyTest.outputResultsDictionary;
+}
+
+
+// MARK: Pragma SKLatencyTestDelegate
 - (void)ltdTestDidFail {
   
 }

@@ -31,31 +31,39 @@
 
 @end
 
-// Usage from Swift:
-//
-// // Start location monitoring...
-// let locationManager = SKKitLocationManager
-// locationManager.startLocationMonitoring()
-//
-// // Prepare jsonDictionary for saving test results and metrics
-// let jsonDictionary = SKKitJSONDataCaptureAndUpload.sCreateJSONDictionary_IsContinuousTest(false)
-// let networkLocationMetricArray = Array<NSDictionary>()
-// let skTest = SKKitTestLatency()
-// // Run the test!
-// let testResultsDictionary = skTest.getTestResultsDictionary()
-// let metricsIgnore = SKKitJSONDataCaptureAndUpload.sAppendTestResultsDictionaryToJSONDictionary(
-//    testResultsDictionary,
-//    ToDictionary:jsonDictionary,
-//    SKKitLocationManager:locationMonitor,
-//    AccumulateNetworkTypeLocationMetricsToHere:networkLocationMetricArray)
-//
-// // Could append to metrics now, if we wanted.
-// // Could run other tests, and capture their data.
-//
-// SKKitJSONDataCaptureAndUpload.sWriteJSONDictionaryToFileAndUploadFilesToServer(jsonDictionary, OptionalRequestedTestTypes:[]];
-//
-// // Stop location monitoring...
-// locationManager.stopLocationMonitoring()
+// Example usage (in Swift format):
+/*
+  // Start location monitoring...
+  let locationManager = SKKitLocationManager()
+  locationManager.startLocationMonitoring()
+
+  // Prepare jsonDictionary for saving test results and metrics
+  let jsonDictionary = SKKitJSONDataCaptureAndUpload.sCreateJSONDictionary_IsContinuousTest(false)
+  let networkLocationMetricArray = NSMutableArray()
+ 
+  // Create and run a test...
+  let skLatencyTest = SKKitTestLatency()
+  skLatencyTest.start { (final:Bool, progress:Float, latency:Double, loss:Double , jitter:Double ) -> Void in
+  }
+
+  // Wait to finish/stop the test...
+
+  // Capture results.
+  let testResultsDictionary = skLatencyTest.getTestResultsDictionary()
+  let metricsIgnore = SKKitJSONDataCaptureAndUpload.sAppendTestResultsDictionaryToJSONDictionary(
+  testResultsDictionary as [NSObject : AnyObject],
+  toDictionary: jsonDictionary,
+  SKKitLocationManager: locationManager,
+  accumulateNetworkTypeLocationMetricsToHere: networkLocationMetricArray)
+
+  // Could append to metrics now, if we wanted.
+  // Could run other tests, and capture their data.
+
+  SKKitJSONDataCaptureAndUpload.sWriteJSONDictionaryToFileAndUploadFilesToServer(jsonDictionary, optionalRequestedTestTypes:[]);
+
+  // Stop location monitoring...
+  locationManager.stopLocationMonitoring()
+*/
 
 @interface SKKitJSONDataCaptureAndUpload : NSObject
 
