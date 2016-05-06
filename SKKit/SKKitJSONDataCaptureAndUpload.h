@@ -32,6 +32,12 @@
 @end
 
 // Usage from Swift:
+//
+// // Start location monitoring...
+// let locationManager = SKKitLocationManager
+// locationManager.startLocationMonitoring()
+//
+// // Prepare jsonDictionary for saving test results and metrics
 // let jsonDictionary = SKKitJSONDataCaptureAndUpload.sCreateJSONDictionary_IsContinuousTest(false)
 // let networkLocationMetricArray = Array<NSDictionary>()
 // let skTest = SKKitTestLatency()
@@ -46,8 +52,10 @@
 // // Could append to metrics now, if we wanted.
 // // Could run other tests, and capture their data.
 //
-// let requestedTests = ["JHTTPGET", "JHTTPPOST", "JUDPLATENCY"]
-// SKKitJSONDataCaptureAndUpload.sWriteJSONDictionaryToFileAndUploadFilesToServer(jsonDictionary, RequestedTests:self.requestedTests];
+// SKKitJSONDataCaptureAndUpload.sWriteJSONDictionaryToFileAndUploadFilesToServer(jsonDictionary, OptionalRequestedTestTypes:[]];
+//
+// // Stop location monitoring...
+// locationManager.stopLocationMonitoring()
 
 @interface SKKitJSONDataCaptureAndUpload : NSObject
 
@@ -71,7 +79,10 @@
 + (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationManager:(SKKitLocationManager*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics;
 
 // 4) Write the Dictionary as JSON file, and upload to the server!
-+(void) sWriteJSONDictionaryToFileAndUploadFilesToServer:(NSMutableDictionary*)jsonDictionary RequestedTests:(NSArray*)requestedTests;
+//    The method will look at the test data in the jsonDictionary,
+//    and automatically configure the requested_tests block, merged
+//    with any values found the optional array.
++(void) sWriteJSONDictionaryToFileAndUploadFilesToServer:(NSMutableDictionary*)jsonDictionary OptionalRequestedTestTypes:(NSArray*)optionalRequestedTestTypes;
 
 // 5) This optional method could be called at app start, to push-out any accumulated JSON files
 //    that have not yet been sent.

@@ -937,7 +937,7 @@ static BOOL sbTestIsRunning = NO;
   //
   // Write the Dictionary as JSON file, and upload to the server!
   //
-  [SKKitJSONDataCaptureAndUpload sWriteJSONDictionaryToFileAndUploadFilesToServer:self.jsonDictionary RequestedTests:self.requestedTests];
+  [SKKitJSONDataCaptureAndUpload sWriteJSONDictionaryToFileAndUploadFilesToServer:self.jsonDictionary OptionalRequestedTestTypes:self.requestedTests];
 }
 
 
@@ -995,7 +995,7 @@ static BOOL sbTestIsRunning = NO;
             }
             
             // To get here, UDP succeeded: record that the test has been requested... and run the test.
-            [self rememberThatTestWasRequested:@"JUDPLATENCY"];
+            [self rememberThatTestWasRequested:UDPLATENCY];
             [self runLatencyTest:config testIndex:nextTestIndex];
           }
           else if ([tstType isEqualToString:@"downstreamthroughput"])

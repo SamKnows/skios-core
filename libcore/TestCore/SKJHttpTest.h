@@ -51,13 +51,14 @@
 
   /* Test strings for public use. JSON related */
 #define DOWNSTREAMSINGLE @"JHTTPGET"
-#define DOWNSTREAMMULTI @"JHTTPGETMT"
-#define UPSTREAMSINGLE @"JHTTPPOST"
-#define UPSTREAMMULTI @"JHTTPPOSTMT"
+#define DOWNSTREAMMULTI  @"JHTTPGETMT"
+#define UPSTREAMSINGLE   @"JHTTPPOST"
+#define UPSTREAMMULTI    @"JHTTPPOSTMT"
+#define UDPLATENCY       @"JUDPLATENCY"
 
 #define cReasonResetDownload @"Reset Download"
-#define cReasonResetUpload @"Reset Upload"
-#define cReasonUploadEnd @"Upload End"
+#define cReasonResetUpload   @"Reset Upload"
+#define cReasonUploadEnd     @"Upload End"
 
 
 @interface SKJHttpTest : SKJTest

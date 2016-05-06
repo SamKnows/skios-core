@@ -7,6 +7,8 @@
 
 #import "SKAppBehaviourDelegate.h"
 
+#import "SKJHttpTest.h"
+
 @interface SKKitJSONDataCaptureAndUpload()
 
 // Private methods...
@@ -94,18 +96,75 @@
   }
 }
 
-+(void) sWriteJSONDictionaryToFileAndUploadFilesToServer:(NSMutableDictionary*)jsonDictionary RequestedTests:(NSArray*)requestedTests {
+#ifdef DEBUG
+static void sAssertTestTypeValid(NSString* testType) {
+  // Verify supplied values!
+  if ([testType isEqualToString:DOWNSTREAMSINGLE]) {
+  } else if ([testType isEqualToString:DOWNSTREAMMULTI]) {
+  } else if ([testType isEqualToString:UPSTREAMSINGLE]) {
+  } else if ([testType isEqualToString:UPSTREAMMULTI]) {
+  } else if ([testType isEqualToString:UDPLATENCY]) {
+  } else {
+    SK_ASSERT(false); // Unexpected value!
+  }
+}
+#endif // DEBUG
+
++(void) sWriteJSONDictionaryToFileAndUploadFilesToServer:(NSMutableDictionary*)jsonDictionary OptionalRequestedTestTypes:(NSArray*)optionalRequestedTestTypes {
   //
   // Save the JSON data, and write for upload to the server!
   //
   
-  // Append data on the requested tests!
-  if (requestedTests != nil) {
-    [jsonDictionary setObject:requestedTests forKey:@"requested_tests"];
+  NSMutableArray *useRequestedTestTypes;
+  if (optionalRequestedTestTypes != nil) {
+    useRequestedTestTypes = [optionalRequestedTestTypes mutableCopy];
+    
+    SK_ASSERT(useRequestedTestTypes.count == optionalRequestedTestTypes.count);
+    
+#ifdef DEBUG
+    // Verify supplied values!
+    for (NSString *testType in useRequestedTestTypes) {
+      sAssertTestTypeValid(testType);
+    }
+#endif // DEBUG
   } else {
-    SK_ASSERT(false);
+    useRequestedTestTypes = [NSMutableArray new];
   }
   
+  NSArray *tests = jsonDictionary[@"tests"];
+  if (tests == nil) {
+    SK_ASSERT(false);
+  } else {
+    for (NSDictionary *testDict in tests) {
+      NSString *testType = testDict[@"type"];
+      if (testType == nil) {
+        SK_ASSERT(false);
+      } else {
+#ifdef DEBUG
+       // Verify supplied value!
+       sAssertTestTypeValid(testType);
+#endif // DEBUG
+        
+        BOOL bFound = NO;
+        for (NSString *checkTestId in useRequestedTestTypes) {
+          if ([checkTestId isEqualToString:testType]) {
+            // Already in list!
+            bFound = YES;
+            break;
+          }
+        }
+        
+        if (bFound == NO) {
+          [useRequestedTestTypes addObject:testType];
+        }
+      }
+    }
+  }
+
+  // Append data on the requested tests!
+  SK_ASSERT(useRequestedTestTypes.count > 0);
+  [jsonDictionary setObject:useRequestedTestTypes forKey:@"requested_tests"];
+
   NSError *error;
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
                                                      options:NSJSONWritingPrettyPrinted

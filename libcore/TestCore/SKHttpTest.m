@@ -12,6 +12,7 @@ NSString *const DOWNSTREAMSINGLE    = @"JHTTPGET";
 NSString *const DOWNSTREAMMULTI     = @"JHTTPGETMT";
 NSString *const UPSTREAMSINGLE      = @"JHTTPPOST";
 NSString *const UPSTREAMMULTI       = @"JHTTPPOSTMT";
+NSString *const UDPLATENCY          = @"JUDPLATENCY";
 
 #import "SKJPassiveServerUploadTest.h"
 

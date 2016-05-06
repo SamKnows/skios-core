@@ -1197,8 +1197,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   //    "target_ipaddress": "46.17.56.234",
   //    "timestamp": "1359128167"
   
-  [outputResultsDictionary setObject:@"JUDPLATENCY"
-                              forKey:@"type"];
+  [outputResultsDictionary setObject:UDPLATENCY forKey:@"type"];
   
   [outputResultsDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
   
