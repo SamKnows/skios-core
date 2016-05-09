@@ -116,7 +116,10 @@
 }
 
 -(NSDictionary*) getTestResultsDictionary {
+  // The underlying results are marked with the underlying "Latency Test" type.
+  // We need to update this with the correct target type of "CLOSESTTARGET"
   SK_ASSERT(mpClosestTargetTest.outputResultsDictionary != nil);
+  [mpClosestTargetTest.outputResultsDictionary setObject:CLOSESTTARGET forKey:@"type"];
   return mpClosestTargetTest.outputResultsDictionary;
 }
 

@@ -104,6 +104,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   } else if ([testType isEqualToString:UPSTREAMSINGLE]) {
   } else if ([testType isEqualToString:UPSTREAMMULTI]) {
   } else if ([testType isEqualToString:UDPLATENCY]) {
+  } else if ([testType isEqualToString:CLOSESTTARGET]) {
   } else {
     SK_ASSERT(false); // Unexpected value!
   }

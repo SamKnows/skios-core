@@ -55,6 +55,7 @@
 #define UPSTREAMSINGLE   @"JHTTPPOST"
 #define UPSTREAMMULTI    @"JHTTPPOSTMT"
 #define UDPLATENCY       @"JUDPLATENCY"
+#define CLOSESTTARGET    @"CLOSESTTARGET"
 
 #define cReasonResetDownload @"Reset Download"
 #define cReasonResetUpload   @"Reset Upload"

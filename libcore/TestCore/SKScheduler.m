@@ -111,19 +111,21 @@
 {
   if (hosts == nil) {
     SK_ASSERT(false);
-    return nil;
+    return dns;
   }
   
   if ([hosts count] == 0) {
     SK_ASSERT(false);
-    return nil;
+    return dns;
   }
   
   bool bFound = false;
   NSString *result = nil;
   for (int m=0; m<[hosts count]; m++)
   {
-    if (bFound) break;
+    if (bFound) {
+      break;
+    }
     NSDictionary *dict = [hosts objectAtIndex:m];
     
     if (nil != dict)

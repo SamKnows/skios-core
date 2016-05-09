@@ -534,6 +534,9 @@ const int cQueryCountPerServer = 3;
 #ifdef DEBUG
     NSString *target = [targets objectAtIndex:threadId_];
     NSString *targetName = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate].schedule getClosestTargetName:target];
+    if (targetName == nil) {
+      targetName = target;
+    }
     NSLog(@"DEBUG: targetName=%@, latency_=%g", targetName, latency_);
 #endif // DEBUG
     
