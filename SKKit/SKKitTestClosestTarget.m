@@ -3,7 +3,7 @@
 //  SKKit
 //
 //  Created by Pete Cole on 26/01/2015.
-//  Copyright (c) 2015 SamKnows. All rights reserved.
+//  Copyright (c) 2015-2016 SamKnows. All rights reserved.
 //
 
 #import "SKKitTest.h"
@@ -22,19 +22,30 @@
 //
 @interface SKKitTestClosestTarget () <SKClosestTargetDelegate>
 @property SKClosestTargetTest *mpClosestTargetTest;
+@property (nonatomic, retain) NSMutableArray * mTargetArray;
+@property int completedTargets;
+@property float mfProgress0To1;
 //@property SKKitTestDescriptor_ClosestTarget *abc;
 @end
 
 @implementation SKKitTestClosestTarget
 
 @synthesize mpClosestTargetTest;
+@synthesize mProgressBlock;
+@synthesize mTargetArray;
+@synthesize completedTargets;
+@synthesize mfProgress0To1;
 
 - (instancetype)initWithClosestTargetTestDescriptor:(SKKitTestDescriptor_ClosestTarget*)closestTarget {
   self = [super init];
   
   if (self) {
     NSLog(@"DEBUG: SKKitTestClosestTarget - init");
-    mpClosestTargetTest = [[SKClosestTargetTest alloc] initWithTargets:closestTarget.mTargetArray ClosestTargetDelegate:self NumDatagrams:0];
+    mTargetArray = closestTarget.mTargetArray;
+    mpClosestTargetTest = [[SKClosestTargetTest alloc] initWithTargets:mTargetArray ClosestTargetDelegate:self NumDatagrams:0];
+    mProgressBlock = nil;
+    completedTargets = 0;
+    mfProgress0To1 = 0.0F;
   }
   return self;
 }
@@ -45,22 +56,52 @@
 }
 
 - (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency {
-  // TODO
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    mProgressBlock(100.0, target);
+//  });
 }
 
 - (void)ctdTestDidFail {
-  // TODO
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    mProgressBlock(100.0, nil);
+  });
 }
 - (void)ctdDidSendPacket:(NSUInteger)bytes {
   [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdDoUpdateDataUsage:(int)bytes];
 }
 
 - (void)ctdDidStartTargetTesting {
-  // TODO
+  mProgressBlock(0.0, nil);
 }
 
 - (void)ctdDidFinishAnotherTarget:(int)targetId withLatency:(double)latency withBest:(int)bestId {
   // TODO
+  completedTargets += 1;
+  
+  int divideBy = mTargetArray.count;
+  if (divideBy == 0) {
+    SK_ASSERT(false);
+    divideBy = 1;
+  }
+  
+  float progressPercent = (100.0 * (float) completedTargets) / ((float)divideBy);
+  
+  if (progressPercent >= 99.0) {
+    progressPercent = 99.0;
+  }
+  
+  mfProgress0To1 = progressPercent;
+
+  mProgressBlock(progressPercent, nil);
+}
+
+- (void) start:(TSKClosestTargetTestProgressUpdate)progressBlock {
+  mProgressBlock = progressBlock;
+  
+	dispatch_queue_t backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+  dispatch_async(backgroundQueue, ^{
+    [mpClosestTargetTest startTest];
+  });
 }
 
 // MARK: pragma SKKitTestProtocol
@@ -68,6 +109,10 @@
 - (void) cancel {
   // TODO!
   SK_ASSERT(false);
+}
+
+- (float) getProgress0To1 {
+  return mfProgress0To1;
 }
 
 -(NSDictionary*) getTestResultsDictionary {

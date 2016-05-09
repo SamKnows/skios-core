@@ -1442,6 +1442,10 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
   return YES;
 }
 
+-(BOOL) getShouldClosestTargetTestBeRunFirst {
+  return NO;
+}
+
 -(BOOL) isDataCapEnabled {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
