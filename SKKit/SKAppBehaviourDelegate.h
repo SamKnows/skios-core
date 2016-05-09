@@ -268,6 +268,14 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Translate IP returned form above method, into the most descriptive name available.
 // Will default to returning the supplied string!
 -(NSString*) getTargetIPAsDescriptiveName:(NSString*)targetIP;
+
+-(NSInteger)      getTestDownloadNumberOfThreads;
+-(NSTimeInterval) getTestDownloadWarmupSeconds;
+-(NSTimeInterval) getTestDownloadTransferSeconds;
+-(NSInteger)      getTestUploadNumberOfThreads;
+-(NSTimeInterval) getTestUploadWarmupSeconds;
+-(NSTimeInterval) getTestUploadTransferSeconds;
+-(NSTimeInterval) getTestLatencyMaxDurationSeconds;
 @end
 
 

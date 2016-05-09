@@ -1689,6 +1689,35 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   return targetIP;
 }
 
+-(NSInteger)      getTestDownloadNumberOfThreads {
+  SK_ASSERT(false);
+  return 4;
+}
+-(NSTimeInterval) getTestDownloadWarmupSeconds {
+  SK_ASSERT(false);
+  return 2.0;
+}
+-(NSTimeInterval) getTestDownloadTransferSeconds {
+  SK_ASSERT(false);
+  return 8.0;
+}
+-(NSInteger)      getTestUploadNumberOfThreads {
+  SK_ASSERT(false);
+  return 4;
+}
+-(NSTimeInterval) getTestUploadWarmupSeconds {
+  SK_ASSERT(false);
+  return 2.0;
+}
+-(NSTimeInterval) getTestUploadTransferSeconds {
+  SK_ASSERT(false);
+  return 8.0;
+}
+-(NSTimeInterval) getTestLatencyMaxDurationSeconds {
+  SK_ASSERT(false);
+  return 5.0;
+}
+
 @end
 
 NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath) {
