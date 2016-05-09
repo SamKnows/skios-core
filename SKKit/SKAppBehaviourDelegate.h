@@ -70,6 +70,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 @end // SKKitLocationManager
 
 #import "SKKitJSONDataCaptureAndUpload.h"
+#import "SKKitTest.h"
 
 @interface SKAppBehaviourDelegate : NSObject<UIActionSheetDelegate, SKAutotestManagerDelegate>
 
@@ -256,6 +257,17 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 - (void)stopLocationMonitoring;
 
 -(BOOL) getShouldClosestTargetTestBeRunFirst;
+
+//
+// SKKit test creation...
+//
+
+// Return an array of NSString*
+-(NSArray*) getTestClosestTargetArray;
+
+// Translate IP returned form above method, into the most descriptive name available.
+// Will default to returning the supplied string!
+-(NSString*) getTargetIPAsDescriptiveName:(NSString*)targetIP;
 @end
 
 

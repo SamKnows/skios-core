@@ -1672,6 +1672,23 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   return mLocationManager;
 }
 
+
+//
+// SKKit test creation...
+//
+// Return an array of NSString*
+//
+-(NSArray*) getTestClosestTargetArray {
+  SK_ASSERT(false);
+  return nil;
+}
+
+// Translate IP returned form above method, into the most descriptive name available.
+// Will default to returning the supplied string!
+-(NSString*) getTargetIPAsDescriptiveName:(NSString*)targetIP {
+  return targetIP;
+}
+
 @end
 
 NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath) {
