@@ -146,7 +146,7 @@ static BOOL sbLastKnownPingStatus = YES;
 	SCNetworkReachabilityRef _reachabilityRef;
 }
 
-+ (instancetype)reachabilityWithHostName:(NSString *)hostName
++ (instancetype)newReachabilityWithHostName:(NSString *)hostName
 {
   
 	SKReachability* returnValue = NULL;
@@ -168,7 +168,7 @@ static BOOL sbLastKnownPingStatus = YES;
 }
 
 
-+ (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress
++ (instancetype)newReachabilityWithAddress:(const struct sockaddr_in *)hostAddress
 {
 	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
 
@@ -191,18 +191,18 @@ static BOOL sbLastKnownPingStatus = YES;
 
 
 
-+ (instancetype)reachabilityForInternetConnection
++ (instancetype)newReachabilityForInternetConnection
 {
 	struct sockaddr_in zeroAddress;
 	bzero(&zeroAddress, sizeof(zeroAddress));
 	zeroAddress.sin_len = sizeof(zeroAddress);
 	zeroAddress.sin_family = AF_INET;
     
-	return [self reachabilityWithAddress:&zeroAddress];
+	return [self newReachabilityWithAddress:&zeroAddress];
 }
 
 
-+ (instancetype)reachabilityForLocalWiFi
++ (instancetype)newReachabilityForLocalWiFi
 {
 	struct sockaddr_in localWifiAddress;
 	bzero(&localWifiAddress, sizeof(localWifiAddress));
@@ -212,7 +212,7 @@ static BOOL sbLastKnownPingStatus = YES;
 	// IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0.
 	localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
 
-	SKReachability* returnValue = [self reachabilityWithAddress: &localWifiAddress];
+	SKReachability* returnValue = [self newReachabilityWithAddress: &localWifiAddress];
 	if (returnValue != NULL)
 	{
 		returnValue->_alwaysReturnLocalWiFiStatus = YES;
@@ -414,7 +414,7 @@ static BOOL sbLastKnownPingStatus = YES;
 
 // Simple test for Internet reachability!
 + (BOOL) sGetIsReachable { // Could also be called sGetIsConnected...?
-  SKReachability *reachability = [SKReachability reachabilityForInternetConnection];
+  SKReachability *reachability = [[SKReachability newReachabilityForInternetConnection] autorelease];
   BOOL test = [reachability isReachable];
   return test;
 }

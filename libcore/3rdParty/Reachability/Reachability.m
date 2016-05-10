@@ -311,13 +311,13 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 #pragma mark Reachability Allocation Methods
 
 
-+ (Reachability *) reachabilityWithHostName: (NSString *) hostName {
++ (Reachability *) newReachabilityWithHostName: (NSString *) hostName {
 	
 	SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithName(NULL, [hostName UTF8String]);
 	
 	if (ref) {
 		
-		Reachability *r = [[[self alloc] initWithReachabilityRef: ref] autorelease];
+    Reachability *r = [[self alloc] initWithReachabilityRef: ref];
 		
 		r.key = hostName;
 
@@ -327,7 +327,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	
 	return nil;
 	
-} // reachabilityWithHostName
+} // newReachabilityWithHostName
 
 
 + (NSString *) makeAddressKey: (in_addr_t) addr {
@@ -349,13 +349,13 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 } // makeAddressKey:
 
 
-+ (Reachability *) reachabilityWithAddress: (const struct sockaddr_in *) hostAddress {
++ (Reachability *) newReachabilityWithAddress: (const struct sockaddr_in *) hostAddress {
 	
 	SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr*)hostAddress);
 
 	if (ref) {
 		
-		Reachability *r = [[[self alloc] initWithReachabilityRef: ref] autorelease];
+    Reachability *r = [[self alloc] initWithReachabilityRef: ref];
 		
 		r.key = [self makeAddressKey: hostAddress->sin_addr.s_addr];
 		
@@ -365,26 +365,26 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	
 	return nil;
 
-} // reachabilityWithAddress
+} // newReachabilityWithAddress
 
 
-+ (Reachability *) reachabilityForInternetConnection {
++ (Reachability *) newReachabilityForInternetConnection {
 	
 	struct sockaddr_in zeroAddress;
 	bzero(&zeroAddress, sizeof(zeroAddress));
 	zeroAddress.sin_len = sizeof(zeroAddress);
 	zeroAddress.sin_family = AF_INET;
 
-	Reachability *r = [self reachabilityWithAddress: &zeroAddress];
+	Reachability *r = [self newReachabilityWithAddress: &zeroAddress];
 
 	r.key = kInternetConnection;
 	
 	return r;
 
-} // reachabilityForInternetConnection
+} // newReachabilityForInternetConnection
 
 
-+ (Reachability *) reachabilityForLocalWiFi {
++ (Reachability *) newReachabilityForLocalWiFi {
 	
 	struct sockaddr_in localWifiAddress;
 	bzero(&localWifiAddress, sizeof(localWifiAddress));
@@ -393,13 +393,13 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	// IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0
 	localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
 
-	Reachability *r = [self reachabilityWithAddress: &localWifiAddress];
+	Reachability *r = [self newReachabilityWithAddress: &localWifiAddress];
 
 	r.key = kLocalWiFiConnection;
 
 	return r;
 
-} // reachabilityForLocalWiFi
+} // newReachabilityForLocalWiFi
 
 
 #pragma mark -
@@ -817,7 +817,7 @@ static const SCNetworkReachabilityFlags kOnDemandConnection = kSCNetworkReachabi
 
 // Simple test for Internet reachability!
 + (BOOL) sGetIsReachable { // Could also be called sGetIsConnected...?
-  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  Reachability *reachability = [[Reachability newReachabilityForInternetConnection] autorelease];
   BOOL test = [reachability isReachable];
   return test;
 }

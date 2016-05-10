@@ -634,7 +634,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 }
 
 -(BOOL) getIsConnected {
-  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   
   [self updateReachabilityStatus:reachability];
   
@@ -915,7 +915,7 @@ static BOOL sbDebugWarningMessageShownYet = NO;
 //#endif  // DEBUG
 #endif // TARGET_IPHONE_SIMULATOR
   
-  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   //BOOL bReachableViaWWan =[reachability isReachableViaWWAN];
   BOOL bReachableViaWiFi =[reachability isReachableViaWiFi];
   

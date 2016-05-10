@@ -745,7 +745,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 }
 
 +(NSString*)getNetworkOrGps {
-  Reachability *reach = [Reachability reachabilityForInternetConnection];
+  Reachability *reach = [Reachability newReachabilityForInternetConnection];
   if ([NSThread isMainThread]) {
     // Only safe to do this in the MAIN UI THREAD!
     [reach startNotifier];
@@ -760,7 +760,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 }
 
 +(NSString*)getNetworkTypeString {
-  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   if ([NSThread isMainThread]) {
     // Only safe to do this in the MAIN UI THREAD!
     [reachability startNotifier];
@@ -903,6 +903,11 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 }
 
 + (NSString *)sCurrentWifiSSID {
+#if TARGET_IPHONE_SIMULATOR
+  // This method does not work on the simulator!
+  return @"SK1";
+#else // // TARGET_IPHONE_SIMULATOR
+  
   NSString *ssid = nil;
   
   //NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
@@ -921,11 +926,8 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
       ssid = ssidInfo[@"SSID"];
     }
   }
-#if TARGET_IPHONE_SIMULATOR
-  // This method does not work on the simulator!
-  ssid = @"SK1";
-#endif // TARGET_IPHONE_SIMULATOR
   return ssid;
+#endif // TARGET_IPHONE_SIMULATOR
 }
 
 +(void) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion {

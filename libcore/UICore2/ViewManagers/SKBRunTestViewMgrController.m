@@ -293,10 +293,10 @@
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityStatusChanged:) name:kReachabilityChangedNotification object:nil];
   
-  self.internetReachability = [Reachability reachabilityForInternetConnection];
+  self.internetReachability = [Reachability newReachabilityForInternetConnection];
   [self.internetReachability startNotifier];
   
-  self.wifiReachability = [Reachability reachabilityForLocalWiFi];
+  self.wifiReachability = [Reachability newReachabilityForLocalWiFi];
   //    [self.wifiReachability startNotifier];
 
 }

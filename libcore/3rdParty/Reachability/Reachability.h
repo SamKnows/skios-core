@@ -150,17 +150,17 @@ extern NSString *const kReachabilityChangedNotification;
 - (Reachability *) initWithReachabilityRef: (SCNetworkReachabilityRef) ref;
 
 // Use to check the reachability of a particular host name. 
-+ (Reachability *) reachabilityWithHostName: (NSString*) hostName;
++ (Reachability *) newReachabilityWithHostName: (NSString*) hostName;
 
 // Use to check the reachability of a particular IP address. 
-+ (Reachability *) reachabilityWithAddress: (const struct sockaddr_in*) hostAddress;
++ (Reachability *) newReachabilityWithAddress: (const struct sockaddr_in*) hostAddress;
 
 // Use to check whether the default route is available.  
 // Should be used to, at minimum, establish network connectivity.
-+ (Reachability *) reachabilityForInternetConnection;
++ (Reachability *) newReachabilityForInternetConnection;
 
 // Use to check whether a local wifi connection is available.
-+ (Reachability *) reachabilityForLocalWiFi;
++ (Reachability *) newReachabilityForLocalWiFi;
 
 //Start listening for reachability notifications on the current run loop.
 - (BOOL) startNotifier;

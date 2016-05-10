@@ -125,7 +125,7 @@ int getdefaultgateway(in_addr_t * addr)
 }
 
 +(BOOL) sGetIsNetworkWiFi {
-  Reachability *reachability = [Reachability reachabilityForInternetConnection];
+  Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   //BOOL bReachableViaWWan =[reachability isReachableViaWWAN];
   BOOL bReachableViaWiFi =[reachability isReachableViaWiFi];
   return bReachableViaWiFi;

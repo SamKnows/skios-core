@@ -735,7 +735,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   
   if (bytes == BYTESREADERR) {													/* if there is an error the test must stop and report it */
     [super setErrorIfEmpty:@"read error"];
-    bytes = 0; 																	/* do not modify the bytes counters ??? */
+    //bytes = 0; 																	/* do not modify the bytes counters ??? */
     *self.mError = true;
     return true;
   }
@@ -787,7 +787,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   //boolean ret = false;
   if (bytes == BYTESREADERR) {														/* if there is an error the test must stop and report it */
     [super setErrorIfEmpty:@"read error"];
-    bytes = 0; 																		/* do not modify the bytes counters ??? */
+    //bytes = 0; 																		/* do not modify the bytes counters ??? */
     *self.mError = true;
 #ifdef DEBUG
     NSLog(@"DEBUG: isTransferDone, bytes == BYTESREADERR!");
@@ -944,7 +944,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
    */
   if (sockfd >= 0) {
     close(sockfd);
-    sockfd = 0;
+    //sockfd = 0;
   }
 }
 
@@ -993,7 +993,8 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 #ifdef DEBUG
   startDate = [NSDate date];
 #endif // DEBUG
-  result = [self transferToSocket:sockfd ThreadIndex: threadIndex];
+  //result =
+  [self transferToSocket:sockfd ThreadIndex: threadIndex];
 #ifdef DEBUG
   endDate = [NSDate date];
 #endif // DEBUG

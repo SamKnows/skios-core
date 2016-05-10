@@ -63,22 +63,22 @@
 /*!
  * Use to check the reachability of a given host name.
  */
-+ (instancetype)reachabilityWithHostName:(NSString *)hostName;
++ (instancetype)newReachabilityWithHostName:(NSString *)hostName;
 
 /*!
  * Use to check the reachability of a given IP address.
  */
-+ (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress;
++ (instancetype)newReachabilityWithAddress:(const struct sockaddr_in *)hostAddress;
 
 /*!
  * Checks whether the default route is available. Should be used by applications that do not connect to a particular host.
  */
-+ (instancetype)reachabilityForInternetConnection;
++ (instancetype)newReachabilityForInternetConnection;
 
 /*!
  * Checks whether a local WiFi connection is available.
  */
-+ (instancetype)reachabilityForLocalWiFi;
++ (instancetype)newReachabilityForLocalWiFi;
 
 /*!
  * Start listening for reachability notifications on the current run loop.
