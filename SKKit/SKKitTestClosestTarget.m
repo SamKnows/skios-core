@@ -78,7 +78,7 @@
   // TODO
   completedTargets += 1;
   
-  int divideBy = mTargetArray.count;
+  int divideBy = (int) mTargetArray.count;
   if (divideBy == 0) {
     SK_ASSERT(false);
     divideBy = 1;
