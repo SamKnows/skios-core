@@ -159,7 +159,10 @@ static BOOL sbLastKnownPingStatus = YES;
       returnValue.mpHostName = hostName;
 			returnValue->_reachabilityRef = reachability;
 			returnValue->_alwaysReturnLocalWiFiStatus = NO;
-		}
+    } else {
+      SK_ASSERT(false);
+      CFRelease(reachability);
+    }
 	}
 	return returnValue;
 }
@@ -178,7 +181,10 @@ static BOOL sbLastKnownPingStatus = YES;
 		{
 			returnValue->_reachabilityRef = reachability;
 			returnValue->_alwaysReturnLocalWiFiStatus = NO;
-		}
+    } else {
+      SK_ASSERT(false);
+      CFRelease(reachability);
+    }
 	}
 	return returnValue;
 }
