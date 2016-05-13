@@ -166,6 +166,10 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   mTransferBytes = 0;
   mTotalBytes      = 0;
   mTransferTimeMicroseconds = 0;
+  
+  testTotalBytes = 0;
+  testTransferBytes = 0;
+  testWarmupBytes = 0;
 }
 
 - (void)dealloc
@@ -415,6 +419,15 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
         mTotalBytes = totalBytes;
         [[self httpRequestDelegate] htdUpdateDataUsage:self.mTotalBytes bytes:totalBytes progress:100.0];
         [self setRunningStatus:COMPLETE];
+        
+        SK_ASSERT(self.testTransferBytes == 0);
+        self.testTransferBytes = totalBytes;
+        self.testTransferTimeMicroseconds = [mpNewStyleSKJUploadTest getWarmUpTimeMicro];
+        
+        self.testWarmupBytes = [mpNewStyleSKJUploadTest getTotalWarmUpBytes];
+        self.testWarmupEndTime = [[NSDate date] timeIntervalSince1970];
+        self.testWarmupStartTime = self.testWarmupEndTime - [mpNewStyleSKJUploadTest getWarmUpTimeMicro] / 1000000.0;
+        
         [self storeOutputResults:bitrateMbps1024Based];
         [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
                                         ResultIsFromServer:cbResultIsFromServerFalse
@@ -734,10 +747,12 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 #endif // DEBUG
               testTransferTimeMicroseconds = [[NSDate date] timeIntervalSinceDate:self.testTransferTimeFirstBytesAt] * 1000000.0;
               
+#ifdef DEBUG
               double dTime = testTransferTimeMicroseconds / 1000000.0;
 //              NSLog(@"testTransferTimeMiroseconds(1)=%g", dTime);
               
               SK_ASSERT(dTime < 120.0); // No more than 2 minutes, or something is VERY wrong...
+#endif // DEBUG
               testTransferBytes = testTransferBytes_New;
               
               //double bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
