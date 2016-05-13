@@ -173,9 +173,11 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   
   SK_ASSERT(self.tableView != nil);
   
+#ifdef DEBUG
   SKAppBehaviourDelegate *appDelegate = [SKAppBehaviourDelegate sGetAppBehaviourDelegate];
   SK_ASSERT ([appDelegate hasAgreed]);
   SK_ASSERT ([appDelegate isActivated]);
+#endif // DEBUG
   
   // http://stackoverflow.com/questions/11664766/cell-animation-stop-fraction-must-be-greater-than-start-fraction
   tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

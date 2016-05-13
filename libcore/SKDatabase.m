@@ -1870,8 +1870,13 @@ public static String convertConnectivityType(int type) {
     SK_ASSERT(theMaxDate != nil);
   }
 
-  BOOL bRes = [db close];
+#ifdef DEBUG
+  BOOL bRes =
+#endif // DEBUG
+  [db close];
+#ifdef DEBUG
   SK_ASSERT(bRes);
+#endif // DEBUG
 
   return theMaxDate;
 }

@@ -114,10 +114,12 @@
     NSArray *mccMncArray = (NSArray*)operator[@"mcc+mnc"];
     SK_ASSERT([mccMncArray count] > 0);
 
+#ifdef DEBUG
     for (NSString *mccMnc in mccMncArray) {
       SK_ASSERT([mccMnc length] >= 5);
       SK_ASSERT([mccMnc length] <= 6);
     }
+#endif // DEBUG
     SK_ASSERT(operator[@"url"] != nil);
     SK_ASSERT([[operator[@"url"] class] isSubclassOfClass:NSString.class]);
     SK_ASSERT([operator[@"url"] length] > 0);

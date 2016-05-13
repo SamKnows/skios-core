@@ -329,9 +329,13 @@
   } else if ([elementName isEqualToString:@"submit-dcs"]) {
     // Ignore this!
     NSString *tHost = [attributeDict objectForKey:@"host"];
+#ifdef DEBUG
     NSString *tDummy = [attributeDict objectForKey:@"dummy"];
+#endif // DEBUG
     SK_ASSERT(tHost != nil);
+#ifdef DEBUG
     SK_ASSERT(tDummy == nil);
+#endif // DEBUG
     if (tHost != nil) {
       SK_ASSERT(tHost.length > 0);
       mSubmitDcsHost = tHost;
@@ -407,9 +411,11 @@
       
       if (theTest != nil) {
         // Verify that this doesn't already exist with a matching test id...
+#ifdef DEBUG
         for (SKKitTestDescriptor *checkTest in mTestArray) {
           SK_ASSERT(![[checkTest getId] isEqualToString:[theTest getId]]);
         }
+#endif // DEBUG
         
         // Simply store this value for later sorting by tidyUpScheduleBeforeUse()...
         [mTestArray addObject:theTest];

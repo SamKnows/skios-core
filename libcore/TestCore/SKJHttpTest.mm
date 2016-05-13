@@ -545,13 +545,18 @@ void threadEntry(SKJHttpTest *pSelf) {
     // This is c.f. the Android code.
     // We DON"T want "nodelay"... so set the value zero. That should force every block to be written separately.
     int flag = 0;
-    int result = setsockopt(sockfd,            /* socket affected */
+#ifdef DEBUG
+    int result =
+#endif // DEBUG
+    setsockopt(sockfd,            /* socket affected */
                             IPPROTO_TCP,     /* set option at TCP level */
                             TCP_NODELAY,     /* name of option */
                             (char *) &flag,  /* the cast is historical
                                               cruft */
                             sizeof(int));    /* length of option value */
+#ifdef DEBUG
     SK_ASSERT (result >= 0);
+#endif // DEBUG
     
     if (self.downstream) {
       // Read / download

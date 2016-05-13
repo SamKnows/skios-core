@@ -682,10 +682,12 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     SK_ASSERT(false);
     return;
   }
-  
+
+#ifdef DEBUG
   NSString *theCheckStartDate = [dateFormatter stringFromDate:theStartDate];
   // Verify that our formatter works!
   SK_ASSERT([theCheckStartDate isEqualToString:theStartDateString]);
+#endif // DEBUG
   
   NSDate *theEndDate = [dateFormatter dateFromString:theEndDateString];
   

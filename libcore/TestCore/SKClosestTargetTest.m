@@ -187,8 +187,10 @@ const int cQueryCountPerServer = 3;
 #ifdef DEBUG
   NSLog(@"DEBUG: tryHttpClosestTargetTestIfUdpTestFails - queriesToRun=%d", (int)queriesToRun);
 #endif // DEBUG
-  
+ 
+#ifdef DEBUG
   __block NSDate *timeStartOfHttpQuery = [NSDate date];
+#endif // DEBUG
  
   __block int queryCompleteCountdown = queriesToRun;
   

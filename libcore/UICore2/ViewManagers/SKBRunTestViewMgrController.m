@@ -332,8 +332,10 @@
     if (theTestId.longLongValue == self.mTestId.longLongValue) {
       NSDictionary *values = notification.userInfo;
       
+#ifdef DEBUG
       NSNumber *theTestId = values[@"test_id"];
       SK_ASSERT(theTestId != nil);
+#endif // DEBUG
       NSString *thePublicIp = values[@"Public_IP"];
       SK_ASSERT(thePublicIp != nil);
       NSString *theSubmissionId = values[@"Submission_ID"];

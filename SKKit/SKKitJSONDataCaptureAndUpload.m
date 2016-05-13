@@ -89,9 +89,14 @@
       SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
       
       error = nil;
-      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
+#ifdef DEBUG
+      BOOL bRes =
+#endif // DEBUG
+      [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
+#ifdef DEBUG
       SK_ASSERT(bRes == YES);
       SK_ASSERT(error == nil);
+#endif // DEBUG
     }
   }
 }

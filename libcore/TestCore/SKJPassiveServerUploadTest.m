@@ -157,8 +157,10 @@ const int extMonitorUpdateInterval = 500000;
     } @catch (NSException *e1) {
       SK_ASSERT(false);
     }
+#ifdef DEBUG
     int bytesPerSecondMeasurement = MAX(0, [super getTransferBytesPerSecond]);
     SK_ASSERT(bytesPerSecondMeasurement == 0);
+#endif // DEBUG
     
     [super sSetLatestSpeedForExternalMonitorInterval:extMonitorUpdateInterval InId:@"runUp1Err" TransferCallback:bytesPerSecond];
     //SKLogger.e(TAG(this), "loop - break 3");//haha
@@ -183,8 +185,10 @@ const int extMonitorUpdateInterval = 500000;
       } @catch (NSException *e1) {
         SK_ASSERT(false);
       }
+#ifdef DEBUG
       int bytesPerSecondMeasurement = MAX(0, [super getTransferBytesPerSecond]);
       SK_ASSERT(bytesPerSecondMeasurement == 0);
+#endif // DEBUG
       return false;
     }
     

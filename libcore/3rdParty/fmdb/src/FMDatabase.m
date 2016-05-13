@@ -777,7 +777,7 @@
     va_start(args, sql);
   
   NSError *err = nil;
-  BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orVAList:args];
+  BOOL result = [self executeUpdate:sql error:&err withArgumentsInArray:nil orVAList:args];
   SK_ASSERT_NONSERROR(err);
     
 //    if (result) { NSLog(@"SUCCESS"); }

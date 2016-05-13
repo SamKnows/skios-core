@@ -199,8 +199,13 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     mLocationManager = [[SKKitLocationManager alloc] init];
     
     // Initialise SKCore!
-    SKCore *libCore = [SKCore getInstance];
+#ifdef DEBUG
+    SKCore *libCore =
+#endif // DEBUG
+    [SKCore getInstance];
+#ifdef DEBUG
     SK_ASSERT(libCore != nil);
+#endif // DEBUG
     
     [SKGlobalMethods setLongDateFormat:@"dd-MM-yyyy HH:mm"];
     [SKGlobalMethods setShortDateFormat:@"dd/MM/yy"];
@@ -219,9 +224,12 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     if ([[NSFileManager defaultManager] fileExistsAtPath:oldUploadFilePath])
     {
       NSError *theError;
-      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:oldUploadFilePath error:&theError];
-      SK_ASSERT(bRes);
 #ifdef DEBUG
+      BOOL bRes =
+#endif // DEBUG
+      [[NSFileManager defaultManager] removeItemAtPath:oldUploadFilePath error:&theError];
+#ifdef DEBUG
+      SK_ASSERT(bRes);
       if (bRes == NO) {
         [SKDebugSupport SK_ASSERT_NONSERROR_INTERNAL:theError File:__FILE__ Line:__LINE__];
       }
@@ -658,8 +666,13 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
       // Do this only when the existing one is different to that needed.
       if ([[[NSFileManager defaultManager] attributesOfItemAtPath:uploadFilePath error:nil][NSFileSize] longLongValue] != FILE_SIZE)
       {
-        BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:uploadFilePath error:&error];
+#ifdef DEBUG
+        BOOL bRes =
+#endif // DEBUG
+        [[NSFileManager defaultManager] removeItemAtPath:uploadFilePath error:&error];
+#ifdef DEBUG
         SK_ASSERT(bRes);
+#endif // DEBUG
       }
     }
     
@@ -917,13 +930,18 @@ static BOOL sbDebugWarningMessageShownYet = NO;
   
   Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   //BOOL bReachableViaWWan =[reachability isReachableViaWWAN];
+#ifdef DEBUG
   BOOL bReachableViaWiFi =[reachability isReachableViaWiFi];
+#endif // DEBUG
   
   NetworkStatus netStatus = [reachability currentReachabilityStatus];
   BOOL result = (netStatus == kReachableViaWiFi);
   // Do NOT use this variant, as it is CACHED - and won't work (say) on first use.
   //return ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus] == WIFI);
+#ifdef DEBUG
   SK_ASSERT(result == bReachableViaWiFi);
+#endif // DEBUG
+  
   return result;
 }
 
