@@ -253,6 +253,7 @@
       
       // Delete any saved JSON files!
       [SKKitJSONDataCaptureAndUpload sDeleteAllSavedJSONFiles];
+      [SKKitJSONDataCaptureAndUpload sDeleteAllArchivedJSONFiles];
       
       // Notify the rest of the UI!
       [[NSNotificationCenter defaultCenter]
@@ -381,7 +382,10 @@ enum {
     SK_ASSERT(false);
     [self SKSafePerformSegueWithIdentifier:@"segueFromSettingsToTerms" sender:self];
   } else if ([cell.reuseIdentifier isEqualToString:@"export_results"]) {
-    SK_ASSERT(false);// Deprecated!
+    UIViewController *fromThisVC = self;
+    id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
+    
+    [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
   } else if ([cell.reuseIdentifier isEqualToString:@"terms_or_about_url"]) {
     
     NSString *theUrlString = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getNewAppUrlForHelpAbout];

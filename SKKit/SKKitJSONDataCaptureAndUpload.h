@@ -99,6 +99,11 @@
 // 6) This optional method can be used to purge-out an files that are saved, but not yet uploaded.
 +(void) sDeleteAllSavedJSONFiles;
 
++(NSString*)sGetJsonArchiveDirectory;
++(BOOL) sExportArchivedJSONFilesToZip:(int*)RpFiles;
++(void) sDeleteAllArchivedJSONFiles;
++(NSString*) sGetJSONArchiveZipFilePath;
+
 @end // SKKitJSONDataCaptureAndUpload
 
 #endif // SKKitJSONDataCaptureAndUpload_H 1

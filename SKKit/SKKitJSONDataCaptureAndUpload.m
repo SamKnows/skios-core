@@ -53,6 +53,7 @@
   return docPath;
 }
 
+
 + (NSString*)sGetNewJSONFilePath
 {
   NSString *docPath = [self sGetJsonDirectory];
@@ -62,6 +63,7 @@
   
   return [docPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", strDate]];
 }
+
 
 +(void) sDeleteAllSavedJSONFiles {
   
@@ -97,6 +99,70 @@
       SK_ASSERT(bRes == YES);
       SK_ASSERT(error == nil);
 #endif // DEBUG
+    }
+  }
+}
+
+//===
+
++ (NSString*)sGetJsonArchiveDirectory
+{
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+  NSString *libraryPath = [paths objectAtIndex:0];
+  
+  NSString *docPath = [libraryPath stringByAppendingPathComponent:@"JSONArchive"];
+  [self sCreateFolderAtPathIfNotExists:docPath];
+  
+  return docPath;
+}
+
++ (NSString*)sGetNewJSONArchiveFilePath
+{
+  NSString *docPath = [self sGetJsonArchiveDirectory];
+  
+  NSTimeInterval ti = [[SKCore getToday] timeIntervalSince1970];
+  NSString *strDate = [NSString stringWithFormat:@"%d", (int)ti];
+  
+  return [docPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", strDate]];
+}
+
++ (NSString*)sGetJSONArchiveZipFilePath
+{
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+  NSString *libraryPath = [paths objectAtIndex:0];
+  NSString *docPath = [libraryPath stringByAppendingPathComponent:@"export.zip"];
+  return docPath;
+}
+
++(void) sDeleteAllArchivedJSONFiles {
+  
+  // Write to zip of JSON files!
+  
+  NSError *error = nil;
+  NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self sGetJsonArchiveDirectory] error:&error];
+  if (dirFiles == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  if (error != nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  int itemCount = 0;
+  for (NSString *theFile in dirFiles) {
+    NSURL *url = [NSURL URLWithString:theFile];
+    if ([[url pathExtension] isEqualToString:@"json"]) {
+      NSString *fullFilePath = [[self sGetJsonArchiveDirectory] stringByAppendingPathComponent:theFile];
+      SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
+      
+      error = nil;
+      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
+      SK_ASSERT(bRes == YES);
+      SK_ASSERT(error == nil);
+      
+      itemCount++;
     }
   }
 }
@@ -202,6 +268,27 @@ static void sAssertTestTypeValid(NSString* testType) {
       NSLog(@"Error writing JSON : %@", error.localizedDescription);
       SK_ASSERT(false);
 #endif // DEBUG
+    }
+  }
+  
+  {
+    // 2. Write to JSON file for archive (for subsequent export!)
+    // Do this ONLY if supported by the app!
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportExportMenuItem] == YES)
+    {
+      NSString *path = [self sGetNewJSONArchiveFilePath];
+      NSError *error = nil;
+      if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
+      {
+        //NSLog(@"Wrote Archive JSON Successfully");
+      }
+      else
+      {
+#ifdef DEBUG
+        NSLog(@"Error writing JSON archive : %@", error.localizedDescription);
+        SK_ASSERT(false);
+#endif // DEBUG
+      }
     }
   }
   
@@ -824,5 +911,91 @@ static void sAssertTestTypeValid(NSString* testType) {
   return metrics;
 }
 
++(BOOL) sExportArchivedJSONFilesToZip:(int*)RpFiles {
+  
+  // Write to zip of JSON files!
+  
+  NSString *zipFilePath = [self sGetJSONArchiveZipFilePath];
+  
+  NSError *error = nil;
+  NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self sGetJsonArchiveDirectory] error:&error];
+  if (dirFiles == nil) {
+    SK_ASSERT(false);
+    return NO;
+  }
+  
+  if (error != nil) {
+    SK_ASSERT(false);
+    return NO;
+  }
+  
+  ZipArchive *zipArchive = [[ZipArchive alloc] init];
+  BOOL bRes = [zipArchive CreateZipFile2:zipFilePath];
+  if (bRes == NO) {
+    SK_ASSERT(false);
+    return NO;
+  }
+  
+  int itemCount = 0;
+  for (NSString *theFile in dirFiles) {
+    NSURL *url = [NSURL URLWithString:theFile];
+    if ([[url pathExtension] isEqualToString:@"json"]) {
+      NSString *fullFilePath = [[self sGetJsonArchiveDirectory] stringByAppendingPathComponent:theFile];
+      SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
+      
+      NSString *writeAsFile = [[url pathComponents] lastObject];
+      bRes = [zipArchive addFileToZip:fullFilePath newname:writeAsFile];
+      SK_ASSERT(bRes);
+      
+      itemCount++;
+    }
+  }
+  
+  [zipArchive CloseZipFile2];
+  
+  // Note that the zip file seems to be invalid, if there are zero items!
+  *RpFiles = itemCount;
+  
+#ifdef DEBUG
+  NSLog(@"DEBUG: Wrote zip file to %@, with %d items", zipFilePath, itemCount);
+#endif // DEBUG
+  
+  zipArchive = nil;
+  
+  return YES;
+}
+
++(void) deleteAllArchivedJSONFiles {
+  
+  // Write to zip of JSON files!
+  
+  NSError *error = nil;
+  NSArray *dirFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self sGetJsonArchiveDirectory] error:&error];
+  if (dirFiles == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  if (error != nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  int itemCount = 0;
+  for (NSString *theFile in dirFiles) {
+    NSURL *url = [NSURL URLWithString:theFile];
+    if ([[url pathExtension] isEqualToString:@"json"]) {
+      NSString *fullFilePath = [[self sGetJsonArchiveDirectory] stringByAppendingPathComponent:theFile];
+      SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
+      
+      error = nil;
+      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
+      SK_ASSERT(bRes == YES);
+      SK_ASSERT(error == nil);
+      
+      itemCount++;
+    }
+  }
+}
 
 @end // SKKitJSONDataCaptureAndUpload

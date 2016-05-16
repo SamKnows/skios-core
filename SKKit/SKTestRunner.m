@@ -37,6 +37,7 @@
           SKKitTestClosestTarget *closestTest = [[SKKitTestClosestTarget alloc] initWithClosestTargetTestDescriptor:(SKKitTestDescriptor_ClosestTarget*)testDescriptor];
           // TODO!
           SK_ASSERT(closestTest != nil);
+          SK_ASSERT(false); // Not yet Used!
         }
           break;
         case SKKitTestType_Download:
@@ -44,6 +45,7 @@
           SKKitTestDownload *downloadTest = [[SKKitTestDownload alloc] initWithDownloadTestDescriptor:(SKKitTestDescriptor_Download*)testDescriptor];
           // TODO!
           SK_ASSERT(downloadTest != nil);
+          SK_ASSERT(false); // Not yet Used!
         }
           break;
         case SKKitTestType_Upload:
@@ -51,6 +53,7 @@
           SKKitTestUpload *uploadTest = [[SKKitTestUpload alloc] initWithUploadTestDescriptor:(SKKitTestDescriptor_Upload*)testDescriptor];
           // TODO!
           SK_ASSERT(uploadTest != nil);
+          SK_ASSERT(false); // Not yet Used!
         }
           break;
         case SKKitTestType_Latency:
@@ -58,6 +61,7 @@
           SKKitTestLatency *latencyTest = [[SKKitTestLatency alloc] initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)testDescriptor];
           // TODO!
           SK_ASSERT(latencyTest != nil);
+          SK_ASSERT(false); // Not yet Used!
         }
           break;
         default:

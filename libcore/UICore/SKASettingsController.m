@@ -226,6 +226,7 @@
       
       // Delete any saved JSON files!
       [SKKitJSONDataCaptureAndUpload sDeleteAllSavedJSONFiles];
+      [SKKitJSONDataCaptureAndUpload sDeleteAllArchivedJSONFiles];
       
       // Notify the rest of the UI!
       [[NSNotificationCenter defaultCenter]
@@ -344,8 +345,12 @@ enum {
       [alert show];
     }
       break;
-    case 3: // Export
-      SK_ASSERT(false); // This is no longer supported!
+    case 3: { // Export
+      UIViewController *fromThisVC = self;
+      id<MFMailComposeViewControllerDelegate> thisMailDelegate = self;
+      
+      [SKAMainResultsController sMenuSelectedExportResults:thisMailDelegate fromThisVC:fromThisVC];
+    }
       break;
     default:
       SK_ASSERT(false);
@@ -395,9 +400,9 @@ enum {
     if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShowAboutVersionInSettingsLinksToAboutScreen] == NO) {
       rows--;
     }
-    // ALWAYS hide the export results row, as that is now deprecated behaviour (the files
-    // are always deleted after sending)
-    rows--;
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportExportMenuItem] == NO) {
+      rows--;
+    }
     return rows;
   } else if (section == SECTION_INDEX_DATACAP) {
     SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] isDataCapEnabled] == YES);
