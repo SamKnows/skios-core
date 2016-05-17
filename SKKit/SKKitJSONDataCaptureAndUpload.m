@@ -158,7 +158,7 @@
       SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
       
       error = nil;
-      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
+      __unused BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
       SK_ASSERT(bRes == YES);
       SK_ASSERT(error == nil);
       
@@ -989,7 +989,7 @@ static void sAssertTestTypeValid(NSString* testType) {
       SK_ASSERT([[NSFileManager defaultManager] fileExistsAtPath:fullFilePath]);
       
       error = nil;
-      BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
+      __unused BOOL bRes = [[NSFileManager defaultManager] removeItemAtPath:fullFilePath error:&error];
       SK_ASSERT(bRes == YES);
       SK_ASSERT(error == nil);
       

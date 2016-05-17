@@ -111,7 +111,7 @@
 
     SK_ASSERT(operator[@"mcc+mnc"] != nil);
     SK_ASSERT([[operator[@"mcc+mnc"] class] isSubclassOfClass:NSArray.class]);
-    NSArray *mccMncArray = (NSArray*)operator[@"mcc+mnc"];
+    __unused NSArray *mccMncArray = (NSArray*)operator[@"mcc+mnc"];
     SK_ASSERT([mccMncArray count] > 0);
 
 #ifdef DEBUG
