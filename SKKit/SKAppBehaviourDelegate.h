@@ -247,11 +247,6 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 -(BOOL) getShouldDisplayWlanCarrierNameInRunTestScreen;
 
-//
-// Added for the SKMobile app versions
-//
--(BOOL) getSKMAppShowActivityFromChooseNetwork;
-
 // Location!
 - (void)startLocationMonitoring;
 - (void)stopLocationMonitoring;

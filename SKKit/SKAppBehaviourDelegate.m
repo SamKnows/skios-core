@@ -1669,14 +1669,6 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   return @"PREFS_AGREED_V2";
 }
 
-//
-// Added for the SKMobile app versions
-//
--(BOOL) getSKMAppShowActivityFromChooseNetwork {
-  return NO;
-}
-
-
 // Location!
 - (void)startLocationMonitoring {
   [mLocationManager startLocationMonitoring];
