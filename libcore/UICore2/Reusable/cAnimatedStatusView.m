@@ -56,27 +56,21 @@
 {
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
     
-    animation.keyTimes = [NSArray arrayWithObjects:
-                          [NSNumber numberWithFloat:0.0],
-                          [NSNumber numberWithFloat:0.5],
-                          [NSNumber numberWithFloat:1.0],
-                          nil];
+    animation.keyTimes = @[@0.0F,
+            @0.5F,
+            @1.0F];
     
     if (forever_)
     {
-        animation.values = [NSArray arrayWithObjects:
-                            [NSNumber numberWithFloat:1.0],
-                            [NSNumber numberWithFloat:0.0],
-                            [NSNumber numberWithFloat:1.0],
-                            nil];
+        animation.values = @[@1.0F,
+                @0.0F,
+                @1.0F];
     }
     else
     {
-        animation.values = [NSArray arrayWithObjects:
-                            [NSNumber numberWithFloat:1.0],
-                            [NSNumber numberWithFloat:0.5],
-                            [NSNumber numberWithFloat:0.0],
-                            nil];
+        animation.values = @[@1.0F,
+                @0.5F,
+                @0.0F];
     }
     
     animation.duration = 5.0;

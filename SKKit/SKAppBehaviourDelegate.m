@@ -130,9 +130,9 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
     // we can use this location for the 'last_location' field in the Submitted JSON.
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *loc = [NSMutableDictionary dictionary];
-    [loc setObject:[NSNumber numberWithDouble:self.locationLatitude] forKey:@"LATITUDE"];
-    [loc setObject:[NSNumber numberWithDouble:self.locationLongitude] forKey:@"LONGITUDE"];
-    [loc setObject:[NSNumber numberWithDouble:self.locationDateAsTimeIntervalSince1970] forKey:@"LOCATIONDATE"];
+    loc[@"LATITUDE"] = @(self.locationLatitude);
+    loc[@"LONGITUDE"] = @(self.locationLongitude);
+    loc[@"LOCATIONDATE"] = @(self.locationDateAsTimeIntervalSince1970);
     [prefs setObject:loc forKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
     [prefs synchronize];
   }
@@ -320,7 +320,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 + (NSString*)logFile
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *libraryPath = [paths objectAtIndex:0];
+    NSString *libraryPath = paths[0];
     return [libraryPath stringByAppendingPathComponent:@"LOG.txt"];
 }
 
@@ -341,14 +341,14 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   if (![prefs objectForKey:cPrefs_DataCapEnabled])
   {
-    [prefs setObject:[NSNumber numberWithBool:YES] forKey:cPrefs_DataCapEnabled];
+    [prefs setObject:@YES forKey:cPrefs_DataCapEnabled];
   }
   
   if (![prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]])
   {
     int64_t theValue = 100L;
     theValue *= CBytesInAMegabyte;
-    [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
+    [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   }
  
   NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
@@ -367,17 +367,17 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
         defaultValue = YES;
       }
     }
-    [prefs setObject:[NSNumber numberWithBool:defaultValue] forKey:cPrefs_Agreed];
+    [prefs setObject:@(defaultValue) forKey:cPrefs_Agreed];
   }
   
   if (![prefs objectForKey:cPrefs_Activated])
   {
-    [prefs setObject:[NSNumber numberWithBool:NO] forKey:cPrefs_Activated];
+    [prefs setObject:@NO forKey:cPrefs_Activated];
   }
   
   if (![prefs objectForKey:cPrefs_DateRange])
   {
-    [prefs setObject:[NSNumber numberWithInt:DATERANGE_1w1m3m1y_ONE_WEEK] forKey:cPrefs_DateRange];
+    [prefs setObject:@(DATERANGE_1w1m3m1y_ONE_WEEK) forKey:cPrefs_DateRange];
   }
   
 //  if (![prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]])
@@ -410,7 +410,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSDate *newDatcapStartDate = [self generateDataCapPeriodStartDate:baseOnStartDate];
   [prefs setValue:newDatcapStartDate forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
-  [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+  [prefs setValue:@0 forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
   [prefs synchronize];
 }
 
@@ -440,7 +440,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   if (nil == [prefs stringForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]])
   {
-    [prefs setObject:[NSNumber numberWithLongLong:bytes] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+    [prefs setObject:@(bytes) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
   else
@@ -456,8 +456,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     
     long totalBytes = currentBytes + bytes;
     //NSLog(@"totalBytes : %d", totalBytes);
-    
-    [prefs setObject:[NSNumber numberWithLongLong:totalBytes] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+
+    [prefs setObject:@(totalBytes) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
     
     if (self.schedule.dataCapMB > 0)
@@ -567,7 +567,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   [prefs setObject:[SKCore getToday] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
-  [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_Agreed];
+  [prefs setObject:@(value) forKey:cPrefs_Agreed];
   [prefs synchronize];
 }
 
@@ -620,7 +620,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 + (void)setIsActivated:(BOOL)value
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_Activated];
+  [prefs setObject:@(value) forKey:cPrefs_Activated];
     [prefs synchronize];
 }
 
@@ -831,14 +831,14 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 - (NSString *)schedulePath
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *cacheDirectory = [paths objectAtIndex:0];
+    NSString *cacheDirectory = paths[0];
     return [cacheDirectory stringByAppendingPathComponent:Schedule_Xml];
 }
 
 + (NSString *)getUploadFilePathDeprecated
 {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-  NSString *docDirectory = [paths objectAtIndex:0];
+  NSString *docDirectory = paths[0];
   return [docDirectory stringByAppendingPathComponent:@"UPLOAD.dat"];
 }
 
@@ -1452,7 +1452,7 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 
 -(void) setIsDataCapEnabled:(BOOL) value {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[NSNumber numberWithBool:value] forKey:cPrefs_DataCapEnabled];
+  [prefs setObject:@(value) forKey:cPrefs_DataCapEnabled];
   [prefs synchronize];
 }
 

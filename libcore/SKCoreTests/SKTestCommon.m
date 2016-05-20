@@ -3,7 +3,6 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "OCMock/OCMock.h"
 
 #import "SKTestCommon.h"
 

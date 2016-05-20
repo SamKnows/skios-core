@@ -51,24 +51,26 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  switch (section)
-  {
-    case 0:
+  switch (section) {
+  case 0:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Download"); // "Download"
-       
-    case 1:
+
+  case 1:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Upload"); // "Upload"
-       
-    case 2:
+
+  case 2:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Latency"); // "Latency"
-    
-    case 3:
+
+  case 3:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_PacketLoss"); // "Packet Loss"
-    
-    case 4:
+
+  case 4:
     return sSKCoreGetLocalisedString(@"Storyboard_About_Section_Jitter"); // "Jitter"
+
+  default:
+    break;
   }
-  
+
   SK_ASSERT(false);
   return nil;
 }

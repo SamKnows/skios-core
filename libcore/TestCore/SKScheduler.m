@@ -126,14 +126,14 @@
     if (bFound) {
       break;
     }
-    NSDictionary *dict = [hosts objectAtIndex:m];
+    NSDictionary *dict = hosts[m];
     
     if (nil != dict)
     {
-      if ([dict objectForKey:@"dns_name"] && [dict objectForKey:@"display_name"])
+      if (dict[@"dns_name"] && dict[@"display_name"])
       {
-        NSString *dns_name = [dict objectForKey:@"dns_name"];
-        NSString *display_name = [dict objectForKey:@"display_name"];
+        NSString *dns_name = dict[@"dns_name"];
+        NSString *display_name = dict[@"display_name"];
         
         if ([dns isEqualToString:dns_name])
         {
@@ -214,13 +214,13 @@
 
   for (int j=0; j<[tests count]; j++)
   {
-    NSDictionary *dict = [tests objectAtIndex:j];
+    NSDictionary *dict = tests[j];
     
     if (nil != dict)
     {
-      if ([dict objectForKey:@"type"])
+      if (dict[@"type"])
       {
-        NSString *type = [dict objectForKey:@"type"];
+        NSString *type = dict[@"type"];
         
         if ([type isEqualToString:type_])
         {
@@ -246,14 +246,14 @@
   
   for (int j=0; j<[tests count]; j++)
   {
-    NSDictionary *dict = [tests objectAtIndex:j];
+    NSDictionary *dict = tests[j];
     
     if (nil != dict)
     {
-      if ([dict objectForKey:@"type"] && [dict objectForKey:@"displayName"])
+      if (dict[@"type"] && dict[@"displayName"])
       {
-        NSString *type = [dict objectForKey:@"type"];
-        NSString *displayName = [dict objectForKey:@"displayName"];
+        NSString *type = dict[@"type"];
+        NSString *displayName = dict[@"displayName"];
         
         if ([type isEqualToString:type_] && [displayName isEqualToString:name_])
         {
@@ -295,7 +295,7 @@
 
 - (NSString*)getInitTestName:(int)index
 {
-  return [original_tests objectAtIndex:index];
+  return original_tests[index];
 }
 
 - (NSDictionary*)getCommunication:(NSString*)id_
@@ -308,11 +308,11 @@
     {
       for (int j=0; j<[communications count]; j++)
       {
-        dict = [communications objectAtIndex:j];
+        dict = communications[j];
         
-        if ([dict objectForKey:@"id"])
+        if (dict[@"id"])
         {
-          NSString *theId = [dict objectForKey:@"id"];
+          NSString *theId = dict[@"id"];
           
           if ([theId isEqualToString:id_])
           {
@@ -434,10 +434,8 @@
     {
       NSString *delay = [self parseTime:[[elemGlobal childNamed:@"onfail-test-action"] attributeNamed:@"delay"]];
       
-      onfail_test_action = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                            [[elemGlobal childNamed:@"onfail-test-action"] attributeNamed:@"type"], @"type", 
-                            delay, @"delay",
-                            nil];
+      onfail_test_action = [@{@"type" : [[elemGlobal childNamed:@"onfail-test-action"] attributeNamed:@"type"],
+              @"delay" : delay} mutableCopy];
     }
     
     if ([elemGlobal childNamed:@"data-cap-default"])
@@ -462,7 +460,7 @@
         
         for (int j=0; j<[comms count]; j++)
         {
-          SMXMLElement *com = [comms objectAtIndex:j];
+          SMXMLElement *com = comms[j];
           
           if (nil != com)
           {
@@ -473,9 +471,9 @@
               NSString *comContent = [com attributeNamed:@"content"];
               
               NSMutableDictionary *comDict = [[NSMutableDictionary alloc] init];
-              [comDict setObject:comId forKey:@"id"];
-              [comDict setObject:comType forKey:@"type"];
-              [comDict setObject:comContent forKey:@"content"];
+              comDict[@"id"] = comId;
+              comDict[@"type"] = comType;
+              comDict[@"content"] = comContent;
               
               [communications addObject:comDict];
             }
@@ -521,7 +519,7 @@
         
         for (int j=0; j<[tmpHosts count]; j++)
         {
-          SMXMLElement *host = [tmpHosts objectAtIndex:j];
+          SMXMLElement *host = tmpHosts[j];
           
           if (nil != host)
           {
@@ -531,8 +529,8 @@
             if (nil != dnsName && nil != displayName)
             {
               NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-              [dict setObject:dnsName forKey:@"dns_name"];
-              [dict setObject:displayName forKey:@"display_name"];
+              dict[@"dns_name"] = dnsName;
+              dict[@"display_name"] = displayName;
               [hosts addObject:dict];
               dict = nil;
             }
@@ -551,12 +549,10 @@
       
       if (collectorType!=nil && collectorTime!=nil && collectorDelay!=nil && collectorEnabled!=nil)
       {
-        data_collector = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                          collectorType, @"type", 
-                          collectorTime, @"time",
-                          collectorDelay, @"listenerDelay", 
-                          collectorEnabled, @"enabled",
-                          nil];
+        data_collector = [@{@"type" : collectorType,
+                @"time" : collectorTime,
+                @"listenerDelay" : collectorDelay,
+                @"enabled" : collectorEnabled} mutableCopy];
       }
     }
     
@@ -570,13 +566,13 @@
         
         for (int j=0; j<[conditionGroups count]; j++)
         {
-          SMXMLElement *condition = [conditionGroups objectAtIndex:j];
+          SMXMLElement *condition = conditionGroups[j];
           if (nil != condition)
           {
             NSString *condition_id = [condition attributeNamed:@"id"];
             
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            [dict setObject:condition_id forKey:@"id"];
+            dict[@"id"] = condition_id;
             
             NSArray *tmpTypes = [condition childrenNamed:@"condition"];
             if (nil != tmpTypes)
@@ -585,7 +581,7 @@
               
               for (int m=0; m<[tmpTypes count]; m++)
               {
-                SMXMLElement *conditionType = [tmpTypes objectAtIndex:m];
+                SMXMLElement *conditionType = tmpTypes[m];
                 
                 if (nil != conditionType)
                 {
@@ -596,7 +592,7 @@
                   if ([condition_type isEqualToString:@"NetworkType"])
                   {
                     NSString *networkType = [conditionType attributeNamed:@"value"];
-                    [typeDict setObject:networkType forKey:@"networkType"];
+                    typeDict[@"networkType"] = networkType;
                     [conditionTypes addObject:typeDict];
                   }
                   
@@ -607,10 +603,10 @@
                     NSString *maxByteOut = [conditionType attributeNamed:@"maxByteOut"];
                     NSString *time = [self parseTime:[conditionType attributeNamed:@"time"]];
                     
-                    [typeDict setObject:condition_type forKey:@"type"];
-                    [typeDict setObject:maxByteIn forKey:@"maxByteIn"];
-                    [typeDict setObject:maxByteOut forKey:@"maxByteOut"];
-                    [typeDict setObject:time forKey:@"time"];
+                    typeDict[@"type"] = condition_type;
+                    typeDict[@"maxByteIn"] = maxByteIn;
+                    typeDict[@"maxByteOut"] = maxByteOut;
+                    typeDict[@"time"] = time;
                     [conditionTypes addObject:typeDict];
                   }
                   
@@ -619,9 +615,9 @@
                     NSString *maxAvg = [conditionType attributeNamed:@"maxAvg"];
                     NSString *time = [self parseTime:[conditionType attributeNamed:@"time"]];
                     
-                    [typeDict setObject:condition_type forKey:@"type"];
-                    [typeDict setObject:maxAvg forKey:@"maxAvg"];
-                    [typeDict setObject:time forKey:@"time"];
+                    typeDict[@"type"] = condition_type;
+                    typeDict[@"maxAvg"] = maxAvg;
+                    typeDict[@"time"] = time;
                     [conditionTypes addObject:typeDict];
                   }
                   
@@ -629,8 +625,8 @@
                   {
                     NSString *waitTime = [self parseTime:[conditionType attributeNamed:@"waitTime"]];
                     
-                    [typeDict setObject:condition_type forKey:@"type"];
-                    [typeDict setObject:waitTime forKey:@"waitTime"];
+                    typeDict[@"type"] = condition_type;
+                    typeDict[@"waitTime"] = waitTime;
                     [conditionTypes addObject:typeDict];
                   }
                   
@@ -639,9 +635,9 @@
                     NSString *paramName = [conditionType attributeNamed:@"paramName"];
                     NSString *expireTime = [self parseTime:[conditionType attributeNamed:@"expireTime"]];
                     
-                    [typeDict setObject:condition_type forKey:@"type"];
-                    [typeDict setObject:paramName forKey:@"paramName"];
-                    [typeDict setObject:expireTime forKey:@"expireTime"];
+                    typeDict[@"type"] = condition_type;
+                    typeDict[@"paramName"] = paramName;
+                    typeDict[@"expireTime"] = expireTime;
                     [conditionTypes addObject:typeDict];
                   }
                 }
@@ -649,7 +645,7 @@
               
               if (nil != conditionTypes)
               {
-                [dict setObject:conditionTypes forKey:@"condition_types"];
+                dict[@"condition_types"] = conditionTypes;
               }
             }
             
@@ -672,7 +668,7 @@
         
         for (int k=0; k<[testsArray count]; k++)
         {
-          SMXMLElement *elemTest = [testsArray objectAtIndex:k];
+          SMXMLElement *elemTest = testsArray[k];
           if (nil != elemTest)
           {
             NSMutableDictionary *dictTest = [[NSMutableDictionary alloc] init];
@@ -681,9 +677,9 @@
             NSString *condId = [elemTest attributeNamed:@"condition-group-id"];
             NSString *displayName = [elemTest attributeNamed:@"displayName"];
             
-            [dictTest setObject:type forKey:@"type"];
-            [dictTest setObject:condId forKey:@"condition_group_id"];
-            [dictTest setObject:displayName forKey:@"displayName"];
+            dictTest[@"type"] = type;
+            dictTest[@"condition_group_id"] = condId;
+            dictTest[@"displayName"] = displayName;
             
             SMXMLElement *elemExecuteAt = [elemTest childNamed:@"executeAt"];
             if (nil != elemExecuteAt)
@@ -696,13 +692,13 @@
                 
                 for (int j=0; j<[tmpExecutes count]; j++)
                 {
-                  SMXMLElement *elemTime = [tmpExecutes objectAtIndex:j];
+                  SMXMLElement *elemTime = tmpExecutes[j];
                   if (nil != elemTime)
                   {
                     [tmpTimes addObject:[elemTime value]];
                   }
                 }
-                [dictTest setObject:tmpTimes forKey:@"executeAt"];
+                dictTest[@"executeAt"] = tmpTimes;
               }
             }
             else
@@ -713,7 +709,7 @@
               // The functionality to schedule the tests around these values is in place, but essentialy ignored
               // as we never actually 'schedule' anything, we just run the auto tests when we go on the background.
               // Update :: we no longer run tests on push to background.. EAQ only want MANUAL tests.
-              [dictTest setObject:[NSArray arrayWithObject:@"23:39"] forKey:@"executeAt"];
+              dictTest[@"executeAt"] = @[@"23:39"];
             }
             
             SMXMLElement *elemParams = [elemTest childNamed:@"params"];
@@ -726,7 +722,7 @@
                 
                 for (int c=0; c<[tmpParams count]; c++)
                 {
-                  SMXMLElement *elemParam = [tmpParams objectAtIndex:c];
+                  SMXMLElement *elemParam = tmpParams[c];
                   if (nil != elemParam)
                   {
                     if ([elemParam attributeNamed:@"name"] && [elemParam attributeNamed:@"value"])
@@ -735,14 +731,14 @@
                       NSString *value = [elemParam attributeNamed:@"value"];
                       
                       NSMutableDictionary *paramDict = [[NSMutableDictionary alloc] init];
-                      [paramDict setObject:value forKey:name];
+                      paramDict[name] = value;
                       
                       [params addObject:paramDict];
                     }
                   }
                 }
                 
-                [dictTest setObject:params forKey:@"params"];
+                dictTest[@"params"] = params;
               }
             }
             
@@ -756,7 +752,7 @@
                 
                 for (int x=0; x<[tmpFields count]; x++)
                 {
-                  SMXMLElement *elemField = [tmpFields objectAtIndex:x];
+                  SMXMLElement *elemField = tmpFields[x];
                   if (nil != elemField)
                   {
                     if ([elemField attributeNamed:@"name"] && [elemField attributeNamed:@"position"])
@@ -764,19 +760,19 @@
                       NSString *name = [elemField attributeNamed:@"name"];
                       NSString *position = [elemField attributeNamed:@"position"];
                       
-                      [outputDict setObject:position forKey:name];
+                      outputDict[name] = position;
                     }
                   }
                 }
                 
-                [dictTest setObject:outputDict forKey:@"output"];
+                dictTest[@"output"] = outputDict;
               }
             }
             
             // Add the conditons for the test..
-            if ([dictTest objectForKey:@"condition_group_id"])
+            if (dictTest[@"condition_group_id"])
             {
-              NSString *cid = [dictTest objectForKey:@"condition_group_id"];
+              NSString *cid = dictTest[@"condition_group_id"];
               
               if (nil != conditions)
               {
@@ -784,13 +780,13 @@
                 {
                   for (int m=0; m<[conditions count]; m++)
                   {
-                    NSDictionary *d = [conditions objectAtIndex:m];
+                    NSDictionary *d = conditions[m];
                     
-                    if ([d objectForKey:@"id"])
+                    if (d[@"id"])
                     {
-                      if ([cid isEqualToString:[d objectForKey:@"id"]])
+                      if ([cid isEqualToString:d[@"id"]])
                       {
-                        [dictTest setObject:d forKey:@"conditions"];
+                        dictTest[@"conditions"] = d;
                         break;
                       }
                     }

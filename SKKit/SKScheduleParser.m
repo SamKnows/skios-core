@@ -79,7 +79,7 @@
     case SKKitTestType_Upload:
       return @"Upload";
     case SKKitTestType_Latency:
-    defualt:
+    default:
       return @"Latency";
   }
 }
@@ -233,11 +233,11 @@
 }
 
 - (NSArray *)getHostArray {
-  return mHostArray;
+  return (NSArray*)mHostArray;
 }
 
 - (NSArray *)getTestArray {
-  return mTestArray;
+  return (NSArray*)mTestArray;
 }
 
 - (double)getDataCapMbps {
@@ -328,9 +328,9 @@
     // Ignore this!
   } else if ([elementName isEqualToString:@"submit-dcs"]) {
     // Ignore this!
-    NSString *tHost = [attributeDict objectForKey:@"host"];
+    NSString *tHost = attributeDict[@"host"];
 #ifdef DEBUG
-    NSString *tDummy = [attributeDict objectForKey:@"dummy"];
+    NSString *tDummy = attributeDict[@"dummy"];
 #endif // DEBUG
     SK_ASSERT(tHost != nil);
 #ifdef DEBUG
@@ -370,12 +370,12 @@
     
     if (mbInTestsBlock == true) {
       // We're in the tests block.
-      NSString *tTestType = [attributeDict objectForKey:@"type"];
+      NSString *tTestType = attributeDict[@"type"];
       SK_ASSERT(tTestType != nil);
       
       // Extract the test id.
       // "downstreamthroughput\" test-id=\"2\"
-      NSString *tTestId = [attributeDict objectForKey:@"test-id"];
+      NSString *tTestId = attributeDict[@"test-id"];
       SK_ASSERT(tTestId != nil);
       
       SKKitTestDescriptor *theTest = nil;
@@ -428,7 +428,7 @@
       // "<test id=\"4\" />\n",
       // "</manual-tests>\n",
       // Simply store this value for later sorting by tidyUpScheduleBeforeUse()...
-      NSString *tTestId = [attributeDict objectForKey:@"id"];
+      NSString *tTestId = attributeDict[@"id"];
       SK_ASSERT(tTestId != nil);
       if (tTestId != nil) {
         [mManualTestArray addObject:tTestId];
@@ -447,13 +447,13 @@
     NSLog(@"DEBUG: host");
 #endif // DEBUG
     SKScheduleHost *theHost = [[SKScheduleHost alloc] init];
-    NSString *tDnsName = [attributeDict objectForKey:@"dnsName"];
+    NSString *tDnsName = attributeDict[@"dnsName"];
     if (tDnsName != nil) {
       theHost.dnsName = tDnsName;
     } else {
       SK_ASSERT(false);
     }
-    NSString *tDisplayName = [attributeDict objectForKey:@"displayName"];
+    NSString *tDisplayName = attributeDict[@"displayName"];
     if (tDisplayName != nil) {
       theHost.displayName = tDisplayName;
     } else {
@@ -468,7 +468,7 @@
     NSLog(@"data-cap-default");
     // Extract the data cap, if any.
     // "downstreamthroughput\" test-id=\"2\"
-    NSString *tDataCap = [attributeDict objectForKey:@"value"];
+    NSString *tDataCap = attributeDict[@"value"];
     if (SK_VERIFY(tDataCap != nil) == true) {
       mDataCapMbps = tDataCap.doubleValue;
       SK_ASSERT(mDataCapMbps > 0);
@@ -476,9 +476,9 @@
   } else if ([elementName isEqualToString:@"param"]) {
     
     //print("DEBUG: param: elementName: \(elementName) ATTRIBUTES: \(attributeDict)")
-    NSString *tName = [attributeDict objectForKey:@"name"];
+    NSString *tName = attributeDict[@"name"];
     SK_ASSERT(tName != nil);
-    NSString *valueString = [attributeDict objectForKey:@"value"];
+    NSString *valueString = attributeDict[@"value"];
     if (valueString != nil)
     {
       if (mInTest_ClosestTarget != nil) {

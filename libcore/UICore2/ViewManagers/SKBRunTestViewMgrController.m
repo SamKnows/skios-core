@@ -123,7 +123,7 @@
                   scheduledTimerWithTimeInterval:0.2
                   target:self
                   selector:@selector(handleTestTimer:)
-                  userInfo:0
+                  userInfo:nil
                   repeats:YES];
   }
 }
@@ -188,7 +188,7 @@
             scheduledTimerWithTimeInterval:1.0
             target:self
             selector:@selector(handleTimer:)
-            userInfo:0
+            userInfo:nil
             repeats:YES];
 }
 
@@ -446,7 +446,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   // TODO - add-in the correct value here!
   for (NSDictionary *testDict in [SKAppBehaviourDelegate sGetAppBehaviourDelegate].schedule.tests) {
-    NSString *thisTestType = [testDict objectForKey:@"type"];
+    NSString *thisTestType = testDict[@"type"];
     
     NSArray *params = testDict[@"params"];
     int theCount = (int)params.count;
@@ -921,26 +921,30 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 -(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   
   switch (alertView.tag) {
-    case ACTION_CANCEL_CONFIRMATION:
-      if (buttonIndex == alertView.cancelButtonIndex) {
-        return;
-      }
-      // OK button pressed - try to stop the tests!
-      if (!isRunning) return;
-      [self setIsRunning:NO];
-      [self cancelTestFromAlertResponse:YES];
-      //            [autoTest stopTheTests]; //HG - already done in [self cancelTestFromAlertResponse:YES];
-      autoTest = nil;
+  case ACTION_CANCEL_CONFIRMATION:
+    if (buttonIndex == alertView.cancelButtonIndex) {
+      return;
+    }
+    // OK button pressed - try to stop the tests!
+    if (!isRunning) return;
+    [self setIsRunning:NO];
+    [self cancelTestFromAlertResponse:YES];
+    //            [autoTest stopTheTests]; //HG - already done in [self cancelTestFromAlertResponse:YES];
+    autoTest = nil;
+    [self restoreButton];
+    return;
+
+  case ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE:
+  case ACTION_WILL_BE_EXCEEDED_PRESS_OK_TO_CONTINUE:
+    if (buttonIndex == alertView.cancelButtonIndex) {
       [self restoreButton];
       return;
-    case ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE:
-    case ACTION_WILL_BE_EXCEEDED_PRESS_OK_TO_CONTINUE:
-      if (buttonIndex == alertView.cancelButtonIndex) {
-        [self restoreButton];
-        return;
-      }
-      [self selfRunTestAfterUserApprovedToDataCapChecks];
-      return;
+    }
+    [self selfRunTestAfterUserApprovedToDataCapChecks];
+    return;
+
+  default:
+    break;
   }
 }
 
@@ -1386,7 +1390,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   }
   else
   {
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+    [prefs setValue:@0 forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -1630,11 +1634,11 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       
       return cell;
     }
-  } else {
-    SK_ASSERT(false);
   }
-  
-  return nil;
+
+  SK_ASSERT(false);
+
+  return [UITableViewCell new];
 }
 
 +(void)sAddNonPassiveMetricsToArray:(NSMutableArray*)testResultsArray

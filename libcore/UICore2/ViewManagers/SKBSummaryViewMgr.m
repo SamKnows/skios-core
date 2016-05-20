@@ -512,25 +512,28 @@ static NSUInteger s1YearButtonIndex = 0;
   }
   
   switch (button_.tag) {
-    case 0:
-      self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-      break;
-    case 1:
-      self.vUpload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-      break;
-    case 2:
-      self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-      break;
-    case 3:
-      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
-        self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-      } else {
-        self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-      }
-      break;
-    case 4:
+  case 0:
+    self.vDownload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+    break;
+  case 1:
+    self.vUpload.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+    break;
+  case 2:
+    self.vLatency.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+    break;
+  case 3:
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsLossSupported]) {
+      self.vLoss.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+    } else {
       self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-      break;
+    }
+    break;
+  case 4:
+    self.vJitter.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+    break;
+
+  default:
+    break;
   }
 }
 

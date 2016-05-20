@@ -79,7 +79,7 @@
         b = components[2];
         a = components[3];
     }
-    return @[[NSNumber numberWithFloat:r],[NSNumber numberWithFloat:g],[NSNumber numberWithFloat:b],[NSNumber numberWithFloat:a]];
+    return @[@(r), @(g), @(b), @(a)];
 }
 
 -(NSDictionary *)rgbaDict {
@@ -96,7 +96,7 @@
         a = components[3];
     }
     
-    return @{@"r":[NSNumber numberWithFloat:r], @"g":[NSNumber numberWithFloat:g], @"b":[NSNumber numberWithFloat:b], @"a":[NSNumber numberWithFloat:a]};
+    return @{@"r": @(r), @"g": @(g), @"b": @(b), @"a": @(a)};
 }
 
 #pragma mark - HSBA from UIColor
@@ -110,7 +110,7 @@
         [self getHue:&h saturation:&s brightness:&b alpha:&a];
     }
     
-    return @[[NSNumber numberWithFloat:h],[NSNumber numberWithFloat:s],[NSNumber numberWithFloat:b],[NSNumber numberWithFloat:a]];
+    return @[@(h), @(s), @(b), @(a)];
 }
 
 -(NSDictionary *)hsbaDict {
@@ -121,7 +121,7 @@
         [self getHue:&h saturation:&s brightness:&b alpha:&a];
     }
     
-    return @{@"h":[NSNumber numberWithFloat:h],@"s":[NSNumber numberWithFloat:s],@"b":[NSNumber numberWithFloat:b],@"a":[NSNumber numberWithFloat:a]};
+    return @{@"h": @(h),@"s": @(s),@"b": @(b),@"a": @(a)};
 }
 
 #pragma mark - Generate Color Scheme

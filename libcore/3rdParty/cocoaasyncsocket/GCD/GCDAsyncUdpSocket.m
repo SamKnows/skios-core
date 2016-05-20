@@ -1001,7 +1001,7 @@ enum GCDAsyncUdpSocketConfig
 
 - (NSError *)badConfigError:(NSString *)errMsg
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errMsg forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:GCDAsyncUdpSocketErrorDomain
 	                           code:GCDAsyncUdpSocketBadConfigError
@@ -1010,7 +1010,7 @@ enum GCDAsyncUdpSocketConfig
 
 - (NSError *)badParamError:(NSString *)errMsg
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errMsg forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:GCDAsyncUdpSocketErrorDomain
 	                           code:GCDAsyncUdpSocketBadParamError
@@ -1020,7 +1020,7 @@ enum GCDAsyncUdpSocketConfig
 - (NSError *)gaiError:(int)gai_error
 {
 	NSString *errMsg = [NSString stringWithCString:gai_strerror(gai_error) encoding:NSASCIIStringEncoding];
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errMsg forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:@"kCFStreamErrorDomainNetDB" code:gai_error userInfo:userInfo];
 }
@@ -1031,10 +1031,10 @@ enum GCDAsyncUdpSocketConfig
 	NSDictionary *userInfo;
 	
 	if (reason)
-		userInfo = [NSDictionary dictionaryWithObjectsAndKeys:errMsg, NSLocalizedDescriptionKey,
-		                                                      reason, NSLocalizedFailureReasonErrorKey, nil];
+		userInfo = @{NSLocalizedDescriptionKey : errMsg,
+						NSLocalizedFailureReasonErrorKey : reason};
 	else
-		userInfo = [NSDictionary dictionaryWithObjectsAndKeys:errMsg, NSLocalizedDescriptionKey, nil];
+		userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:userInfo];
 }
@@ -1053,7 +1053,7 @@ enum GCDAsyncUdpSocketConfig
 	                                                     @"GCDAsyncUdpSocket", [NSBundle mainBundle],
 	                                                     @"Send operation timed out", nil);
 	
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errMsg forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:GCDAsyncUdpSocketErrorDomain
 	                           code:GCDAsyncUdpSocketSendTimeoutError
@@ -1066,14 +1066,14 @@ enum GCDAsyncUdpSocketConfig
 	                                                     @"GCDAsyncUdpSocket", [NSBundle mainBundle],
 	                                                     @"Socket closed", nil);
 	
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errMsg forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:GCDAsyncUdpSocketErrorDomain code:GCDAsyncUdpSocketClosedError userInfo:userInfo];
 }
 
 - (NSError *)otherError:(NSString *)errMsg
 {
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errMsg forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errMsg};
 	
 	return [NSError errorWithDomain:GCDAsyncUdpSocketErrorDomain
 	                           code:GCDAsyncUdpSocketOtherError
@@ -3150,7 +3150,7 @@ enum GCDAsyncUdpSocketConfig
 		// So we copy it to be safe.
 		
 		NSData *address = [remoteAddr copy];
-		NSArray *addresses = [NSArray arrayWithObject:address];
+		NSArray *addresses = @[address];
 		
 		GCDAsyncUdpSpecialPacket *packet = [[GCDAsyncUdpSpecialPacket alloc] init];
 		packet->addresses = addresses;
@@ -3212,12 +3212,17 @@ enum GCDAsyncUdpSocketConfig
 				
 				BOOL result = NO;
 				
-				switch (addressFamily)
-				{
-					case AF_INET  : result = [self connectWithAddress4:address error:&error]; break;
-					case AF_INET6 : result = [self connectWithAddress6:address error:&error]; break;
+				switch (addressFamily) {
+				case AF_INET  :
+					result = [self connectWithAddress4:address error:&error];
+					break;
+				case AF_INET6 :
+					result = [self connectWithAddress6:address error:&error];
+					break;
+				default:
+					break;
 				}
-				
+
 				if (result)
 				{
 					flags |= kDidBind;
@@ -3663,7 +3668,7 @@ enum GCDAsyncUdpSocketConfig
 		while ([sendQueue count] > 0)
 		{
 			// Dequeue the next object in the queue
-			currentSend = [sendQueue objectAtIndex:0];
+			currentSend = sendQueue[0];
 			[sendQueue removeObjectAtIndex:0];
 			
 			if ([currentSend isKindOfClass:[GCDAsyncUdpSpecialPacket class]])

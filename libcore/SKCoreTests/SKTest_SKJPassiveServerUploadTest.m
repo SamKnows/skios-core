@@ -19,7 +19,7 @@
   [super setUp];
   
   if ([SKAppBehaviourDelegate sGetAppBehaviourDelegateCanBeNil] == nil) {
-    SKAppBehaviourDelegate *ignore = [[SKAppBehaviourDelegate alloc] init];
+    __unused SKAppBehaviourDelegate *ignore = [[SKAppBehaviourDelegate alloc] init];
   }
   
   // Set-up code here.

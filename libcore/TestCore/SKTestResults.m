@@ -19,10 +19,8 @@
 
 +(void)placeText:(NSString*)text_ intoRect:(CGRect)rectangle_ withFont:(UIFont*)font_ withTextColor:(UIColor*)withTextColor
 {
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                font_, NSFontAttributeName,
-                                [NSParagraphStyle defaultParagraphStyle], NSParagraphStyleAttributeName,
-                                nil];
+    NSDictionary *attributes = @{NSFontAttributeName : font_,
+            NSParagraphStyleAttributeName : [NSParagraphStyle defaultParagraphStyle]};
     
     CGRect paragraphRect = [text_ boundingRectWithSize:CGSizeMake(1000, 1000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributes context:nil];
     
@@ -68,11 +66,9 @@
   
   NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
   [style setAlignment:NSTextAlignmentCenter];
-  NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                              labelFont, NSFontAttributeName,
-                              style, NSParagraphStyleAttributeName,
-                              [UIColor whiteColor], NSForegroundColorAttributeName,
-                              nil];
+  NSDictionary *attributes = @{NSFontAttributeName : labelFont,
+          NSParagraphStyleAttributeName : style,
+          NSForegroundColorAttributeName : [UIColor whiteColor]};
   CGRect labelRect = CGRectMake(0, 10, C_SHARE_IMAGE_WIDTH, C_SHARE_IMAGE_HEIGHT);
   
   [labelText drawInRect:labelRect withAttributes:attributes];

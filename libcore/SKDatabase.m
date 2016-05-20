@@ -17,7 +17,7 @@
 + (NSString *)dbPath
 {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-  NSString *docDirectory = [paths objectAtIndex:0];
+  NSString *docDirectory = paths[0];
   return [docDirectory stringByAppendingPathComponent:@"datastore.sqlite"];
 }
 
@@ -443,7 +443,7 @@
   FMDatabase *db = [SKDatabase openDatabase];
   if (db == NULL) {
     SK_ASSERT(false);
-    return [NSNumber numberWithInt:0];
+    return @0;
   }
   
   NSDate *dateTime = [SKCore getToday];
@@ -457,12 +457,12 @@
   SK_ASSERT(bRes);
   
   bRes = [db executeUpdate:
-   @"INSERT INTO test_data (date, day, latitude, longitude, target) values (?,?,?,?,?)",
-   dateTime,
-   [formatter stringFromDate:dateTime],
-   [NSNumber numberWithDouble:latitude],
-   [NSNumber numberWithDouble:longitude],
-   target];
+          @"INSERT INTO test_data (date, day, latitude, longitude, target) values (?,?,?,?,?)",
+          dateTime,
+          [formatter stringFromDate:dateTime],
+          @(latitude),
+          @(longitude),
+          target];
   SK_ASSERT(bRes);
   
   bRes = [db commit];
@@ -477,7 +477,7 @@
     //NSLog(@"maxID : %d", maxID);
   }
   
-  NSNumber *num = [NSNumber numberWithInt:maxID];
+  NSNumber *num = @(maxID);
   
   bRes = [db close];
   SK_ASSERT(bRes);
@@ -521,7 +521,7 @@
           @"INSERT INTO download (date, day, bitrate, test_id, test_name) values (?,?,?,?,?)",
           dateTime,
           [formatter stringFromDate:dateTime],
-          [NSNumber numberWithDouble:bitrateMbps1024Based],
+          @(bitrateMbps1024Based),
           testId,
           testName];
   SK_ASSERT(bRes);
@@ -562,7 +562,7 @@
           @"INSERT INTO upload (date, day, bitrate, test_id, test_name) values (?,?,?,?,?)",
           dateTime,
           [formatter stringFromDate:dateTime],
-          [NSNumber numberWithDouble:bitrateMbps1024Based],
+          @(bitrateMbps1024Based),
           testId,
           testName];
   SK_ASSERT(bRes);
@@ -599,7 +599,7 @@
           @"INSERT INTO latency (date, day, latency, test_id, test_name) values (?,?,?,?,?)",
           dateTime,
           [formatter stringFromDate:dateTime],
-          [NSNumber numberWithDouble:latency],
+          @(latency),
           testId,
           testName];
   SK_ASSERT(bRes);
@@ -634,12 +634,12 @@
   SK_ASSERT(bRes);
   
   bRes = [db executeUpdate:
-   @"INSERT INTO packetloss (date, day, packet_loss, test_id, test_name) values (?,?,?,?,?)",
-   dateTime,
-   [formatter stringFromDate:dateTime],
-   [NSNumber numberWithDouble:packetLoss],
-   testId,
-   testName];
+          @"INSERT INTO packetloss (date, day, packet_loss, test_id, test_name) values (?,?,?,?,?)",
+          dateTime,
+          [formatter stringFromDate:dateTime],
+          @(packetLoss),
+          testId,
+          testName];
   SK_ASSERT(bRes);
   
   bRes = [db commit];
@@ -674,7 +674,7 @@
           @"INSERT INTO jitter (date, day, jitter, test_id, test_name) values (?,?,?,?,?)",
           dateTime,
           [formatter stringFromDate:dateTime],
-          [NSNumber numberWithDouble:jitter],
+          @(jitter),
           testId,
           testName];
   SK_ASSERT(bRes);
@@ -716,8 +716,8 @@
     NSString *testName = [rs stringForColumnIndex:1];
   
     // result = 0.00499; // TODO - this is for debugging/testing ONLY!
-    [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
-    [dict setObject:testName forKey:@"DISPLAY_NAME"];
+    dict[@"RESULT"] = @(result);
+    dict[@"DISPLAY_NAME"] = testName;
   }
   
    
@@ -759,8 +759,8 @@
     NSString *testName = [rs stringForColumnIndex:1];
     
     // result = 0.00499; // TODO - this is for debugging/testing ONLY!
-    [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
-    [dict setObject:testName forKey:@"DISPLAY_NAME"];
+    dict[@"RESULT"] = @(result);
+    dict[@"DISPLAY_NAME"] = testName;
   }
   
   BOOL bRes;
@@ -797,8 +797,8 @@
     NSString *testName = [rs stringForColumnIndex:1];
     
     // result = 0.00499; // TODO - this is for debugging/testing ONLY!
-    [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
-    [dict setObject:testName forKey:@"DISPLAY_NAME"];
+    dict[@"RESULT"] = @(result);
+    dict[@"DISPLAY_NAME"] = testName;
   }
   
   BOOL bRes;
@@ -835,8 +835,8 @@
     NSString *testName = [rs stringForColumnIndex:1];
     
     // result = 0.00499; // TODO - this is for debugging/testing ONLY!
-    [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
-    [dict setObject:testName forKey:@"DISPLAY_NAME"];
+    dict[@"RESULT"] = @(result);
+    dict[@"DISPLAY_NAME"] = testName;
   }
   
   BOOL bRes;
@@ -874,8 +874,8 @@
     NSString *testName = [rs stringForColumnIndex:1];
     
     // result = 0.00499; // TODO - this is for debugging/testing ONLY!
-    [dict setObject:[NSNumber numberWithDouble:result] forKey:@"RESULT"];
-    [dict setObject:testName forKey:@"DISPLAY_NAME"];
+    dict[@"RESULT"] = @(result);
+    dict[@"DISPLAY_NAME"] = testName;
   }
   
   BOOL bRes;
@@ -923,49 +923,49 @@
     if (device == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:device              forKey:@"DEVICE"];
+      dict[@"DEVICE"] = device;
     }
     
     if (os == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:os                  forKey:@"OS"];
+      dict[@"OS"] = os;
     }
     
     if (carrier_name == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:carrier_name        forKey:@"CARRIER_NAME"];
+      dict[@"CARRIER_NAME"] = carrier_name;
     }
     
     if (country_code == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:country_code        forKey:@"COUNTRY_CODE"];
+      dict[@"COUNTRY_CODE"] = country_code;
     }
     
     if (iso_country_code == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:iso_country_code    forKey:@"ISO_CODE"];
+      dict[@"ISO_CODE"] = iso_country_code;
     }
     
     if (network_code == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:network_code        forKey:@"NETWORK_CODE"];
+      dict[@"NETWORK_CODE"] = network_code;
     }
     
     if (network_type == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:network_type        forKey:@"NETWORK_TYPE"];
+      dict[@"NETWORK_TYPE"] = network_type;
     }
     
     if (radio_type == nil) {
       SK_ASSERT(false);
     } else {
-      [dict setObject:radio_type          forKey:@"RADIO_TYPE"];
+      dict[@"RADIO_TYPE"] = radio_type;
     }
   }
   
@@ -1083,7 +1083,7 @@ public static String convertConnectivityType(int type) {
   
   if (location != nil) {
     bRes = [db executeUpdate:
-            @"UPDATE metrics SET longitude = ?, latitude = ? WHERE test_id=?", [NSNumber numberWithDouble:location.coordinate.longitude], [NSNumber numberWithDouble:location.coordinate.latitude], testId];
+            @"UPDATE metrics SET longitude = ?, latitude = ? WHERE test_id=?", @(location.coordinate.longitude), @(location.coordinate.latitude), testId];
     SK_ASSERT(bRes);
   }
  
@@ -1217,7 +1217,7 @@ public static String convertConnectivityType(int type) {
            }
            
            if (placemark.addressDictionary != nil) {
-             NSString *addressCityString = [placemark.addressDictionary objectForKey:(NSString*) kABPersonAddressCityKey];
+             NSString *addressCityString = placemark.addressDictionary[(NSString *) kABPersonAddressCityKey];
            
              if (addressCityString != nil) {
                NSLog(@"addressCityString = %@", addressCityString);
@@ -1227,7 +1227,7 @@ public static String convertConnectivityType(int type) {
                }
              }
              
-             NSString *addressCountryString = [placemark.addressDictionary objectForKey:(NSString*) kABPersonAddressCountryKey];
+             NSString *addressCountryString = placemark.addressDictionary[(NSString *) kABPersonAddressCountryKey];
              if (addressCountryString == nil) {
                NSLog(@"addressCountryString = %@", addressCountryString);
                if (countryString.length != 0) {
@@ -1273,7 +1273,7 @@ public static String convertConnectivityType(int type) {
   bRes = [db beginTransaction];
   SK_ASSERT(bRes);
   
-  bRes = [db executeUpdate:@"UPDATE test_data SET valid=? WHERE id=?;", [NSNumber numberWithInt:0], testId];
+  bRes = [db executeUpdate:@"UPDATE test_data SET valid=? WHERE id=?;", @0, testId];
   SK_ASSERT(bRes);
   
   
@@ -1362,7 +1362,7 @@ public static String convertConnectivityType(int type) {
     NSDate *date = [formatter dateFromString:strDate];
     
     NSString *value = [data valueForKey:key];
-    NSNumber *doubleValue = [NSNumber numberWithDouble:[value doubleValue]];
+    NSNumber *doubleValue = @([value doubleValue]);
     
     [db executeUpdate:sql, date, strDate, doubleValue];
   }
@@ -1508,12 +1508,12 @@ public static String convertConnectivityType(int type) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     
     int testId = [rs intForColumnIndex:0];
-    NSNumber *date = [NSNumber numberWithDouble:[rs doubleForColumnIndex:1]];
+    NSNumber *date = @([rs doubleForColumnIndex:1]);
     NSString *trg = [rs stringForColumnIndex:2];
-    
-    [dict setObject:[NSNumber numberWithInt:testId] forKey:@"TEST_ID"];
-    [dict setObject:date forKey:@"DATE"];
-    [dict setObject:trg forKey:@"TARGET"];
+
+    dict[@"TEST_ID"] = @(testId);
+    dict[@"DATE"] = date;
+    dict[@"TARGET"] = trg;
     
     //NSLog(@"SQL : %@", sql);
     //NSLog(@"Date: %@, ID: %d, Target : %@", date, testId, trg);
@@ -1615,57 +1615,57 @@ public static String convertConnectivityType(int type) {
     
     NSMutableDictionary *metricsDictionary = [NSMutableDictionary new];
     if ([rs objectForColumnIndexReturnsNullNotNil:8] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:8] forKey:SKB_TESTVALUERESULT_C_PM_DEVICE];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] = [rs stringForColumnIndex:8];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:9] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:9] forKey:SKB_TESTVALUERESULT_C_PM_OS];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_OS] = [rs stringForColumnIndex:9];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:10] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:10] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NAME];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NAME] = [rs stringForColumnIndex:10];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:11] != [NSNull null]) {
       NSString *countryCode = [rs stringForColumnIndex:11];
-      [metricsDictionary setObject:countryCode forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_COUNTRY] = countryCode;
       NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:countryCode];
       if (countryName != nil) {
-        [metricsDictionary setObject:countryName forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+        metricsDictionary[SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME] = countryName;
       }
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:12] != [NSNull null]) {
       NSString *isoCountryCode = [rs stringForColumnIndex:12];
-      [metricsDictionary setObject:isoCountryCode forKey:SKB_TESTVALUERESULT_C_PM_ISO_COUNTRY_CODE];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_ISO_COUNTRY_CODE] = isoCountryCode;
       NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleIdentifier value:isoCountryCode];
       if (countryName != nil) {
-        [metricsDictionary setObject:countryName forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+        metricsDictionary[SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME] = countryName;
       }
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:13] != [NSNull null]) {
-      [metricsDictionary setObject:[rs stringForColumnIndex:13] forKey:SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_CARRIER_NETWORK] = [rs stringForColumnIndex:13];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:14] != [NSNull null]) {
       NSString *value = [rs stringForColumnIndex:14];
       SK_ASSERT([value isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [value isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] ||[value isEqualToString:@"NA"]);
-      [metricsDictionary setObject:value forKey:SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_NETWORK_TYPE] = value;
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:15] != [NSNull null]) {
       NSString *value = [rs stringForColumnIndex:15];
-      [metricsDictionary setObject:value forKey:SKB_TESTVALUERESULT_C_PM_RADIO_TYPE];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_RADIO_TYPE] = value;
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:16] != [NSNull null])
     {
-      [metricsDictionary setObject:[rs stringForColumnIndex:16] forKey:SKB_TESTVALUERESULT_C_PM_PUBLIC_IP];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_PUBLIC_IP] = [rs stringForColumnIndex:16];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:17] != [NSNull null])
     {
-      [metricsDictionary setObject:[rs stringForColumnIndex:17] forKey:SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_SUBMISSION_ID] = [rs stringForColumnIndex:17];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:18] != [NSNull null])
     {
-      [metricsDictionary setObject:[rs stringForColumnIndex:18] forKey:SKB_TESTVALUERESULT_C_PM_WIFI_SSID];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_WIFI_SSID] = [rs stringForColumnIndex:18];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:19] != [NSNull null])
     {
-      [metricsDictionary setObject:[rs stringForColumnIndex:19] forKey:SKB_TESTVALUERESULT_C_PM_MUNICIPALITY];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_MUNICIPALITY] = [rs stringForColumnIndex:19];
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:20] != [NSNull null])
     {
@@ -1673,11 +1673,11 @@ public static String convertConnectivityType(int type) {
       if ([countryString caseInsensitiveCompare:@"bretão"]) {
         countryString = @"Brazil";
       }
-      [metricsDictionary setObject:countryString forKey:SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_COUNTRY_NAME] = countryString;
     }
     if ([rs objectForColumnIndexReturnsNullNotNil:21] != [NSNull null])
     {
-      [metricsDictionary setObject:[rs stringForColumnIndex:21] forKey:SKB_TESTVALUERESULT_C_PM_WLAN_CARRIER];
+      metricsDictionary[SKB_TESTVALUERESULT_C_PM_WLAN_CARRIER] = [rs stringForColumnIndex:21];
     }
     
     testResult.metricsDictionary = metricsDictionary;
@@ -1769,7 +1769,7 @@ public static String convertConnectivityType(int type) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     
     double doubleDate = [rs doubleForColumnIndex:0];
-    NSNumber *nsNumberDate = [NSNumber numberWithDouble:doubleDate];
+    NSNumber *nsNumberDate = @(doubleDate);
     SK_ASSERT((NSNull *)nsNumberDate != [NSNull null]);
     
     double val = [rs doubleForColumnIndex:1];
@@ -1778,13 +1778,13 @@ public static String convertConnectivityType(int type) {
     NSString *networkType = [rs stringForColumnIndex:4];
     
     // val = 0.00499; // TODO - this is for debugging/testing ONLY!
-    [dict setObject:nsNumberDate forKey:@"DATE"];
-    [dict setObject:[SKGlobalMethods format2DecimalPlaces:val] forKey:@"RESULT"];
-    [dict setObject:[NSNumber numberWithInt:testId] forKey:@"TEST_ID"];
-    [dict setObject:trg forKey:@"TARGET"];
-    [dict setObject:[NSNumber numberWithInt:testDataType] forKey:@"TEST_TYPE"];
+    dict[@"DATE"] = nsNumberDate;
+    dict[@"RESULT"] = [SKGlobalMethods format2DecimalPlaces:val];
+    dict[@"TEST_ID"] = @(testId);
+    dict[@"TARGET"] = trg;
+    dict[@"TEST_TYPE"] = @(testDataType);
     if (networkType != nil) {
-      [dict setObject:networkType forKey:@"NETWORK_TYPE"];
+      dict[@"NETWORK_TYPE"] = networkType;
     }
     
     //NSLog(@"SQL : %@", sql);
@@ -1962,12 +1962,12 @@ public static String convertConnectivityType(int type) {
     
     //NSLog(@"SQL : %@", sql);
     //NSLog(@"Date: %@, Value: %f", day, value);
-    [dict setObject:[NSString stringWithFormat:@"%f", value] forKey:day];
+    dict[day] = [NSString stringWithFormat:@"%f", value];
   }
   
   if (!bFound)
   {
-    [dict setObject:@"0" forKey:[SKGlobalMethods getTodaysDate]]; // default average to 0 if nothing found
+    dict[[SKGlobalMethods getTodaysDate]] = @"0"; // default average to 0 if nothing found
   }
   
   BOOL bRes;

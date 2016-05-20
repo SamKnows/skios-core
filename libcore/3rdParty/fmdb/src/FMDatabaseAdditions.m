@@ -133,10 +133,9 @@ return ret;
         else if (rc != SQLITE_OK) {
             validationSucceeded = NO;
             if (error) {
-                *error = [NSError errorWithDomain:NSCocoaErrorDomain 
+                *error = [NSError errorWithDomain:NSCocoaErrorDomain
                                              code:[self lastErrorCode]
-                                         userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] 
-                                                                              forKey:NSLocalizedDescriptionKey]];
+                                         userInfo:@{NSLocalizedDescriptionKey : [self lastErrorMessage]}];
             }
         }
     }

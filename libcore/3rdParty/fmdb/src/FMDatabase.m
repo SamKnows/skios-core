@@ -154,7 +154,7 @@
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
-    return [cachedStatements objectForKey:query];
+    return cachedStatements[query];
 }
 
 - (void)setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
@@ -166,7 +166,7 @@
   //NSLog(@"setting query: %@", query);
   query = [query copy]; // in case we got handed in a mutable string...
   [statement setQuery:query];
-  [cachedStatements setObject:statement forKey:query];
+  cachedStatements[query] = statement;
 }
 
 
@@ -350,17 +350,17 @@
                 case 'd':
                 case 'D':
                 case 'i':
-                    arg = [NSNumber numberWithInt:va_arg(args, int)]; break;
+                    arg = @(va_arg(args, int)); break;
                 case 'u':
                 case 'U':
-                    arg = [NSNumber numberWithUnsignedInt:va_arg(args, unsigned int)]; break;
+                    arg = @(va_arg(args, unsigned int)); break;
                 case 'h':
                     i++;
                     if (i < length && [sql characterAtIndex:i] == 'i') {
-                        arg = [NSNumber numberWithInt:va_arg(args, int)];
+                        arg = @(va_arg(args, int));
                     }
                     else if (i < length && [sql characterAtIndex:i] == 'u') {
-                        arg = [NSNumber numberWithInt:va_arg(args, int)];
+                        arg = @(va_arg(args, int));
                     }
                     else {
                         i--;
@@ -369,19 +369,19 @@
                 case 'q':
                     i++;
                     if (i < length && [sql characterAtIndex:i] == 'i') {
-                        arg = [NSNumber numberWithLongLong:va_arg(args, long long)];
+                        arg = @(va_arg(args, long long));
                     }
                     else if (i < length && [sql characterAtIndex:i] == 'u') {
-                        arg = [NSNumber numberWithUnsignedLongLong:va_arg(args, unsigned long long)];
+                        arg = @(va_arg(args, unsigned long long));
                     }
                     else {
                         i--;
                     }
                     break;
                 case 'f':
-                    arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
+                    arg = @(va_arg(args, double)); break;
                 case 'g':
-                    arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
+                    arg = @(va_arg(args, double)); break;
                 case 'l':
                     i++;
                     if (i < length) {
@@ -390,11 +390,11 @@
                             i++;
                             if (i < length && [sql characterAtIndex:i] == 'd') {
                                 //%lld
-                                arg = [NSNumber numberWithLongLong:va_arg(args, long long)];
+                                arg = @(va_arg(args, long long));
                             }
                             else if (i < length && [sql characterAtIndex:i] == 'u') {
                                 //%llu
-                                arg = [NSNumber numberWithUnsignedLongLong:va_arg(args, unsigned long long)];
+                                arg = @(va_arg(args, unsigned long long));
                             }
                             else {
                                 i--;
@@ -402,11 +402,11 @@
                         }
                         else if (next == 'd') {
                             //%ld
-                            arg = [NSNumber numberWithLong:va_arg(args, long)];
+                            arg = @(va_arg(args, long));
                         }
                         else if (next == 'u') {
                             //%lu
-                            arg = [NSNumber numberWithUnsignedLong:va_arg(args, unsigned long)];
+                            arg = @(va_arg(args, unsigned long));
                         }
                         else {
                             i--;
@@ -441,12 +441,12 @@
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
-        return 0x00;
+        return nil;
     }
     
     if (inUse) {
         [self warnInUse];
-        return 0x00;
+        return nil;
     }
     
     [self setInUse:YES];
@@ -454,8 +454,8 @@
     FMResultSet *rs = nil;
     
     int rc                  = 0x00;
-    sqlite3_stmt *pStmt     = 0x00;
-    FMStatement *statement  = 0x00;
+    sqlite3_stmt *pStmt     = NULL;
+    FMStatement *statement  = nil;
     
     if (traceExecution && sql) {
         NSLog(@"%@ executeQuery: %@", self, sql);
@@ -515,7 +515,7 @@
     while (idx < queryCount) {
         
         if (arrayArgs) {
-            obj = [arrayArgs objectAtIndex:idx];
+            obj = arrayArgs[idx];
         }
         else {
             obj = va_arg(args, id);
@@ -603,8 +603,8 @@
     [self setInUse:YES];
     
     int rc                   = 0x00;
-    sqlite3_stmt *pStmt      = 0x00;
-    FMStatement *cachedStmt  = 0x00;
+    sqlite3_stmt *pStmt      = NULL;
+    FMStatement *cachedStmt  = nil;
     
     if (traceExecution && sql) {
         NSLog(@"%@ executeUpdate: %@", self, sql);
@@ -669,7 +669,7 @@
     while (idx < queryCount) {
         
         if (arrayArgs) {
-            obj = [arrayArgs objectAtIndex:idx];
+            obj = arrayArgs[idx];
         }
         else {
             obj = va_arg(args, id);

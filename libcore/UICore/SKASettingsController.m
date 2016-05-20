@@ -638,9 +638,9 @@ static BOOL sbDidConstraint = NO;
     NSString *longitudeValueText = nil;
     NSString *latitudeValueText = nil;
     if (loc != nil) {
-      double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
-      double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
-      double dateAsTimeIntervalSince1970 = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
+      double latitude = [loc[@"LATITUDE"] doubleValue];
+      double longitude = [loc[@"LONGITUDE"] doubleValue];
+      double dateAsTimeIntervalSince1970 = [loc[@"LOCATIONDATE"] doubleValue];
       
       latitudeValueText = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
       longitudeValueText = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
@@ -701,7 +701,7 @@ static BOOL sbDidConstraint = NO;
   NSLog(@"Sizeof int64_t = %d", (int)sizeof(int64_t));
   int64_t theValue = (int64_t)[dataCapCell.txtDataCap.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   [prefs synchronize];
 }
 

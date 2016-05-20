@@ -334,7 +334,7 @@
   NSMutableDictionary *localDataDictForTestType = [NSMutableDictionary dictionary];
   
   NSMutableDictionary *resultsDict = [[NSMutableDictionary alloc] init];
-  [resultsDict setObject:valuesDict forKey:inTestType];
+  resultsDict[inTestType] = valuesDict;
   if (inDateRange == DATERANGE_1w1m3m1y_ONE_DAY) {
     
     SK_ASSERT([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] supportOneDayResultView]);
@@ -346,15 +346,15 @@
       return nil;
     }
     
-    [resultsDict setObject:valuesArray24 forKey:@"24hours"];
+    resultsDict[@"24hours"] = valuesArray24;
   }
-  [localDataDictForTestType setObject:resultsDict forKey:@"results"];
+  localDataDictForTestType[@"results"] = resultsDict;
 
   NSMutableDictionary *requestDict = [[NSMutableDictionary alloc] init];
-  [requestDict setObject:fromDateStr forKey:@"start_date"];
-  [requestDict setObject:toDateStr forKey:@"end_date"];
-  [requestDict setObject:inTestType forKey:@"test_type"];
-  [localDataDictForTestType setObject:requestDict forKey:@"request"];
+  requestDict[@"start_date"] = fromDateStr;
+  requestDict[@"end_date"] = toDateStr;
+  requestDict[@"test_type"] = inTestType;
+  localDataDictForTestType[@"request"] = requestDict;
   
   return localDataDictForTestType;
 }
@@ -420,24 +420,24 @@
     
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-    NSDictionary *dict = [rangeDataForCells objectAtIndex:row];
+    NSDictionary *dict = rangeDataForCells[row];
     
     if (nil != dict)
     {
-      NSTimeInterval interval = (NSTimeInterval)[[dict objectForKey:@"DATE"] doubleValue];
+      NSTimeInterval interval = (NSTimeInterval)[dict[@"DATE"] doubleValue];
     
       NSString *textToShow;
       if (self.testType == DOWNLOAD_DATA || self.testType == UPLOAD_DATA) {
         // If this is BITRATE, we need to do something special...
-        NSString *bitrateMbps1024BasedAsLocalString = [dict objectForKey:@"RESULT"];
+        NSString *bitrateMbps1024BasedAsLocalString = dict[@"RESULT"];
         textToShow = [SKGlobalMethods bitrateMbps1024BasedLocalNumberStringBasedToString:bitrateMbps1024BasedAsLocalString];
       } else {
         // Not bitrate - it is simply value then suffix.
-        NSString *result1 = (NSString*)[dict objectForKey:@"RESULT"];
+        NSString *result1 = (NSString*) dict[@"RESULT"];
         textToShow = [NSString stringWithFormat:@"%@ %@", result1, [self getSuffix]];
       }
       
-      NSString *target = (NSString*)[dict objectForKey:@"TARGET"];
+      NSString *target = (NSString*) dict[@"TARGET"];
       
       NSDate *date = [NSDate dateWithTimeIntervalSince1970:interval];
       
@@ -445,7 +445,7 @@
       cell.lblResult.text = textToShow;
       cell.lblLocation.text = target;
       
-      NSString *networkType = (NSString*)[dict objectForKey:@"NETWORK_TYPE"];
+      NSString *networkType = (NSString*) dict[@"NETWORK_TYPE"];
       if ([networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]) {
         cell.lblIcon.image = [UIImage imageNamed:@"Wifiservice"];
         cell.lblIcon.hidden = NO;

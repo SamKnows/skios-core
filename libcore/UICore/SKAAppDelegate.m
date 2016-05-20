@@ -76,7 +76,7 @@
 
 +(UIStoryboard*) getStoryboard {
   // http://stackoverflow.com/questions/8025248/uistoryboard-get-first-view-controller-from-applicationdelegate
-  NSString *storyBoardName = [[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"];
+  NSString *storyBoardName = [NSBundle mainBundle].infoDictionary[@"UIMainStoryboardFile"];
   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:[NSBundle mainBundle]];
   return storyboard;
 }

@@ -59,8 +59,7 @@
     
     int columnIdx = 0;
     for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
-        [columnNameToIndexMap setObject:[NSNumber numberWithInt:columnIdx]
-                                 forKey:[[NSString stringWithUTF8String:sqlite3_column_name(statement.statement, columnIdx)] lowercaseString]];
+        columnNameToIndexMap[[[NSString stringWithUTF8String:sqlite3_column_name(statement.statement, columnIdx)] lowercaseString]] = @(columnIdx);
     }
     columnNamesSetup = YES;
 }
@@ -98,7 +97,7 @@
         NSString *columnName = nil;
         while ((columnName = [columnNames nextObject])) {
             id objectValue = [self objectForColumnName:columnName];
-            [dict setObject:objectValue forKey:columnName];
+            dict[columnName] = objectValue;
         }
         
         return [dict copy];
@@ -179,7 +178,7 @@
     
     columnName = [columnName lowercaseString];
     
-    NSNumber *n = [columnNameToIndexMap objectForKey:columnName];
+    NSNumber *n = columnNameToIndexMap[columnName];
     
     if (n) {
         return [n intValue];
@@ -331,10 +330,10 @@
     id returnValue = nil;
     
     if (columnType == SQLITE_INTEGER) {
-        returnValue = [NSNumber numberWithLongLong:[self longLongIntForColumnIndex:columnIdx]];
+        returnValue = @([self longLongIntForColumnIndex:columnIdx]);
     }
     else if (columnType == SQLITE_FLOAT) {
-        returnValue = [NSNumber numberWithDouble:[self doubleForColumnIndex:columnIdx]];
+        returnValue = @([self doubleForColumnIndex:columnIdx]);
     }
     else if (columnType == SQLITE_BLOB) {
         returnValue = [self dataForColumnIndex:columnIdx];

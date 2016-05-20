@@ -130,7 +130,7 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
   // to use zh-Hant), base the locale on the "first preferred language" instead - which
   // always seems to return the correct value.
   // This returns e.g. en-GB, zh-Hans, zh-Hant etc.
-  NSString *language =  [[NSLocale preferredLanguages] objectAtIndex:0];
+  NSString *language = [NSLocale preferredLanguages][0];
   //NSString *localisation =  [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
   //NSLog(@"DEBUG: preferredLanguages=%@", language);
   //NSLog(@"DEBUG: preferredLocalizations=%@", localisation);

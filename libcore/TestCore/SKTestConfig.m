@@ -45,11 +45,11 @@
         
         for (int j=0; j<[params count]; j++)
         {
-          NSDictionary *d = [params objectAtIndex:j];
+          NSDictionary *d = params[j];
           
           if (nil != d)
           {
-            NSString *target = [d objectForKey:@"target"];
+            NSString *target = d[@"target"];
             
             if (nil != target)
             {
@@ -74,9 +74,9 @@
   {
     if ([conditions count] > 0)
     {
-      if ([conditions objectForKey:@"condition_types"])
+      if (conditions[@"condition_types"])
       {
-        NSArray *condTypes = [conditions objectForKey:@"condition_types"];
+        NSArray *condTypes = conditions[@"condition_types"];
         
         if (condTypes)
         {
@@ -84,14 +84,14 @@
           {
             for (int m=0; m<[condTypes count]; m++)
             {
-              NSDictionary *d = [condTypes objectAtIndex:m];
+              NSDictionary *d = condTypes[m];
               
               if (d)
               {
-                if ([d objectForKey:@"networkType"])
+                if (d[@"networkType"])
                 {
-                  NSLog(@"GOT networkType : %@", [d objectForKey:@"networkType"]);
-                  netType = [d objectForKey:@"networkType"];
+                  NSLog(@"GOT networkType : %@", d[@"networkType"]);
+                  netType = d[@"networkType"];
                 }
               }
             }
@@ -111,9 +111,9 @@
   
   for (NSDictionary *dictionary in params)
   {        
-    if ([dictionary objectForKey:key])
+    if (dictionary[key])
     {
-      return [dictionary objectForKey:key];
+      return dictionary[key];
     }
   }
   
@@ -130,39 +130,39 @@
     
     if (nil != info)
     {
-      if ([info objectForKey:@"type"])
+      if (info[@"type"])
       {
-        type = [[NSString alloc] initWithString:[info objectForKey:@"type"]];
+        type = [[NSString alloc] initWithString:info[@"type"]];
       }
       
-      if ([info objectForKey:@"condition_group_id"])
+      if (info[@"condition_group_id"])
       {
-        conditionGroupId = [[NSString alloc] initWithString:[info objectForKey:@"condition_group_id"]];
+        conditionGroupId = [[NSString alloc] initWithString:info[@"condition_group_id"]];
       }
       
-      if ([info objectForKey:@"displayName"])
+      if (info[@"displayName"])
       {
-        displayName = [[NSString alloc] initWithString:[info objectForKey:@"displayName"]];
+        displayName = [[NSString alloc] initWithString:info[@"displayName"]];
       }
       
-      if ([info objectForKey:@"executeAt"])
+      if (info[@"executeAt"])
       {
-        executeTimes = [[NSMutableArray alloc] initWithArray:[info objectForKey:@"executeAt"]];
+        executeTimes = [[NSMutableArray alloc] initWithArray:info[@"executeAt"]];
       }
       
-      if ([info objectForKey:@"params"])
+      if (info[@"params"])
       {
-        params = [[NSMutableArray alloc] initWithArray:[info objectForKey:@"params"]];
+        params = [[NSMutableArray alloc] initWithArray:info[@"params"]];
       }
       
-      if ([info objectForKey:@"output"])
+      if (info[@"output"])
       {
-        output = [[NSMutableDictionary alloc] initWithDictionary:[info objectForKey:@"output"]];
+        output = [[NSMutableDictionary alloc] initWithDictionary:info[@"output"]];
       }
       
-      if ([info objectForKey:@"conditions"])
+      if (info[@"conditions"])
       {
-        conditions = [[NSMutableDictionary alloc] initWithDictionary:[info objectForKey:@"conditions"]];
+        conditions = [[NSMutableDictionary alloc] initWithDictionary:info[@"conditions"]];
       }
     }
   }

@@ -125,9 +125,9 @@
   NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
   
   if (loc != nil) {
-    double latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
-    double longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
-    double dateAsTimeIntervalSince1970 = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
+    double latitude = [loc[@"LATITUDE"] doubleValue];
+    double longitude = [loc[@"LONGITUDE"] doubleValue];
+    double dateAsTimeIntervalSince1970 = [loc[@"LOCATIONDATE"] doubleValue];
     
     self.latitudeValue.text = [SKGlobalMethods formatDouble:latitude DecimalPlaces:8];
     self.longitudeValue.text = [SKGlobalMethods formatDouble:longitude DecimalPlaces:8];
@@ -152,18 +152,20 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  switch (section)
-  {
-    case 0:
-      return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
-      
-    case 1:
-      return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
-      
-    case 2:
-      return sSKCoreGetLocalisedString(@"last_known_location_info");
+  switch (section) {
+  case 0:
+    return sSKCoreGetLocalisedString(@"Storyboard_Settings_Configuration");
+
+  case 1:
+    return sSKCoreGetLocalisedString(@"Storyboard_Settings_MonthlyData");
+
+  case 2:
+    return sSKCoreGetLocalisedString(@"last_known_location_info");
+
+  default:
+    break;
   }
-  
+
   SK_ASSERT(false);
   return nil;
 }
@@ -221,7 +223,7 @@
   NSLog(@"Sizeof int64_t = %d", (int)sizeof(int64_t));
   int64_t theValue = (int64_t)[self.txtDataCap.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   [prefs synchronize];
 }
 

@@ -18,11 +18,11 @@
 	for (NSString *currentPair in parameterPairs) {
 		NSArray *pairComponents = [currentPair componentsSeparatedByString:separator];
 		
-		NSString *key = ([pairComponents count] >= 1 ? [pairComponents objectAtIndex:0] : nil);
+		NSString *key = ([pairComponents count] >= 1 ? pairComponents[0] : nil);
 		if (key == nil) continue;
 		
-		NSString *value = ([pairComponents count] >= 2 ? [pairComponents objectAtIndex:1] : [NSNull null]);
-		[parameters setObject:value forKey:key];
+		NSString *value = ([pairComponents count] >= 2 ? pairComponents[1] : [NSNull null]);
+		parameters[key] = value;
 	}
 	
 	return parameters;

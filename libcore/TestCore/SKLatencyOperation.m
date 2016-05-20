@@ -606,14 +606,14 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
     NSString *key = [NSString stringWithFormat:@"%ld", tag];
     
     // These both need to be valid for a successful packet round trip
-    if ([startTimes objectForKey:key] && [endTimes objectForKey:key])
+    if (startTimes[key] && endTimes[key])
     {
-      NSDate *start = [startTimes objectForKey:key];
-      NSDate *end = [endTimes objectForKey:key];
+      NSDate *start = startTimes[key];
+      NSDate *end = endTimes[key];
       
       double timeDiff = [end timeIntervalSinceDate:start];
-      
-      [results addObject:[NSNumber numberWithDouble:timeDiff]];
+
+      [results addObject:@(timeDiff)];
       
       recvPackets += 1;
     }
@@ -651,23 +651,23 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   
   // Sort the results array, minimum first
   NSSortDescriptor *lowToHigh = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
-  [results sortUsingDescriptors:[NSArray arrayWithObject:lowToHigh]];
+  [results sortUsingDescriptors:@[lowToHigh]];
   
   // Calculate the minimum and maximum RTT
-  minimumTripTime = [[results objectAtIndex:0] doubleValue];
-  maximumTripTime = [[results objectAtIndex:nResults - 1] doubleValue];
+  minimumTripTime = [results[0] doubleValue];
+  maximumTripTime = [results[nResults - 1] doubleValue];
   
   // Calculate the average RTT
   for (int m=0; m<nResults; m++)
   {
-    averagePacketTime += [[results objectAtIndex:m] doubleValue];
+    averagePacketTime += [results[m] doubleValue];
   }
   averagePacketTime = averagePacketTime / nResults;
   
   // Calculate the standard deviation
   for (int j=0; j<nResults; j++)
   {
-    double result = [[results objectAtIndex:j] doubleValue];
+    double result = [results[j] doubleValue];
     standardDeviation += pow(result - averagePacketTime, 2);
   }
   standardDeviation = (nResults - 1 > 0) ? sqrt(standardDeviation / (nResults - 1)) : 0;
@@ -681,8 +681,8 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   
   for (int i=0; i<nResults-1; i++)
   {
-    double result1 = [[results objectAtIndex:i] doubleValue];
-    double result2 = [[results objectAtIndex:i+1] doubleValue];
+    double result1 = [results[i] doubleValue];
+    double result2 = [results[i + 1] doubleValue];
     
     double difference = fabs(result2 - result1);
     
@@ -783,10 +783,10 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   NSString *key = [NSString stringWithFormat:@"%ld", tag];
   
   // both start and end time need to exist for a valid rtt
-  if ([startTimes objectForKey:key] && [endTimes objectForKey:key])
+  if (startTimes[key] && endTimes[key])
   {
-    NSDate *start = [startTimes objectForKey:key];
-    NSDate *end = [endTimes objectForKey:key];
+    NSDate *start = startTimes[key];
+    NSDate *end = endTimes[key];
     
     double rtt = [end timeIntervalSinceDate:start];     // in seconds
     //rtt = rtt * ONE_MILLION;                            // convert to microseconds for sleep calculation
@@ -880,22 +880,22 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)addStartTimes:(long)tag TheDate:(NSDate *)date
 {
-    [startTimes setObject:date forKey:[NSString stringWithFormat:@"%ld", tag]];
+    startTimes[[NSString stringWithFormat:@"%ld", tag]] = date;
 }
 
 - (void)addEndTimes:(long)tag TheDate:(NSDate *)date
 {
-    [endTimes setObject:date forKey:[NSString stringWithFormat:@"%ld", tag]];
+    endTimes[[NSString stringWithFormat:@"%ld", tag]] = date;
 }
 
 - (void)computeLatency:(long)tag
 {
   NSString *key = [NSString stringWithFormat:@"%ld", tag];
   
-  if ([startTimes objectForKey:key] && [endTimes objectForKey:key])
+  if (startTimes[key] && endTimes[key])
   {
-    NSDate *start = [startTimes objectForKey:key];
-    NSDate *end = [endTimes objectForKey:key];
+    NSDate *start = startTimes[key];
+    NSDate *end = endTimes[key];
     
     if (!isClosestTargetTest) {
       double rtt = [end timeIntervalSinceDate:start];
@@ -1010,7 +1010,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
    scheduledTimerWithTimeInterval:delayInterval
    target:self
    selector:@selector(handleTimer:)
-   userInfo:[NSNumber numberWithLong:tag]
+   userInfo:@(tag)
    repeats:NO];
   
   return YES;
@@ -1197,39 +1197,29 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   //    "target_ipaddress": "46.17.56.234",
   //    "timestamp": "1359128167"
   
-  [outputResultsDictionary setObject:UDPLATENCY forKey:@"type"];
+  outputResultsDictionary[@"type"] = UDPLATENCY;
   
-  [outputResultsDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  outputResultsDictionary[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", totalPacketsLost]
-                              forKey:@"lost_packets"];
+  outputResultsDictionary[@"lost_packets"] = [NSString stringWithFormat:@"%d", totalPacketsLost];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", totalPacketsReceived]
-                              forKey:@"received_packets"];
+  outputResultsDictionary[@"received_packets"] = [NSString stringWithFormat:@"%d", totalPacketsReceived];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(averagePacketTime * ONE_MILLION)]
-                              forKey:@"rtt_avg"];
+  outputResultsDictionary[@"rtt_avg"] = [NSString stringWithFormat:@"%d", (int) (averagePacketTime * ONE_MILLION)];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(maximumTripTime * ONE_MILLION)]
-                              forKey:@"rtt_max"];
+  outputResultsDictionary[@"rtt_max"] = [NSString stringWithFormat:@"%d", (int) (maximumTripTime * ONE_MILLION)];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(minimumTripTime * ONE_MILLION)]
-                              forKey:@"rtt_min"];
+  outputResultsDictionary[@"rtt_min"] = [NSString stringWithFormat:@"%d", (int) (minimumTripTime * ONE_MILLION)];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(standardDeviation * ONE_MILLION)]
-                              forKey:@"rtt_stddev"];
+  outputResultsDictionary[@"rtt_stddev"] = [NSString stringWithFormat:@"%d", (int) (standardDeviation * ONE_MILLION)];
   
-  [outputResultsDictionary setObject:testOK ? @"true" : @"false"
-                              forKey:@"success"];
+  outputResultsDictionary[@"success"] = testOK ? @"true" : @"false";
   
-  [outputResultsDictionary setObject:target
-                              forKey:@"target"];
+  outputResultsDictionary[@"target"] = target;
   
-  [outputResultsDictionary setObject:[SKIPHelper hostIPAddress:target]
-                              forKey:@"target_ipaddress"];
+  outputResultsDictionary[@"target_ipaddress"] = [SKIPHelper hostIPAddress:target];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)([[SKCore getToday] timeIntervalSince1970])]
-                              forKey:@"timestamp"];
+  outputResultsDictionary[@"timestamp"] = [NSString stringWithFormat:@"%d", (int) ([[SKCore getToday] timeIntervalSince1970])];
   
   theTest.outputResultsDictionary = outputResultsDictionary;
 }

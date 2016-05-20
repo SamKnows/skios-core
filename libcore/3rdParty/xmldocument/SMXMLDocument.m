@@ -3,12 +3,12 @@
 NSString *const SMXMLDocumentErrorDomain = @"SMXMLDocumentErrorDomain";
 
 static NSError *SMXMLDocumentError(NSXMLParser *parser, NSError *parseError) {	
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:parseError forKey:NSUnderlyingErrorKey];
-	NSNumber *lineNumber = [NSNumber numberWithInteger:parser.lineNumber];
-	NSNumber *columnNumber = [NSNumber numberWithInteger:parser.columnNumber];
-	[userInfo setObject:[NSString stringWithFormat:NSLocalizedString(@"Malformed XML document. Error at line %@:%@.", @""), lineNumber, columnNumber] forKey:NSLocalizedDescriptionKey];
-	[userInfo setObject:lineNumber forKey:@"LineNumber"];
-	[userInfo setObject:columnNumber forKey:@"ColumnNumber"];
+	NSMutableDictionary *userInfo = [@{NSUnderlyingErrorKey : parseError} mutableCopy];
+	NSNumber *lineNumber = @(parser.lineNumber);
+	NSNumber *columnNumber = @(parser.columnNumber);
+	userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:NSLocalizedString(@"Malformed XML document. Error at line %@:%@.", @""), lineNumber, columnNumber];
+	userInfo[@"LineNumber"] = lineNumber;
+	userInfo[@"ColumnNumber"] = columnNumber;
 	return [NSError errorWithDomain:SMXMLDocumentErrorDomain code:1 userInfo:userInfo];
 }
 
@@ -33,7 +33,7 @@ static NSError *SMXMLDocumentError(NSXMLParser *parser, NSError *parseError) {
 	[s appendFormat:@"%@<%@", indent, name];
 	
 	for (NSString *attribute in attributes)
-		[s appendFormat:@" %@=\"%@\"", attribute, [attributes objectForKey:attribute]];
+		[s appendFormat:@" %@=\"%@\"", attribute, attributes[attribute]];
 
 	NSString *trimVal = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
@@ -84,7 +84,7 @@ static NSError *SMXMLDocumentError(NSXMLParser *parser, NSError *parseError) {
 	if (children)
 		[(NSMutableArray *)children addObject:child];
 	else
-		self.children = [NSMutableArray arrayWithObject:child];
+		self.children = [@[child] mutableCopy];
 	
 	[parser setDelegate:child];
 }
@@ -120,7 +120,7 @@ static NSError *SMXMLDocumentError(NSXMLParser *parser, NSError *parseError) {
 }
 
 - (NSString *)attributeNamed:(NSString *)attributeName {
-	return [attributes objectForKey:attributeName];
+	return attributes[attributeName];
 }
 
 - (SMXMLElement *)descendantWithPath:(NSString *)path {
@@ -132,12 +132,12 @@ static NSError *SMXMLDocumentError(NSXMLParser *parser, NSError *parseError) {
 
 - (NSString *)valueWithPath:(NSString *)path {
 	NSArray *components = [path componentsSeparatedByString:@"@"];
-	SMXMLElement *descendant = [self descendantWithPath:[components objectAtIndex:0]];
-	return [components count] > 1 ? [descendant attributeNamed:[components objectAtIndex:1]] : descendant.value;
+	SMXMLElement *descendant = [self descendantWithPath:components[0]];
+	return [components count] > 1 ? [descendant attributeNamed:components[1]] : descendant.value;
 }
 
 
-- (SMXMLElement *)firstChild { return [children count] > 0 ? [children objectAtIndex:0] : nil; }
+- (SMXMLElement *)firstChild { return [children count] > 0 ? children[0] : nil; }
 - (SMXMLElement *)lastChild { return [children lastObject]; }
 
 @end

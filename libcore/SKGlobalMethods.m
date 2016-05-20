@@ -24,7 +24,7 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath: [URL path]])
     {
         NSError *error = nil;
-        BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
+        BOOL success = [URL setResourceValue:@YES
                                       forKey: NSURLIsExcludedFromBackupKey error: &error];
         
         if (success)
@@ -183,7 +183,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
     [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
 	
-	return [NSString stringWithFormat:@"%@ ms", [formatter stringFromNumber:[NSNumber numberWithDouble:number]]];
+	return [NSString stringWithFormat:@"%@ ms", [formatter stringFromNumber:@(number)]];
 }
 
 + (NSString *)formatMilliseconds:(double)number
@@ -196,7 +196,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
     [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
     [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
 	
-	return [NSString stringWithFormat:@"%@ ms", [formatter stringFromNumber:[NSNumber numberWithDouble:number]]];
+	return [NSString stringWithFormat:@"%@ ms", [formatter stringFromNumber:@(number)]];
 }
 
 
@@ -210,7 +210,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
   [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
   
-  NSString *result = [formatter stringFromNumber:[NSNumber numberWithDouble:number]];
+  NSString *result = [formatter stringFromNumber:@(number)];
   return result;
 }
 
@@ -952,7 +952,7 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
         
       } else {
         
-        if([jsonResponse objectForKey:organisationInThisField] == nil) {
+        if(jsonResponse[organisationInThisField] == nil) {
           SK_ASSERT(false);
         } else {
           __block NSString *wlanCarrier = jsonResponse[organisationInThisField];

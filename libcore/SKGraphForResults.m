@@ -428,14 +428,12 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     y.labelTextStyle = yAxisLabelClearTextStyle;
   }
   
-  NSArray *chartLayers = [[NSArray alloc] initWithObjects:
-                          [NSNumber numberWithInt:CPTGraphLayerTypeMajorGridLines],
-                          [NSNumber numberWithInt:CPTGraphLayerTypeMinorGridLines],
-                          [NSNumber numberWithInt:CPTGraphLayerTypePlots],
-                          [NSNumber numberWithInt:CPTGraphLayerTypeAxisLines],
-                          [NSNumber numberWithInt:CPTGraphLayerTypeAxisLabels],
-                          [NSNumber numberWithInt:CPTGraphLayerTypeAxisTitles],
-                          nil];
+  NSArray *chartLayers = @[@(CPTGraphLayerTypeMajorGridLines),
+          @(CPTGraphLayerTypeMinorGridLines),
+          @(CPTGraphLayerTypePlots),
+          @(CPTGraphLayerTypeAxisLines),
+          @(CPTGraphLayerTypeAxisLabels),
+          @(CPTGraphLayerTypeAxisTitles)];
   graph.topDownLayerOrder = chartLayers;
   
   return aaplPlot;
@@ -563,7 +561,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     int hourIndex;
     for (hourIndex = 0; hourIndex < 24; hourIndex++) {
       [datesByHour addObject:[NSDate dateWithTimeInterval:((double)hourIndex) * timeIntervalForOneHour sinceDate:yesterday]];
-      [itemsByHour  addObject:[NSNumber numberWithInt:0]];
+      [itemsByHour addObject:@0];
 #ifdef FILL_EMPTY_HOURS_WITH_ZERO
       [valuesByHour addObject:[NSNumber numberWithDouble:0.0]];
 #else // FILL_EMPTY_HOURS_WITH_ZERO
@@ -590,12 +588,12 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       hourIndex = 23;
     }
     
-    itemsByHour[hourIndex] = [NSNumber numberWithInt:([itemsByHour[hourIndex] intValue] + 1)];
+    itemsByHour[hourIndex] = @([itemsByHour[hourIndex] intValue] + 1);
    
     if ([valuesByHour[hourIndex] isKindOfClass:NSNull.class]) {
       valuesByHour[hourIndex] = theResult;
     } else {
-      valuesByHour[hourIndex] = [NSNumber numberWithDouble:([valuesByHour[hourIndex] doubleValue] + [theResult doubleValue])];
+      valuesByHour[hourIndex] = @([valuesByHour[hourIndex] doubleValue] + [theResult doubleValue]);
     }
   }
   
@@ -604,7 +602,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     int hourIndex;
     for (hourIndex = 0; hourIndex < 24; hourIndex++) {
       if ([itemsByHour[hourIndex] intValue] > 0) {
-        NSNumber *theAverage = [NSNumber numberWithDouble:([valuesByHour[hourIndex] doubleValue] / [itemsByHour[hourIndex] doubleValue])];
+        NSNumber *theAverage = @([valuesByHour[hourIndex] doubleValue] / [itemsByHour[hourIndex] doubleValue]);
         valuesByHour[hourIndex] = theAverage;
       }
     }
@@ -733,7 +731,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       continue;
     }
 #else // BACK_AND_FORWARD_FILL
-    NSString *theNumber = [theDateValues objectForKey:theTargetDateString];
+    NSString *theNumber = theDateValues[theTargetDateString];
     if ( (theNumber == nil) ||
         ([theNumber isKindOfClass:[NSNull class]])
         )
@@ -757,7 +755,7 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
     NSString *debugString = [NSString stringWithFormat:@"%s:%d dayIndex %d, EXTRACTED Date %@, value=%g", __FUNCTION__, __LINE__, dayIndex, theTargetDateString, value];
     [SKCore sAppendLogString:debugString IsError:NO];
     
-    NSNumber *numberItem = [NSNumber numberWithDouble:value];
+    NSNumber *numberItem = @(value);
     if (numberItem == nil) {
       SK_ASSERT(false);
       return;
@@ -1005,32 +1003,32 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
       NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-oneDay];
       double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-      return [NSDecimalNumber numberWithDouble:timeInterval];
+      return @(timeInterval);
     }
       break;
     case DATERANGE_1w1m3m1y_ONE_WEEK: {
       //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
       NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-7*oneDay];
       double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-      return [NSDecimalNumber numberWithDouble:timeInterval];
+      return @(timeInterval);
     }
     case DATERANGE_1w1m3m1y_ONE_MONTH: {
       //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
       NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-1*30*oneDay];
       double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-      return [NSDecimalNumber numberWithDouble:timeInterval];
+      return @(timeInterval);
     }
     case DATERANGE_1w1m3m1y_THREE_MONTHS: {
       //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
       NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-3*30*oneDay];
       double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-      return [NSDecimalNumber numberWithDouble:timeInterval];
+      return @(timeInterval);
     }
     case DATERANGE_1w1m3m1y_SIX_MONTHS: {
       //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
       NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-6*30*oneDay];
       double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-      return [NSDecimalNumber numberWithDouble:timeInterval];
+      return @(timeInterval);
     }
     case DATERANGE_1w1m3m1y_ONE_YEAR:
     default:
@@ -1038,97 +1036,98 @@ static const NSTimeInterval oneDay = 24.0 * 60.0 * 60.0;
       //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
       NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-365*oneDay];
       double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-      return [NSDecimalNumber numberWithDouble:timeInterval];
+      return @(timeInterval);
     }
   }
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
-  switch (fieldEnum)
-  {
-    case CPTScatterPlotFieldX:
-    {
-      NSString *debugString = [NSString stringWithFormat:@"%s:%d, CPTScatterPlotFieldX, idx=%d", __FUNCTION__, __LINE__, (int)idx];
-      [SKCore sAppendLogString:debugString IsError:NO];
-      
-      // We're using a CPTTimeFormatter.
-      // So, return INTERVAL since the system reference date.
+  switch (fieldEnum) {
+  case CPTScatterPlotFieldX: {
+    NSString *debugString = [NSString stringWithFormat:@"%s:%d, CPTScatterPlotFieldX, idx=%d", __FUNCTION__, __LINE__, (int) idx];
+    [SKCore sAppendLogString:debugString IsError:NO];
+
+    // We're using a CPTTimeFormatter.
+    // So, return INTERVAL since the system reference date.
 
 #ifdef BACK_AND_FORWARD_FILL
-      if (self.mpCorePlotDates.count <= 1) {
-        debugString = [NSString stringWithFormat:@"%s:%d, no core plot dates", __FUNCTION__, __LINE__];
-        [SKCore sAppendLogString:debugString IsError:YES];
-        
-        SK_ASSERT(false);
-        return [NSNumber numberWithInt:0];
-      }
-      
-      NSDate *theDate = self.mpCorePlotDates[idx];
-      if (self.mDateFilter == DATERANGE_1w1m3m1y_ONE_DAY) {
-        //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
-        NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-oneDay];
-        double timeInterval = [theDate timeIntervalSinceDate:yesterday];
-        return [NSDecimalNumber numberWithDouble:timeInterval];
-      }
+    if (self.mpCorePlotDates.count <= 1) {
+      debugString = [NSString stringWithFormat:@"%s:%d, no core plot dates", __FUNCTION__, __LINE__];
+      [SKCore sAppendLogString:debugString IsError:YES];
 
-      double timeInterval = [theDate timeIntervalSinceDate:self.mpCorePlotDates[0]];
+      SK_ASSERT(false);
+      return [NSNumber numberWithInt:0];
+    }
+
+    NSDate *theDate = self.mpCorePlotDates[idx];
+    if (self.mDateFilter == DATERANGE_1w1m3m1y_ONE_DAY) {
+      //double timeInterval = [theDate timeIntervalSinceDate:[NSDate date]
+      NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:-oneDay];
+      double timeInterval = [theDate timeIntervalSinceDate:yesterday];
       return [NSDecimalNumber numberWithDouble:timeInterval];
+    }
+
+    double timeInterval = [theDate timeIntervalSinceDate:self.mpCorePlotDates[0]];
+    return [NSDecimalNumber numberWithDouble:timeInterval];
 #else // BACK_AND_FORWARD_FILL
-      NSDate *theDate = self.mpCorePlotDates[idx];
-      return [self getTimeIntervalForDate:theDate];
+    NSDate *theDate = self.mpCorePlotDates[idx];
+    return [self getTimeIntervalForDate:theDate];
 #endif // BACK_AND_FORWARD_FILL
-    }
-      
-    case CPTScatterPlotFieldY:
-    {
-      NSString *debugString = [NSString stringWithFormat:@"%s:%d, CPTScatterPlotFieldY, idx=%d", __FUNCTION__, __LINE__, (int)idx];
-      [SKCore sAppendLogString:debugString IsError:NO];
-      
-      if (idx > self.mpCorePlotDataPoints.count) {
-        NSString *debugString = [NSString stringWithFormat:@"%s:%d, idx too big", __FUNCTION__, __LINE__];
-        [SKCore sAppendLogString:debugString IsError:YES];
-        
-        SK_ASSERT(false);
-        return [NSNumber numberWithInt:0];
-      }
-      
-      NSObject *theObject = self.mpCorePlotDataPoints[idx];
-      if (theObject == nil) {
-        NSString *debugString = [NSString stringWithFormat:@"%s:%d, theObject is nil", __FUNCTION__, __LINE__];
-        [SKCore sAppendLogString:debugString IsError:YES];
-        
-        SK_ASSERT(false);
-        return [NSNumber numberWithInt:0];
-      }
-      
-      if ([theObject isKindOfClass:[NSString class]] == true) {
-        NSString *theValue = (NSString *)theObject;
-        theObject = @([theValue doubleValue]);
-      }
-      
-      if ([theObject isKindOfClass:[NSNumber class]] == false) {
-        // Placeholder!
-        return [NSNumber numberWithInt:0];
-      }
-      
-      NSNumber *theNumber = (NSNumber*)theObject;
-      
-      double range = self.corePlotMaxValue - self.corePlotMinValue;
-      if (range == 0.0) {
-        //SK_ASSERT(false);
-        return [NSNumber numberWithInt:0];
-      }
-      double theValue = [theNumber doubleValue];
-      
-      // 100.0 is our nominal Y scale
-      double scaledValueToUi = theValue; // 90.0 * ((theValue - self.corePlotMinValue)/ range);
-      
-      debugString = [NSString stringWithFormat:@"%s:%d, scaledValue=%g", __FUNCTION__, __LINE__, scaledValueToUi];
-      [SKCore sAppendLogString:debugString IsError:NO];
-      
-      return [NSNumber numberWithDouble:scaledValueToUi];
-    }
   }
+
+  case CPTScatterPlotFieldY: {
+    NSString *debugString = [NSString stringWithFormat:@"%s:%d, CPTScatterPlotFieldY, idx=%d", __FUNCTION__, __LINE__, (int) idx];
+    [SKCore sAppendLogString:debugString IsError:NO];
+
+    if (idx > self.mpCorePlotDataPoints.count) {
+      NSString *debugString = [NSString stringWithFormat:@"%s:%d, idx too big", __FUNCTION__, __LINE__];
+      [SKCore sAppendLogString:debugString IsError:YES];
+
+      SK_ASSERT(false);
+      return @0;
+    }
+
+    NSObject *theObject = self.mpCorePlotDataPoints[idx];
+    if (theObject == nil) {
+      NSString *debugString = [NSString stringWithFormat:@"%s:%d, theObject is nil", __FUNCTION__, __LINE__];
+      [SKCore sAppendLogString:debugString IsError:YES];
+
+      SK_ASSERT(false);
+      return @0;
+    }
+
+    if ([theObject isKindOfClass:[NSString class]] == true) {
+      NSString *theValue = (NSString *) theObject;
+      theObject = @([theValue doubleValue]);
+    }
+
+    if ([theObject isKindOfClass:[NSNumber class]] == false) {
+      // Placeholder!
+      return @0;
+    }
+
+    NSNumber *theNumber = (NSNumber *) theObject;
+
+    double range = self.corePlotMaxValue - self.corePlotMinValue;
+    if (range == 0.0) {
+      //SK_ASSERT(false);
+      return @0;
+    }
+    double theValue = [theNumber doubleValue];
+
+    // 100.0 is our nominal Y scale
+    double scaledValueToUi = theValue; // 90.0 * ((theValue - self.corePlotMinValue)/ range);
+
+    debugString = [NSString stringWithFormat:@"%s:%d, scaledValue=%g", __FUNCTION__, __LINE__, scaledValueToUi];
+    [SKCore sAppendLogString:debugString IsError:NO];
+
+    return @(scaledValueToUi);
+  }
+
+  default:
+    break;
+  }
+
   return nil;
 }
 

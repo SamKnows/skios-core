@@ -188,61 +188,61 @@
 
 - (void)populateResults
 {
-  NSDictionary *testData = [self.testMetaData objectAtIndex:self.testIndex];
+  NSDictionary *testData = self.testMetaData[self.testIndex];
   
   NSMutableArray *tmpArray = [NSMutableArray array];
   
   if (nil != testData)
   {
-    self.testId = [testData objectForKey:@"TEST_ID"];
+    self.testId = testData[@"TEST_ID"];
     
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[[testData objectForKey:@"DATE"] doubleValue]];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[testData[@"DATE"] doubleValue]];
     
     self.lblDate.text = [SKGlobalMethods formatDate:date];
     
     self.metricsDictionary = [SKDatabase getMetricsForTestId:self.testId];
     
-    if ([self.metricsDictionary objectForKey:@"DEVICE"])
+    if (self.metricsDictionary[@"DEVICE"])
     {
-      self.device = [self.metricsDictionary objectForKey:@"DEVICE"];
+      self.device = self.metricsDictionary[@"DEVICE"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"OS"])
+    if (self.metricsDictionary[@"OS"])
     {
-      self.os = [self.metricsDictionary objectForKey:@"OS"];
+      self.os = self.metricsDictionary[@"OS"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"CARRIER_NAME"])
+    if (self.metricsDictionary[@"CARRIER_NAME"])
     {
-      self.carrierName = [self.metricsDictionary objectForKey:@"CARRIER_NAME"];
+      self.carrierName = self.metricsDictionary[@"CARRIER_NAME"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"COUNTRY_CODE"])
+    if (self.metricsDictionary[@"COUNTRY_CODE"])
     {
-      self.carrierCountryCode = [self.metricsDictionary objectForKey:@"COUNTRY_CODE"];
+      self.carrierCountryCode = self.metricsDictionary[@"COUNTRY_CODE"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"ISO_CODE"])
+    if (self.metricsDictionary[@"ISO_CODE"])
     {
-      self.carrierIsoCode = [self.metricsDictionary objectForKey:@"ISO_CODE"];
+      self.carrierIsoCode = self.metricsDictionary[@"ISO_CODE"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"NETWORK_CODE"])
+    if (self.metricsDictionary[@"NETWORK_CODE"])
     {
-      self.carrierNetworkCode = [self.metricsDictionary objectForKey:@"NETWORK_CODE"];
+      self.carrierNetworkCode = self.metricsDictionary[@"NETWORK_CODE"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"NETWORK_TYPE"])
+    if (self.metricsDictionary[@"NETWORK_TYPE"])
     {
-      self.networkType = [self.metricsDictionary objectForKey:@"NETWORK_TYPE"];
+      self.networkType = self.metricsDictionary[@"NETWORK_TYPE"];
     }
     
-    if ([self.metricsDictionary objectForKey:@"RADIO_TYPE"])
+    if (self.metricsDictionary[@"RADIO_TYPE"])
     {
-      self.radioType = [self.metricsDictionary objectForKey:@"RADIO_TYPE"];
+      self.radioType = self.metricsDictionary[@"RADIO_TYPE"];
     }
     
-    NSString *target = [testData objectForKey:@"TARGET"];
+    NSString *target = testData[@"TARGET"];
     
     self.lblClosest.text = target;
     
@@ -252,22 +252,22 @@
     
     if ([downloadData count] > 0)
     {
-      double bitrateMbps1024Based = [[downloadData objectForKey:@"RESULT"] doubleValue];
+      double bitrateMbps1024Based = [downloadData[@"RESULT"] doubleValue];
       NSString *result = [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMbps1024Based];
       
       NSMutableDictionary *tmpDict1 = [NSMutableDictionary dictionary];
-      [tmpDict1 setObject:[NSNumber numberWithInt:DOWNLOAD_DATA] forKey:@"TYPE"];
-      [tmpDict1 setObject:result forKey:@"RESULT_1"];
-      [tmpDict1 setObject:@"NA" forKey:@"RESULT_2"];
-      [tmpDict1 setObject:@"NA" forKey:@"RESULT_3"];
-      [tmpDict1 setObject:[downloadData objectForKey:@"DISPLAY_NAME"] forKey:@"DISPLAY_NAME"];
+      tmpDict1[@"TYPE"] = @(DOWNLOAD_DATA);
+      tmpDict1[@"RESULT_1"] = result;
+      tmpDict1[@"RESULT_2"] = @"NA";
+      tmpDict1[@"RESULT_3"] = @"NA";
+      tmpDict1[@"DISPLAY_NAME"] = downloadData[@"DISPLAY_NAME"];
       
        // SKAInformationCell - 49, SKATransferTestCell - 59, SKALatencyTestCell - 100!
-      [tmpDict1 setObject:[NSNumber numberWithFloat:59.0f] forKey:@"HEIGHT"];
+      [tmpDict1 setObject:@59.0F forKey:@"HEIGHT"];
       
       
-      [tmpDict1 setObject:result forKey:@"RESULT_1"];
-      [tmpDict1 setObject:[downloadData objectForKey:@"DISPLAY_NAME"] forKey:@"DISPLAY_NAME"];
+      tmpDict1[@"RESULT_1"] = result;
+      tmpDict1[@"DISPLAY_NAME"] = downloadData[@"DISPLAY_NAME"];
       
       [tmpArray addObject:tmpDict1];
     }
@@ -279,18 +279,18 @@
     
     if ([uploadData count] > 0)
     {
-      double bitrateMbps1024Based = [[uploadData objectForKey:@"RESULT"] doubleValue];
+      double bitrateMbps1024Based = [uploadData[@"RESULT"] doubleValue];
       NSString *result = [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMbps1024Based];
       
       NSMutableDictionary *tmpDict2 = [NSMutableDictionary dictionary];
-      [tmpDict2 setObject:[NSNumber numberWithInt:UPLOAD_DATA] forKey:@"TYPE"];
-      [tmpDict2 setObject:result forKey:@"RESULT_1"];
-      [tmpDict2 setObject:@"NA" forKey:@"RESULT_2"];
-      [tmpDict2 setObject:@"NA" forKey:@"RESULT_3"];
-      [tmpDict2 setObject:[uploadData objectForKey:@"DISPLAY_NAME"] forKey:@"DISPLAY_NAME"];
+      tmpDict2[@"TYPE"] = @(UPLOAD_DATA);
+      tmpDict2[@"RESULT_1"] = result;
+      tmpDict2[@"RESULT_2"] = @"NA";
+      tmpDict2[@"RESULT_3"] = @"NA";
+      tmpDict2[@"DISPLAY_NAME"] = uploadData[@"DISPLAY_NAME"];
       
       // SKAInformationCell - 49, SKATransferTestCell - 59, SKALatencyTestCell - 100!
-      [tmpDict2 setObject:[NSNumber numberWithFloat:59.0f] forKey:@"HEIGHT"];
+      [tmpDict2 setObject:@59.0F forKey:@"HEIGHT"];
       
       [tmpArray addObject:tmpDict2];
     }
@@ -304,23 +304,23 @@
     
     if ([latencyData count] > 0 && [lossData count] > 0)
     {
-      double latency = [[latencyData objectForKey:@"RESULT"] doubleValue];
-      double loss = [[lossData objectForKey:@"RESULT"] doubleValue];
-      double jitter = [[jitterData objectForKey:@"RESULT"] doubleValue];
+      double latency = [latencyData[@"RESULT"] doubleValue];
+      double loss = [lossData[@"RESULT"] doubleValue];
+      double jitter = [jitterData[@"RESULT"] doubleValue];
       
       NSString *strLatency = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:latency]];
       NSString *strLoss = [NSString stringWithFormat:@"%d %%", (int)loss];
       NSString *strJitter = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:jitter]];
       
       NSMutableDictionary *tmpDict3 = [NSMutableDictionary dictionary];
-      [tmpDict3 setObject:[NSNumber numberWithInt:LATENCY_DATA] forKey:@"TYPE"];
-      [tmpDict3 setObject:strLatency forKey:@"RESULT_1"];
-      [tmpDict3 setObject:strLoss forKey:@"RESULT_2"];
-      [tmpDict3 setObject:strJitter forKey:@"RESULT_3"];
-      [tmpDict3 setObject:@"NA" forKey:@"DISPLAY_NAME"];
+      tmpDict3[@"TYPE"] = @(LATENCY_DATA);
+      tmpDict3[@"RESULT_1"] = strLatency;
+      tmpDict3[@"RESULT_2"] = strLoss;
+      tmpDict3[@"RESULT_3"] = strJitter;
+      tmpDict3[@"DISPLAY_NAME"] = @"NA";
       
       // SKAInformationCell - 49, SKATransferTestCell - 59, SKALatencyTestCell - 100!
-      [tmpDict3 setObject:[NSNumber numberWithFloat:100.0f] forKey:@"HEIGHT"];
+      [tmpDict3 setObject:@100.0F forKey:@"HEIGHT"];
       
       [tmpArray addObject:tmpDict3];
     }
@@ -339,9 +339,9 @@
   
   if (section == 0)
   {
-    NSDictionary *dict = (NSDictionary*)[self.resultsArray objectAtIndex:row];
+    NSDictionary *dict = (NSDictionary*) self.resultsArray[row];
     
-    float height = [[dict objectForKey:@"HEIGHT"] floatValue];
+    float height = [dict[@"HEIGHT"] floatValue];
     
     SK_ASSERT(height == 59 || height == 100);
     
@@ -365,7 +365,7 @@
   if ([self.metricsDictionary count] > 0)
   {
     // If Mobile, show both passive and active metrics.
-    NSString *theType = (NSString*)[self.metricsDictionary objectForKey:@"NETWORK_TYPE"];
+    NSString *theType = (NSString*) self.metricsDictionary[@"NETWORK_TYPE"];
     if ([theType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
       return 2;
     }
@@ -402,7 +402,7 @@
       // e.g. "Active Metrics"
       NSMutableString *activeMetricsText = [NSMutableString stringWithString:sSKCoreGetLocalisedString(@"Label_Active")];
       // e.g. "Active Metrics (Mobile)" or "Active Metrics (Wifi)"
-      NSString *theType = (NSString*)[self.metricsDictionary objectForKey:@"NETWORK_TYPE"];
+      NSString *theType = (NSString*) self.metricsDictionary[@"NETWORK_TYPE"];
       if ([theType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]) {
         theType = sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile");
       } else {
@@ -469,14 +469,14 @@
     
     @synchronized(self)
     {
-      dict = [self.resultsArray objectAtIndex:row];
+      dict = self.resultsArray[row];
     }
     
-    TestDataType type       = (TestDataType)[[dict objectForKey:@"TYPE"] integerValue];
-    NSString *result1       = [dict objectForKey:@"RESULT_1"];
-    NSString *result2       = [dict objectForKey:@"RESULT_2"];
-    NSString *result3       = [dict objectForKey:@"RESULT_3"];
-    NSString *displayName   = [dict objectForKey:@"DISPLAY_NAME"];
+    TestDataType type       = (TestDataType)[dict[@"TYPE"] integerValue];
+    NSString *result1       = dict[@"RESULT_1"];
+    NSString *result2       = dict[@"RESULT_2"];
+    NSString *result3       = dict[@"RESULT_3"];
+    NSString *displayName   = dict[@"DISPLAY_NAME"];
     
     if (type == LATENCY_DATA)
     {
@@ -526,7 +526,7 @@
     else if (type == JITTER_DATA)
     {
       SK_ASSERT(false);
-      return nil;
+      return [UITableViewCell new];
     }
     else
     {
@@ -619,14 +619,14 @@
 
 -(NSString*) getTextForSocialMedia:(NSString*)socialNetwork {
   
-  NSDictionary *testData = [testMetaData objectAtIndex:self.testIndex];
+  NSDictionary *testData = testMetaData[self.testIndex];
   
   if (testData == nil) {
     SK_ASSERT(false);
     return nil;
   }
   
-  NSNumber *testId = [testData objectForKey:@"TEST_ID"];
+  NSNumber *testId = testData[@"TEST_ID"];
   
   NSString *download = nil;
   NSString *upload = nil;
@@ -637,7 +637,7 @@
   
   if ([downloadData count] > 0)
   {
-    double bitrateMbps1024Based = [[downloadData objectForKey:@"RESULT"] doubleValue];
+    double bitrateMbps1024Based = [downloadData[@"RESULT"] doubleValue];
     download = [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMbps1024Based];
   }
   
@@ -647,7 +647,7 @@
   
   if ([uploadData count] > 0)
   {
-    double bitrateMbps1024Based = [[uploadData objectForKey:@"RESULT"] doubleValue];
+    double bitrateMbps1024Based = [uploadData[@"RESULT"] doubleValue];
     upload = [SKGlobalMethods bitrateMbps1024BasedToString:bitrateMbps1024Based];
     
   }

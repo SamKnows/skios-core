@@ -55,13 +55,13 @@
   
   CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
   
-  animation.keyTimes = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0],
-                        [NSNumber numberWithFloat:0.5],
-                        [NSNumber numberWithFloat:1.0], nil];
+  animation.keyTimes = @[@0.0F,
+          @0.5F,
+          @1.0F];
   
-  animation.values = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0],
-                      [NSNumber numberWithFloat:0.80],
-                      [NSNumber numberWithFloat:0.0], nil];
+  animation.values = @[@0.0F,
+          @0.80F,
+          @0.0F];
   
   animation.duration = 1.5;
   animation.removedOnCompletion = NO;

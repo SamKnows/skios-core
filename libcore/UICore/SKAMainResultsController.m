@@ -85,8 +85,8 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
   
   for (int j=0; j<[tests count]; j++)
   {
-    NSDictionary *dict = [tests objectAtIndex:j];
-    NSString *type = [dict objectForKey:@"type"];
+    NSDictionary *dict = tests[j];
+    NSString *type = dict[@"type"];
     
     if ([type isEqualToString:@"closestTarget"])
     {
@@ -94,13 +94,13 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
     else if ([type isEqualToString:@"downstreamthroughput"])
     {
       lRows++;
-      NSString *displayName = [dict objectForKey:@"displayName"];
+      NSString *displayName = dict[@"displayName"];
       NSLog(@"Type=%@, displayName=%@", type, displayName);
     }
     else if ([type isEqualToString:@"upstreamthroughput"])
     {
       lRows++;
-      NSString *displayName = [dict objectForKey:@"displayName"];
+      NSString *displayName = dict[@"displayName"];
       NSLog(@"Type=%@, displayName=%@", type, displayName);
     }
     else if ([type isEqualToString:@"latency"])
@@ -112,7 +112,7 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
         lRows += 3;
         // latency/loss/jitter!
       }
-      NSString *displayName = [dict objectForKey:@"displayName"];
+      NSString *displayName = dict[@"displayName"];
       NSLog(@"Type=%@, displayName=%@", type, displayName);
     }
   }
@@ -235,15 +235,13 @@ static SKAMainResultsController *spSKAMainResultsController = nil;
                                        destructiveButtonTitle:nil
                                             otherButtonTitles:nil];
   
-  NSArray *array = [[NSArray alloc] initWithObjects:
-                    sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile"),
-                    sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi"),
-                    sSKCoreGetLocalisedString(@"NetworkTypeMenu_All"),
-                    nil];
+  NSArray *array = @[sSKCoreGetLocalisedString(@"NetworkTypeMenu_Mobile"),
+          sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi"),
+          sSKCoreGetLocalisedString(@"NetworkTypeMenu_All")];
   
   for (int j=0; j<[array count]; j++)
   {
-    [action addButtonWithTitle:[array objectAtIndex:j]];
+    [action addButtonWithTitle:array[j]];
   }
   
   [action addButtonWithTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
@@ -912,7 +910,7 @@ static TestType GRunTheTestWithThisType;
  
   // TODO - add-in the correct value here!
   for (NSDictionary *testDict in [SKAppBehaviourDelegate sGetAppBehaviourDelegate].schedule.tests) {
-    NSString *thisTestType = [testDict objectForKey:@"type"];
+    NSString *thisTestType = testDict[@"type"];
     
     NSArray *params = testDict[@"params"];
     int theCount = (int)params.count;
@@ -1081,25 +1079,21 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
   NSArray *array;
   
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported] == NO) {
-    array = [[NSArray alloc] initWithObjects:
-             sSKCoreGetLocalisedString(@"Test_Run_Download"),
-             sSKCoreGetLocalisedString(@"Test_Run_Upload"),
-             sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss"),
-             sSKCoreGetLocalisedString(@"Test_Run_All"),
-             nil];
+    array = @[sSKCoreGetLocalisedString(@"Test_Run_Download"),
+            sSKCoreGetLocalisedString(@"Test_Run_Upload"),
+            sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss"),
+            sSKCoreGetLocalisedString(@"Test_Run_All")];
   } else {
-    array = [[NSArray alloc] initWithObjects:
-             sSKCoreGetLocalisedString(@"Test_Run_Download"),
-             sSKCoreGetLocalisedString(@"Test_Run_Upload"),
-             sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss"),
-             sSKCoreGetLocalisedString(@"Test_Run_Jitter"),
-             sSKCoreGetLocalisedString(@"Test_Run_All"),
-             nil];
+    array = @[sSKCoreGetLocalisedString(@"Test_Run_Download"),
+            sSKCoreGetLocalisedString(@"Test_Run_Upload"),
+            sSKCoreGetLocalisedString(@"Test_Run_LatencyLoss"),
+            sSKCoreGetLocalisedString(@"Test_Run_Jitter"),
+            sSKCoreGetLocalisedString(@"Test_Run_All")];
   }
   
   for (int j=0; j<[array count]; j++)
   {
-    [action addButtonWithTitle:[array objectAtIndex:j]];
+    [action addButtonWithTitle:array[j]];
   }
   
   [action addButtonWithTitle:sSKCoreGetLocalisedString(@"MenuAlert_Cancel")];
@@ -1185,7 +1179,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
 - (void)setDateRange:(DATERANGE_1w1m3m1y)range
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setObject:[NSNumber numberWithInt:range] forKey:[SKAppBehaviourDelegate sGet_Prefs_DateRange]];
+  [prefs setObject:@(range) forKey:[SKAppBehaviourDelegate sGet_Prefs_DateRange]];
   [prefs synchronize];
 }
 
@@ -1206,7 +1200,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
     NSMutableArray *array = [SKDatabase getNonAveragedTestData:fromDate ToDate:toDate TestDataType:(TestDataType)j WhereNetworkTypeAsStringEquals:[SKAppBehaviourDelegate getNetworkTypeString]];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:array forKey:@"DATA"];
+    dict[@"DATA"] = array;
     
     [dataForGraphs addObject:dict];
   }
@@ -1513,8 +1507,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress = NO;
       [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
       [cell initialize:[self getTestString:section] type:[self getTestType:section] range:[self getDateRange]];
       
-      NSDictionary *dict = [dataForGraphs objectAtIndex:section-2];
-      NSArray *data = [dict objectForKey:@"DATA"];
+      NSDictionary *dict = dataForGraphs[section - 2];
+      NSArray *data = dict[@"DATA"];
       
       [cell refreshData:data];
       

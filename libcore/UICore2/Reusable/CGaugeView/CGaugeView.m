@@ -78,11 +78,9 @@
   UIFont* labelFont = [SKAppColourScheme sGetFontWithName:@"DINCondensed-Bold" size:[SKAppColourScheme sGet_GUI_MULTIPLIER] * 12];
   NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
   [style setAlignment:NSTextAlignmentCenter];
-  NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                              labelFont, NSFontAttributeName,
-                              style, NSParagraphStyleAttributeName,
-                              withColor, NSForegroundColorAttributeName,
-                              nil];
+  NSDictionary *attributes = @{NSFontAttributeName : labelFont,
+          NSParagraphStyleAttributeName : style,
+          NSForegroundColorAttributeName : withColor};
   labelRect = CGRectMake(labelCenter.x - C_LABEL_WIDTH / 2, labelCenter.y - C_LABEL_HEIGHT / 2, C_LABEL_WIDTH, C_LABEL_HEIGHT);
   
   [labelText_ drawInRect:labelRect withAttributes:attributes];
@@ -532,8 +530,8 @@
 {
   CABasicAnimation *rotationAnimation;
   rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-  rotationAnimation.fromValue = [NSNumber numberWithFloat:fromValue];
-  rotationAnimation.toValue = [NSNumber numberWithFloat:toValue];
+  rotationAnimation.fromValue = @(fromValue);
+  rotationAnimation.toValue = @(toValue);
   rotationAnimation.duration = duration;
   rotationAnimation.repeatCount = repeatCount;
   rotationAnimation.removedOnCompletion = NO;

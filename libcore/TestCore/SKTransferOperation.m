@@ -524,7 +524,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
                                                userInfo:nil
                                                 repeats:YES];
   
-  urlConnection = [self newAsynchronousRequest:urlRequest delegate:self startImmediately:NO];
+  urlConnection = [self newAsynchronousRequest:urlRequest delegate:self startImmediately:@NO];
   
   // If we're in "Test Mode", the call is in the main thread; in which case, we leave it up to the test
   // harness to call our delegate methods.

@@ -142,7 +142,7 @@
   }
   
   [cell initCell];
-  [cell setTest:[arrTestsList objectAtIndex:indexPath.row]];
+  [cell setTest:arrTestsList[indexPath.row]];
   
   return cell;
 }
@@ -538,13 +538,13 @@ static SKATestResults* testToShareExternal = nil;
     }
    
     if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_TARGET]) {
-      if ([testResult_.metricsDictionary objectForKey:SKB_TESTVALUERESULT_C_PM_TARGET] == nil) {
+      if (testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_TARGET] == nil) {
         testResult_.metricsDictionary[thePassiveMetric] = testResult_.target;
       }
     }
     // C_NETWORKTYPEASSTRING_WIFI
     if ([thePassiveMetric isEqualToString:SKB_TESTVALUERESULT_C_PM_DEVICE]) {
-      if ([testResult_.metricsDictionary objectForKey:SKB_TESTVALUERESULT_C_PM_DEVICE] == nil) {
+      if (testResult_.metricsDictionary[SKB_TESTVALUERESULT_C_PM_DEVICE] == nil) {
         testResult_.metricsDictionary[thePassiveMetric] = [SKAppBehaviourDelegate sGetAppBehaviourDelegate].deviceModel;
       }
     }

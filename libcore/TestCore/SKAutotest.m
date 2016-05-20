@@ -94,11 +94,11 @@ static BOOL sbTestIsRunning = NO;
     
     for (int j=0; j<[tests_ count]; j++)
     {
-      NSDictionary *test_ = [tests_ objectAtIndex:j];
+      NSDictionary *test_ = tests_[j];
       
       if ([self shouldTestTypeIfIsIncluded])
       {
-        NSString *testType = [test_ objectForKey:@"type"];
+        NSString *testType = test_[@"type"];
         if ([self testIsIncluded:testType])
         {
           if (![testTypes containsObject:testType])
@@ -110,7 +110,7 @@ static BOOL sbTestIsRunning = NO;
       }
       else
       {
-        NSString *testDisplayName = [test_ objectForKey:@"displayName"];
+        NSString *testDisplayName = test_[@"displayName"];
         if (![testDisplayNames containsObject:testDisplayName])
         {
           [testDisplayNames addObject:testDisplayName];
@@ -129,7 +129,7 @@ static BOOL sbTestIsRunning = NO;
           // Only use tests in the bitmask!
           for (NSDictionary *test in nextTests)
           {
-            NSString *testNameFromType = [test objectForKey:@"type"];
+            NSString *testNameFromType = test[@"type"];
             //NSString *type = (([self translateTestNameToBitMask:((NSString *)[testFromAvailableList objectForKey:@"type"])] & bitMaskForRequestedTests_) != 0)
             int bitMaskForTest = [self translateTestNameToBitMask:testNameFromType];
             if ((bitMaskForRequestedTests_ & bitMaskForTest) != 0)
@@ -744,7 +744,7 @@ static BOOL sbTestIsRunning = NO;
   SKScheduler*scheduler = [self.autotestManagerDelegate amdGetSchedule];
   SK_ASSERT(scheduler != nil);
   if (scheduler.scheduleVersion != nil) {
-    [jsonDictionary setObject:scheduler.scheduleVersion forKey:@"schedule_config_version"];
+    jsonDictionary[@"schedule_config_version"] = scheduler.scheduleVersion;
   } else {
     SK_ASSERT(false);
   }
@@ -917,19 +917,15 @@ static BOOL sbTestIsRunning = NO;
       )
   {
     NSMutableDictionary *carrierStatus = [NSMutableDictionary dictionary];
-    [carrierStatus setObject:@"carrier_status"
-                      forKey:@"type"];
+    carrierStatus[@"type"] = @"carrier_status";
     // timestamp of the operator status check...
-    [carrierStatus setObject:self.mpThrottledQueryResult.timestamp
-                      forKey:@"timestamp"];
+    carrierStatus[@"timestamp"] = self.mpThrottledQueryResult.timestamp;
     // date/time of the operator status check...
-    [carrierStatus setObject:self.mpThrottledQueryResult.datetimeUTCSimple forKey:@"datetime"];
+    carrierStatus[@"datetime"] = self.mpThrottledQueryResult.datetimeUTCSimple;
     // operator name that matched by our status check
-    [carrierStatus setObject:self.mpThrottledQueryResult.carrier
-                      forKey:@"carrier"];
+    carrierStatus[@"carrier"] = self.mpThrottledQueryResult.carrier;
     // status response from our status check
-    [carrierStatus setObject:self.mpThrottleResponse
-                      forKey:@"status"];
+    carrierStatus[@"status"] = self.mpThrottleResponse;
     
     [metrics addObject:carrierStatus];
   }
@@ -964,7 +960,7 @@ static BOOL sbTestIsRunning = NO;
       NSLog(@"DEBUG **** - SKAutotest: nextTestIndex < testsCount (%d)", testsCount);
 #endif // DEBUG
       
-      NSDictionary *dict = [self.autoTests objectAtIndex:nextTestIndex];
+      NSDictionary *dict = self.autoTests[nextTestIndex];
       SK_ASSERT(dict != nil);
       
       if (nil != dict)

@@ -45,7 +45,7 @@
 + (NSString*)sGetJsonDirectory
 {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-  NSString *libraryPath = [paths objectAtIndex:0];
+  NSString *libraryPath = paths[0];
   
   NSString *docPath = [libraryPath stringByAppendingPathComponent:@"JSON"];
   [self sCreateFolderAtPathIfNotExists:docPath];
@@ -108,7 +108,7 @@
 + (NSString*)sGetJsonArchiveDirectory
 {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-  NSString *libraryPath = [paths objectAtIndex:0];
+  NSString *libraryPath = paths[0];
   
   NSString *docPath = [libraryPath stringByAppendingPathComponent:@"JSONArchive"];
   [self sCreateFolderAtPathIfNotExists:docPath];
@@ -129,7 +129,7 @@
 + (NSString*)sGetJSONArchiveZipFilePath
 {
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-  NSString *libraryPath = [paths objectAtIndex:0];
+  NSString *libraryPath = paths[0];
   NSString *docPath = [libraryPath stringByAppendingPathComponent:@"export.zip"];
   return docPath;
 }
@@ -235,7 +235,7 @@ static void sAssertTestTypeValid(NSString* testType) {
 
   // Append data on the requested tests!
   SK_ASSERT(useRequestedTestTypes.count > 0);
-  [jsonDictionary setObject:useRequestedTestTypes forKey:@"requested_tests"];
+  jsonDictionary[@"requested_tests"] = useRequestedTestTypes;
 
   NSError *error;
   NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
@@ -482,7 +482,7 @@ static void sAssertTestTypeValid(NSString* testType) {
     //NSLog(@"DEBUG: description = %@", jsonObject.description);
     if ([jsonObject isKindOfClass:[NSDictionary class]]) {
       NSDictionary *theDict = (NSDictionary*)jsonObject;
-      if ([theDict objectForKey:@"test_id"]) {
+      if (theDict[@"test_id"]) {
         test_id = theDict[@"test_id"];
         break;
       }
@@ -493,7 +493,7 @@ static void sAssertTestTypeValid(NSString* testType) {
     NSLog(@"DEBUG: This is an OLD TEST - with no test_id!");
 #endif // DEBUG
   } else {
-    testId = [NSNumber numberWithLongLong:test_id.longLongValue];
+    testId = @(test_id.longLongValue);
     NSLog(@"DEBUG: test_id = %@", testId);
   }
   
@@ -510,7 +510,7 @@ static void sAssertTestTypeValid(NSString* testType) {
     NSArray *testArray = theDictionaryToSend[@"tests"];
     for (NSDictionary *theTestDict in testArray) {
       //NSLog(@"DEBUG: description = %@", jsonObject.description);
-      if ([theTestDict objectForKey:@"target"]) {
+      if (theTestDict[@"target"]) {
         targetServerUrl = theTestDict[@"target"];
         break;
       }
@@ -579,36 +579,34 @@ static void sAssertTestTypeValid(NSString* testType) {
   NSMutableDictionary *jsonDictionary = [NSMutableDictionary new];
   
   NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
-  [jsonDictionary setObject:enterpriseId forKey:@"enterprise_id"];
+  jsonDictionary[@"enterprise_id"] = enterpriseId;
   
-  [jsonDictionary setObject:[SKGlobalMethods getSimOperatorCodeMCCAndMNC]
-                     forKey:@"sim_operator_code"];
+  jsonDictionary[@"sim_operator_code"] = [SKGlobalMethods getSimOperatorCodeMCCAndMNC];
 #ifdef DEBUG
   NSLog(@"DEBUG: sim_operator_code=%@", [SKGlobalMethods getSimOperatorCodeMCCAndMNC]);
 #endif // DEBUG
   
   if (isContinuousTest) {
-    [jsonDictionary setObject:@"continuous_testing" forKey:@"submission_type"];
+    jsonDictionary[@"submission_type"] = @"continuous_testing";
   } else {
-    [jsonDictionary setObject:@"manual_test" forKey:@"submission_type"];
+    jsonDictionary[@"submission_type"] = @"manual_test";
   }
   
   NSString *appVersionName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-  [jsonDictionary setObject:appVersionName forKey:@"app_version_name"];
+  jsonDictionary[@"app_version_name"] = appVersionName;
 #ifdef DEBUG
   NSLog(@"DEBUG: app_version_name=%@", appVersionName);
 #endif // DEBUG
   
   NSString *appVersionCode = [appVersionName stringByReplacingOccurrencesOfString:@"." withString:@""];
-  [jsonDictionary setObject:appVersionCode forKey:@"app_version_code"];
+  jsonDictionary[@"app_version_code"] = appVersionCode;
 #ifdef DEBUG
   NSLog(@"DEBUG: app_version_code=%@", appVersionCode);
 #endif // DEBUG
   
-  [jsonDictionary setObject:[SKGlobalMethods getTimeStamp]
-                     forKey:@"timestamp"];
+  jsonDictionary[@"timestamp"] = [SKGlobalMethods getTimeStamp];
   
-  [jsonDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  jsonDictionary[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
   
   NSTimeZone *tz = [NSTimeZone systemTimeZone];
   NSTimeInterval ti = [tz secondsFromGMT];
@@ -629,7 +627,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   NSString *prefix = (ti <= 0) ? @"" : @"+";
   NSString *timeZone = [NSString stringWithFormat:@"%@%@", prefix, result];
   
-  [jsonDictionary setObject:timeZone forKey:@"timezone"];
+  jsonDictionary[@"timezone"] = timeZone;
   
 #ifdef DEBUG
   NSLog(@"DEBUG: jsonDictionary=%@", [jsonDictionary description]);
@@ -653,14 +651,14 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   NSMutableArray *tests;
   
-  if ([jsonDictionary objectForKey:@"tests"] == nil)
+  if (jsonDictionary[@"tests"] == nil)
   {
     // Create a new, empty array of tests.
     tests = [NSMutableArray array];
   }
   else {
     // Use the already part-populated array of tests.
-    tests = [jsonDictionary objectForKey:@"tests"];
+    tests = jsonDictionary[@"tests"];
   }
   
   // Generate a pair of METRICS to capture "location" and "network_type"...
@@ -690,7 +688,7 @@ static void sAssertTestTypeValid(NSString* testType) {
     [tests addObject:results];
   }
   
-  [jsonDictionary setObject:tests forKey:@"tests"];
+  jsonDictionary[@"tests"] = tests;
 }
 
 + (NSMutableDictionary *)sCreateNetworkTypeMetric:(SKKitLocationManager*)locationManager
@@ -719,49 +717,36 @@ static void sAssertTestTypeValid(NSString* testType) {
   [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsConnected];
   
   NSMutableDictionary *network = [NSMutableDictionary dictionary];
-  [network setObject:@"network_data"
-              forKey:@"type"];
-  [network setObject:@"true"
-              forKey:@"connected"];   // must be true, seeing as we completed the test(s)
-  [network setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
-  [network setObject:[SKGlobalMethods getConnectionResultString:(ConnectionStatus)[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
-              forKey:@"active_network_type"];
-  [network setObject:@"NA"
-              forKey:@"active_network_type_code"];
+  network[@"type"] = @"network_data";
+  network[@"connected"] = @"true";   // must be true, seeing as we completed the test(s)
+  network[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
+  network[@"active_network_type"] = [SKGlobalMethods getConnectionResultString:(ConnectionStatus) [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]];
+  network[@"active_network_type_code"] = @"NA";
   
   // Note: the sim_operator_code and network_operator_code values should both be the same,
   // i.e. they should both be the result of a call to getSimOperatorCodeMCCAndMNC...
   NSString *simOperatorCodeMCCAndMNC = [SKGlobalMethods getSimOperatorCodeMCCAndMNC];
-  [network setObject:simOperatorCodeMCCAndMNC
-              forKey:@"network_operator_code"];
-  [network setObject:simOperatorCodeMCCAndMNC
-              forKey:@"sim_operator_code"];
+  network[@"network_operator_code"] = simOperatorCodeMCCAndMNC;
+  network[@"sim_operator_code"] = simOperatorCodeMCCAndMNC;
   
   NSString *carrierName = [SKGlobalMethods getCarrierName];
   //carrierName = @"SamKnows测试移动运营商"; @"SamKnows Test Mobile Operator"
-  [network setObject:carrierName forKey:@"network_operator_name"];
+  network[@"network_operator_name"] = carrierName;
   
-  [network setObject:@"NA"
-              forKey:@"network_type_code"];
+  network[@"network_type_code"] = @"NA";
   //[network setObject:[SKGlobalMethods getConnectionResultString:[[SKAppBehaviourDelegate sGetAppBehaviourDelegate] amdGetConnectionStatus]]
-  [network setObject:[SKGlobalMethods getNetworkType]
-              forKey:@"network_type"];
-  [network setObject:[SKGlobalMethods getDevicePlatform]
-              forKey:@"phone_type_code"];
+  network[@"network_type"] = [SKGlobalMethods getNetworkType];
+  network[@"phone_type_code"] = [SKGlobalMethods getDevicePlatform];
 #ifdef DEBUG
   NSLog(@"DEBUG: sim_operator_code=%@", [SKGlobalMethods getSimOperatorCodeMCCAndMNC]);
 #endif // DEBUG
   //[network setObject:[SKGlobalMethods getCarrierName]
   //            forKey:@"sim_operator_name"];
-  [network setObject:carrierName
-              forKey:@"sim_operator_name"];
+  network[@"sim_operator_name"] = carrierName;
   
-  [network setObject:[SKGlobalMethods getTimeStamp]
-              forKey:@"timestamp"];
-  [network setObject:[SKGlobalMethods getDeviceModel]
-              forKey:@"phone_type"];
-  [network setObject:@"NA"
-              forKey:@"roaming"];
+  network[@"timestamp"] = [SKGlobalMethods getTimeStamp];
+  network[@"phone_type"] = [SKGlobalMethods getDeviceModel];
+  network[@"roaming"] = @"NA";
   return network;
 }
 
@@ -782,21 +767,19 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   NSMutableDictionary *location = [NSMutableDictionary dictionary];
   
-  [location setObject:@"location"
-               forKey:@"type"];
+  location[@"type"] = @"location";
   
-  [location setObject:@"NA"
-               forKey:@"accuracy"];
+  location[@"accuracy"] = @"NA";
   
-  [location setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  location[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
   
-  [location setObject:[NSString localizedStringWithFormat:@"%f", locationManager.locationLatitude] forKey:@"latitude"];
+  location[@"latitude"] = [NSString localizedStringWithFormat:@"%f", locationManager.locationLatitude];
   
-  [location setObject:[NSString localizedStringWithFormat:@"%f", locationManager.locationLongitude] forKey:@"longitude"];
+  location[@"longitude"] = [NSString localizedStringWithFormat:@"%f", locationManager.locationLongitude];
   
-  [location setObject:[SKGlobalMethods getNetworkOrGps] forKey:@"location_type"];
+  location[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
   
-  [location setObject:[SKGlobalMethods getTimeStampForTimeInteralSince1970:locationManager.locationDateAsTimeIntervalSince1970] forKey:@"timestamp"];
+  location[@"timestamp"] = [SKGlobalMethods getTimeStampForTimeInteralSince1970:locationManager.locationDateAsTimeIntervalSince1970];
   
   return location;
 }
@@ -820,28 +803,28 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   NSMutableDictionary *phone = [NSMutableDictionary dictionary];
   
-  [phone setObject:@"phone_identity" forKey:@"type"];
+  phone[@"type"] = @"phone_identity";
   
   // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants.
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldUploadDeviceId]) {
-    [phone setObject:[[UIDevice currentDevice] uniqueDeviceIdentifier] forKey:@"app_id"];
+    phone[@"app_id"] = [[UIDevice currentDevice] uniqueDeviceIdentifier];
   }
   
-  [phone setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  phone[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
   
-  [phone setObject:@"Apple" forKey:@"manufacturer"];
+  phone[@"manufacturer"] = @"Apple";
   
-  [phone setObject:[SKGlobalMethods getDeviceModel] forKey:@"model"];
+  phone[@"model"] = [SKGlobalMethods getDeviceModel];
   
   //NSString *oldSystemName =  [[UIDevice currentDevice] systemName];
   // Override, as iOS 9 reports iOS rather than "iPhone OS" as reported by iOS 8...
-  [phone setObject:@"iPhone OS" forKey:@"os_type"];
+  phone[@"os_type"] = @"iPhone OS";
   
-  [phone setObject:[[UIDevice currentDevice] systemVersion] forKey:@"os_version"];
+  phone[@"os_version"] = [[UIDevice currentDevice] systemVersion];
   
-  [phone setObject:[SKGlobalMethods getTimeStamp] forKey:@"timestamp"];
+  phone[@"timestamp"] = [SKGlobalMethods getTimeStamp];
   
-  [phone setObject:testId forKey:@"test_id"];
+  phone[@"test_id"] = testId;
   
   
   // Location ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -858,8 +841,8 @@ static void sAssertTestTypeValid(NSString* testType) {
   //NSTimeInterval locationdate = 0;
   NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
   if (loc != nil) {
-    latitude = [[loc objectForKey:@"LATITUDE"] doubleValue];
-    longitude = [[loc objectForKey:@"LONGITUDE"] doubleValue];
+    latitude = [loc[@"LATITUDE"] doubleValue];
+    longitude = [loc[@"LONGITUDE"] doubleValue];
     //locationdate = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
   }
   
@@ -869,25 +852,19 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   NSMutableDictionary *lastLocation = [NSMutableDictionary dictionary];
   
-  [lastLocation setObject:@"last_known_location"
-                   forKey:@"type"];
+  lastLocation[@"type"] = @"last_known_location";
   
-  [lastLocation setObject:@"NA"
-                   forKey:@"accuracy"];
+  lastLocation[@"accuracy"] = @"NA";
   
-  [lastLocation setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  lastLocation[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
   
-  [lastLocation setObject:[NSString localizedStringWithFormat:@"%f", latitude]
-                   forKey:@"latitude"];
+  lastLocation[@"latitude"] = [NSString localizedStringWithFormat:@"%f", latitude];
   
-  [lastLocation setObject:[NSString localizedStringWithFormat:@"%f", longitude]
-                   forKey:@"longitude"];
+  lastLocation[@"longitude"] = [NSString localizedStringWithFormat:@"%f", longitude];
   
-  [lastLocation setObject:[SKGlobalMethods getNetworkOrGps]
-                   forKey:@"location_type"];
+  lastLocation[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
   
-  [lastLocation setObject:[SKGlobalMethods getTimeStamp]
-                   forKey:@"timestamp"];
+  lastLocation[@"timestamp"] = [SKGlobalMethods getTimeStamp];
   
   
   // Network ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -906,7 +883,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   }
   
   
-  [jsonDictionary setObject:metrics forKey:@"metrics"];
+  jsonDictionary[@"metrics"] = metrics;
   
   return metrics;
 }

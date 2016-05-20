@@ -206,12 +206,12 @@ const int cQueryCountPerServer = 3;
   for (serverIndex=0; serverIndex < serverCount; serverIndex++)
   {
     // -100 means - no succesful response - yet!
-    [bestLatencyPerServer addObject:[NSNumber numberWithDouble:-100.0]];
+    [bestLatencyPerServer addObject:@(-100.0)];
   }
   
   for (serverIndex=0; serverIndex < serverCount; serverIndex++)
   {
-    NSString *target = [targets objectAtIndex:serverIndex];
+    NSString *target = targets[serverIndex];
     NSString *urlString = [NSString stringWithFormat:@"http://%@/", target];
     
     int queryIndexForServer;
@@ -234,10 +234,10 @@ const int cQueryCountPerServer = 3;
              if (theLatency > 0) {
                double bestLatencySoFarForServer = [bestLatencyPerServer[serverIndex] doubleValue];
                if (bestLatencySoFarForServer < 0.0 || theLatency < bestLatencySoFarForServer) {
-                 bestLatencyPerServer[serverIndex] = [NSNumber numberWithDouble:theLatency];
+                 bestLatencyPerServer[serverIndex] = @(theLatency);
                  
 #ifdef DEBUG
-                 NSString *target = [targets objectAtIndex:serverIndex];
+                 NSString *target = targets[serverIndex];
                  NSLog(@"DEBUG: HTTP latency response, from %@, with %g", target, theLatency);
 #endif // DEBUG
                }
@@ -277,7 +277,7 @@ const int cQueryCountPerServer = 3;
                // Our latency is in seconds. Convert this to MILLISECONDS!
                lowestLatency = bestLatencySoFar * 1000.0;
                
-               NSString *target = [targets objectAtIndex:theBestFinalServerIndex];
+               NSString *target = targets[theBestFinalServerIndex];
                
 #ifdef DEBUG
                NSDate *now = [NSDate date];
@@ -345,7 +345,7 @@ const int cQueryCountPerServer = 3;
     {
       self.skAutotest.udpClosestTargetTestSucceeded = YES;
 
-      NSString *target = [targets objectAtIndex:lowestLatencyThreadId];
+      NSString *target = targets[lowestLatencyThreadId];
       
       dispatch_async(dispatch_get_main_queue(), ^{
         [self.closestTargetDelegate ctdDidCompleteClosestTargetTest:target latency:theLowestUdpLatency];
@@ -413,7 +413,7 @@ const int cQueryCountPerServer = 3;
   
   for (int m=0; m<nThreads; m++)
   {
-    NSString *target = [targets objectAtIndex:m];
+    NSString *target = targets[m];
     
     SKLatencyOperation *operation = [SKClosestTargetTest createLatencyOperationWithTarget:target
                                                                                 port:port 
@@ -534,7 +534,7 @@ const int cQueryCountPerServer = 3;
   @synchronized(self) {
 
 #ifdef DEBUG
-    NSString *target = [targets objectAtIndex:threadId_];
+    NSString *target = targets[threadId_];
     NSString *targetName = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate].schedule getClosestTargetName:target];
     if (targetName == nil) {
       targetName = target;

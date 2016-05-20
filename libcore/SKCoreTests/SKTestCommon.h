@@ -3,7 +3,6 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "OCMock/OCMock.h"
 
 @interface DummyLatencyTest : SKTest<SKLatencyOperationDelegate>
 @end

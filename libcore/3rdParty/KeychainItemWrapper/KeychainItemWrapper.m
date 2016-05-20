@@ -102,8 +102,8 @@ Keychain API expects as a validly constructed container class.
     // items which may be included by the same application.
     genericPasswordQuery = [[NSMutableDictionary alloc] init];
     
-		[genericPasswordQuery setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
-    [genericPasswordQuery setObject:identifier forKey:(id)kSecAttrGeneric];
+		genericPasswordQuery[(id) kSecClass] = (id) kSecClassGenericPassword;
+    genericPasswordQuery[(id) kSecAttrGeneric] = identifier;
 		
 		// The keychain access group attribute determines if this item can be shared
 		// amongst multiple apps whose code signing entitlements contain the same keychain access group.
@@ -119,13 +119,13 @@ Keychain API expects as a validly constructed container class.
 			// If a SecItem contains an access group attribute, SecItemAdd and SecItemUpdate on the
 			// simulator will return -25243 (errSecNoAccessForItem).
 #else			
-			[genericPasswordQuery setObject:accessGroup forKey:(id)kSecAttrAccessGroup];
+			genericPasswordQuery[(id) kSecAttrAccessGroup] = accessGroup;
 #endif
 		}
 		
 		// Use the proper search constants, return only the attributes of the first match.
-    [genericPasswordQuery setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
-    [genericPasswordQuery setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnAttributes];
+    genericPasswordQuery[(id) kSecMatchLimit] = (id) kSecMatchLimitOne;
+    genericPasswordQuery[(id) kSecReturnAttributes] = (id) kCFBooleanTrue;
     
     NSDictionary *tempQuery = [NSDictionary dictionaryWithDictionary:genericPasswordQuery];
     
@@ -137,7 +137,7 @@ Keychain API expects as a validly constructed container class.
       [self resetKeychainItem];
 			
 			// Add the generic attribute and the keychain access group.
-			[keychainItemData setObject:identifier forKey:(id)kSecAttrGeneric];
+			keychainItemData[(id) kSecAttrGeneric] = identifier;
 			if (accessGroup != nil)
 			{
 #if TARGET_IPHONE_SIMULATOR
@@ -150,7 +150,7 @@ Keychain API expects as a validly constructed container class.
 				// If a SecItem contains an access group attribute, SecItemAdd and SecItemUpdate on the
 				// simulator will return -25243 (errSecNoAccessForItem).
 #else			
-				[keychainItemData setObject:accessGroup forKey:(id)kSecAttrAccessGroup];
+				keychainItemData[(id) kSecAttrAccessGroup] = accessGroup;
 #endif
 			}
 		}
@@ -177,17 +177,17 @@ Keychain API expects as a validly constructed container class.
 - (void)setObject:(id)inObject forKey:(id)key 
 {
     if (inObject == nil) return;
-    id currentObject = [keychainItemData objectForKey:key];
+    id currentObject = keychainItemData[key];
     if (![currentObject isEqual:inObject])
     {
-        [keychainItemData setObject:inObject forKey:key];
+        keychainItemData[key] = inObject;
         [self writeToKeychain];
     }
 }
 
 - (id)objectForKey:(id)key
 {
-    return [keychainItemData objectForKey:key];
+    return keychainItemData[key];
 }
 
 - (void)resetKeychainItem
@@ -205,12 +205,12 @@ Keychain API expects as a validly constructed container class.
   }
   
   // Default attributes for keychain item.
-  [keychainItemData setObject:@"" forKey:(id)kSecAttrAccount];
-  [keychainItemData setObject:@"" forKey:(id)kSecAttrLabel];
-  [keychainItemData setObject:@"" forKey:(id)kSecAttrDescription];
+  keychainItemData[(id) kSecAttrAccount] = @"";
+  keychainItemData[(id) kSecAttrLabel] = @"";
+  keychainItemData[(id) kSecAttrDescription] = @"";
   
 	// Default data for keychain item.
-  [keychainItemData setObject:@"" forKey:(id)kSecValueData];
+  keychainItemData[(id) kSecValueData] = @"";
 }
 
 - (NSMutableDictionary *)dictionaryToSecItemFormat:(NSDictionary *)dictionaryToConvert
@@ -222,12 +222,12 @@ Keychain API expects as a validly constructed container class.
     NSMutableDictionary *returnDictionary = [NSMutableDictionary dictionaryWithDictionary:dictionaryToConvert];
     
     // Add the Generic Password keychain item class attribute.
-    [returnDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+    returnDictionary[(id) kSecClass] = (id) kSecClassGenericPassword;
     
     // Convert the NSString to NSData to meet the requirements for the value type kSecValueData.
 	// This is where to store sensitive data that should be encrypted.
-    NSString *passwordString = [dictionaryToConvert objectForKey:(id)kSecValueData];
-    [returnDictionary setObject:[passwordString dataUsingEncoding:NSUTF8StringEncoding] forKey:(id)kSecValueData];
+    NSString *passwordString = dictionaryToConvert[(id) kSecValueData];
+    returnDictionary[(id) kSecValueData] = [passwordString dataUsingEncoding:NSUTF8StringEncoding];
     
     return returnDictionary;
 }
@@ -241,8 +241,8 @@ Keychain API expects as a validly constructed container class.
     NSMutableDictionary *returnDictionary = [NSMutableDictionary dictionaryWithDictionary:dictionaryToConvert];
     
     // Add the proper search key and class attribute.
-    [returnDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
-    [returnDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+    returnDictionary[(id) kSecReturnData] = (id) kCFBooleanTrue;
+    returnDictionary[(id) kSecClass] = (id) kSecClassGenericPassword;
     
     // Acquire the password data from the attributes.
     NSData *passwordData = NULL;
@@ -254,7 +254,7 @@ Keychain API expects as a validly constructed container class.
         // Add the password to the dictionary, converting from NSData to NSString.
         NSString *password = [[[NSString alloc] initWithBytes:[passwordData bytes] length:[passwordData length] 
                                                      encoding:NSUTF8StringEncoding] autorelease];
-        [returnDictionary setObject:password forKey:(id)kSecValueData];
+        returnDictionary[(id) kSecValueData] = password;
     }
     else
     {
@@ -278,7 +278,7 @@ Keychain API expects as a validly constructed container class.
       // First we need the attributes from the Keychain.
       updateItem = [NSMutableDictionary dictionaryWithDictionary:attributes];
       // Second we need to add the appropriate search key/values.
-      [updateItem setObject:[genericPasswordQuery objectForKey:(id)kSecClass] forKey:(id)kSecClass];
+      updateItem[(id) kSecClass] = genericPasswordQuery[(id) kSecClass];
       
       // Lastly, we need to set up the updated attribute list being careful to remove the class.
       NSMutableDictionary *tempCheck = [self dictionaryToSecItemFormat:keychainItemData];

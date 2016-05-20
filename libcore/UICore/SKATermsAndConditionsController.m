@@ -166,7 +166,7 @@
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   int64_t theValue = (int64_t)[self.txtData.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:[NSNumber numberWithLongLong:theValue] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
   [prefs synchronize];
 }
 

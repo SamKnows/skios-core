@@ -7,6 +7,7 @@
 //  Copyright 2008  Inc. All rights reserved.
 //
 
+#import <MapKit/MapKit.h>
 #import "ZipArchive.h"
 
 #include "minizip/zip.h"
@@ -80,7 +81,7 @@ id			_delegate;
 	NSDictionary* attr = [[NSFileManager defaultManager] attributesOfItemAtPath:file error:nil];
 	if( attr )
 	{
-		NSDate* fileDate = (NSDate*)[attr objectForKey:NSFileModificationDate];
+		NSDate* fileDate = (NSDate*) attr[NSFileModificationDate];
 		if( fileDate )
 		{
 			// some application does use dosDate, but tmz_date instead
@@ -244,21 +245,22 @@ id			_delegate;
 			}
 		}
 		FILE* fp = fopen( (const char*)[fullPath UTF8String], "wb");
-		while( fp )
-		{
-			read=unzReadCurrentFile(_unzFile, buffer, 4096);
-			if( read > 0 )
-			{
-				fwrite(buffer, read, 1, fp );
+
+		if (fp != NULL) {
+			while (true) {
+				read = unzReadCurrentFile(_unzFile, buffer, 4096);
+				if (read > 0) {
+					fwrite(buffer, read, 1, fp);
+				}
+				else if (read < 0) {
+					[self OutputErrorMessage:@"Failed to reading zip file"];
+					break;
+				}
+				else
+					break;
 			}
-			else if( read<0 )
-			{
-				[self OutputErrorMessage:@"Failed to reading zip file"];
-				break;
-			}
-			else 
-				break;				
 		}
+
 		if( fp )
 		{
 			fclose( fp );
@@ -282,7 +284,7 @@ id			_delegate;
 			//}}
 			
 			
-			NSDictionary* attr = [NSDictionary dictionaryWithObject:orgDate forKey:NSFileModificationDate]; //[[NSFileManager defaultManager] fileAttributesAtPath:fullPath traverseLink:YES];
+			NSDictionary* attr = @{NSFileModificationDate : orgDate}; //[[NSFileManager defaultManager] fileAttributesAtPath:fullPath traverseLink:YES];
 			if( attr )
 			{
 				//		[attr  setValue:orgDate forKey:NSFileCreationDate];

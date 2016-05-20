@@ -58,9 +58,9 @@
     {
       for (NSMutableDictionary *dict in self.resultsArray)
       {
-        if ([[dict objectForKey:@"TYPE"] isEqualToString:testType])
+        if ([dict[@"TYPE"] isEqualToString:testType])
         {
-          [dict setObject:object forKey:key];
+          dict[key] = object;
         }
       }
     }
@@ -144,9 +144,9 @@
     cell.lblLossResult.text = statusString;
     cell.lblJitterResult.text = statusString;
   }
-  
-  [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:@"latency"];
-  [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:@"latency"];
+
+  [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
+  [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
   [self updateResultsArray:statusString key:@"RESULT_1" testType:@"latency"];
   [self updateResultsArray:statusString key:@"RESULT_2" testType:@"latency"];
   [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
@@ -190,9 +190,9 @@
     cell.lblLossResult.text = resLoss;
     cell.lblJitterResult.text = resJitter;
   }
-  
-  [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:@"latency"];
-  [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:@"latency"];
+
+  [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
+  [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
   [self updateResultsArray:resLatency key:@"RESULT_1" testType:@"latency"];
   [self updateResultsArray:resLoss key:@"RESULT_2" testType:@"latency"];
   [self updateResultsArray:resJitter key:@"RESULT_3" testType:@"latency"];
@@ -225,9 +225,9 @@
     cell.lblLossResult.text = statusString;
     cell.lblJitterResult.text = statusString;
   }
-  
-  [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:@"latency"];
-  [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:@"latency"];
+
+  [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
+  [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
   [self updateResultsArray:statusString key:@"RESULT_1" testType:@"latency"];
   [self updateResultsArray:statusString key:@"RESULT_2" testType:@"latency"];
   [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
@@ -247,8 +247,8 @@
       [cell.lossProgressView setProgress:progress/100 animated:YES];
       [cell.jitterProgressView setProgress:progress/100 animated:YES];
     }
-    
-    [self updateResultsArray:[NSNumber numberWithFloat:progress] key:@"PROGRESS" testType:@"latency"];
+
+    [self updateResultsArray:@(progress) key:@"PROGRESS" testType:@"latency"];
   });
 }
 
@@ -279,8 +279,8 @@
     {
       [cell.progressView setProgress:(progress0To100Percent/100.0F) animated:YES];
     }
-    
-    [self updateResultsArray:[NSNumber numberWithFloat:progress0To100Percent] key:@"PROGRESS" testType:test];
+
+    [self updateResultsArray:@(progress0To100Percent) key:@"PROGRESS" testType:test];
   });
 }
 
@@ -303,9 +303,9 @@
       cell.lblResult.text = [SKTransferOperation getStatusFailed];
       cell.progressView.hidden = YES;
     }
-    
-    [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:test];
-    [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
+
+    [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:test];
+    [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:test];
     [self updateResultsArray:[SKTransferOperation getStatusFailed] key:@"RESULT_1" testType:test];
     
     [self cancelTestFromAlertResponse:NO];
@@ -342,10 +342,10 @@
       cell.progressView.hidden = YES;
       cell.lblResult.text = result;
     }
-    
-    [self updateResultsArray:[NSNumber numberWithFloat:100] key:@"PROGRESS" testType:test];
-    [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:test];
-    [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:test];
+
+    [self updateResultsArray:@100.0F key:@"PROGRESS" testType:test];
+    [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:test];
+    [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:test];
     [self updateResultsArray:result key:@"RESULT_1" testType:test];
   });
 }
@@ -513,11 +513,11 @@
 {
   [self updateResultsArray:[SKLatencyOperation getCancelledStatus] key:@"STATUS" testType:@"closestTarget"];
   
-  NSArray *testTypes = [NSArray arrayWithObjects:@"latency", @"downstreamthroughput", @"upstreamthroughput", nil];
+  NSArray *testTypes = @[@"latency", @"downstreamthroughput", @"upstreamthroughput"];
   
   for (int j=0; j<[testTypes count]; j++)
   {
-    NSString *testType = [testTypes objectAtIndex:j];
+    NSString *testType = testTypes[j];
     NSIndexPath *ixp = [self getIndexPathForTest:testType];
     
     if ([testType isEqualToString:@"latency"])
@@ -563,8 +563,8 @@
           [self updateResultsArray:statusString key:@"RESULT_1" testType:testType];
           [self updateResultsArray:statusString key:@"RESULT_2" testType:testType];
           [self updateResultsArray:statusString key:@"RESULT_3" testType:testType];
-          [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:testType];
-          [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:testType];
+          [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:testType];
+          [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:testType];
         }
       }
     }
@@ -582,8 +582,8 @@
           
           [self updateResultsArray:[SKLatencyOperation getFailedStatus] key:@"RESULT_1" testType:testType];
           [self updateResultsArray:[SKLatencyOperation getFailedStatus] key:@"RESULT_2" testType:testType];
-          [self updateResultsArray:[NSNumber numberWithBool:NO] key:@"HIDE_LABEL" testType:testType];
-          [self updateResultsArray:[NSNumber numberWithBool:YES] key:@"HIDE_SPINNER" testType:testType];
+          [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:testType];
+          [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:testType];
         }
       }
     }
@@ -620,7 +620,7 @@
   
   for (NSDictionary *dict in self.resultsArray)
   {
-    if ([[dict objectForKey:@"TYPE"] isEqualToString:testType])
+    if ([dict[@"TYPE"] isEqualToString:testType])
     {
       bFound = YES;
       break;
@@ -689,13 +689,13 @@
     
     for (int j=0; j<[tests count]; j++)
     {
-      NSDictionary *dict = [tests objectAtIndex:j];
+      NSDictionary *dict = tests[j];
       
-      NSString *type = [dict objectForKey:@"type"];
+      NSString *type = dict[@"type"];
       
       if (![type isEqualToString:@"closestTarget"] && [self testIsIncluded:type])
       {
-        NSString *displayName = [dict objectForKey:@"displayName"];
+        NSString *displayName = dict[@"displayName"];
         if (displayName == nil) {
           // Defend against this being nil, as otherwise the dictionary setObject would fail.
           SK_ASSERT(false);
@@ -703,14 +703,14 @@
         }
         
         NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
-        [tmpDict setObject:type forKey:@"TYPE"];
-        [tmpDict setObject:@"" forKey:@"RESULT_1"];
-        [tmpDict setObject:@"" forKey:@"RESULT_2"];
-        [tmpDict setObject:@"" forKey:@"RESULT_3"];
-        [tmpDict setObject:displayName forKey:@"DISPLAY_NAME"];
-        [tmpDict setObject:[NSNumber numberWithFloat:0] forKey:@"PROGRESS"];
-        [tmpDict setObject:[NSNumber numberWithBool:NO] forKey:@"HIDE_SPINNER"];
-        [tmpDict setObject:[NSNumber numberWithBool:YES] forKey:@"HIDE_LABEL"];
+        tmpDict[@"TYPE"] = type;
+        tmpDict[@"RESULT_1"] = @"";
+        tmpDict[@"RESULT_2"] = @"";
+        tmpDict[@"RESULT_3"] = @"";
+        tmpDict[@"DISPLAY_NAME"] = displayName;
+        tmpDict[@"PROGRESS"] = @0.0F;
+        tmpDict[@"HIDE_SPINNER"] = @NO;
+        tmpDict[@"HIDE_LABEL"] = @YES;
         NSString* idleStatus = [SKLatencyOperation getIdleStatus];
         if (idleStatus == nil) {
           // Defend against this being nil, as otherwise the dictionary setObject would fail.
@@ -718,7 +718,7 @@
           SK_ASSERT(false);
           idleStatus = @"Idle";
         }
-        [tmpDict setObject:idleStatus forKey:@"STATUS"];
+        tmpDict[@"STATUS"] = idleStatus;
         
         float height = 100.0F;
         if ( ([type isEqualToString:@"downstreamthroughput"]) ||
@@ -732,7 +732,7 @@
         }
         
         // SKAInformationCell - 49, SKATransferTestCell - 59, SKALatencyTestCell - 100!
-        [tmpDict setObject:[NSNumber numberWithFloat:height] forKey:@"HEIGHT"];
+        tmpDict[@"HEIGHT"] = @(height);
         
         
         [tmpArray addObject:tmpDict];
@@ -756,7 +756,7 @@
   }
   else
   {
-    [prefs setValue:[NSNumber numberWithLongLong:0] forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+    [prefs setValue:@0 forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     [prefs synchronize];
   }
 }
@@ -960,9 +960,9 @@ static BOOL sbViewIsVisible;
   
   if (section == 0)
   {
-    NSDictionary *dict = (NSDictionary*)[self.resultsArray objectAtIndex:row];
+    NSDictionary *dict = (NSDictionary*) self.resultsArray[row];
     
-    float height = [[dict objectForKey:@"HEIGHT"] floatValue];
+    float height = [dict[@"HEIGHT"] floatValue];
     
     SK_ASSERT(height == 59 || height == 100 || height == 150);
     
@@ -1045,18 +1045,18 @@ static BOOL sbViewIsVisible;
     
     @synchronized(self)
     {
-      dict = [self.resultsArray objectAtIndex:row];
+      dict = self.resultsArray[row];
     }
     
-    NSString *type = [dict objectForKey:@"TYPE"];
+    NSString *type = dict[@"TYPE"];
     
-    NSString *result1       = [dict objectForKey:@"RESULT_1"];
-    NSString *result2       = [dict objectForKey:@"RESULT_2"];
-    NSString *result3       = [dict objectForKey:@"RESULT_3"];
-    NSString *displayName   = [dict objectForKey:@"DISPLAY_NAME"];
-    float progress          = [[dict objectForKey:@"PROGRESS"] floatValue];
-    BOOL hideLabel          = [[dict objectForKey:@"HIDE_LABEL"] boolValue];
-    BOOL hideSpinner        = [[dict objectForKey:@"HIDE_SPINNER"] boolValue];
+    NSString *result1       = dict[@"RESULT_1"];
+    NSString *result2       = dict[@"RESULT_2"];
+    NSString *result3       = dict[@"RESULT_3"];
+    NSString *displayName   = dict[@"DISPLAY_NAME"];
+    float progress          = [dict[@"PROGRESS"] floatValue];
+    BOOL hideLabel          = [dict[@"HIDE_LABEL"] boolValue];
+    BOOL hideSpinner        = [dict[@"HIDE_SPINNER"] boolValue];
     
     if ([type isEqualToString:@"latency"])
     {

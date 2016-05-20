@@ -134,6 +134,7 @@
 		B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
 		B2E68C321B25CB32005D5186 /* SKJUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5441B219463002DC60F /* SKJUploadTest.m */; };
 		B2E68C341B25D321005D5186 /* SKJPassiveServerUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5471B21947E002DC60F /* SKJPassiveServerUploadTest.m */; };
+		B2E7294F1CEF159B00DD9DEE /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E7294E1CEF159B00DD9DEE /* AddressBook.framework */; };
 		B2EC77DE1A88C791009B324A /* SKScheduleParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77DC1A88C791009B324A /* SKScheduleParser.m */; };
 		B2EC77E31A88C838009B324A /* SKTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E21A88C838009B324A /* SKTestRunner.m */; };
 		B2EC77E61A88CA07009B324A /* SKKitTestClosestTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = B2EC77E41A88CA07009B324A /* SKKitTestClosestTarget.m */; };
@@ -151,7 +152,6 @@
 		B2FB033A19B75D09007AA3C2 /* SKBHistoryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032319B75D09007AA3C2 /* SKBHistoryViewMgr.m */; };
 		B2FB033B19B75D09007AA3C2 /* SKBTermsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032519B75D09007AA3C2 /* SKBTermsView.m */; };
 		B2FB033E19B75D09007AA3C2 /* SKBSummaryViewMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */; };
-		B2FB4389192DFFEC00DE371B /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2FB437E192DFFEC00DE371B /* libOCMock.a */; };
 		B2FB438C192E009400DE371B /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEDD18FFC24F00323923 /* libz.dylib */; };
 		B2FB438D192E00AE00DE371B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B221AEE418FFE24800323923 /* MessageUI.framework */; };
 /* End PBXBuildFile section */
@@ -192,7 +192,6 @@
 		B218A04317CCF1550048B3E0 /* SKClosestTargetTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKClosestTargetTest.h; sourceTree = "<group>"; };
 		B218A04917CE09460048B3E0 /* SKAutotest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAutotest.h; sourceTree = "<group>"; };
 		B218BCD418EE952100B076DC /* SKTest_HttpLatencyTestingForClosestTargetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTest_HttpLatencyTestingForClosestTargetTests.m; sourceTree = "<group>"; };
-		B21A857317D48695006488B1 /* SKAutotestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAutotestTests.m; sourceTree = "<group>"; };
 		B221AEC718FFC12100323923 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZipArchive.h; path = ZipArchive/ZipArchive.h; sourceTree = "<group>"; };
 		B221AEC818FFC12100323923 /* ZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZipArchive.m; path = ZipArchive/ZipArchive.m; sourceTree = "<group>"; };
 		B221AECB18FFC1A400323923 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
@@ -484,6 +483,7 @@
 		B2DD40251B271B16005E5CF2 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTest_SKJPassiveServerUploadTest.m; sourceTree = "<group>"; };
 		B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResultsTests.m; sourceTree = "<group>"; };
+		B2E7294E1CEF159B00DD9DEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		B2EC77DC1A88C791009B324A /* SKScheduleParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKScheduleParser.m; sourceTree = "<group>"; };
 		B2EC77DD1A88C791009B324A /* SKScheduleParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKScheduleParser.h; sourceTree = "<group>"; };
 		B2EC77E11A88C838009B324A /* SKTestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestRunner.h; sourceTree = "<group>"; };
@@ -518,13 +518,6 @@
 		B2FB032519B75D09007AA3C2 /* SKBTermsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBTermsView.m; sourceTree = "<group>"; };
 		B2FB032A19B75D09007AA3C2 /* SKBSummaryViewMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBSummaryViewMgr.h; sourceTree = "<group>"; };
 		B2FB032B19B75D09007AA3C2 /* SKBSummaryViewMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBSummaryViewMgr.m; sourceTree = "<group>"; };
-		B2FB437E192DFFEC00DE371B /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
-		B2FB4380192DFFEC00DE371B /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
-		B2FB4381192DFFEC00DE371B /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
-		B2FB4382192DFFEC00DE371B /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
-		B2FB4383192DFFEC00DE371B /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
-		B2FB4384192DFFEC00DE371B /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
-		B2FB4385192DFFEC00DE371B /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -551,6 +544,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2E7294F1CEF159B00DD9DEE /* AddressBook.framework in Frameworks */,
 				B2DD40261B271B16005E5CF2 /* libc++.dylib in Frameworks */,
 				B29C68331A651699002761DB /* QuickLook.framework in Frameworks */,
 				B29C68321A65166C002761DB /* MobileCoreServices.framework in Frameworks */,
@@ -574,7 +568,6 @@
 				B22E890B17C36DC4005D9094 /* libsqlite3.dylib in Frameworks */,
 				B22E88C017C3678A005D9094 /* libSKCore.a in Frameworks */,
 				B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */,
-				B2FB4389192DFFEC00DE371B /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,6 +652,7 @@
 		B22E88A917C36789005D9094 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B2E7294E1CEF159B00DD9DEE /* AddressBook.framework */,
 				B2DD40251B271B16005E5CF2 /* libc++.dylib */,
 				B2697B281A232A0E0077C360 /* QuickLook.framework */,
 				B2697B261A232A050077C360 /* MobileCoreServices.framework */,
@@ -726,12 +720,10 @@
 				B27B0D87181A7F58008D76D6 /* SKCoreTests.m */,
 				B2AF51F017CF390200815146 /* SKSchedulerTests.m */,
 				B2AF51EE17CF35FF00815146 /* SKTransferOperationTests.m */,
-				B21A857317D48695006488B1 /* SKAutotestTests.m */,
 				B2D934E217D4D4240012C169 /* SKGlobalMethodsTest.m */,
 				B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */,
 				B279124A18D88AF000E17EBF /* SKOperatorsTests.m */,
 				B218BCD418EE952100B076DC /* SKTest_HttpLatencyTestingForClosestTargetTests.m */,
-				B2FB437C192DFFEC00DE371B /* OCMock */,
 				B2AF51F217CF3F3000815146 /* Test XML */,
 				B22E88C217C3678A005D9094 /* Supporting Files */,
 			);
@@ -1236,37 +1228,6 @@
 			name = ViewManagers;
 			sourceTree = "<group>";
 		};
-		B2FB437C192DFFEC00DE371B /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				B2FB437D192DFFEC00DE371B /* iOS */,
-			);
-			name = OCMock;
-			path = ../../OCMock;
-			sourceTree = "<group>";
-		};
-		B2FB437D192DFFEC00DE371B /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				B2FB437E192DFFEC00DE371B /* libOCMock.a */,
-				B2FB437F192DFFEC00DE371B /* OCMock */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		B2FB437F192DFFEC00DE371B /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				B2FB4380192DFFEC00DE371B /* NSNotificationCenter+OCMAdditions.h */,
-				B2FB4381192DFFEC00DE371B /* OCMArg.h */,
-				B2FB4382192DFFEC00DE371B /* OCMConstraint.h */,
-				B2FB4383192DFFEC00DE371B /* OCMock.h */,
-				B2FB4384192DFFEC00DE371B /* OCMockObject.h */,
-				B2FB4385192DFFEC00DE371B /* OCMockRecorder.h */,
-			);
-			path = OCMock;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1294,7 +1255,6 @@
 				B22E88B317C3678A005D9094 /* Sources */,
 				B22E88B417C3678A005D9094 /* Frameworks */,
 				B22E88B517C3678A005D9094 /* Resources */,
-				B22E88B617C3678A005D9094 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1347,22 +1307,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		B22E88B617C3678A005D9094 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B22E88A317C36789005D9094 /* Sources */ = {

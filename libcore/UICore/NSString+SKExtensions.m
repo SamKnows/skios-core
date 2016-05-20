@@ -18,11 +18,9 @@
   paragraphStyle.alignment = NSTextAlignmentLeft;
   
   UIColor *color = [UIColor blackColor];
-  NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        font, NSFontAttributeName,
-                                        color, NSForegroundColorAttributeName,
-                                        paragraphStyle, NSParagraphStyleAttributeName,
-                                        nil];
+  NSDictionary *attributesDictionary = @{NSFontAttributeName : font,
+          NSForegroundColorAttributeName : color,
+          NSParagraphStyleAttributeName : paragraphStyle};
   CGRect labelRect = [self boundingRectWithSize:size  options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionary context:nil];
   return CGSizeMake(labelRect.size.width, labelRect.size.height);
 }
@@ -36,11 +34,9 @@
   paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping; // NSLineBreakMode.;
   paragraphStyle.alignment = NSTextAlignmentLeft;
   
-  NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        font, NSFontAttributeName,
-                                        withTextColor, NSForegroundColorAttributeName,
-                                        paragraphStyle, NSParagraphStyleAttributeName,
-                                        nil];
+  NSDictionary *attributesDictionary = @{NSFontAttributeName : font,
+          NSForegroundColorAttributeName : withTextColor,
+          NSParagraphStyleAttributeName : paragraphStyle};
   [self drawInRect:rect withAttributes:attributesDictionary];
 }
 
@@ -54,11 +50,9 @@
   paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping; // NSLineBreakMode.;
   paragraphStyle.alignment = NSTextAlignmentLeft;
   
-  NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        font, NSFontAttributeName,
-                                        withTextColor, NSForegroundColorAttributeName,
-                                        paragraphStyle, NSParagraphStyleAttributeName,
-                                        nil];
+  NSDictionary *attributesDictionary = @{NSFontAttributeName : font,
+          NSForegroundColorAttributeName : withTextColor,
+          NSParagraphStyleAttributeName : paragraphStyle};
   [self drawAtPoint:point withAttributes:attributesDictionary];
 }
 

@@ -73,12 +73,12 @@
 
 - (void)setImage:(UIImage *)image
 {
-    [[self imageLayer] setContents:(id)[image CGImage]];
+    [[self imageLayer] setContents:(__bridge id)[image CGImage]];
 }
 
 - (UIImage *)image
 {
-    return [UIImage imageWithCGImage:(CGImageRef)[[self imageLayer] contents]];
+    return [UIImage imageWithCGImage:(__bridge CGImageRef)[[self imageLayer] contents]];
 }
 
 - (void)setWellThickness:(float)wellThickness
@@ -145,7 +145,7 @@
   
   UIGraphicsBeginImageContextWithOptions(bounds.size, NO, [[UIScreen mainScreen] scale]);
   [innerPath fill];
-  [[self maskLayer] setContents:(id)[UIGraphicsGetImageFromCurrentImageContext() CGImage]];
+  [[self maskLayer] setContents:(__bridge id)[UIGraphicsGetImageFromCurrentImageContext() CGImage]];
   UIGraphicsEndImageContext();
   
   // Make this call last!

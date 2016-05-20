@@ -1114,11 +1114,18 @@ extern int ZEXPORT unzOpenCurrentFile3 (file, method, level, raw, password)
     if (level!=NULL)
     {
         *level = 6;
-        switch (s->cur_file_info.flag & 0x06)
-        {
-          case 6 : *level = 1; break;
-          case 4 : *level = 2; break;
-          case 2 : *level = 9; break;
+        switch (s->cur_file_info.flag & 0x06) {
+        case 6 :
+            *level = 1;
+            break;
+        case 4 :
+            *level = 2;
+            break;
+        case 2 :
+            *level = 9;
+            break;
+        default:
+            break;
         }
     }
 

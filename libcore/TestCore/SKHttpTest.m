@@ -719,7 +719,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
     {
       if (bitrateMbps1024Based > 0.0) {
         if (self.isDownstream == NO) {
-          [self.mServerUploadTestBitrates addObject:[NSNumber numberWithDouble:bitrateMbps1024Based]];
+          [self.mServerUploadTestBitrates addObject:@(bitrateMbps1024Based)];
         }
       }
       
@@ -1118,15 +1118,13 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   {
     NSString *type = (self.nThreads == 1) ? DOWNSTREAMSINGLE : DOWNSTREAMMULTI;
     
-    [outputResultsDictionary setObject:type
-                                forKey:@"type"];
+    outputResultsDictionary[@"type"] = type;
   }
   else
   {
     NSString *type = (self.nThreads == 1) ? UPSTREAMSINGLE : UPSTREAMMULTI;
     
-    [outputResultsDictionary setObject:type
-                                forKey:@"type"];
+    outputResultsDictionary[@"type"] = type;
   }
  
 #ifdef DEBUG
@@ -1153,37 +1151,27 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   NSLog(@"DEBUG: bytesPerSecond (JSON)=%d (bytesPerSecondOld=%d)", bytesPerSecond, bytesPerSecondOld);
 #endif // DEBUG
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", bytesPerSecond]
-                              forKey:@"bytes_sec"];
+  outputResultsDictionary[@"bytes_sec"] = [NSString stringWithFormat:@"%d", bytesPerSecond];
   
-  [outputResultsDictionary setObject:[NSDate sGetDateAsIso8601String:[SKCore getToday]] forKey:@"datetime"];
+  outputResultsDictionary[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", self.nThreads]
-                              forKey:@"number_of_threads"];
+  outputResultsDictionary[@"number_of_threads"] = [NSString stringWithFormat:@"%d", self.nThreads];
   
-  [outputResultsDictionary setObject:self.testOK ? @"true" : @"false"
-                              forKey:@"success"];
+  outputResultsDictionary[@"success"] = self.testOK ? @"true" : @"false";
   
-  [outputResultsDictionary setObject:self.target
-                              forKey:@"target"];
+  outputResultsDictionary[@"target"] = self.target;
   
-  [outputResultsDictionary setObject:[SKIPHelper hostIPAddress:self.target]
-                              forKey:@"target_ipaddress"];
+  outputResultsDictionary[@"target_ipaddress"] = [SKIPHelper hostIPAddress:self.target];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)([[SKCore getToday] timeIntervalSince1970])]
-                              forKey:@"timestamp"];
+  outputResultsDictionary[@"timestamp"] = [NSString stringWithFormat:@"%d", (int) ([[SKCore getToday] timeIntervalSince1970])];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)testTransferBytes]
-                              forKey:@"transfer_bytes"];
+  outputResultsDictionary[@"transfer_bytes"] = [NSString stringWithFormat:@"%d", (int) testTransferBytes];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)(testTransferTimeMicroseconds)]
-                              forKey:@"transfer_time"];
+  outputResultsDictionary[@"transfer_time"] = [NSString stringWithFormat:@"%d", (int) (testTransferTimeMicroseconds)];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)self.testWarmupBytes]
-                              forKey:@"warmup_bytes"];
+  outputResultsDictionary[@"warmup_bytes"] = [NSString stringWithFormat:@"%d", (int) self.testWarmupBytes];
   
-  [outputResultsDictionary setObject:[NSString stringWithFormat:@"%d", (int)((self.testWarmupEndTime - self.testWarmupStartTime) * 1000000)]
-                              forKey:@"warmup_time"];
+  outputResultsDictionary[@"warmup_time"] = [NSString stringWithFormat:@"%d", (int) ((self.testWarmupEndTime - self.testWarmupStartTime) * 1000000)];
 }
 
 @end
