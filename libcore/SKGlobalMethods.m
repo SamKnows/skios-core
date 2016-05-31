@@ -525,20 +525,21 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 
 + (NSString*)getCredentials:(NSString*)username password:(NSString*)password
 {
-    NSString *authStr = [NSString stringWithFormat:@"%@:%@", username, password];
+  NSString *authStr = [NSString stringWithFormat:@"%@:%@", username, password];
   
 #ifdef DEBUG
   NSLog(@"DEBUG: authStr=%@", authStr);
 #endif // DEBUG
   
-    NSData *authData = [authStr dataUsingEncoding:NSASCIIStringEncoding];
-    NSString *authHeader = [NSString stringWithFormat:@"Basic %@", sBase64EncodedStringForData(authData)];
+  NSData *authData = [authStr dataUsingEncoding:NSASCIIStringEncoding];
+  NSString *encodedCredentials = sBase64EncodedStringForData(authData);
+  NSString *authHeader = [NSString stringWithFormat:@"Basic %@", encodedCredentials];
   
 #ifdef DEBUG
   NSLog(@"DEBUG: authHeader=%@", authHeader);
 #endif // DEBUG
   
-    return authHeader;
+  return authHeader;
 }
 
 +(NSString*)getCarrierName {
