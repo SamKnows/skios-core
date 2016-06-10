@@ -100,11 +100,13 @@ NSString *const cPrefs_LastTestSelection = @"LAST_TESTSELECTION";
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-  SK_ASSERT(false);
+  //SK_ASSERT(false);
   
   self.hasLocation = NO;
-  
-  NSLog(@"%s %d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:@"Location Manager Fail %@", [error localizedDescription]]);
+ 
+#if DEBUG
+  NSLog(@"DEBUG: %s %d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:@"Location Manager Fail %@", [error localizedDescription]]);
+#endif // DEBUG
 }
 
 - (void)locationManager:(CLLocationManager *)manager
