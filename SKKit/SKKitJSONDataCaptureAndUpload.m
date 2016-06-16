@@ -175,6 +175,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   } else if ([testType isEqualToString:UPSTREAMSINGLE]) {
   } else if ([testType isEqualToString:UPSTREAMMULTI]) {
   } else if ([testType isEqualToString:UDPLATENCY]) {
+  } else if ([testType isEqualToString:@"NETFLIX"]) {
   } else if ([testType isEqualToString:CLOSESTTARGET]) {
   } else {
     SK_ASSERT(false); // Unexpected value!
@@ -866,8 +867,19 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   NSMutableDictionary *network;
   network = [self sCreateNetworkTypeMetric:locationManager];
-  
+ 
+  //
+  // Note that the "metrics" array might already exist - in which case, we *append* to it!
+  //
   NSMutableArray *metrics = [NSMutableArray array];
+  
+  NSArray *suppliedMetrics = jsonDictionary[@"metrics"];
+  if (suppliedMetrics != nil) {
+    for (NSDictionary *suppliedMetricItem in suppliedMetrics) {
+      [metrics addObject:suppliedMetricItem];
+    }
+  }
+  
   [metrics addObject:phone];
   [metrics addObject:location];
   [metrics addObject:lastLocation];
