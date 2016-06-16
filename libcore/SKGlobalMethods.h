@@ -101,4 +101,6 @@ typedef double SKTimeIntervalMicroseconds;
 // Utility
 + (BOOL)sIsWholeNumber:(double)number;
 
++ (NSString*) sExportDictionaryToJSONString:(NSDictionary*)dictionary;
+
 @end

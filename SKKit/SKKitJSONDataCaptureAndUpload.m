@@ -237,12 +237,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   SK_ASSERT(useRequestedTestTypes.count > 0);
   jsonDictionary[@"requested_tests"] = useRequestedTestTypes;
 
-  NSError *error;
-  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDictionary
-                                                     options:NSJSONWritingPrettyPrinted
-                                                       error:&error];
-  
-  NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  NSString *jsonStr = [SKGlobalMethods sExportDictionaryToJSONString:jsonDictionary];
 #ifdef DEBUG
   //NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
   NSLog(@"DEBUG: doSaveAndUploadJson...");
