@@ -168,6 +168,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(BOOL) isDataCapSupported;
 -(void) setIsDataCapEnabled:(BOOL) value;
 -(BOOL) isDataCapEnabled;
+-(void) resetDataUsageToZero;
 -(void) checkDataUsageReset;
 -(void)resetDataCapStartDate:(NSDate*)baseOnStartDate;
 -(NSDate*) generateDataCapPeriodStartDate:(NSDate*)baseOnOptionalLastDate;
@@ -252,6 +253,10 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 - (void)stopLocationMonitoring;
 
 -(BOOL) getShouldClosestTargetTestBeRunFirst;
+
+// Some custom apps require us to record usage, even if on WiFi - the default for this is NO.
+// If you want data cap usage to be updated even if on WiFi, then overrride to return YES.
+-(BOOL) getShouldRecordUsageEvenIfOnWiFi;
 
 //
 // SKKit test creation...

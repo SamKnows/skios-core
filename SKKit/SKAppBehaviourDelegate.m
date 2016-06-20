@@ -416,6 +416,12 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   [prefs synchronize];
 }
 
+-(void) resetDataUsageToZero {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  [prefs setObject:@(0) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
+  [prefs synchronize];
+}
+
 - (void)checkDataUsageReset
 {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -447,9 +453,13 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   }
   else
   {
-    if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
-      // Don't add if on WiFi!
-      return;
+    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldRecordUsageEvenIfOnWiFi]) {
+      // Some custom apps require us to record usage, even if on WiFi!
+    } else {
+      if ([SKAppBehaviourDelegate getIsUsingWiFi]) {
+        // Don't add if on WiFi!
+        return;
+      }
     }
     
     NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
@@ -1463,6 +1473,12 @@ static UIViewController *GpShowSocialExportOnViewController = nil;
 }
 
 -(BOOL) getShouldClosestTargetTestBeRunFirst {
+  return NO;
+}
+
+// Some custom apps require us to record usage, even if on WiFi - the default for this is NO.
+// If you want data cap usage to be updated even if on WiFi, then overrride to return YES.
+-(BOOL) getShouldRecordUsageEvenIfOnWiFi {
   return NO;
 }
 
