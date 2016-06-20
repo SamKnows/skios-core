@@ -484,13 +484,14 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
       self.shouldKeepRunning = YES;
       
       self.keepAwakeSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-      NSError *err = nil;
-      if (![self.keepAwakeSocket connectToHost:self.target onPort:6000 error:&err]) // Asynchronous!
+      NSError *error = nil;
+      if (![self.keepAwakeSocket connectToHost:self.target onPort:6000 error:&error]) // Asynchronous!
       {
         // If there was an error, it's likely something like "already connected" or "no delegate set"
+        SK_ASSERT(error != nil);
 #ifdef DEBUG
-        NSLog(@"Failed to open keepAwakeSocket on port 5000 for target %@, error=%@", target, err);
-        if ([[err description] rangeOfString:@"Too many open files"].length > 0) {
+        NSLog(@"Failed to open keepAwakeSocket on port 5000 for target %@, error=%@", target, error);
+        if ([[error description] rangeOfString:@"Too many open files"].length > 0) {
           [self.class lsof];
         }
 #endif // DEBUG
@@ -836,8 +837,10 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 	if (![udpSocket bindToPort:0 error:&error])
 	{
     NSLog(@"Socket : Error Binding : %@", error);
+    SK_ASSERT(false);
 		return NO;
 	}
+  SK_ASSERT(error == nil);
 	
   return YES;
 }
@@ -966,15 +969,16 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error
 {
-    [self skDebug:[NSString stringWithFormat:@"%s %ld : DID NOT SEND PACKET : %@", __FUNCTION__, tag, [error localizedDescription]]];
-    
-    if ([self isCancelled])
-    {
-        [self cancelled];
-        return;
-    }
-    
-    [self sendPacket:tag+1];
+  SK_ASSERT(false);
+  [self skDebug:[NSString stringWithFormat:@"%s %ld : DID NOT SEND PACKET : %@", __FUNCTION__, tag, [error localizedDescription]]];
+  
+  if ([self isCancelled])
+  {
+    [self cancelled];
+    return;
+  }
+  
+  [self sendPacket:tag+1];
 }
 
 - (BOOL)onUdpSocket:(AsyncUdpSocket *)sock
@@ -1033,6 +1037,8 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error
 {
+  SK_ASSERT(false);
+  
 #ifdef DEBUG
   NSLog(@"DEBUG: - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error, DID NOT RECEIVE PACKET, error:(%@)", [error localizedDescription]);
 #endif // DEBUG

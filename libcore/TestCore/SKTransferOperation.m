@@ -340,6 +340,10 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     file = [_file copy];
     isDownstream = _isDownstream;
     nThreads = _nThreads;
+    if(nThreads < 1 || nThreads > MAXNTHREADS)
+    {
+      SK_ASSERT(false);
+    }
     threadId = _threadId;
     mbAsyncFlag = _asyncFlag;
     
@@ -615,6 +619,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 #ifdef _DEBUG
     NSLog(@"DEBUG ERROR, no such host\n");
 #endif // _DEBUG
+    SK_ASSERT(false);
     return -1;
   }
   
@@ -630,6 +635,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 #ifdef _DEBUG
     NSLog(@"DEBUG ERROR, failed to create socket\n");
 #endif // _DEBUG
+    SK_ASSERT(false);
     return -1;
   }
   

@@ -234,13 +234,16 @@ typedef void (^MyThreadBlock)(void);
  }
  */
 
-/* Abstract methods to be implemented in derived classes */
--(BOOL) transferToSocket:(int)sockfd ThreadIndex:(int)threadIndex {	/* Generate main traffic for metrics measurements */
+// Abstract methods to be implemented in derived classes
+
+// Generate main traffic for metrics measurements
+-(BOOL) transferToSocket:(int)sockfd ThreadIndex:(int)threadIndex {
   SK_ASSERT(NO);
   return NO;
 }
 
--(BOOL) warmupToSocket:(int)sockfd ThreadIndex:(int)threadIndex {		/* Generate initial traffic for setting optimal TCP parameters */
+// Generate initial traffic for setting optimal TCP parameters
+-(BOOL) warmupToSocket:(int)sockfd ThreadIndex:(int)threadIndex {
   SK_ASSERT(NO);
   return NO;
 }
@@ -366,6 +369,10 @@ typedef void (^MyThreadBlock)(void);
       self.mTransferMaxBytes = [value intValue];
     } else if ([key isEqualToString:NTHREADS]) {
       self.nThreads = [value intValue];
+      if(self.nThreads < 1 || self.nThreads > MAXNTHREADS)
+      {
+        SK_ASSERT(false);
+      }
     } else if ([key isEqualToString:BUFFERSIZE]) {
       self.downloadBufferSize = [value intValue];
     } else if ([key isEqualToString:SENDBUFFERSIZE]) {
@@ -531,7 +538,8 @@ void threadEntry(SKJHttpTest *pSelf) {
   [self finish];
 }
 
--(int) getSocket {															/* Socket initialiser */
+// Socket initialiser
+-(int) getSocket {
   //SKLogger.d(this, "HTTP TEST - getSocket()");
   
   int sockfd = [SKTransferOperation sCreateAndConnectRawSocketForTarget:self.target Port:self.port CustomBlock:^(int sockfd) {
@@ -549,11 +557,11 @@ void threadEntry(SKJHttpTest *pSelf) {
     int result =
 #endif // DEBUG
     setsockopt(sockfd,            /* socket affected */
-                            IPPROTO_TCP,     /* set option at TCP level */
-                            TCP_NODELAY,     /* name of option */
-                            (char *) &flag,  /* the cast is historical
-                                              cruft */
-                            sizeof(int));    /* length of option value */
+               IPPROTO_TCP,     /* set option at TCP level */
+               TCP_NODELAY,     /* name of option */
+               (char *) &flag,  /* the cast is historical
+                                 cruft */
+               sizeof(int));    /* length of option value */
 #ifdef DEBUG
     SK_ASSERT (result >= 0);
 #endif // DEBUG
@@ -578,6 +586,8 @@ void threadEntry(SKJHttpTest *pSelf) {
       //ret.setSoTimeout(1);
     }
   }];
+  
+  SK_ASSERT(sockfd != 0);
   
   return sockfd;
 }
@@ -726,7 +736,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     
     //			SKLogger.d(TAG(this), "External Monitor updated at " + (new java.text.SimpleDateFormat("HH:mm:ss.SSS")).format(new java.util.Date()) +
     //					" as " +  ( currentSpeed / 1000000.0) +
-    //					" thread: " + getThreadIndex());//haha remove in production
+    //					" thread: " + getThreadIndex());
   }
 }
 
@@ -817,7 +827,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   /* record start up time should be recorded only by one thread */
   int64_t testZero = 0;
   self.mStartTransferMicro->compare_exchange_strong(testZero, [SKJHttpTest sGetMicroTime]);
-  //SKLogger.d(TAG(this), "Setting transfer start  == " + mStartTransferMicro.get() + " by thread: " + this.getThreadIndex());//TODO remove in production
+  //SKLogger.d(TAG(this), "Setting transfer start  == " + mStartTransferMicro.get() + " by thread: " + this.getThreadIndex());
   
   [self setTransferTimeMicro:([SKJHttpTest sGetMicroTime] - *self.mStartTransferMicro)];					/* How much time transfer took up to now */
   
@@ -1089,7 +1099,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     return -1;
   }
   
-  //SKLogger.d(TAG(this), "getWarmupSpeedBytesPerSecond, using CLIENT value = " + btsPerSec);//HAHA remove in production
+  //SKLogger.d(TAG(this), "getWarmupSpeedBytesPerSecond, using CLIENT value = " + btsPerSec);
   return btsPerSec;
 }
 

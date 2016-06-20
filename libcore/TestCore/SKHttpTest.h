@@ -7,8 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define MAXNTHREADS 20
-
+#define MAXNTHREADS 63
 
 FOUNDATION_EXPORT NSString *const DOWNSTREAMSINGLE;
 FOUNDATION_EXPORT NSString *const DOWNSTREAMMULTI;

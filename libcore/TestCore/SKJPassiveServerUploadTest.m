@@ -163,7 +163,7 @@ const int extMonitorUpdateInterval = 500000;
 #endif // DEBUG
     
     [super sSetLatestSpeedForExternalMonitorInterval:extMonitorUpdateInterval InId:@"runUp1Err" TransferCallback:bytesPerSecond];
-    //SKLogger.e(TAG(this), "loop - break 3");//haha
+    //SKLogger.e(TAG(this), "loop - break 3");
     return false;
   }
   
@@ -197,7 +197,7 @@ const int extMonitorUpdateInterval = 500000;
     //
     int bytesPerSecondMeasurement = MAX(0, [self getTransferBytesPerSecond]);
     SK_ASSERT(bytesPerSecondMeasurement >= 0);
-    //hahaSKLogger.e(TAG(this), "Result is from the BUILT-IN MEASUREMENT, bytesPerSecondMeasurement= " + bytesPerSecondMeasurement + " thread: " + threadIndex);
+    //SKLogger.e(TAG(this), "Result is from the BUILT-IN MEASUREMENT, bytesPerSecondMeasurement= " + bytesPerSecondMeasurement + " thread: " + threadIndex);
     
     [super.class sSetLatestSpeedForExternalMonitorBytesPerSecond:bytesPerSecondMeasurement TestId:cReasonUploadEnd];											/* Final external interface set up */
   }
@@ -226,7 +226,7 @@ const int extMonitorUpdateInterval = 500000;
   if ([super getError]) {
     // Warm up might have set a global error
 #ifdef DEBUG
-    NSLog(@"*** DEBUG: WARNING: WarmUp Exits: Result FALSE, totalWarmUpBytes=%d", (int)[self getTotalWarmUpBytes]);//haha remove in production
+    NSLog(@"*** DEBUG: WARNING: WarmUp Exits: Result FALSE, totalWarmUpBytes=%d", (int)[self getTotalWarmUpBytes]);
 #endif // DEBUG
     //SK_ASSERT(false);
     return false;

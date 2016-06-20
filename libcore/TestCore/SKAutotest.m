@@ -997,8 +997,8 @@ static BOOL sbTestIsRunning = NO;
           else if ([tstType isEqualToString:@"downstreamthroughput"])
           {
             NSArray *targets = [config getTargets];
-            int nThreads = (int)[targets count];
-            NSString *type = (nThreads == 1) ? DOWNSTREAMSINGLE : DOWNSTREAMMULTI;
+            int nTargets = (int)[targets count];
+            NSString *type = (nTargets == 1) ? DOWNSTREAMSINGLE : DOWNSTREAMMULTI;
             [self rememberThatTestWasRequested:type];
             
             [self runTransferTest:config testIndex:nextTestIndex isDownload:YES];
@@ -1006,8 +1006,8 @@ static BOOL sbTestIsRunning = NO;
           else if ([tstType isEqualToString:@"upstreamthroughput"])
           {
             NSArray *targets = [config getTargets];
-            int nThreads = (int)[targets count];
-            NSString *type = (nThreads == 1) ? UPSTREAMSINGLE : UPSTREAMMULTI;
+            int nTargets = (int)[targets count];
+            NSString *type = (nTargets == 1) ? UPSTREAMSINGLE : UPSTREAMMULTI;
             [self rememberThatTestWasRequested:type];
             
             [self runTransferTest:config testIndex:nextTestIndex isDownload:NO];

@@ -84,6 +84,10 @@
     closestTargetDelegate = _delegate;
     targets = [_targets copy];
     nThreads = (int)[targets count];
+    if(nThreads < 1 || nThreads > MAXNTHREADS)
+    {
+      SK_ASSERT(false);
+    }
     isRunning = NO;
     threadCounter = 0;
     lowestLatency = DBL_MAX;
@@ -372,6 +376,10 @@ const int cQueryCountPerServer = 3;
   
   isRunning = NO;
   nThreads = (int)[targets count];
+  if(nThreads < 1 || nThreads > MAXNTHREADS)
+  {
+    SK_ASSERT(false);
+  }
   threadCounter = 0;
   lowestLatency = DBL_MAX;
   lowestLatencyThreadId = 0;
