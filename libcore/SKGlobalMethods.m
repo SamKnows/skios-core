@@ -931,7 +931,9 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 #endif // TARGET_IPHONE_SIMULATOR
 }
 
-+(void) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion {
+// Queries, returing last known value.
+static NSString *sLastKnownWlanCarrier = @"";
++(NSString*) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion {
   // Query for the wlan_carrier.
   // This query *must* be kicked-off from the main thread.
   // The callback might occur in a different thread, so we need our final
@@ -960,6 +962,11 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
           SK_ASSERT(wlanCarrier != nil);
           SK_ASSERT(wlanCarrier.length > 0);
           
+          if (wlanCarrier == nil) {
+            wlanCarrier = @"";
+          }
+          sLastKnownWlanCarrier = wlanCarrier;
+          
           dispatch_async(dispatch_get_main_queue(), ^{
             completion(wlanCarrier);
             //[SKDatabase forTestId:testId WriteWlanCarrier:wlanCarrier];
@@ -968,6 +975,8 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
       }
     }];
   });
+  
+  return sLastKnownWlanCarrier;
 }
 
 +(NSString *)sGetDateAsIso8601String:(NSDate*)date {

@@ -94,7 +94,8 @@ typedef double SKTimeIntervalMicroseconds;
 +(double)getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:(double)transferTimeMicroseconds transferBytes:(double)transferBytes;
 
 + (NSString *)sCurrentWifiSSID;
-+(void) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion;
+// Queries, returing last known value.
++(NSString*) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion;
 
 +(NSString *)sGetDateAsIso8601String:(NSDate*)date;
 
