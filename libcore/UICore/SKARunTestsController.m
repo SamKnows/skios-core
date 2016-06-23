@@ -1212,7 +1212,7 @@ static BOOL sbViewIsVisible;
     else if (row == 5)
     {
       cell.lblTitle.text = sSKCoreGetLocalisedString(@"Phone");
-      cell.lblDetail.text = [SKAArchivedResultsController platformString:appDelegate.deviceModel];
+      cell.lblDetail.text = [SKGlobalMethods  sGetDeviceStringForPlatform:appDelegate.deviceModel];
     }
     else if (row == 6)
     {

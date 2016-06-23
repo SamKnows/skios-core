@@ -104,4 +104,6 @@ typedef double SKTimeIntervalMicroseconds;
 
 + (NSString*) sExportDictionaryToJSONString:(NSDictionary*)dictionary;
 
++ (NSString *) sGetDeviceStringForCurrentDevice;
++ (NSString *) sGetDeviceStringForPlatform:(NSString*)platform;
 @end
