@@ -995,13 +995,15 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   return nil;
 }
 
+// This might return a blank string (e.g. if not on WiFi).
+// It never returns nil.
 + (NSString *)sCurrentWifiSSID {
 #if TARGET_IPHONE_SIMULATOR
   // This method does not work on the simulator!
   return @"SK1";
 #else // // TARGET_IPHONE_SIMULATOR
   
-  NSString *ssid = nil;
+  NSString *ssid = @"";
   
   //NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
   NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
@@ -1019,6 +1021,11 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
       ssid = ssidInfo[@"SSID"];
     }
   }
+  
+  if (ssid == nil) {
+    ssid = @"";
+  }
+  
   return ssid;
 #endif // TARGET_IPHONE_SIMULATOR
 }

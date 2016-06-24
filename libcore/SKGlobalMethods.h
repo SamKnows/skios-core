@@ -93,6 +93,8 @@ typedef double SKTimeIntervalMicroseconds;
 +(NSString*) bitrateMbps1024BasedLocalNumberStringBasedToString:(NSString*)bitrateMbps1024BasedAsLocalString;
 +(double)getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:(double)transferTimeMicroseconds transferBytes:(double)transferBytes;
 
+// This might return a blank string (e.g. if not on WiFi).
+// It never returns nil.
 + (NSString *)sCurrentWifiSSID;
 // Queries, returing last known value.
 +(NSString*) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion;

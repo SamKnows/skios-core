@@ -29,7 +29,5 @@
 
 - (IBAction)actionButton:(id)sender;
 @property (weak, nonatomic) IBOutlet UIToolbar *uiToolbar;
-
-+ (NSString *) platformString:(NSString*)platform;
   
 @end

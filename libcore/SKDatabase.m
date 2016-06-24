@@ -1161,9 +1161,6 @@ public static String convertConnectivityType(int type) {
   SK_ASSERT([networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE] || [networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI]);
   
   NSString *wifi_ssid = [SKGlobalMethods sCurrentWifiSSID];
-  if (wifi_ssid == nil) {
-    wifi_ssid = @"";
-  }
   
   SK_ASSERT([networkType isEqualToString:C_NETWORKTYPEASSTRING_WIFI] || [networkType isEqualToString:C_NETWORKTYPEASSTRING_MOBILE]);
   
