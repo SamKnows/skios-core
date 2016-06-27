@@ -73,6 +73,7 @@
 		B24C5C401B258D15008B7FB5 /* SKJHttpTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2C7A5411B21943F002DC60F /* SKJHttpTest.mm */; };
 		B25001D8188FC9D5004287B1 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D5188FC9D5004287B1 /* GCDAsyncSocket.m */; };
 		B25001D9188FC9D5004287B1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */; };
+		B25647971D211E0600FEFFD7 /* ytcpsocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B25647861D211CBD00FEFFD7 /* ytcpsocket.m */; };
 		B2672B0C180BEC92004280CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0B180BEC92004280CB /* CoreGraphics.framework */; };
 		B2672B0E180BED06004280CB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2672B0D180BED06004280CB /* QuartzCore.framework */; };
 		B2697B251A2329FD0077C360 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2697B241A2329FD0077C360 /* AssetsLibrary.framework */; };
@@ -298,6 +299,10 @@
 		B25001D5188FC9D5004287B1 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncSocket.m; path = GCD/GCDAsyncSocket.m; sourceTree = "<group>"; };
 		B25001D6188FC9D5004287B1 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCDAsyncUdpSocket.h; path = GCD/GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
 		B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCDAsyncUdpSocket.m; path = GCD/GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		B25647821D211CBD00FEFFD7 /* license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license; sourceTree = "<group>"; };
+		B25647831D211CBD00FEFFD7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B25647861D211CBD00FEFFD7 /* ytcpsocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ytcpsocket.m; sourceTree = "<group>"; };
+		B25647881D211CBD00FEFFD7 /* yudpsocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = yudpsocket.m; sourceTree = "<group>"; };
 		B2672B0B180BEC92004280CB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B2672B0D180BED06004280CB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B2697B241A2329FD0077C360 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -755,6 +760,7 @@
 				B22E88E317C36875005D9094 /* fmdb */,
 				B22E88ED17C36875005D9094 /* KeychainItemWrapper */,
 				B22E891C17C37189005D9094 /* Reachability */,
+				B25647811D211CBD00FEFFD7 /* SwiftSocket */,
 				B22E892017C371DD005D9094 /* UIDeviceHardware */,
 				B22E892417C37243005D9094 /* xmldocument */,
 				B221AEC618FFC10F00323923 /* ZipArchive */,
@@ -880,6 +886,25 @@
 				B25001D7188FC9D5004287B1 /* GCDAsyncUdpSocket.m */,
 			);
 			name = GCD;
+			sourceTree = "<group>";
+		};
+		B25647811D211CBD00FEFFD7 /* SwiftSocket */ = {
+			isa = PBXGroup;
+			children = (
+				B25647821D211CBD00FEFFD7 /* license */,
+				B25647831D211CBD00FEFFD7 /* README.md */,
+				B25647841D211CBD00FEFFD7 /* ysocket */,
+			);
+			path = SwiftSocket;
+			sourceTree = "<group>";
+		};
+		B25647841D211CBD00FEFFD7 /* ysocket */ = {
+			isa = PBXGroup;
+			children = (
+				B25647861D211CBD00FEFFD7 /* ytcpsocket.m */,
+				B25647881D211CBD00FEFFD7 /* yudpsocket.m */,
+			);
+			path = ysocket;
 			sourceTree = "<group>";
 		};
 		B27CFAA71A84CA1800C410B8 /* SKKit */ = {
@@ -1401,6 +1426,7 @@
 				B28006E319C9776D0008DF5F /* SKBTestResultValue.m in Sources */,
 				B249885C1806E2FE00DB57C1 /* SKGraphForResults.m in Sources */,
 				B2FB033319B75D09007AA3C2 /* UIViewWithGradient.m in Sources */,
+				B25647971D211E0600FEFFD7 /* ytcpsocket.m in Sources */,
 				B2B2B4BD18AB7A8500592FEF /* SKOperators.m in Sources */,
 				B2FB033A19B75D09007AA3C2 /* SKBHistoryViewMgr.m in Sources */,
 				B2342C6C1987D82F00F6CC03 /* UIViewController+SKSafeSegue.m in Sources */,
