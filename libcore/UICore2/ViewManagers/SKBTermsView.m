@@ -59,21 +59,6 @@
 
 -(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType
 {
-  //    if (![[[inRequest URL] absoluteString] hasPrefix:@"http"])
-  //    {
-  //        G_CurrentItem = [G_Resources[G_Group] findItemOnFile:[[inRequest URL] absoluteString]];
-  //        if (G_CurrentItem == nil || G_CurrentItem->xGeo == 0)
-  //        {
-  //            self.navigationItem.rightBarButtonItem = nil;
-  //        }
-  //        else
-  //            self.navigationItem.rightBarButtonItem = rightButton;
-  //
-  //        _WV_WebView.alpha = 0.0;
-  //        return YES;
-  //    }
-  //
-  
   // Do  NOT handle this link "in situ" - open in Safari instead!
   if ( inType == UIWebViewNavigationTypeLinkClicked ) {
     [[UIApplication sharedApplication] openURL:[inRequest URL]];

@@ -176,6 +176,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   } else if ([testType isEqualToString:UPSTREAMMULTI]) {
   } else if ([testType isEqualToString:UDPLATENCY]) {
   } else if ([testType isEqualToString:@"NETFLIX"]) {
+  } else if ([testType isEqualToString:@"HTML"]) {
   } else if ([testType isEqualToString:CLOSESTTARGET]) {
   } else {
     SK_ASSERT(false); // Unexpected value!
@@ -240,7 +241,7 @@ static void sAssertTestTypeValid(NSString* testType) {
 
   NSString *jsonStr = [SKGlobalMethods sExportDictionaryToJSONString:jsonDictionary];
 #ifdef DEBUG
-  //NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
+  NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
   NSLog(@"DEBUG: doSaveAndUploadJson...");
 #endif // DEBUG
   

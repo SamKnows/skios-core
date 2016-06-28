@@ -49,7 +49,7 @@ public class TCPClient:YSocket{
         }else{
             switch rs{
             case -1:
-                return (false,"qeury server fail")
+                return (false,"query server fail")
             case -2:
                 return (false,"connection closed")
             case -3:
@@ -130,8 +130,13 @@ public class TCPClient:YSocket{
         if let fd:Int32 = self.fd{
             var buff:[UInt8] = [UInt8](count:expectlen,repeatedValue:0x0)
             let readLen:Int32=c_ytcpsocket_pull(fd, buff: &buff, len: Int32(expectlen), timeout: Int32(timeout))
-            if readLen<=0{
-                return nil
+            if readLen<0{
+              // Error - timeout!
+              return nil
+            }
+            if (readLen == 0) {
+              // No data
+              return Array<UInt8>()
             }
             let rs=buff[0...Int(readLen-1)]
             let data:[UInt8] = Array(rs)

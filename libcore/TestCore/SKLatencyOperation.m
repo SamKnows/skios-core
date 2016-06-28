@@ -1037,7 +1037,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error
 {
-  SK_ASSERT(false);
+  //SK_ASSERT(false);
   
 #ifdef DEBUG
   NSLog(@"DEBUG: - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error, DID NOT RECEIVE PACKET, error:(%@)", [error localizedDescription]);
