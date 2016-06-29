@@ -1032,7 +1032,8 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 
 // Queries, returing last known value.
 static NSString *sLastKnownWlanCarrier = @"";
-+(NSString*) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion {
+static NSString *sLastKnownIpAddress = @"";
++(NSArray*) sQueryWlanCarrierAndIpAddress:(void(^)(NSString* wlanCarrier, NSString *ipAddress))completion {
   // Query for the wlan_carrier.
   // This query *must* be kicked-off from the main thread.
   // The callback might occur in a different thread, so we need our final
@@ -1044,6 +1045,7 @@ static NSString *sLastKnownWlanCarrier = @"";
     //NSString *organisationInThisField = @"org";
     
     NSString *queryThisUrl = @"http://dcs-mobile-fcc.samknows.com/mobile/lookup.php";
+    NSString *ipAddressInThisField = @"ipAddress";
     NSString *organisationInThisField = @"organization";
     
     [SKNSURLAsyncQuery fireURLRequest:queryThisUrl InjectDictionaryIntoHeader:nil JsonCallback:^(NSError *error, NSInteger responseCode, NSDictionary *jsonResponse,  NSDictionary *responseHeaders) {
@@ -1060,14 +1062,21 @@ static NSString *sLastKnownWlanCarrier = @"";
           __block NSString *wlanCarrier = jsonResponse[organisationInThisField];
           SK_ASSERT(wlanCarrier != nil);
           SK_ASSERT(wlanCarrier.length > 0);
-          
           if (wlanCarrier == nil) {
             wlanCarrier = @"";
           }
           sLastKnownWlanCarrier = wlanCarrier;
           
+          __block NSString *ipAddress = jsonResponse[ipAddressInThisField];
+          SK_ASSERT(ipAddress != nil);
+          SK_ASSERT(ipAddress.length > 0);
+          if (ipAddress == nil) {
+            ipAddress = @"";
+          }
+          sLastKnownIpAddress = ipAddress;
+          
           dispatch_async(dispatch_get_main_queue(), ^{
-            completion(wlanCarrier);
+            completion(wlanCarrier, ipAddress);
             //[SKDatabase forTestId:testId WriteWlanCarrier:wlanCarrier];
           });
         }
@@ -1075,7 +1084,7 @@ static NSString *sLastKnownWlanCarrier = @"";
     }];
   });
   
-  return sLastKnownWlanCarrier;
+  return @[sLastKnownWlanCarrier, sLastKnownIpAddress];
 }
 
 +(NSString *)sGetDateAsIso8601String:(NSDate*)date {

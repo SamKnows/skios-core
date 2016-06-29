@@ -96,8 +96,8 @@ typedef double SKTimeIntervalMicroseconds;
 // This might return a blank string (e.g. if not on WiFi).
 // It never returns nil.
 + (NSString *)sCurrentWifiSSID;
-// Queries, returing last known value.
-+(NSString*) sQueryWlanCarrier:(void(^)(NSString* wlanCarrier))completion;
+// Queries, returns array of last known values; Wlan name first, iP address second.
++(NSArray*) sQueryWlanCarrierAndIpAddress:(void(^)(NSString* wlanCarrier, NSString *ipAddress)) completion;
 
 +(NSString *)sGetDateAsIso8601String:(NSDate*)date;
 

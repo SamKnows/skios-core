@@ -593,7 +593,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldDisplayWlanCarrierNameInRunTestScreen] == YES) {
     //if ([SKAppBehaviourDelegate sGetAppBehaviourDelegate].connectionStatus == WIFI) {
     if ([SKAppBehaviourDelegate sGetAppBehaviourDelegate].connectionStatus != NONE) {
-      [SKGlobalMethods sQueryWlanCarrier:^(NSString *wlanCarrier) {
+      [SKGlobalMethods sQueryWlanCarrierAndIpAddress:^(NSString *wlanCarrier, NSString *ipAddressIgnore) {
         self.optionalWlanCarrierNameLabel.hidden = NO;
         self.optionalWlanCarrierNameLabel.text = wlanCarrier;
       }];

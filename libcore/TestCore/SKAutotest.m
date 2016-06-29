@@ -906,9 +906,16 @@ static BOOL sbTestIsRunning = NO;
   // Prepare the JSON dictionary for upload... and then save/upload it!
   //
   
+  
+  // METRICS: MUST share the datetime/timestamp with the TEST!
+  NSString *datetime = jsonDictionary[@"datetime"];
+  NSString *timestamp = jsonDictionary[@"timestamp"];
+  SK_ASSERT(datetime != nil);
+  SK_ASSERT(timestamp != nil);
+  
   // Write metric data to the json dictionary!
   NSString *testIdAsString = [self.testId stringValue];
-  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager] AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics];
+  NSMutableArray *metrics = [SKKitJSONDataCaptureAndUpload sWriteMetricsToJSONDictionary:self.jsonDictionary TestId:testIdAsString SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager] AccumulatedNetworkTypeLocationMetrics:self.accumulatedNetworkTypeLocationMetrics WithDateTime:datetime WithTimeStamp:timestamp];
   SK_ASSERT(metrics != nil);
   
   // If we fired a throttle query, upload the response...

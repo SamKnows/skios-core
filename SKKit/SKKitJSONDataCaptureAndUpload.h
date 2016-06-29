@@ -84,7 +84,7 @@
 // This is done, typically, after test data has been captured by call(s) to sAppendTestResultsDictionaryToJSONDictionary.
 // This function returns a metric array to which you can append additional metric data, if required.
 //
-+ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationManager:(SKKitLocationManager*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics;
++ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationManager:(SKKitLocationManager*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics  WithDateTime:(NSString*)datetime WithTimeStamp:(NSString*)timestamp;
 
 // 4) Write the Dictionary as JSON file, and upload to the server!
 //    The method will look at the test data in the jsonDictionary,

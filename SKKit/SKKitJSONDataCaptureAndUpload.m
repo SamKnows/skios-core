@@ -781,13 +781,29 @@ static void sAssertTestTypeValid(NSString* testType) {
   return location;
 }
 
+//
+// Important notes on metrics:
+//
+// 1. All test metrics are stored IN THE OUTER BLOCK, in the metrics array,
+//    they are *NOT* stored within any sub-block of the test itself.
+//
+// 2. Any metrics that are associated specifically with a test, must
+//    must be such that their datetime/timestamp fields are an exact match with the associated test.
+//      "datetime" : "<THE VALUE FROM THE OWNING TEST!>
+//      "timestamp" : "<THE VALUE FROM THE OWNING TEST!>
+//
+// 3. Any *accumulated passive metrics* (such as location data) are NOT time-stamped to match a specific test;
+//    they are free to use whatever datetime/timestamp values they wish.
+//      "datetime" : "<THE TIME THE PASSIVE METRIC WAS OBTAINED>"
+//      "timestamp" : "<THE TIME THE PASSIVE METRIC WAS OBTAINED>"
+//
+
 // Returns array of metrics!
-+ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationManager:(SKKitLocationManager*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics
++ (NSMutableArray*)sWriteMetricsToJSONDictionary:(NSMutableDictionary*)jsonDictionary TestId:(NSString*)testId SKKitLocationManager:(SKKitLocationManager*)locationManager  AccumulatedNetworkTypeLocationMetrics:(NSArray*)accumulatedNetworkTypeLocationMetrics WithDateTime:(NSString*)datetime WithTimeStamp:(NSString*)timestamp
 {
   // Phone info ////////////////////////////////////////////////////////////////////////////////////////////////
   
   /*
-   
    "type":"phone_identity",
    "datetime":"Fri Jan 25 15:35:07 GMT 2013",
    "manufacturer":api android.os.Build.MANUFACTURER,
@@ -797,30 +813,30 @@ static void sAssertTestTypeValid(NSString* testType) {
    "timestamp":1359128107
    "test_id":"190329108"
    */
+  // If no specific timestamp/datetime specified,
+  // use those given to us.
+  if (datetime == nil) {
+    datetime = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
+  }
+  if (timestamp == nil) {
+    timestamp = [SKGlobalMethods getTimeStamp];
+  }
   
   NSMutableDictionary *phone = [NSMutableDictionary dictionary];
   
   phone[@"type"] = @"phone_identity";
-  
+  phone[@"datetime"] = datetime;
+  phone[@"timestamp"] = timestamp;
   // Return the device 'unique id' via the app_id value in the upload data *only* for some app variants.
   if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldUploadDeviceId]) {
     phone[@"app_id"] = [[UIDevice currentDevice] uniqueDeviceIdentifier];
   }
-  
-  phone[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
-  
   phone[@"manufacturer"] = @"Apple";
-  
   phone[@"model"] = [SKGlobalMethods getDeviceModel];
-  
   //NSString *oldSystemName =  [[UIDevice currentDevice] systemName];
   // Override, as iOS 9 reports iOS rather than "iPhone OS" as reported by iOS 8...
   phone[@"os_type"] = @"iPhone OS";
-  
   phone[@"os_version"] = [[UIDevice currentDevice] systemVersion];
-  
-  phone[@"timestamp"] = [SKGlobalMethods getTimeStamp];
-  
   phone[@"test_id"] = testId;
   
   
@@ -828,6 +844,8 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   NSMutableDictionary *location;
   location = [self.class sCreateLocationMetric:locationManager];
+  location[@"datetime"] = datetime;
+  location[@"timestamp"] = timestamp;
   
   
   // Last Known Location /////////////////////////////////////////////////////////////////////////////////////
@@ -848,26 +866,20 @@ static void sAssertTestTypeValid(NSString* testType) {
   //  }
   
   NSMutableDictionary *lastLocation = [NSMutableDictionary dictionary];
-  
   lastLocation[@"type"] = @"last_known_location";
-  
+  lastLocation[@"datetime"] = datetime;
+  lastLocation[@"timestamp"] = timestamp;
   lastLocation[@"accuracy"] = @"NA";
-  
-  lastLocation[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
-  
   lastLocation[@"latitude"] = [NSString localizedStringWithFormat:@"%f", latitude];
-  
   lastLocation[@"longitude"] = [NSString localizedStringWithFormat:@"%f", longitude];
-  
   lastLocation[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
-  
-  lastLocation[@"timestamp"] = [SKGlobalMethods getTimeStamp];
-  
   
   // Network ////////////////////////////////////////////////////////////////////////////////////////////////
   
   NSMutableDictionary *network;
   network = [self sCreateNetworkTypeMetric:locationManager];
+  network[@"datetime"] = datetime;
+  network[@"timestamp"] = timestamp;
  
   //
   // Note that the "metrics" array might already exist - in which case, we *append* to it!
@@ -877,6 +889,10 @@ static void sAssertTestTypeValid(NSString* testType) {
   NSArray *suppliedMetrics = jsonDictionary[@"metrics"];
   if (suppliedMetrics != nil) {
     for (NSDictionary *suppliedMetricItem in suppliedMetrics) {
+//      NSMutableDictionary *mutableDictItem = [[NSMutableDictionary alloc] initWithDictionary:suppliedMetricItem];
+//      mutableDictItem[@"datetime"] = datetime;
+//      mutableDictItem[@"timestamp"] = timestamp;
+//      [metrics addObject:mutableDictItem];
       [metrics addObject:suppliedMetricItem];
     }
   }
@@ -885,7 +901,9 @@ static void sAssertTestTypeValid(NSString* testType) {
   [metrics addObject:location];
   [metrics addObject:lastLocation];
   [metrics addObject:network];
-  
+ 
+  // Accumulated location metrics are passive,
+  // and therefore do NOT share timestamp values with any specific test.
   for (NSDictionary *accumulatedMetric in accumulatedNetworkTypeLocationMetrics) {
     [metrics  addObject:accumulatedMetric];
   }

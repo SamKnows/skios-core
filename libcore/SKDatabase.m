@@ -1247,7 +1247,7 @@ public static String convertConnectivityType(int type) {
   }
   
   // Query for the wlan_carrier.
-  [SKGlobalMethods sQueryWlanCarrier:^(NSString *wlanCarrier) {
+  [SKGlobalMethods sQueryWlanCarrierAndIpAddress:^(NSString *wlanCarrier, NSString *ipAddressIgnore) {
     [SKDatabase forTestId:testId WriteWlanCarrier:wlanCarrier];
   }];
 }

@@ -169,10 +169,10 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
       "success":mSKHttpTestResult.mSuccess,
       "hostname":mHostName,
       "port":mPort,
-      "timeout_seconds":mTimeoutSeconds,
-      "time_to_connect_seconds":mSKHttpTestResult.mTimeToConnect,
-      "time_to_first_byte_seconds":mSKHttpTestResult.mTimeToFirstByte,
-      "time_to_page_load_seconds":mSKHttpTestResult.mTimeToPageLoad
+      "timeout":mTimeoutSeconds*1000000, // Microseconds!
+      "time_to_connect":mSKHttpTestResult.mTimeToConnect*1000000.0, // Microseconds!
+      "time_to_first_byte":mSKHttpTestResult.mTimeToFirstByte*1000000.0, // Microseconds!
+      "time_to_page_load":mSKHttpTestResult.mTimeToPageLoad*1000000.0 // Microseconds!
     ]
     
     return results
