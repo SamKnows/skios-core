@@ -45,7 +45,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     mPort = port
     mTimeoutSeconds = timeoutSeconds
     
-    SK_ASSERT(mTimeoutSeconds > 1)
+    SK_ASSERT(mTimeoutSeconds >= 1)
   }
   
   public func testHTMLQuery() -> SKHTMLTestResult {
@@ -63,10 +63,9 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     } else {
       let doneConnect = NSDate()
       let timeToConnect = doneConnect.timeIntervalSinceDate(startConnect)
-      SK_ASSERT(Int(timeToConnect) < mTimeoutSeconds)
+      SK_ASSERT(Int(timeToConnect) < (mTimeoutSeconds + 1)) // Sometimes the timeout is ignored by iOS!
       print ("TCP connection time seconds = \(String(format:"%0.6f", timeToConnect))")
       
-      let startFirstByte = NSDate()
       let (success, errmsg) = client.send(str:"GET / HTTP/1.0\n\n" )
       if (success == false) {
         //print("Error=\(errmsg)")
@@ -120,7 +119,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
             let donePageLoad = NSDate()
             print("data end reached!")
             
-            let timeToFirstByte = doneFirstByte.timeIntervalSinceDate(startFirstByte)
+            let timeToFirstByte = doneFirstByte.timeIntervalSinceDate(startConnect)
             print ("TCP time to first byte time seconds = \(String(format:"%0.6f", timeToFirstByte))")
             let timeToPageLoad = donePageLoad.timeIntervalSinceDate(startConnect)
             print ("TCP time to page load time seconds = \(String(format:"%0.6f", timeToFirstByte))")
@@ -134,7 +133,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
             SK_ASSERT(mSKHTMLTestResult.mSuccess == true)
             SK_ASSERT(mSKHTMLTestResult.mTimeToConnect == timeToConnect)
             SK_ASSERT(Int(mSKHTMLTestResult.mTimeToConnect) < mTimeoutSeconds)
-            SK_ASSERT(mSKHTMLTestResult.mTimeToFirstByte == timeToFirstByte)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToFirstByte > mSKHTMLTestResult.mTimeToConnect)
             SK_ASSERT(mSKHTMLTestResult.mTimeToPageLoad == timeToPageLoad)
             
             SK_ASSERT(mSKHTMLTestResult.mTimeToConnect > 0.0)
@@ -142,7 +141,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
             SK_ASSERT(mSKHTMLTestResult.mTimeToPageLoad > mSKHTMLTestResult.mTimeToConnect)
             
             SK_ASSERT(self.mBytesRead > 0)
-            SKAppBehaviourDelegate.sGetAppBehaviourDelegate().amdDoUpdateDataUsage(Int32(self.mBytesRead))
+            SKAppBehaviourDelegate.sGetAppBehaviourDelegate()?.amdDoUpdateDataUsage(Int32(self.mBytesRead))
             
             return mSKHTMLTestResult
           }
@@ -163,7 +162,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     // Return dictionary of test results!
     
     let results:Dictionary<String,AnyObject> = [
-      "type":"HTML",
+      "type":"WWW",
       "datetime":SKGlobalMethods.sGetDateAsIso8601String(NSDate()),
       "timestamp":"\(Int(NSDate().timeIntervalSince1970))",
       "success":mSKHTMLTestResult.mSuccess,

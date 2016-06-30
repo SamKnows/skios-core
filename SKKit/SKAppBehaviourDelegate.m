@@ -181,7 +181,8 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 // This can be called at any time...
 +(SKAppBehaviourDelegate*) sGetAppBehaviourDelegate {
-  SK_ASSERT(spAppBehaviourDelegate != nil);
+  // Can be null if a test!
+  //SK_ASSERT(spAppBehaviourDelegate != nil);
   return spAppBehaviourDelegate;
 }
 

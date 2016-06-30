@@ -176,7 +176,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   } else if ([testType isEqualToString:UPSTREAMMULTI]) {
   } else if ([testType isEqualToString:UDPLATENCY]) {
   } else if ([testType isEqualToString:@"NETFLIX"]) {
-  } else if ([testType isEqualToString:@"HTML"]) {
+  } else if ([testType isEqualToString:@"WWW"]) {
   } else if ([testType isEqualToString:CLOSESTTARGET]) {
   } else {
     SK_ASSERT(false); // Unexpected value!
