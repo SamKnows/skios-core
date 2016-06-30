@@ -1,5 +1,5 @@
 //
-//  SKKitTestHTTP.swift
+//  SKKitTestHTML.swift
 //  SKKit
 //
 //  Created by Pete Cole on 27/06/2016.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class SKHttpTestResult {
+public class SKHTMLTestResult {
   public let mSuccess:Bool
   
   // TCP connect time: The time taken to execute the "connect(...)" system call
@@ -29,9 +29,9 @@ public class SKHttpTestResult {
   }
 }
 
-public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
+public class SKKitTestHTML: NSObject, SKKitTestProtocol {
   
-  public var mSKHttpTestResult = SKHttpTestResult(success:false, timeToConnect:0.0, timeToFirstByte:0.0, timeToPageLoad:0.0)
+  public var mSKHTMLTestResult = SKHTMLTestResult(success:false, timeToConnect:0.0, timeToFirstByte:0.0, timeToPageLoad:0.0)
   
   private var mHostName:String = ""
   private var mPort:Int = 0
@@ -48,7 +48,7 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
     SK_ASSERT(mTimeoutSeconds > 1)
   }
   
-  public func testHTTPQuery() -> SKHttpTestResult {
+  public func testHTMLQuery() -> SKHTMLTestResult {
     
     print ("Test HTTP Query from \(mHostName), port=\(mPort)")
     let client:TCPClient = TCPClient(addr:mHostName, port:mPort)
@@ -59,7 +59,7 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
     if (success == false) {
       //print("Error=\(errmsg)")
       SK_ASSERT(false)
-      return mSKHttpTestResult
+      return mSKHTMLTestResult
     } else {
       let doneConnect = NSDate()
       let timeToConnect = doneConnect.timeIntervalSinceDate(startConnect)
@@ -71,7 +71,7 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
       if (success == false) {
         //print("Error=\(errmsg)")
         SK_ASSERT(false)
-        return mSKHttpTestResult
+        return mSKHTMLTestResult
       } else {
         
         let readData = NSMutableData()
@@ -79,11 +79,11 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
         var data = client.read(1, timeout:mTimeoutSeconds)
         guard let d = data else {
           SK_ASSERT(false)
-          return mSKHttpTestResult
+          return mSKHTMLTestResult
         }
         if (d.count != 1) {
           SK_ASSERT(false)
-          return mSKHttpTestResult
+          return mSKHTMLTestResult
         }
         
         let doneFirstByte = NSDate()
@@ -95,7 +95,7 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
         if (timeSoFar > Double(mTimeoutSeconds)) {
           // Timeout!
           SK_ASSERT(false)
-          return mSKHttpTestResult
+          return mSKHTMLTestResult
         }
           
         var keepGoing = true
@@ -103,7 +103,7 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
           data = client.read(1024*10, timeout: mTimeoutSeconds)
           guard let d = data else {
             SK_ASSERT(false)
-            return mSKHttpTestResult
+            return mSKHTMLTestResult
           }
          
           if (d.count > 0) {
@@ -114,7 +114,7 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
             if (timeSoFar > Double(mTimeoutSeconds)) {
               // Timeout!
               SK_ASSERT(false)
-              return mSKHttpTestResult
+              return mSKHTMLTestResult
             }
           } else {
             let donePageLoad = NSDate()
@@ -129,29 +129,29 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
             //print ("Final read data = \(readString)")
             
             keepGoing = false
-            mSKHttpTestResult = SKHttpTestResult(success:true, timeToConnect:timeToConnect, timeToFirstByte:timeToFirstByte, timeToPageLoad:timeToPageLoad)
+            mSKHTMLTestResult = SKHTMLTestResult(success:true, timeToConnect:timeToConnect, timeToFirstByte:timeToFirstByte, timeToPageLoad:timeToPageLoad)
             
-            SK_ASSERT(mSKHttpTestResult.mSuccess == true)
-            SK_ASSERT(mSKHttpTestResult.mTimeToConnect == timeToConnect)
-            SK_ASSERT(Int(mSKHttpTestResult.mTimeToConnect) < mTimeoutSeconds)
-            SK_ASSERT(mSKHttpTestResult.mTimeToFirstByte == timeToFirstByte)
-            SK_ASSERT(mSKHttpTestResult.mTimeToPageLoad == timeToPageLoad)
+            SK_ASSERT(mSKHTMLTestResult.mSuccess == true)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToConnect == timeToConnect)
+            SK_ASSERT(Int(mSKHTMLTestResult.mTimeToConnect) < mTimeoutSeconds)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToFirstByte == timeToFirstByte)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToPageLoad == timeToPageLoad)
             
-            SK_ASSERT(mSKHttpTestResult.mTimeToConnect > 0.0)
-            SK_ASSERT(mSKHttpTestResult.mTimeToFirstByte > 0.0)
-            SK_ASSERT(mSKHttpTestResult.mTimeToPageLoad > mSKHttpTestResult.mTimeToConnect)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToConnect > 0.0)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToFirstByte > 0.0)
+            SK_ASSERT(mSKHTMLTestResult.mTimeToPageLoad > mSKHTMLTestResult.mTimeToConnect)
             
             SK_ASSERT(self.mBytesRead > 0)
             SKAppBehaviourDelegate.sGetAppBehaviourDelegate().amdDoUpdateDataUsage(Int32(self.mBytesRead))
             
-            return mSKHttpTestResult
+            return mSKHTMLTestResult
           }
         }
       }
     }
     
     SK_ASSERT(false)
-    return mSKHttpTestResult
+    return mSKHTMLTestResult
   }
   
   public func cancel() {
@@ -166,13 +166,13 @@ public class SKKitTestHTTP: NSObject, SKKitTestProtocol {
       "type":"HTML",
       "datetime":SKGlobalMethods.sGetDateAsIso8601String(NSDate()),
       "timestamp":"\(Int(NSDate().timeIntervalSince1970))",
-      "success":mSKHttpTestResult.mSuccess,
+      "success":mSKHTMLTestResult.mSuccess,
       "hostname":mHostName,
       "port":mPort,
-      "timeout":mTimeoutSeconds*1000000, // Microseconds!
-      "time_to_connect":mSKHttpTestResult.mTimeToConnect*1000000.0, // Microseconds!
-      "time_to_first_byte":mSKHttpTestResult.mTimeToFirstByte*1000000.0, // Microseconds!
-      "time_to_page_load":mSKHttpTestResult.mTimeToPageLoad*1000000.0 // Microseconds!
+      "timeout":Int(mTimeoutSeconds*1000000), // Microseconds!
+      "time_to_connect":Int(mSKHTMLTestResult.mTimeToConnect*1000000.0), // Microseconds!
+      "time_to_first_byte":Int(mSKHTMLTestResult.mTimeToFirstByte*1000000.0), // Microseconds!
+      "time_to_page_load":Int(mSKHTMLTestResult.mTimeToPageLoad*1000000.0) // Microseconds!
     ]
     
     return results

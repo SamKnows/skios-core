@@ -241,7 +241,7 @@ static void sAssertTestTypeValid(NSString* testType) {
 
   NSString *jsonStr = [SKGlobalMethods sExportDictionaryToJSONString:jsonDictionary];
 #ifdef DEBUG
-  NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
+  //NSLog(@"DEBUG: doSaveAndUploadJson - jsonStr=...\n%@", jsonStr);
   NSLog(@"DEBUG: doSaveAndUploadJson...");
 #endif // DEBUG
   
