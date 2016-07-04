@@ -10,6 +10,8 @@
 
 #import "SKTransferOperation.h"
 
+@class SKTransferOperationStatus;
+
 #define HTTP_DOWNLOAD_TIMEOUT 45
 #define HTTP_UPLOAD_TIMEOUT   45
 
@@ -21,43 +23,10 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
 
 
 @interface SKTransferOperation : NSOperation<NSURLConnectionDelegate, NSURLConnectionDataDelegate>
-{
-    NSURLConnection *urlConnection;
-    NSMutableURLRequest *urlRequest;
-    
-    UIBackgroundTaskIdentifier btid;
-    
-    BOOL _Finished;
-    BOOL _Executing;
-    
-    int port;
-    NSString *target;
-    NSString *file;
-    
-    NSTimeInterval warmupMaxTime;
-  
-    int warmupMaxBytes;
-    int transferMaxBytes;
-    
-    int nThreads;
-    int threadId;
-    
-    BOOL isDownstream;
-    
-    NSTimer *cancelTimer;
-}
-
-@property (nonatomic, strong) NSString *target;
-@property (nonatomic, assign) int port;
-@property (nonatomic, strong) NSString *file;
-@property (nonatomic, assign) int nThreads;
-@property (nonatomic, assign) int threadId;
-@property (nonatomic, assign) BOOL isDownstream;
-
-#pragma mark - Init
 
 - (id)initWithTarget:(NSString*)_target
                 port:(int)_port
+            opStatus:(SKTransferOperationStatus*)inOpStatus
                 file:(NSString*)_file
         isDownstream:(BOOL)_isDownstream
             nThreads:(int)_nThreads
@@ -65,8 +34,6 @@ typedef enum { INITIALIZING, WARMING, TRANSFERRING, COMPLETE, CANCELLED, FAILED,
             SESSIONID:(uint32_t)sessionId
             ParentHttpTest:(SKHttpTest*)inParentHttpTest
             asyncFlag:(BOOL)_asyncFlag;
-
-#pragma mark - Instance Methods
 
 -(void)start;
 -(BOOL)getAsyncFlag;

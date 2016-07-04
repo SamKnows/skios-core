@@ -185,14 +185,17 @@ FOUNDATION_EXPORT NSString *const UDPLATENCY;
 
 @end
 
-//###HG
+
 @interface SKTransferOperationStatus : NSObject
 
-@property (nonatomic) int threadId;
-@property (nonatomic) float progress;
-@property (nonatomic) int status;
-//@property (nonatomic) int totalTransferBytes;
-@property (nonatomic) SKTimeIntervalMicroseconds transferTimeMicroseconds;
+- (instancetype)initWithThreadId:(int)inThreadId;
+-(float) doGetProgress;
+-(void) doSetProgress:(float)inProgress;
+-(void) doSetStatus:(TransferStatus)inStatus;
+-(void) doSetTransferTimeMicroseconds:(SKTimeIntervalMicroseconds)inTransferTime;
+-(double) doGetBitrateMbps1024Based;
+-(int)    doGetTransferBytes;
+-(SKTimeIntervalMicroseconds) doGetTransferTimeMicroseconds;
 
 -(void)resetProperties;
 

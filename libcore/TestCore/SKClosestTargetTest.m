@@ -241,8 +241,8 @@ const int cQueryCountPerServer = 3;
                  bestLatencyPerServer[serverIndex] = @(theLatency);
                  
 #ifdef DEBUG
-                 NSString *target = targets[serverIndex];
-                 NSLog(@"DEBUG: HTTP latency response, from %@, with %g", target, theLatency);
+                 //NSString *target = targets[serverIndex];
+                 //NSLog(@"DEBUG: HTTP latency response, from %@, with %g", target, theLatency);
 #endif // DEBUG
                }
              }

@@ -1201,7 +1201,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
       
       [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate date]];
 #ifdef DEBUG
-      NSLog(@"DEBUG: Bitrate: %f (%s) (%s %d)", bitrate1024Based, isDownstream?"DOWN":"UP", __FILE__, (int)__LINE__);
+      //NSLog(@"DEBUG: Bitrate: %f (%s) (%s %d)", bitrate1024Based, isDownstream?"DOWN":"UP", __FILE__, (int)__LINE__);
 #endif // DEBUG
       
       [self setProgressView:0];

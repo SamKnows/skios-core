@@ -244,26 +244,40 @@ const int cDefaultBlockDataLength = 250000;
 const unsigned char spBlockData[cDefaultBlockDataLength];
 
 @interface SKTransferOperation ()
-{
-  BOOL warmupDone;
-  NSPort* nsPort;
-  BOOL testOK;
-}
 
+// Public
+
+@property  (nonatomic, retain) NSURLConnection *urlConnection;
+@property  (nonatomic, retain) NSMutableURLRequest *urlRequest;
+@property  (nonatomic, assign) UIBackgroundTaskIdentifier btid;
+@property  (nonatomic, assign) BOOL _Finished;
+@property  (nonatomic, assign) BOOL _Executing;
+@property  (nonatomic, assign) int port;
+@property  (nonatomic, strong) NSString *target;
+@property  (nonatomic, strong) NSString *file;
+@property  (nonatomic, assign) NSTimeInterval warmupMaxTime;
+@property  (nonatomic, assign) int warmupMaxBytes;
+@property  (nonatomic, assign) int transferMaxBytes;
+@property  (nonatomic, assign) int nThreads;
+@property  (nonatomic, assign) int threadId;
+@property  (nonatomic, assign) BOOL isDownstream;
+@property  (nonatomic, assign) NSTimer *cancelTimer;
+
+
+// Private
+
+@property (weak) SKTransferOperationStatus*mOpStatus;
+@property BOOL warmupDone;
+@property NSPort* nsPort;
+@property BOOL testOK;
 
 @property (weak) SKHttpTest *mpParentHttpTest;
-
 @property u_int32_t mSESSIONID_ForServerUploadTest;
-
 @property BOOL shouldKeepRunning;
-
 @property BOOL mbAsyncFlag;
-
 @property (nonatomic, assign) TransferStatus status;
 @property NSDate *timeSetStatusToComplete;
-
 @property BOOL mbTestMode;
-
 @property (weak) SKAutotest* skAutotest;
 
 - (BOOL)isWarmupDone:(int)bytes;
@@ -300,22 +314,39 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 
 @implementation SKTransferOperation
 
+// public
+@synthesize urlConnection;
+@synthesize urlRequest;
+@synthesize btid;
+@synthesize _Finished;
+@synthesize _Executing;
+@synthesize port;
+@synthesize target;
+@synthesize file;
+@synthesize warmupMaxTime;
+@synthesize warmupMaxBytes;
+@synthesize transferMaxBytes;
+@synthesize nThreads;
+@synthesize threadId;
+@synthesize isDownstream;
+@synthesize cancelTimer;
 
+// private
+@synthesize warmupDone;
+@synthesize nsPort;
+@synthesize testOK;
+
+@synthesize mOpStatus;
 @synthesize mpParentHttpTest;
 @synthesize shouldKeepRunning;
 @synthesize mbTestMode;
 @synthesize mbAsyncFlag;
-@synthesize target;
-@synthesize port;
-@synthesize nThreads;
-@synthesize file;
-@synthesize isDownstream;
-@synthesize threadId;
 
 @synthesize skAutotest;
 
 - (id)initWithTarget:(NSString*)_target
                 port:(int)_port
+            opStatus:(SKTransferOperationStatus*)inOpStatus
                 file:(NSString*)_file
         isDownstream:(BOOL)_isDownstream
             nThreads:(int)_nThreads
@@ -330,6 +361,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   {
     // Weak reference...
     mpParentHttpTest = inParentHttpTest;
+    mOpStatus = inOpStatus;
 
     mbTestMode = NO;
     
@@ -1225,7 +1257,7 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 {
   //SK_ASSERT(false);
 #ifdef DEBUG
-  NSLog(@"DEBUG %@ -  SKTransferOperation.m, %s, thread=%@", [self description], __FUNCTION__, [[NSThread currentThread] description]);
+  //NSLog(@"DEBUG %@ -  SKTransferOperation.m, %s, thread=%@", [self description], __FUNCTION__, [[NSThread currentThread] description]);
 #endif // DEBUG
   
   if([self isCancelled])
@@ -1244,8 +1276,8 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
   
 #ifdef DEBUG
-  NSLog(@"DEBUG %@ - didReceiveResponse :: status code: %d, length: %d", [self description], (int)httpResponse.statusCode, (int)httpResponse.expectedContentLength);
-  NSLog(@"DEBUG %@ - HTTP/1.X %d\n%@", [self description], (int)[httpResponse statusCode], [[httpResponse allHeaderFields] description]);
+  //NSLog(@"DEBUG %@ - didReceiveResponse :: status code: %d, length: %d", [self description], (int)httpResponse.statusCode, (int)httpResponse.expectedContentLength);
+  //NSLog(@"DEBUG %@ - HTTP/1.X %d\n%@", [self description], (int)[httpResponse statusCode], [[httpResponse allHeaderFields] description]);
 #endif // DEBUG
   
   SK_ASSERT ([httpResponse isKindOfClass:[NSHTTPURLResponse class]]);
@@ -1352,9 +1384,13 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 }
 
 -(void) setStatusToComplete  {
+#ifdef DEBUG
+  NSLog(@"DEBUG: HTTP TEST DID FINISH/COMPLETE!\n");
+#endif // DEBUG
   if (self.status != COMPLETE) {
     self.status = COMPLETE;
     self.timeSetStatusToComplete = [NSDate date];
+    [self.mOpStatus doSetStatus:self.status];
   }
 }
 

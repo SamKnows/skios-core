@@ -16,6 +16,7 @@ NSString *const UDPLATENCY          = @"JUDPLATENCY";
 
 #import "SKJPassiveServerUploadTest.h"
 
+
 @implementation DebugTiming
 - (instancetype)initWithDescription:(NSString*)inDescription ThreadIndex:(int)inThreadIndex Time:(NSTimeInterval)inTime CurrentSpeed:(int)inCurrentSpeed
 {
@@ -42,6 +43,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
   NSUInteger testTotalBytes;
 }
 
+@property float mfFinalBitrate;
 @property BOOL warmupDone;
 
 @property NSMutableArray* mDescription;
@@ -60,6 +62,7 @@ static NSMutableArray* smDebugSocketSendTimeMicroseconds = nil;
 
 @implementation SKHttpTest
 
+@synthesize mfFinalBitrate;
 @synthesize warmupDone;
 @synthesize isRunning;
 @synthesize target;
@@ -257,11 +260,7 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
   
   for (int j=0; j<nThreads; j++)
   {
-    op = [[SKTransferOperationStatus alloc] init];
-    
-    [op resetProperties];
-    
-    op.threadId = j;
+    op = [[SKTransferOperationStatus alloc] initWithThreadId:j];
     
     [arrTransferOperations addObject:op];
   }
@@ -275,55 +274,29 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
 {
   SK_ASSERT (mpNewStyleSKJUploadTest == nil);
   
-  float total = 0;
-  SKTimeIntervalMicroseconds transferTime = 0;
-  // Actually, the total transfer bytes are stored at the HttpTest level, now!
-  //  int totalTransferBytes = self.mTransferBytes;
+  float progressTotal = 0;
   
-  //int totalTransferBytes = 0;
   @synchronized(arrTransferOperations)
   {
     for (SKTransferOperationStatus* opStatus in arrTransferOperations) {
-      total += opStatus.progress;
-      //totalTransferBytes += opStatus.totalTransferBytes;
-      
-      if (opStatus.transferTimeMicroseconds > transferTime) transferTime = opStatus.transferTimeMicroseconds;
+      progressTotal += [opStatus doGetProgress];
     }
   }
-  //  
-  //  double bitrateMbps1024Based = 0;
-  //  
-  //  if (transferTime > 0)
-  //  {
-  //    bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTime transferBytes:totalTransferBytes];
-  //  }
-  //  
-  //  if (self.isDownstream == NO)
-  //  {
-  //    //Upload test - correct the first huge readings
-  //    if (transferTime < C_MAX_UPLOAD_FALSE_TIME && bitrateMbps1024Based > C_MAX_UPLOAD_SPEED)
-  //      bitrateMbps1024Based = transferTime;
-  //  }
   
   double bitrateMbps1024Based = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
   
   if (bitrateMbps1024Based >= 0.0) {
-    
-#ifdef DEBUG
-    if (isDownstream == NO) {
-      // Upload test!
-      // Check for unexpectedly large results...
-      //SK_ASSERT (bitrateMbps1024Based <= 100);
-    }
-#endif // DEBUG
-    
-    [[self httpRequestDelegate] htdDidUpdateTotalProgressPercent:(total / arrTransferOperations.count) BitrateMbps1024Based:bitrateMbps1024Based];
+   
+    float averageProgress = progressTotal / arrTransferOperations.count;
+    [[self httpRequestDelegate] htdDidUpdateTotalProgressPercent:averageProgress BitrateMbps1024Based:bitrateMbps1024Based];
   }
 }
 
 //##HG
 - (void)reset
 {
+  mfFinalBitrate = 0.0F;
+  
   for (SKTransferOperationStatus* opStatus in arrTransferOperations) {
     [opStatus resetProperties];
   }
@@ -485,9 +458,11 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
   
   for (int i=0; i<nThreads; i++)
   {
+    SKTransferOperationStatus  *opStatus = arrTransferOperations[i];
     SKTransferOperation *operation =
     [[SKTransferOperation alloc] initWithTarget:target
                                            port:port
+                                       opStatus:opStatus
                                            file:file
                                    isDownstream:isDownstream
                                        nThreads:nThreads
@@ -563,22 +538,27 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
   return true;
 }
 
-- (int)getBytesPerSecondForFinalDisplayAndUploadOld
-{
-  double dTime = testTransferTimeMicroseconds / 1000000.0;   // convert microseconds -> seconds
-  if (dTime == 0) {
-    return 0;
-  }
-  double bytesPerSecond = ((double)testTransferBytes) / dTime;
-  
-  int intBytesPerSecond = (int)bytesPerSecond;
-  
-  return intBytesPerSecond;
-}
+//- (int)getBytesPerSecondForFinalDisplayAndUploadOld
+//{
+//  double dTime = testTransferTimeMicroseconds / 1000000.0;   // convert microseconds -> seconds
+//  if (dTime == 0) {
+//    return 0;
+//  }
+//  double bytesPerSecond = ((double)testTransferBytes) / dTime;
+//  
+//  int intBytesPerSecond = (int)bytesPerSecond;
+//  
+//  return intBytesPerSecond;
+//}
 
 
 - (double)getBytesPerSecondRealTimeUpload
 {
+  if (mfFinalBitrate > 0.0F) {
+    // We have finished - return the final bitrate!
+    return mfFinalBitrate;
+  }
+  
   if (testTransferBytes_New != 0) {
     
     NSDate *now = [NSDate date];
@@ -661,7 +641,8 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
     [[self httpRequestDelegate] htdUpdateStatus:status threadId:threadId];
   }
   
-  ((SKTransferOperationStatus*)arrTransferOperations[threadId]).status = status; //###HG
+  SKTransferOperationStatus *opStatus = arrTransferOperations[threadId];
+  [opStatus doSetStatus:status];
 }
 
 //###HG
@@ -679,9 +660,9 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
   
   @synchronized(arrTransferOperations)
   {
-    ((SKTransferOperationStatus*)arrTransferOperations[threadId]).progress = progress; //###HG
-    //((SKTransferOperationStatus*)arrTransferOperations[threadId]).totalTransferBytes = (int)transferBytes; //###HG
-    ((SKTransferOperationStatus*)arrTransferOperations[threadId]).transferTimeMicroseconds = transferTime; //###HG
+    SKTransferOperationStatus *opStatus = arrTransferOperations[threadId];
+    [opStatus doSetProgress:progress];
+    [opStatus doSetTransferTimeMicroseconds:transferTime];
   }
   
   // TODO - ENABLE THIS TO DEBUG TRACK PROGRESS! NSLog(@"Transfer time in Milliseconds: %f, PROGRESS=%g", transferTime/1000.0F, progress);
@@ -725,6 +706,16 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
       if (bitrateMbps1024Based > 0.0) {
         if (self.isDownstream == NO) {
           [self.mServerUploadTestBitrates addObject:@(bitrateMbps1024Based)];
+        }
+      }
+      
+      // FIRST TEST HAS COMPLETED!!!
+      if (self.warmupDone == YES) {
+        if (mfFinalBitrate == 0.0F) {
+          mfFinalBitrate = [self getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload];
+#ifdef DEBUG
+          NSLog(@"DEBUG: Calculated final bitrate = %0f.0", mfFinalBitrate);
+#endif // DEBUG
         }
       }
       
@@ -875,26 +866,40 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
 }
 
 // RETURNS -1 if value returned is NOT YET VALID!
+
+// The specificiation for this is as follows (04/07/2016)
+// Threads A/B/C all measuring speed test (bytes, elapsed time)
+// When the first thread completes (e.g. B):
+// - calculate FINAL bitrate as SUM(test bytes from A...C) / time to complete B
+// - Mark the test as COMPLETED stop *all* the tests (if possible)
+// - Return FINAL bitrate
 -(double)getSpeedbitrateMbps1024Based_ForDownloadOrLocalUpload {
-  double total = 0.0;
-  SKTimeIntervalMicroseconds transferTimeMicroseconds = 0.0;
+  if (mfFinalBitrate > 0.0F) {
+    // We have finished - return the final bitrate!
+    return mfFinalBitrate;
+  }
+  
+  //double total = 0.0;
+  //SKTimeIntervalMicroseconds transferTimeMicroseconds = 0.0;
   
   // Actually, the total transfer bytes are stored at the HttpTest level, now!
   int totalTransferBytes = self.mTransferBytes;
   //int totalTransferBytes = 0;
+  
+  //double totalBytesSoFar = 0.0;
+  double transferTimeMicroseconds = 0.0;
+  double fCount = 0.0;
   @synchronized(arrTransferOperations)
   {
     for (SKTransferOperationStatus* opStatus in arrTransferOperations) {
-      total += opStatus.progress;
-      //totalTransferBytes += opStatus.totalTransferBytes;
-      
-      if (opStatus.transferTimeMicroseconds > transferTimeMicroseconds) {
-        transferTimeMicroseconds = opStatus.transferTimeMicroseconds;
+      ///totalBytesSoFar = [opStatus doGetTransferBytes];
+      fCount += 1.0;
+      double theTransferTimeMicroseconds = [opStatus doGetTransferTimeMicroseconds];
+      if (theTransferTimeMicroseconds > transferTimeMicroseconds) {
+        transferTimeMicroseconds = theTransferTimeMicroseconds;
       }
     }
   }
-  
-  
   
   if (transferTimeMicroseconds < 1000000.0) // At least a second!
   {
@@ -902,7 +907,9 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
     return -1.0;
   }
   
+  //double bitrateMbps1024Based = totalBytesSoFar / fCount;
   double bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:transferTimeMicroseconds transferBytes:totalTransferBytes];
+
   
   return bitrateMbps1024Based;
 }
@@ -955,6 +962,11 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
 
 - (int)getProgress
 {
+  if (mfFinalBitrate > 0.0F) {
+    // Finished NOW!
+    return 100;
+  }
+  
   double result = 0;
   
   @synchronized(self) {
@@ -1132,15 +1144,15 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
     outputResultsDictionary[@"type"] = type;
   }
   
-#ifdef DEBUG
-  int bytesPerSecondOld = [self getBytesPerSecondForFinalDisplayAndUploadOld];
-  double bitrateMbps1024BasedOld = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
-  NSLog(@"DEBUG: bitrateMpbs1024Based=%f, bitrateMbps1024BasedOld (JSON)=%f (bytes=%f, micro=%f)", bitrateMbps1024Based, bitrateMbps1024BasedOld, (double)testTransferBytes, (double)testTransferTimeMicroseconds);
-  
-  double bitrateMbps1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrateMbps1024Based];
-  NSString *mbpsString = [SKGlobalMethods sGet3DigitsNumber:bitrateMbps1000Based];
-  NSLog(@"DEBUG: The app should display Mbps value of ... %@ Mbps", mbpsString);
-#endif // DEBUG
+//#ifdef DEBUG
+//  int bytesPerSecondOld = [self getBytesPerSecondForFinalDisplayAndUploadOld];
+//  double bitrateMbps1024BasedOld = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:testTransferTimeMicroseconds transferBytes:testTransferBytes];
+//  NSLog(@"DEBUG: bitrateMpbs1024Based=%f, bitrateMbps1024BasedOld (JSON)=%f (bytes=%f, micro=%f)", bitrateMbps1024Based, bitrateMbps1024BasedOld, (double)testTransferBytes, (double)testTransferTimeMicroseconds);
+//  
+//  double bitrateMbps1000Based = [SKGlobalMethods convertMbps1024BasedToMBps1000Based:bitrateMbps1024Based];
+//  NSString *mbpsString = [SKGlobalMethods sGet3DigitsNumber:bitrateMbps1000Based];
+//  NSLog(@"DEBUG: The app should display Mbps value of ... %@ Mbps", mbpsString);
+//#endif // DEBUG
   
   int bytesPerSecond = [SKGlobalMethods convertMpbs1024BasedToBytesPerSecond:bitrateMbps1024Based];
   if (bytesPerSecond <= 0) {
@@ -1153,7 +1165,7 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
   }
   
 #ifdef DEBUG
-  NSLog(@"DEBUG: bytesPerSecond (JSON)=%d (bytesPerSecondOld=%d)", bytesPerSecond, bytesPerSecondOld);
+  NSLog(@"DEBUG: bytesPerSecond (JSON)=%d", bytesPerSecond);
 #endif // DEBUG
   
   outputResultsDictionary[@"bytes_sec"] = [NSString stringWithFormat:@"%d", bytesPerSecond];
@@ -1181,9 +1193,64 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
 
 @end
 
+//==================================================
+//
+//
+
 //##HG
+@interface SKTransferOperationStatus()
+
+@property (nonatomic) int threadId;
+@property (nonatomic) float progress;
+@property (nonatomic) int status;
+@property (nonatomic) int totalTransferBytes;
+@property (nonatomic) SKTimeIntervalMicroseconds transferTimeMicroseconds;
+
+@end
+
 @implementation SKTransferOperationStatus
 
+- (instancetype)initWithThreadId:(int)inThreadId {
+  self = [super init];
+  if (self) {
+    [self resetProperties];
+    self.threadId = inThreadId;
+  }
+  return self;
+}
+
+-(float) doGetProgress {
+  return self.progress;
+}
+
+-(void) doSetProgress:(float)inProgress {
+  self.progress = inProgress;
+}
+
+-(void) doSetStatus:(TransferStatus)inStatus {
+  self.status = inStatus;
+  
+  NSLog(@"SKTransferOperationStatus threadId=%d, self.status set to %d", self.threadId, self.status);
+}
+
+-(void) doSetTransferTimeMicroseconds:(SKTimeIntervalMicroseconds)inTransferTime {
+  self.transferTimeMicroseconds = inTransferTime;
+}
+
+-(SKTimeIntervalMicroseconds) doGetTransferTimeMicroseconds {
+  return self.transferTimeMicroseconds;
+}
+
+-(double) doGetBitrateMbps1024Based {
+  double bitrateMbps1024Based = [SKGlobalMethods getBitrateMbps1024BasedDoubleForTransferTimeMicroseconds:self.transferTimeMicroseconds transferBytes:self.totalTransferBytes];
+  return bitrateMbps1024Based;
+}
+
+-(int)    doGetTransferBytes {
+  return self.totalTransferBytes;
+}
+
+//    [op resetProperties];
 -(void)resetProperties
 {
   self.progress = 0;

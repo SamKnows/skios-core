@@ -10,7 +10,7 @@
 @property (atomic, strong) NSDictionary *responseHeaders;
 @property (atomic, strong) NSMutableData* responseData;
 
-@property UIBackgroundTaskIdentifier bgTask;
+//@property UIBackgroundTaskIdentifier bgTask;
 @property UIApplication *app;
 @property BOOL outstanding;
 @end
@@ -22,7 +22,7 @@
 @synthesize responseCode;
 @synthesize responseData;
 @synthesize responseHeaders;
-@synthesize bgTask;
+//@synthesize bgTask;
 @synthesize app;
 
 //-(NSMutableURLRequest*)createURLRequestInTask:(NSString*)urlString;
@@ -36,7 +36,7 @@
     responseCode = 0;
     responseData = nil;
     responseHeaders = nil;
-    bgTask = UIBackgroundTaskInvalid;
+    //bgTask = UIBackgroundTaskInvalid;
     app = [UIApplication sharedApplication];
     
     NSMutableURLRequest *urlRequest = [self createURLRequestInTask:urlString];
@@ -69,29 +69,29 @@
   return self;
 }
 
-- (BOOL)isCommandAlreadyRunning {
-  
-  if (self.bgTask == UIBackgroundTaskInvalid) {
-    return NO;
-  }
-  
-  return YES;
-}
+//- (BOOL)isCommandAlreadyRunning {
+//  
+//  if (self.bgTask == UIBackgroundTaskInvalid) {
+//    return NO;
+//  }
+//  
+//  return YES;
+//}
 
 -(NSMutableURLRequest*)createURLRequestInTask:(NSString*)urlString {
   
-  if (self.bgTask != UIBackgroundTaskInvalid) {
-#ifdef DEBUG
-    NSLog(@"DEBUG: query is already running");
-#endif // DEBUG
-    SK_ASSERT(false);
-    return nil;
-  }
-  
-  bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-    [app endBackgroundTask:bgTask];
-    bgTask = UIBackgroundTaskInvalid;
-  }];
+//  if (self.bgTask != UIBackgroundTaskInvalid) {
+//#ifdef DEBUG
+//    NSLog(@"DEBUG: query is already running");
+//#endif // DEBUG
+//    SK_ASSERT(false);
+//    return nil;
+//  }
+//  
+//  bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+//    [app endBackgroundTask:bgTask];
+//    bgTask = UIBackgroundTaskInvalid;
+//  }];
   
   NSMutableURLRequest *urlRequest =
   [NSMutableURLRequest
@@ -105,16 +105,16 @@
   return urlRequest;
 }
 
--(void)endTask {
-  
-  responseData = [NSMutableData data];
-  responseCode = 0;
-  
-  if (bgTask != UIBackgroundTaskInvalid) {
-    [app endBackgroundTask:bgTask];
-    bgTask = UIBackgroundTaskInvalid;
-  }
-}
+//-(void)endTask {
+//  
+//  responseData = [NSMutableData data];
+//  responseCode = 0;
+//  
+//  if (bgTask != UIBackgroundTaskInvalid) {
+//    [app endBackgroundTask:bgTask];
+//    bgTask = UIBackgroundTaskInvalid;
+//  }
+//}
 
 // Create and initiate request
 -(BOOL) initiateRequest:(NSMutableURLRequest*)request {
@@ -153,10 +153,10 @@
   NSLog(@"DEBUG: WARNING - SKNSURLAsyncQuery - Connection problem");
 #endif // DEBUG
   
-  if (bgTask != UIBackgroundTaskInvalid) {
-    [app endBackgroundTask:bgTask];
-    bgTask = UIBackgroundTaskInvalid;
-  }
+//  if (bgTask != UIBackgroundTaskInvalid) {
+//    [app endBackgroundTask:bgTask];
+//    bgTask = UIBackgroundTaskInvalid;
+//  }
   
   mpCallback(error, responseCode, responseData, nil, responseHeaders);
 }
@@ -172,7 +172,7 @@
   // Finally - report the response.
   mpCallback(nil, responseCode, responseData, trimmedResponse, responseHeaders);
   
-  [self endTask];
+//  [self endTask];
 }
 
 +(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader Callback:(SKQueryCompleted)callback WithTimeout:(NSTimeInterval)timeout {
