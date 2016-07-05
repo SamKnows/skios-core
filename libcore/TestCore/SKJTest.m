@@ -168,6 +168,9 @@
 -(BOOL) setErrorIfEmpty:(NSString *)error {
 		BOOL ret = false;
 		@synchronized (errorString) {
+#ifdef DEBUG
+      NSLog(@"DEBUG: WARNING: setErrorIfEmpty=%@", errorString);
+#endif // DEBUG
       if (errorString.length == 0) {
         errorString = error;
         ret = true;
@@ -179,6 +182,9 @@
 -(void) setError:(NSString*) error {
 		@synchronized (errorString) {
       errorString = error;
+#ifdef DEBUG
+      NSLog(@"DEBUG: WARNING: setError1=%@", errorString);
+#endif // DEBUG
     }
 }
 

@@ -514,7 +514,7 @@ void threadEntry(SKJHttpTest *pSelf) {
         usleep(1000);
       }
 #ifdef DEBUG
-      NSLog(@"**** DEBUG: THREAD JOINED!");
+      //NSLog(@"**** DEBUG: THREAD JOINED!");
 #endif // DEBUG
     }
   } @catch (NSException *e) {
@@ -804,6 +804,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     [super setErrorIfEmpty:@"read error"];
     //bytes = 0; 																		/* do not modify the bytes counters ??? */
     *self.mError = true;
+
 #ifdef DEBUG
     NSLog(@"DEBUG: isTransferDone, bytes == BYTESREADERR!");
 #endif // DEBUG
