@@ -1229,7 +1229,11 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
 
 #pragma mark - Overrides
 
-- (BOOL)isConcurrent
+// This replaces isConcurrent from iOS 7 and later
+// The value of this property is YES for operations that run asynchronously with respect to the current
+// thread or NO for operations that run synchronously on the current thread.
+// The default value of this property is NO.
+- (BOOL)isAsynchronous
 {
   return YES;
 }

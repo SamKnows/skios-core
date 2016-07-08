@@ -160,6 +160,13 @@ const int cQueryCountPerServer = 3;
    ];
 }
 
+-(NSDateFormatter *)getDateFormatterWithMilliseconds {
+  NSDateFormatter *df = [[NSDateFormatter alloc] init];
+  [df setDateFormat:@"yyyy-MM-dd-HH:mm:ss:SSS"];
+  return df;
+}
+
+
 /*
  Some networks block UDP traffic; and some might even block raw TCP traffic!
  GIVEN: performing a closest target test
@@ -172,8 +179,11 @@ const int cQueryCountPerServer = 3;
  (not an average of the three requests - just take the one with the absolute lowest)
  */
 -(void) tryHttpClosestTargetTestIfUdpTestFails {
+  // Posting to NSNotificationCenter *must* be done in the main thread!
+  [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_UDPFailedSkipTests object:self];
+  
 #ifdef DEBUG
-  NSLog(@"DEBUG: TODO: tryHttpClosestTargetTestIfUdpTestFails");
+  NSLog(@"DEBUG: CLOSEST HTTP: tryHttpClosestTargetTestIfUdpTestFails");
 #endif // DEBUG
   // TODO!
  
@@ -213,6 +223,10 @@ const int cQueryCountPerServer = 3;
     [bestLatencyPerServer addObject:@(-100.0)];
   }
   
+#ifdef DEBUG
+  NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+#endif // DEBUG
+  
   for (serverIndex=0; serverIndex < serverCount; serverIndex++)
   {
     NSString *target = targets[serverIndex];
@@ -221,15 +235,21 @@ const int cQueryCountPerServer = 3;
     int queryIndexForServer;
     for (queryIndexForServer=0; queryIndexForServer < cQueryCountPerServer; queryIndexForServer++)
     {
+#ifdef DEBUG
+      NSLog(@"DEBUG: CLOSEST HTTP start server:%d, sub-query:%d, start date/time=%@", serverIndex, queryIndexForServer, [df stringFromDate:[NSDate date]]);
+#endif // DEBUG
       [self fireAsyncHttpQueryForHttpLatencyTest:urlString
        Callback:^(NSError *error, NSInteger responseCode, NSMutableData *responseData, NSString *responseDataAsString, NSDictionary *responseHeaders) {
          
          @synchronized (self) {
            queryCompleteCountdown--;
+#ifdef DEBUG
+           NSLog(@"DEBUG: CLOSEST HTTP completed server:%d, sub-query:%d, end date/time=%@, countdown=%d", serverIndex, queryIndexForServer, [df stringFromDate:[NSDate date]], queryCompleteCountdown);
+#endif // DEBUG
            
            if (error != nil) {
 #ifdef DEBUG
-             NSLog(@"DEBUG: HTTP/Closest target test - error - %@", [error description]);
+             NSLog(@"DEBUG: CLOSEST HTTP - error - %@", [error description]);
 #endif // DEBUG
            } else {
              // This is useful - potentially!
@@ -250,6 +270,10 @@ const int cQueryCountPerServer = 3;
            
            if (queryCompleteCountdown == 0) {
              // We have finished the tests, for all servers!
+#ifdef DEBUG
+             NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+             NSLog(@"DEBUG: CLOSEST HTTP FINISHED ALL TESTS, date/time=%@", [df stringFromDate:[NSDate date]]);
+#endif // DEBUG
              
              // 2. Choose the server with the lowest non-zero response time
              // (not an average of the three requests - just take the one with the absolute lowest)
@@ -343,6 +367,11 @@ const int cQueryCountPerServer = 3;
 //    }
 //#endif // DEBUG
     
+#ifdef DEBUG
+    NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+    NSLog(@"DEBUG: UDP server ALL DONE threadCount=%d, date/time=%@", (int)threadCount, [df stringFromDate:[NSDate date]]);
+#endif // DEBUG
+    
     double theLowestUdpLatency = [self getTheBestUdpLatency];
 
     if (theLowestUdpLatency < DBL_MAX)
@@ -361,9 +390,6 @@ const int cQueryCountPerServer = 3;
       NSLog(@"DEBUG: Closest target test... UDP tests failed, so try http test instead!");
 #endif // DEBUG
       dispatch_async(dispatch_get_main_queue(), ^{
-        // Posting to NSNotificationCenter *must* be done in the main thread!
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSKAAutoTest_UDPFailedSkipTests object:self];
-        
         [self tryHttpClosestTargetTestIfUdpTestFails];
       });
     }
@@ -419,9 +445,18 @@ const int cQueryCountPerServer = 3;
 //  }
 //#endif // DEBUG
   
+#ifdef DEBUG
+  NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+#endif // DEBUG
+  
   for (int m=0; m<nThreads; m++)
   {
     NSString *target = targets[m];
+    
+#ifdef DEBUG
+    NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+    NSLog(@"DEBUG: UDP server START thread:%d, target=%@, start date/time=%@", m, target, [df stringFromDate:[NSDate date]]);
+#endif // DEBUG
     
     SKLatencyOperation *operation = [SKClosestTargetTest createLatencyOperationWithTarget:target
                                                                                 port:port 
@@ -435,12 +470,19 @@ const int cQueryCountPerServer = 3;
                                                                  LatencyOperationDelegate:self];
     [operation setIsClosestTargetTest:YES];
     [operation setSKAutotest:self.skAutotest];
+    
     [queue addOperation:operation];
+    // Alternative to start the operation in an auto-spawned thread.
+    // Testing proved that there is no measureable performance difference between the two approaches;
+    // both have their operations perform asynchronously (due to their isAsynchronous overrides)
+    //   [NSThread detachNewThreadSelector:@selector(start) toTarget:operation withObject:nil];
   }
   
   //##HG
-  if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidStartTargetTesting)]) [self.closestTargetDelegate ctdDidStartTargetTesting];
-    
+  if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidStartTargetTesting)]) {
+    [self.closestTargetDelegate ctdDidStartTargetTesting];
+  }
+  
   isRunning = YES;
 }
 
@@ -526,6 +568,11 @@ const int cQueryCountPerServer = 3;
 
 - (void)lodTestDidFail:(NSUInteger)threadId
 {
+#ifdef DEBUG
+  NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+  NSLog(@"DEBUG: UDP lodTestDidFail, threadId=%d, date/time=%@", (int)threadId, [df stringFromDate:[NSDate date]]);
+#endif // DEBUG
+  
   @synchronized(self) {
     threadCounter = threadCounter + 1;
     
@@ -539,6 +586,11 @@ const int cQueryCountPerServer = 3;
              stdDeviation:(double)stdDeviation_
                  threadId:(NSUInteger)threadId_
 {
+#ifdef DEBUG
+  NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
+  NSLog(@"DEBUG: UDP lodTestDidSucceed, threadId=%d, date/time=%@", (int)threadId_, [df stringFromDate:[NSDate date]]);
+#endif // DEBUG
+
   @synchronized(self) {
 
 #ifdef DEBUG
@@ -562,13 +614,17 @@ const int cQueryCountPerServer = 3;
     if ([self.closestTargetDelegate respondsToSelector:@selector(ctdDidFinishAnotherTarget:withLatency:withBest:)]) {
       [self.closestTargetDelegate ctdDidFinishAnotherTarget:(int)threadId_ withLatency:lowestLatency withBest:(int)lowestLatencyThreadId];
     }
-
+    
     [self checkIfDone:threadCounter];
   }
 }
 
 - (void)lodTestWasCancelled:(NSUInteger)threadId
-{    
+{
+#ifdef DEBUG
+  NSLog(@"DEBUG: UDP lodTestWasCancelled, threadId=%d", (int)threadId);
+#endif // DEBUG
+
   @synchronized(self) {
     threadCounter = threadCounter + 1;
     
