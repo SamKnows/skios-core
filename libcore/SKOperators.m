@@ -55,7 +55,7 @@
   
   NSData *jsonData = [NSData dataWithContentsOfFile:resource];
   if (jsonData == nil) {
-    // Nothing found!
+    // Defend against "Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'data parameter is nil'"
     return nil;
   }
   

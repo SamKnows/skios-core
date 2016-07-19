@@ -185,9 +185,14 @@
 
 +(void) fireURLRequest:(NSString*)urlString InjectDictionaryIntoHeader:(NSDictionary*)injectDictionaryIntoHeader JsonCallback:(SKQueryCompletedWithJsonDictionary)callback WithTimeout:(NSTimeInterval)timeout {
   (void)[[SKNSURLAsyncQuery alloc] initWithURLRequest:urlString InjectDictionaryIntoHeader:injectDictionaryIntoHeader Callback:^(NSError *error, NSInteger responseCode, NSMutableData *responseData, NSString *responseDataAsString, NSDictionary *responseHeaders) {
-    
-    if (responseCode == 200)
-    {
+  
+    // responseCode = 200; // FOR TESTING ONLY!
+    // responseData = nil; // FOR TESTING ONLY!
+    if (responseData == nil) {
+      // Defend against "Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'data parameter is nil'"
+      SK_ASSERT(false);
+      callback(nil, responseCode, nil,  responseHeaders);
+    } else if (responseCode == 200) {
       NSError *error = nil;
       NSDictionary *theObject = [NSJSONSerialization JSONObjectWithData:responseData
                                                                 options:NSJSONReadingMutableLeaves

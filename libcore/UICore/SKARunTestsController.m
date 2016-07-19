@@ -617,16 +617,19 @@
 {
   int index = 0;
   BOOL bFound = NO;
-  
-  for (NSDictionary *dict in self.resultsArray)
+ 
+  @synchronized(self)
   {
-    if ([dict[@"TYPE"] isEqualToString:testType])
+    for (NSDictionary *dict in self.resultsArray)
     {
-      bFound = YES;
-      break;
+      if ([dict[@"TYPE"] isEqualToString:testType])
+      {
+        bFound = YES;
+        break;
+      }
+      
+      index++;
     }
-    
-    index++;
   }
   
 #ifdef DEBUG
@@ -738,8 +741,11 @@
         [tmpArray addObject:tmpDict];
       }
     }
-    
-    self.resultsArray = tmpArray;
+   
+    @synchronized(self)
+    {
+      self.resultsArray = tmpArray;
+    }
   }
 }
 
@@ -960,15 +966,20 @@ static BOOL sbViewIsVisible;
   
   if (section == 0)
   {
-    NSDictionary *dict = (NSDictionary*) self.resultsArray[row];
+    float height = 0;
     
-    float height = [dict[@"HEIGHT"] floatValue];
-    
-    SK_ASSERT(height == 59 || height == 100 || height == 150);
-    
-    if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
-      if (height == 100) {
-        height = 150;
+    @synchronized(self)
+    {
+      NSDictionary *dict = (NSDictionary*) self.resultsArray[row];
+      
+      height = [dict[@"HEIGHT"] floatValue];
+      
+      SK_ASSERT(height == 59 || height == 100 || height == 150);
+      
+      if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getIsJitterSupported]) {
+        if (height == 100) {
+          height = 150;
+        }
       }
     }
     

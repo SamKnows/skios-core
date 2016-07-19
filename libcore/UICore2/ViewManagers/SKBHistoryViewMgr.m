@@ -401,6 +401,8 @@ static NSUInteger sAllButtonIndex = 0;
 
 -(void)loadData
 {
+  SK_ASSERT([NSThread isMainThread]);
+  
   //    arrTestsList = [SKDatabase getTestDataForNetworkType:[SKAppBehaviourDelegate getNetworkTypeString]];
   arrTestsList = [SKDatabase getTestDataForNetworkType:[self getSelectedNetworkWord] afterDate:nil];
   [self.tvTests reloadData];
@@ -483,6 +485,8 @@ static SKATestResults* testToShareExternal = nil;
 
 -(void)printPassiveMetrics:(SKATestResults*)testResult_
 {
+  SK_ASSERT([NSThread isMainThread]);
+  
   // We should only "print" the passive metrics that are an intersection of the following sets:
   // Those values for which we have tests results, in the metricsDictionary
   // Those values which are in the set or results that the app is interested in displaying!

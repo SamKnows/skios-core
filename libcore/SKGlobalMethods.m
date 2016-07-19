@@ -957,10 +957,15 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
                                                                               withString:@""];
       
       // # SIMOPERATOR;TIMESTAMP; SIM_OPERATOR_CODE; SIM_OPERATOR_NAME
+      NSString *mobileNetworkCode = carrier.mobileNetworkCode;
+      if (mobileNetworkCode == nil) {
+        SK_ASSERT(false);
+        mobileNetworkCode = @"NA";
+      }
       
       NSString *str = [NSString stringWithFormat:@"SIMOPERATOR;%d;%@;%@;",
                        date,
-                       carrier.mobileNetworkCode,
+                       mobileNetworkCode,
                        carrierName_];
       
       return str;
@@ -982,12 +987,22 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
       NSString *carrierName = [carrier.carrierName stringByReplacingOccurrencesOfString:@" "
                                                                              withString:@""];
       
+      NSString *mobileNetworkCode = carrier.mobileNetworkCode;
+      if (mobileNetworkCode == nil) {
+        SK_ASSERT(false);
+        mobileNetworkCode = @"NA";
+      }
+      NSString *isoCountryCode = carrier.isoCountryCode;
+      if (isoCountryCode == nil) {
+        SK_ASSERT(false);
+        isoCountryCode = @"NA";
+      }
       NSString *str = [NSString stringWithFormat:@"CARRIERINFO;%d;%@;%@;%@;%@;",
                        date,
                        carrierName,
                        carrier.mobileCountryCode,
-                       carrier.mobileNetworkCode,
-                       carrier.isoCountryCode];
+                       mobileNetworkCode,
+                       isoCountryCode];
       
       return str;
     }

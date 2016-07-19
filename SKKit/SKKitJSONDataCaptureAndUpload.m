@@ -373,7 +373,9 @@ static void sAssertTestTypeValid(NSString* testType) {
 #ifdef DEBUG
       NSLog(@"DEBUG: JSON file upload, httpResponse.statusCode: %d", (int)httpResponse.statusCode);
 #endif // DEBUG
-      if (httpResponse.statusCode == 200)
+      if ( (data != nil) && // Defend against terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'data parameter is nil'
+           (httpResponse.statusCode == 200)
+         )
       {
         //
         // File upload successfully!
@@ -467,6 +469,12 @@ static void sAssertTestTypeValid(NSString* testType) {
 }
 
 + (void)sPostResultsJsonToServer:(NSData*)jsonData filePath:(NSString*)filePath {
+  
+  if (jsonData == nil) {
+    // Defend against terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'data parameter is nil'
+    SK_ASSERT(false);
+    return;
+  }
   
   NSError *error = nil;
   NSDictionary *theDictionaryToSend = [NSJSONSerialization JSONObjectWithData:jsonData

@@ -74,6 +74,8 @@ static BOOL sbReloadTableAfterBack = NO;
 
 -(void)updateTestList:(NSNotification *) notification
 {
+  SK_ASSERT([NSThread isMainThread]);
+  
   if ([[notification name] isEqualToString:@"TestListNeedsUpdate"]) {
     
     if (self.btBack.userInteractionEnabled == YES) {
@@ -323,6 +325,8 @@ static NSUInteger s1YearButtonIndex = 0;
 
 -(void)loadData
 {
+  SK_ASSERT([NSThread isMainThread]);
+  
   [self clearFields];
   
   dateTo = [NSDate date];

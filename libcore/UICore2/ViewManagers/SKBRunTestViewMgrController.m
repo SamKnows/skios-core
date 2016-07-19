@@ -651,6 +651,8 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 }
 
 -(SKBTestResultValue*) getTheTestResultValueForTestIdentifierDoesNotHaveToExist:(NSString*)inIdentifier {
+  SK_ASSERT([NSThread isMainThread]);
+  
   for (SKBTestResultValue* theValue in mTestResultsArray) {
     if ([theValue.mNonlocalizedIdentifier isEqualToString:inIdentifier]) {
       return theValue;
@@ -674,42 +676,13 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   return theResult;
 }
 
-// http://stackoverflow.com/questions/5198716/iphone-get-ssid-without-private-library
-/*
-// Returns first non-empty SSID network info dictionary.
-// @see CNCopyCurrentNetworkInfo
-- (NSDictionary *)fetchSSIDInfo
-{
-  NSArray *interfaceNames = CFBridgingRelease(CNCopySupportedInterfaces());
-  
-#ifdef DEBUG
-  NSLog(@"DEBUG: fetchSSIDInfo: Supported interfaces: %@", interfaceNames);
-#endif // DEBUG
-  
-  NSDictionary *SSIDInfo;
-  for (NSString *interfaceName in interfaceNames) {
-    SSIDInfo = CFBridgingRelease(CNCopyCurrentNetworkInfo((__bridge CFStringRef)interfaceName));
-#ifdef DEBUG
-    NSLog(@"DEBUG: fetchSSIDInfo: %@ => %@", interfaceName, SSIDInfo);
-#endif // DEBUG
-    
-    BOOL isNotEmpty = (SSIDInfo.count > 0);
-    if (isNotEmpty) {
-      break;
-    }
-  }
-  
-  return SSIDInfo;
-}
-*/
-
 -(NSString*) getWiFiStringForUIWithSSIDIfAvailable {
-  // TODO - get the network string as (localized) "WiFi" or "WiFi (SSID)"
+  // Get the network string as (localized) "WiFi" or "WiFi (SSID)"
   NSString *wifiString = sSKCoreGetLocalisedString(@"NetworkTypeMenu_WiFi");
   
   NSString *currentSSID = [SKGlobalMethods sCurrentWifiSSID];
   if (currentSSID != nil && currentSSID.length > 0) {
-    return [NSMutableString stringWithFormat:@"%@\n(%@)", wifiString, currentSSID];
+    return [NSString stringWithFormat:@"%@\n(%@)", wifiString, currentSSID];
   }
   
   return wifiString;
@@ -833,6 +806,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   
   [self resetProgressView];
   
+  SK_ASSERT([NSThread isMainThread]);
   for (SKBTestResultValue* theValue in mTestResultsArray) {
     theValue.value = nil;
   }
@@ -1238,15 +1212,6 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
   for (SKBSimpleResultCell *cell in self.tvCurrentResults.visibleCells)
   {
     [cell updateDisplay];
-  }
-  
-  //    [self.tvCurrentResults reloadData];
-  [self.tvCurrentResults beginUpdates];
-  
-  @try {
-    [self.tvCurrentResults endUpdates];
-  } @catch (NSException *e) {
-    SK_ASSERT(false);
   }
 }
 
@@ -1680,6 +1645,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 -(void)prepareResultsArray:(BOOL)bIsWiFi
 {
+  SK_ASSERT([NSThread isMainThread]);
   mTestResultsArray = [NSMutableArray new];
   [SKBRunTestViewMgrController sAddNonPassiveMetricsToArray:mTestResultsArray];
   [SKBRunTestViewMgrController sAddPassiveMetricsToArray:mTestResultsArray IsWiFi:bIsWiFi];
