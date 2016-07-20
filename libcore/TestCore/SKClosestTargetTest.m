@@ -454,7 +454,6 @@ const int cQueryCountPerServer = 3;
     NSString *target = targets[m];
     
 #ifdef DEBUG
-    NSDateFormatter *df = [self getDateFormatterWithMilliseconds];
     NSLog(@"DEBUG: UDP server START thread:%d, target=%@, start date/time=%@", m, target, [df stringFromDate:[NSDate date]]);
 #endif // DEBUG
     
