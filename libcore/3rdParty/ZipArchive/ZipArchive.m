@@ -88,7 +88,7 @@ id			_delegate;
 		//	zipInfo.dosDate = [fileDate timeIntervalSinceDate:[self Date1980] ];
 			NSCalendar* currCalendar = [NSCalendar currentCalendar];
 			uint flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | 
-				NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit ;
+				NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond ;
 			NSDateComponents* dc = [currCalendar components:flags fromDate:fileDate];
 			zipInfo.tmz_date.tm_sec = (uInt)[dc second];
 			zipInfo.tmz_date.tm_min = (uInt)[dc minute];
@@ -278,7 +278,7 @@ id			_delegate;
 			dc.year = fileInfo.tmu_date.tm_year;
 			
 			NSCalendar *gregorian = [[NSCalendar alloc] 
-									 initWithCalendarIdentifier:NSGregorianCalendar];
+                               initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 			
 			orgDate = [gregorian dateFromComponents:dc] ;
 			//}}
@@ -316,13 +316,13 @@ id			_delegate;
 #pragma mark wrapper for delegate
 -(void) OutputErrorMessage:(NSString*) msg
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(ErrorMessage)] )
+  if( _delegate && [_delegate respondsToSelector:@selector(ErrorMessage:)] )
 		[_delegate ErrorMessage:msg];
 }
 
 -(BOOL) OverWrite:(NSString*) file
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(OverWriteOperation)] )
+  if( _delegate && [_delegate respondsToSelector:@selector(OverWriteOperation:)] )
 		return [_delegate OverWriteOperation:file];
 	return YES;
 }
@@ -335,7 +335,7 @@ id			_delegate;
 	[comps setMonth:1];
 	[comps setYear:1980];
 	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
+							 initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	NSDate *date = [gregorian dateFromComponents:comps];
 	
 	return date;

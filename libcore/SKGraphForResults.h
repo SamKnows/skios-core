@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SKGraphForResults : NSObject<CPTScatterPlotDataSource, CPTScatterPlotDelegate, CPTAxisDelegate>
+@interface SKGraphForResults : NSObject<CALayerDelegate, CPTScatterPlotDataSource, CPTScatterPlotDelegate, CPTAxisDelegate>
 
 // The properties are here, for ease of testing.
 @property (retain) NSArray *mpCorePlotDataPoints;

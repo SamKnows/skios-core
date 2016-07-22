@@ -65,7 +65,7 @@ public class TCPClient:YSocket{
     */
     public func close()->(Bool,String){
         if let fd:Int32=self.fd{
-            c_ytcpsocket_close(fd)
+            _ = c_ytcpsocket_close(fd)
             self.fd=nil
             return (true,"close success")
         }else{
@@ -186,7 +186,7 @@ public class TCPServer:YSocket{
     }
     public func close()->(Bool,String){
         if let fd:Int32=self.fd{
-            c_ytcpsocket_close(fd)
+            _ = c_ytcpsocket_close(fd)
             self.fd=nil
             return (true,"close success")
         }else{

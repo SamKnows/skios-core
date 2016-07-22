@@ -925,21 +925,19 @@ static BOOL sbDebugWarningMessageShownYet = NO;
 #endif // TARGET_IPHONE_SIMULATOR
 
 +(BOOL) getIsUsingWiFi {
-#if TARGET_IPHONE_SIMULATOR
-#ifdef DEBUG
+#if defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
   if (sbDebugWarningMessageShownYet == NO) {
     sbDebugWarningMessageShownYet = YES;
     NSLog(@"DEBUG: warning - on simulator, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
   }
   return NO;
-#endif  // DEBUG
-#else // TARGET_IPHONE_SIMULATOR
+#else // defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
   
 //#ifdef DEBUG
 //  NSLog(@"DEBUG: warning - on device, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
 //  return NO;
 //#endif  // DEBUG
-#endif // TARGET_IPHONE_SIMULATOR
+
   
   Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   //BOOL bReachableViaWWan =[reachability isReachableViaWWAN];
@@ -956,6 +954,7 @@ static BOOL sbDebugWarningMessageShownYet = NO;
 #endif // DEBUG
   
   return result;
+#endif // defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
 }
 
 

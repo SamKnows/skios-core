@@ -54,7 +54,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     let client:TCPClient = TCPClient(addr:mHostName, port:mPort)
     
     let startConnect = Date()
-    let (success, errmsg) = client.connect(timeout: mTimeoutSeconds)
+    let (success, _ /* errmsg*/ ) = client.connect(timeout: mTimeoutSeconds)
     
     if (success == false) {
       //print("Error=\(errmsg)")
@@ -63,10 +63,10 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     } else {
       let doneConnect = Date()
       let timeToConnect = doneConnect.timeIntervalSince(startConnect)
-      SK_ASSERT(Int(timeToConnect) < (mTimeoutSeconds + 1)) // Sometimes the timeout is ignored by iOS!
+      SK_ASSERT(Int(timeToConnect) < (mTimeoutSeconds + 3)) // Sometimes the timeout is ignored by iOS!
       print ("TCP connection time seconds = \(String(format:"%0.6f", timeToConnect))")
       
-      let (success, errmsg) = client.send(str:"GET / HTTP/1.0\n\n" )
+      let (success,  _ /* errmsg*/ ) = client.send(str:"GET / HTTP/1.0\n\n" )
       if (success == false) {
         //print("Error=\(errmsg)")
         SK_ASSERT(false)
@@ -149,8 +149,8 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
       }
     }
     
-    SK_ASSERT(false)
-    return mSKHTMLTestResult
+    //SK_ASSERT(false)
+    //return mSKHTMLTestResult
   }
   
   public func cancel() {
