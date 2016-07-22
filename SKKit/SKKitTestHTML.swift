@@ -12,15 +12,15 @@ public class SKHTMLTestResult {
   public let mSuccess:Bool
   
   // TCP connect time: The time taken to execute the "connect(...)" system call
-  public let mTimeToConnect:NSTimeInterval
+  public let mTimeToConnect:TimeInterval
 
   // Time to first byte: Time taken from connect() to the end of the first recv() call
-  public let mTimeToFirstByte:NSTimeInterval
+  public let mTimeToFirstByte:TimeInterval
   
   // HTML page load time: Time taken for the whole transaction (from connect() to the last byte being received)
-  public let mTimeToPageLoad:NSTimeInterval
+  public let mTimeToPageLoad:TimeInterval
   
-  public init(success:Bool, timeToConnect:NSTimeInterval, timeToFirstByte:NSTimeInterval, timeToPageLoad:NSTimeInterval) {
+  public init(success:Bool, timeToConnect:TimeInterval, timeToFirstByte:TimeInterval, timeToPageLoad:TimeInterval) {
     mSuccess = success
     mTimeToConnect = timeToConnect
     mTimeToFirstByte = timeToFirstByte
@@ -53,7 +53,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     print ("Test HTTP Query from \(mHostName), port=\(mPort)")
     let client:TCPClient = TCPClient(addr:mHostName, port:mPort)
     
-    let startConnect = NSDate()
+    let startConnect = Date()
     let (success, errmsg) = client.connect(timeout: mTimeoutSeconds)
     
     if (success == false) {
@@ -61,8 +61,8 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
       SK_ASSERT(false)
       return mSKHTMLTestResult
     } else {
-      let doneConnect = NSDate()
-      let timeToConnect = doneConnect.timeIntervalSinceDate(startConnect)
+      let doneConnect = Date()
+      let timeToConnect = doneConnect.timeIntervalSince(startConnect)
       SK_ASSERT(Int(timeToConnect) < (mTimeoutSeconds + 1)) // Sometimes the timeout is ignored by iOS!
       print ("TCP connection time seconds = \(String(format:"%0.6f", timeToConnect))")
       
@@ -85,12 +85,12 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
           return mSKHTMLTestResult
         }
         
-        let doneFirstByte = NSDate()
+        let doneFirstByte = Date()
           
         self.mBytesRead += d.count
-        readData.appendBytes(d, length: d.count)
+        readData.append(d, length: d.count)
         
-        let timeSoFar = NSDate().timeIntervalSinceDate(startConnect)
+        let timeSoFar = Date().timeIntervalSince(startConnect)
         if (timeSoFar > Double(mTimeoutSeconds)) {
           // Timeout!
           SK_ASSERT(false)
@@ -107,21 +107,21 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
          
           if (d.count > 0) {
             self.mBytesRead += d.count
-            readData.appendBytes(d, length:d.count)
+            readData.append(d, length:d.count)
             //let str = String(bytes:d, length: d.count, encoding: NSUTF8StringEncoding)
-            let timeSoFar = NSDate().timeIntervalSinceDate(startConnect)
+            let timeSoFar = Date().timeIntervalSince(startConnect)
             if (timeSoFar > Double(mTimeoutSeconds)) {
               // Timeout!
               SK_ASSERT(false)
               return mSKHTMLTestResult
             }
           } else {
-            let donePageLoad = NSDate()
+            let donePageLoad = Date()
             print("data end reached!")
             
-            let timeToFirstByte = doneFirstByte.timeIntervalSinceDate(startConnect)
+            let timeToFirstByte = doneFirstByte.timeIntervalSince(startConnect)
             print ("TCP time to first byte time seconds = \(String(format:"%0.6f", timeToFirstByte))")
-            let timeToPageLoad = donePageLoad.timeIntervalSinceDate(startConnect)
+            let timeToPageLoad = donePageLoad.timeIntervalSince(startConnect)
             print ("TCP time to page load time seconds = \(String(format:"%0.6f", timeToFirstByte))")
             
             //let readString = String(data:readData, encoding:NSUTF8StringEncoding)
@@ -141,7 +141,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
             SK_ASSERT(mSKHTMLTestResult.mTimeToPageLoad > mSKHTMLTestResult.mTimeToConnect)
             
             SK_ASSERT(self.mBytesRead > 0)
-            SKAppBehaviourDelegate.sGetAppBehaviourDelegate()?.amdDoUpdateDataUsage(Int32(self.mBytesRead))
+            SKAppBehaviourDelegate.sGet()?.amdDoUpdateDataUsage(Int32(self.mBytesRead))
             
             return mSKHTMLTestResult
           }
@@ -163,8 +163,8 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     
     let results:Dictionary<String,AnyObject> = [
       "type":"WWW",
-      "datetime":SKGlobalMethods.sGetDateAsIso8601String(NSDate()),
-      "timestamp":"\(Int(NSDate().timeIntervalSince1970))",
+      "datetime":SKGlobalMethods.sGetDate(asIso8601String: Date()),
+      "timestamp":"\(Int(Date().timeIntervalSince1970))",
       "success":mSKHTMLTestResult.mSuccess,
       "hostname":mHostName,
       "port":mPort,

@@ -1300,6 +1300,14 @@
 				LastSwiftMigration = 0730;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = SamKnows;
+				TargetAttributes = {
+					B22E88A617C36789005D9094 = {
+						LastSwiftMigration = 0800;
+					};
+					B22E88B717C3678A005D9094 = {
+						LastSwiftMigration = 0800;
+					};
+				};
 			};
 			buildConfigurationList = B22E88A217C36789005D9094 /* Build configuration list for PBXProject "SKCore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1564,6 +1572,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1595,6 +1604,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1627,6 +1637,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1659,6 +1670,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
