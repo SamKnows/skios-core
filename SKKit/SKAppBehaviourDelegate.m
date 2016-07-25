@@ -918,11 +918,9 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return [self.class getUploadFilePath:fileSizeBytes];
 }
 
-#if TARGET_IPHONE_SIMULATOR
-#ifdef DEBUG
+#if defined(TARGET_IPHONE_SIMULATOR) &&defined(DEBUG)
 static BOOL sbDebugWarningMessageShownYet = NO;
-#endif // DEBUG
-#endif // TARGET_IPHONE_SIMULATOR
+#endif // defined(TARGET_IPHONE_SIMULATOR) &&defined(DEBUG)
 
 +(BOOL) getIsUsingWiFi {
 #if defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
