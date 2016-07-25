@@ -1127,4 +1127,14 @@ static NSString *sLastKnownIpAddress = @"";
   return jsonStr;
 }
 
++(void) sPerformOnMainThread:(void (^)(void))closure {
+  if ([NSThread isMainThread]) {
+    closure();
+  } else {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      closure();
+    });
+  }
+}
+
 @end

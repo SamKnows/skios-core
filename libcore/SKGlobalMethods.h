@@ -108,4 +108,7 @@ typedef double SKTimeIntervalMicroseconds;
 
 + (NSString *) sGetDeviceStringForCurrentDevice;
 + (NSString *) sGetDeviceStringForPlatform:(NSString*)platform;
+
++(void) sPerformOnMainThread:(void (^)(void))closure;
+
 @end

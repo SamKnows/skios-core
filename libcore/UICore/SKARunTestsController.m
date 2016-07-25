@@ -81,23 +81,26 @@
 #ifdef DEBUG
   NSLog(@"DEBUG: %s", __FUNCTION__);
 #endif // DEBUG
-  [self cancelTestFromAlertResponse:NO];
-  testsComplete = YES;
-  [self.lblClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
-  
-  NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
-  SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  NSString *statusString = [SKTransferOperation getStatusFailed];
-  cell.lblLatencyResult.text = statusString;
-  cell.lblLossResult.text = statusString;
-  cell.lblJitterResult.text = statusString;
-  
-  // If we're running continuous testing, when the closest target fails... we must actually continue
-  // the cycle of tests!
-  if (self.continuousTesting == YES) {
-    // Keep going!
-    [self startToRunTheTests:YES];
-  }
+  [SKGlobalMethods sPerformOnMainThread:^{
+
+    [self cancelTestFromAlertResponse:NO];
+    testsComplete = YES;
+    [self.lblClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
+    
+    NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
+    SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+    NSString *statusString = [SKTransferOperation getStatusFailed];
+    cell.lblLatencyResult.text = statusString;
+    cell.lblLossResult.text = statusString;
+    cell.lblJitterResult.text = statusString;
+    
+    // If we're running continuous testing, when the closest target fails... we must actually continue
+    // the cycle of tests!
+    if (self.continuousTesting == YES) {
+      // Keep going!
+      [self startToRunTheTests:YES];
+    }
+  }];
 }
 
 - (void)aodClosestTargetTestDidSucceed:(NSString*)target
@@ -116,40 +119,43 @@
 // LATENCY //////////////////////////////////////////////////////
 
 - (void)showFailedLatencyTest{
-  NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
-  SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
- 
-  NSString *statusString = nil;
-  if (autoTest.udpClosestTargetTestSucceeded == YES) {
-    // At least one UDP closest test was ... so UDP should be working, so if a UDP-based test failed,
-    // we can assume it really failed. Show "Failed"
-    statusString = [SKTransferOperation getStatusFailed];
-  } else {
-    // None of the UDP closest target tests succeed (we rolled-back to HTTP based), so we can assume
-    // that UDP is completely blocked. Show "UDP Blocked"
-    statusString = sSKCoreGetLocalisedString(@"UDP blocked");
-  }
-  
-  if (nil != cell)
-  {
-    cell.latencyProgressView.hidden = YES;
-    cell.lossProgressView.hidden = YES;
-    cell.jitterProgressView.hidden = YES;
-    
-    cell.lblLatencyResult.hidden = NO;
-    cell.lblLossResult.hidden = NO;
-    cell.lblJitterResult.hidden = NO;
-    
-    cell.lblLatencyResult.text = statusString;
-    cell.lblLossResult.text = statusString;
-    cell.lblJitterResult.text = statusString;
-  }
+  [SKGlobalMethods sPerformOnMainThread:^{
 
-  [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
-  [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
-  [self updateResultsArray:statusString key:@"RESULT_1" testType:@"latency"];
-  [self updateResultsArray:statusString key:@"RESULT_2" testType:@"latency"];
-  [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
+    NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
+    SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+   
+    NSString *statusString = nil;
+    if (autoTest.udpClosestTargetTestSucceeded == YES) {
+      // At least one UDP closest test was ... so UDP should be working, so if a UDP-based test failed,
+      // we can assume it really failed. Show "Failed"
+      statusString = [SKTransferOperation getStatusFailed];
+    } else {
+      // None of the UDP closest target tests succeed (we rolled-back to HTTP based), so we can assume
+      // that UDP is completely blocked. Show "UDP Blocked"
+      statusString = sSKCoreGetLocalisedString(@"UDP blocked");
+    }
+    
+    if (nil != cell)
+    {
+      cell.latencyProgressView.hidden = YES;
+      cell.lossProgressView.hidden = YES;
+      cell.jitterProgressView.hidden = YES;
+      
+      cell.lblLatencyResult.hidden = NO;
+      cell.lblLossResult.hidden = NO;
+      cell.lblJitterResult.hidden = NO;
+      
+      cell.lblLatencyResult.text = statusString;
+      cell.lblLossResult.text = statusString;
+      cell.lblJitterResult.text = statusString;
+    }
+
+    [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
+    [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
+    [self updateResultsArray:statusString key:@"RESULT_1" testType:@"latency"];
+    [self updateResultsArray:statusString key:@"RESULT_2" testType:@"latency"];
+    [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
+  }];
 }
 
 - (void)aodLatencyTestDidFail:(NSString*)messageIgnore
@@ -163,39 +169,41 @@
 
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest
 {
-  double latency = latencyTest.latency;
-  double packetLoss = latencyTest.packetLoss;
-  double jitter = latencyTest.jitter;
-  
-  NSString *resLatency = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:latency]];
-  NSString *resLoss = [NSString stringWithFormat:@"%d %%", (int)packetLoss];
-  NSString *resJitter = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:jitter]];
-  
-  NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
-  SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-#ifdef DEBUG
-  NSLog(@"DEBUG: [cell description]=%@", [cell description]);
-#endif // DEBUG
-  SK_ASSERT([cell class] == [SKALatencyTestCell class]);
-  
-  if (nil != cell)
-  {
-    cell.latencyProgressView.hidden = YES;
-    cell.lossProgressView.hidden = YES;
-    cell.jitterProgressView.hidden = YES;
-    cell.lblLatencyResult.hidden = NO;
-    cell.lblLossResult.hidden = NO;
-    cell.lblJitterResult.hidden = NO;
-    cell.lblLatencyResult.text = resLatency;
-    cell.lblLossResult.text = resLoss;
-    cell.lblJitterResult.text = resJitter;
-  }
+  [SKGlobalMethods sPerformOnMainThread:^{
+    double latency = latencyTest.latency;
+    double packetLoss = latencyTest.packetLoss;
+    double jitter = latencyTest.jitter;
+    
+    NSString *resLatency = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:latency]];
+    NSString *resLoss = [NSString stringWithFormat:@"%d %%", (int)packetLoss];
+    NSString *resJitter = [NSString stringWithFormat:@"%@ ms", [SKGlobalMethods format2DecimalPlaces:jitter]];
+    
+    NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
+    SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+  #ifdef DEBUG
+    NSLog(@"DEBUG: [cell description]=%@", [cell description]);
+  #endif // DEBUG
+    SK_ASSERT([cell class] == [SKALatencyTestCell class]);
+    
+    if (nil != cell)
+    {
+      cell.latencyProgressView.hidden = YES;
+      cell.lossProgressView.hidden = YES;
+      cell.jitterProgressView.hidden = YES;
+      cell.lblLatencyResult.hidden = NO;
+      cell.lblLossResult.hidden = NO;
+      cell.lblJitterResult.hidden = NO;
+      cell.lblLatencyResult.text = resLatency;
+      cell.lblLossResult.text = resLoss;
+      cell.lblJitterResult.text = resJitter;
+    }
 
-  [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
-  [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
-  [self updateResultsArray:resLatency key:@"RESULT_1" testType:@"latency"];
-  [self updateResultsArray:resLoss key:@"RESULT_2" testType:@"latency"];
-  [self updateResultsArray:resJitter key:@"RESULT_3" testType:@"latency"];
+    [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
+    [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
+    [self updateResultsArray:resLatency key:@"RESULT_1" testType:@"latency"];
+    [self updateResultsArray:resLoss key:@"RESULT_2" testType:@"latency"];
+    [self updateResultsArray:resJitter key:@"RESULT_3" testType:@"latency"];
+  }];
 }
 
 - (void)aodLatencyTestUpdateStatus:(LatencyStatus)status
@@ -205,38 +213,41 @@
 
 - (void)aodLatencyTestWasCancelled
 {
-  NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
-  SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
-  
-  NSString *statusString = [SKTransferOperation getStatusFailed];
-  if (autoTest.udpClosestTargetTestSucceeded == NO) {
-    statusString = sSKCoreGetLocalisedString(@"UDP blocked");
-  }
-  
-  if (nil != cell)
-  {
-    cell.latencyProgressView.hidden = YES;
-    cell.lossProgressView.hidden = YES;
-    cell.jitterProgressView.hidden = YES;
-    cell.lblLatencyResult.hidden = NO;
-    cell.lblLossResult.hidden = NO;
-    cell.lblJitterResult.hidden = NO;
-    cell.lblLatencyResult.text = statusString;
-    cell.lblLossResult.text = statusString;
-    cell.lblJitterResult.text = statusString;
-  }
+  [SKGlobalMethods sPerformOnMainThread:^{
 
-  [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
-  [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
-  [self updateResultsArray:statusString key:@"RESULT_1" testType:@"latency"];
-  [self updateResultsArray:statusString key:@"RESULT_2" testType:@"latency"];
-  [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
+    NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
+    SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
+    
+    NSString *statusString = [SKTransferOperation getStatusFailed];
+    if (autoTest.udpClosestTargetTestSucceeded == NO) {
+      statusString = sSKCoreGetLocalisedString(@"UDP blocked");
+    }
+    
+    if (nil != cell)
+    {
+      cell.latencyProgressView.hidden = YES;
+      cell.lossProgressView.hidden = YES;
+      cell.jitterProgressView.hidden = YES;
+      cell.lblLatencyResult.hidden = NO;
+      cell.lblLossResult.hidden = NO;
+      cell.lblJitterResult.hidden = NO;
+      cell.lblLatencyResult.text = statusString;
+      cell.lblLossResult.text = statusString;
+      cell.lblJitterResult.text = statusString;
+    }
+
+    [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:@"latency"];
+    [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:@"latency"];
+    [self updateResultsArray:statusString key:@"RESULT_1" testType:@"latency"];
+    [self updateResultsArray:statusString key:@"RESULT_2" testType:@"latency"];
+    [self updateResultsArray:statusString key:@"RESULT_3" testType:@"latency"];
+  }];
 }
 
 - (void)aodLatencyTestUpdateProgress:(float)progress latency:(float)latency
 {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    
+  [SKGlobalMethods sPerformOnMainThread:^{
+
     NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
     SKALatencyTestCell *cell = (SKALatencyTestCell*)[self.tableView cellForRowAtIndexPath:ixp];
     
@@ -249,7 +260,7 @@
     }
 
     [self updateResultsArray:@(progress) key:@"PROGRESS" testType:@"latency"];
-  });
+  }];
 }
 
 // TRANSFER //////////////////////////////////////////////////////
@@ -511,6 +522,8 @@
 
 - (void)cancelCurrentTests
 {
+  SK_ASSERT([NSThread isMainThread]);
+  
   [self updateResultsArray:[SKLatencyOperation getCancelledStatus] key:@"STATUS" testType:@"closestTarget"];
   
   NSArray *testTypes = @[@"latency", @"downstreamthroughput", @"upstreamthroughput"];
