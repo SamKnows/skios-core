@@ -88,14 +88,6 @@
     [theTest execute];
     
     bStopNowFlag = true;
-    
-//    dispatch_async(dispatch_get_main_queue(), ^(void) {
-//      
-//      //Stop your activity indicator or anything else with the GUI
-//      //Code here is run on the main thread
-//      bStopNowFlag = true;
-//      //[expectation fulfill];
-//    });
   });
 
   const double cMaxTime = 60.0;

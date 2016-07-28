@@ -386,7 +386,7 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
       NSLog(@"****** DEBUG: END TEST uploadSpeed mbps=%g, movingAverage=%g (1024based=%g)", uploadSpeedMbps, uploadSpeedMbpsMovingAverage, bitrateMbps1024Based);
 #endif // DEBUG
       
-      dispatch_async(dispatch_get_main_queue(), ^(void) {
+      dispatch_async(dispatch_get_main_queue(), ^{
         const BOOL cbResultIsFromServerFalse = NO;
         
         [self cancel];

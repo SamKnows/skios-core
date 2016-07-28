@@ -387,23 +387,13 @@ static BOOL sbTestIsRunning = NO;
           else
           {
             SK_ASSERT(self.autotestObserverDelegate != nil);
-            
-            if (![NSThread isMainThread])
-            {
-              dispatch_async(dispatch_get_main_queue(), ^{
-#ifdef DEBUG
-                NSLog(@"DEBUG: ********* test is starting via delegate... routing async to main thread");
-#endif // DEBUG
-                [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
-              });
-            }
-            else
-            {
+           
+            [SKGlobalMethods sPerformOnMainThread:^{
 #ifdef DEBUG
               NSLog(@"DEBUG: ********* test is starting via delegate... on this main thread");
 #endif // DEBUG
               [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
-            }
+            }];
             
 #ifdef DEBUG
             NSLog(@"DEBUG: ********* test is starting!");
@@ -458,22 +448,12 @@ static BOOL sbTestIsRunning = NO;
 #endif // DEBUG
           if (!self.isCancelled)
           {
-            if (![NSThread isMainThread])
-            {
-              dispatch_async(dispatch_get_main_queue(), ^{
-#ifdef DEBUG
-                NSLog(@"DEBUG: ********* test is ready on async main thread...");
-#endif // DEBUG
-                [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
-              });
-            }
-            else
-            {
+            [SKGlobalMethods sPerformOnMainThread:^{
 #ifdef DEBUG
               NSLog(@"DEBUG: ********* test is ready on main thread...");
 #endif // DEBUG
               [self.autotestObserverDelegate aodTransferTestDidStart:self.httpTest.isDownstream];
-            }
+            }];
             
 #ifdef DEBUG
             NSLog(@"DEBUG: ********* test is starting!");
@@ -1038,16 +1018,9 @@ static BOOL sbTestIsRunning = NO;
       
       SK_ASSERT(self.autotestManagerDelegate != nil);
       
-      if (![NSThread isMainThread])
-      {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [self.autotestObserverDelegate aodAllTestsComplete];
-        });
-      }
-      else
-      {
+      [SKGlobalMethods sPerformOnMainThread:^{
         [self.autotestObserverDelegate aodAllTestsComplete];
-      }
+      }];
       
       // This method saves & uploads the JSON, if at least one Test completed!
       [self privateDoSaveAndUploadJson];
@@ -1057,17 +1030,10 @@ static BOOL sbTestIsRunning = NO;
   {
     self.isRunning = NO;
     [self markTestAsStopped]; // Only called by child class!
-    
-    if (![NSThread isMainThread])
-    {
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [self.autotestObserverDelegate aodAllTestsComplete];
-      });
-    }
-    else
-    {
+   
+    [SKGlobalMethods sPerformOnMainThread:^{
       [self.autotestObserverDelegate aodAllTestsComplete];
-    }
+    }];
   }
 }
 
