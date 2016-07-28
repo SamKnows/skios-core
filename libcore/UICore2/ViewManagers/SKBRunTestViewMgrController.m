@@ -1016,32 +1016,33 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 
 - (void)aodLatencyTestDidFail:(NSString*)message
 {
-  dispatch_async(dispatch_get_main_queue(), ^{
+  [SKGlobalMethods sPerformOnMainThread:^{
     [self cancelTestFromAlertResponse:NO];
     [self setIsRunning:NO];
     
     [self setErrorMessage];
-  });
+  }];
 }
 
 - (void)aodLatencyTestDidSucceed:(SKLatencyTest*)latencyTest
 {
-  SK_ASSERT([NSThread isMainThread]);
-  double latency = latencyTest.latency;
-  double packetLoss = latencyTest.packetLoss;
-  double jitter = latencyTest.jitter;
-  
-  [self.tmActivityIndicator setAngleByValue:0];
-  
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST].value = [NSString stringWithFormat:@"%.0f ms", latency];
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST].value = [NSString stringWithFormat:@"%.0f %%", packetLoss];
-  [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST].value = [NSString stringWithFormat:@"%.0f ms", jitter];
-  
-  [SKBHistoryViewMgr sGetTstToShareExternal].latency = latency;
-  [SKBHistoryViewMgr sGetTstToShareExternal].loss = packetLoss;
-  [SKBHistoryViewMgr sGetTstToShareExternal].jitter = jitter;
-  
-  [self updateTableAnimated];
+  [SKGlobalMethods sPerformOnMainThread:^{
+    double latency = latencyTest.latency;
+    double packetLoss = latencyTest.packetLoss;
+    double jitter = latencyTest.jitter;
+    
+    [self.tmActivityIndicator setAngleByValue:0];
+    
+    [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LATENCY_TEST].value = [NSString stringWithFormat:@"%.0f ms", latency];
+    [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_LOSS_TEST].value = [NSString stringWithFormat:@"%.0f %%", packetLoss];
+    [self getTheTestResultValueForTestIdentifier:SKB_TESTVALUERESULT_C_JITTER_TEST].value = [NSString stringWithFormat:@"%.0f ms", jitter];
+    
+    [SKBHistoryViewMgr sGetTstToShareExternal].latency = latency;
+    [SKBHistoryViewMgr sGetTstToShareExternal].loss = packetLoss;
+    [SKBHistoryViewMgr sGetTstToShareExternal].jitter = jitter;
+    
+    [self updateTableAnimated];
+  }];
 }
 
 - (void)aodLatencyTestUpdateStatus:(LatencyStatus)status
@@ -1198,27 +1199,29 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
 {
   SK_ASSERT(false);
   
-  dispatch_async(dispatch_get_main_queue(), ^{
+  [SKGlobalMethods sPerformOnMainThread:^{
     
     [self cancelTestFromAlertResponse:NO];
     [self setIsRunning:NO];
     
     [self setErrorMessage];
-  });
+  }];
 }
 
 -(void)updateTableAnimated
 {
-  for (SKBSimpleResultCell *cell in self.tvCurrentResults.visibleCells)
-  {
-    [cell updateDisplay];
-  }
+  [SKGlobalMethods sPerformOnMainThread:^{
+    for (SKBSimpleResultCell *cell in self.tvCurrentResults.visibleCells)
+    {
+      [cell updateDisplay];
+    }
+  }];
 }
 
 - (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate1024Based:(double)bitrate1024Based
 //- (void)aodTransferTestDidCompleteTransfer:(SKHttpTest*)httpTest Bitrate:(double)bitrate
 {
-  dispatch_async(dispatch_get_main_queue(), ^{
+  [SKGlobalMethods sPerformOnMainThread:^{
     BOOL isDownstream = httpTest.isDownstream;
     
     [self.tmActivityIndicator setAngleByValue:0];
@@ -1244,7 +1247,7 @@ BOOL sbHaveAlreadyAskedUserAboutDataCapExceededSinceButtonPress1 = NO;
     
     [self setProgressView:0.2];
     [self updateTableAnimated];
-  });
+  }];
 }
 
 // ALL TESTS COMPLETE
