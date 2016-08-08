@@ -918,18 +918,18 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return [self.class getUploadFilePath:fileSizeBytes];
 }
 
-#if defined(TARGET_IPHONE_SIMULATOR) &&defined(DEBUG)
+#if (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) &&defined(DEBUG)
 static BOOL sbDebugWarningMessageShownYet = NO;
-#endif // defined(TARGET_IPHONE_SIMULATOR) &&defined(DEBUG)
+#endif // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) &&defined(DEBUG)
 
 +(BOOL) getIsUsingWiFi {
-#if defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
+#if (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
   if (sbDebugWarningMessageShownYet == NO) {
     sbDebugWarningMessageShownYet = YES;
     NSLog(@"DEBUG: warning - on simulator, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
   }
   return NO;
-#else // defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
+#else // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
   
 //#ifdef DEBUG
 //  NSLog(@"DEBUG: warning - on device, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
@@ -952,7 +952,7 @@ static BOOL sbDebugWarningMessageShownYet = NO;
 #endif // DEBUG
   
   return result;
-#endif // defined(TARGET_IPHONE_SIMULATOR) && defined(DEBUG)
+#endif // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
 }
 
 
