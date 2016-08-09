@@ -699,7 +699,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
 }
 
 +(void) sSetLatestSpeedForExternalMonitorBytesPerSecond:(long)bytesPerSecond TestId:(NSString *)testId {
-  long value = sLatestSpeedForExternalMonitorBytesPerSecond;
+  long value = (long)sLatestSpeedForExternalMonitorBytesPerSecond;
   sBytesPerSecondLast = value;
   if (bytesPerSecond == 0) {
     //SK_ASSERT(false);
@@ -1027,11 +1027,11 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
  * Accessors to atomic variables
  */
 -(long) getTotalWarmUpBytes {
-  return *self.totalWarmUpBytes;
+  return (long)*self.totalWarmUpBytes;
 }
 
 -(long) getTotalTransferBytes {
-  return *self.totalTransferBytes;
+  return (long)*self.totalTransferBytes;
 }
 
 -(int64_t) getWarmUpTimeMicro {
@@ -1070,11 +1070,11 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
   self.totalWarmUpBytes->fetch_add(bytes);
 }
 
--(void) setWarmUpTimeMicro:(long) uTime {
+-(void) setWarmUpTimeMicro:(int64_t) uTime {
   *self.mWarmupTimeMicro = uTime;
 }
 
--(void) setTransferTimeMicro:(long) uTime {
+-(void) setTransferTimeMicro:(int64_t) uTime {
   *self.transferTimeMicroseconds = uTime;
 }
 
@@ -1111,7 +1111,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     ([SKJHttpTest sGetMicroTime] - [self getStartWarmupMicro]) :
     [self getWarmUpTimeDurationMicro];
   
-  return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
+  return (int)[self.class sGetBytesPerSecond:(long)duration BtsTotal:btsTotal];
 }
 
 
@@ -1127,7 +1127,7 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     return -1;
   }
   
-  return [self.class sGetBytesPerSecond:duration BtsTotal:btsTotal];
+  return (int)[self.class sGetBytesPerSecond:(long)duration BtsTotal:btsTotal];
 }
 
 -(void) setError:(NSString*) error {

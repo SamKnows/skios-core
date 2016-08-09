@@ -12,13 +12,13 @@
 // https://developer.apple.com/library/ios/documentation/QuartzCore/Reference/CALayerDelegate_protocol/#//apple_ref/occ/instm/NSObject/actionForLayer:forKey:
 //#import <QuartzCore/QuartzCore.h>
 //#import <QuartzCore/CALayer.h>
-@protocol CALayerDelegate
-@optional
-- (void)displayLayer:(CALayer *)layer;
-- (void)layoutSublayersOfLayer:(CALayer *)layer;
-- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key;
-  
-@end
+//@protocol CALayerDelegate
+//@optional
+//- (void)displayLayer:(CALayer *)layer;
+//- (void)layoutSublayersOfLayer:(CALayer *)layer;
+//- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key;
+//  
+//@end
 
 @interface SKGraphForResults : NSObject<CALayerDelegate, CPTScatterPlotDataSource, CPTScatterPlotDelegate, CPTAxisDelegate>
 

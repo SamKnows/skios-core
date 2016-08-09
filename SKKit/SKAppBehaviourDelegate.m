@@ -465,7 +465,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     
     NSNumber *num = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]];
     
-    long currentBytes = [num longLongValue];
+    long currentBytes = [num longValue];
     
     long totalBytes = currentBytes + bytes;
     //NSLog(@"totalBytes : %d", totalBytes);
