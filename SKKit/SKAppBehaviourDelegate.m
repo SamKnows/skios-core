@@ -1743,6 +1743,9 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   SK_ASSERT(false);
   return 5.0;
 }
+-(NSTimeInterval) getTestLatencyTimeoutSeconds {
+  return 2.0;
+}
 
 @end
 

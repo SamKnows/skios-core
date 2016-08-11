@@ -276,6 +276,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(NSTimeInterval) getTestUploadWarmupSeconds;
 -(NSTimeInterval) getTestUploadTransferSeconds;
 -(NSTimeInterval) getTestLatencyMaxDurationSeconds;
+-(NSTimeInterval) getTestLatencyTimeoutSeconds;
+
 @end
 
 
