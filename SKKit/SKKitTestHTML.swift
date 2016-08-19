@@ -157,13 +157,15 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     // Nothing can be done here, as the test call is blocking...
   }
   
-  public func getTestResultsDictionary() -> [NSObject : AnyObject]! {
+  public func getTestResultsDictionary() -> [AnyHashable : Any]! {
     
     // Return dictionary of test results!
     
-    let results:Dictionary<String,AnyObject> = [
+    let datetime = SKGlobalMethods.sGetDate(asIso8601String: Date())
+    
+    let results:Dictionary<String,Any> = [
       "type":"WWW",
-      "datetime":SKGlobalMethods.sGetDate(asIso8601String: Date()),
+      "datetime":datetime,
       "timestamp":"\(Int(Date().timeIntervalSince1970))",
       "success":mSKHTMLTestResult.mSuccess,
       "hostname":mHostName,
@@ -174,6 +176,6 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
       "time_to_page_load":Int(mSKHTMLTestResult.mTimeToPageLoad*1000000.0) // Microseconds!
     ]
     
-    return results
+    return results as [NSObject : Any]
   }
 }
