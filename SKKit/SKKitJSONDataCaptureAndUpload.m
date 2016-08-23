@@ -559,6 +559,7 @@ static void sAssertTestTypeValid(NSString* testType) {
   [request setValue:@"false" forHTTPHeaderField:@"X-Encrypted"];
   
   NSString *enterpriseId = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getEnterpriseId];
+  SK_ASSERT(enterpriseId != nil);
   [request setValue:enterpriseId forHTTPHeaderField:@"X-Enterprise-ID"];
   [request setHTTPBody:jsonData];
   
