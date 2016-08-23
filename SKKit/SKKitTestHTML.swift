@@ -110,7 +110,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
             readData.append(d, length:d.count)
             //let str = String(bytes:d, length: d.count, encoding: NSUTF8StringEncoding)
             let timeSoFar = Date().timeIntervalSince(startConnect)
-            if (timeSoFar > Double(mTimeoutSeconds)) {
+            if (timeSoFar > Double(mTimeoutSeconds) + 0.2) {
               // Timeout!
               SK_ASSERT(false)
               return mSKHTMLTestResult
