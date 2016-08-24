@@ -1108,6 +1108,7 @@
 				B2DC501918C75DA100E69F36 /* HockeySDK.embeddedframework */,
 			);
 			name = "HockeySDK-iOS";
+			path = "../HockeySDK-iOS";
 			sourceTree = "<group>";
 		};
 		B2DC501918C75DA100E69F36 /* HockeySDK.embeddedframework */ = {
