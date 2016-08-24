@@ -128,8 +128,6 @@
 		B2D1DE4B19E66F93003840BE /* SKBSplashVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D1DE4A19E66F93003840BE /* SKBSplashVC.m */; };
 		B2D49AF417D72F7000B88FD2 /* SKTestCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = B2D49AF217D72F6F00B88FD2 /* SKTestCommon.m */; };
 		B2D934E517D4D46D0012C169 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2D934E417D4D46D0012C169 /* CoreTelephony.framework */; };
-		B2DC501E18C75DA100E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
-		B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DC501A18C75DA100E69F36 /* HockeySDK.framework */; };
 		B2DD40261B271B16005E5CF2 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B2DD40251B271B16005E5CF2 /* libc++.dylib */; };
 		B2DD40281B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */; };
 		B2E3DC041AE0FCD200E1544C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24140C617C3C36100ECAE8C /* SystemConfiguration.framework */; };
@@ -482,9 +480,6 @@
 		B2D49AF317D72F7000B88FD2 /* SKTestCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTestCommon.h; sourceTree = "<group>"; };
 		B2D934E217D4D4240012C169 /* SKGlobalMethodsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGlobalMethodsTest.m; sourceTree = "<group>"; };
 		B2D934E417D4D46D0012C169 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		B2DC501A18C75DA100E69F36 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
-		B2DC501C18C75DA100E69F36 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
-		B2DC501D18C75DA100E69F36 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		B2DD40251B271B16005E5CF2 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		B2DD40271B271E27005E5CF2 /* SKTest_SKJPassiveServerUploadTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTest_SKJPassiveServerUploadTest.m; sourceTree = "<group>"; };
 		B2E16BD6181A5D4500B907DE /* SKGraphForResultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGraphForResultsTests.m; sourceTree = "<group>"; };
@@ -540,7 +535,6 @@
 				B22E88F717C36906005D9094 /* Security.framework in Frameworks */,
 				B22E88F517C36901005D9094 /* CFNetwork.framework in Frameworks */,
 				B22E88AB17C36789005D9094 /* Foundation.framework in Frameworks */,
-				B2DC501E18C75DA100E69F36 /* HockeySDK.framework in Frameworks */,
 				B2B076D418D6F62F00FFAE12 /* libCorePlot-CocoaTouch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,7 +566,6 @@
 				B22E890E17C36DD8005D9094 /* CoreFoundation.framework in Frameworks */,
 				B22E890B17C36DC4005D9094 /* libsqlite3.dylib in Frameworks */,
 				B22E88C017C3678A005D9094 /* libSKCore.a in Frameworks */,
-				B2DC504018C86DA000E69F36 /* HockeySDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,7 +630,6 @@
 			children = (
 				B232599E1954679500C03C2D /* README.md */,
 				B22E88A917C36789005D9094 /* Frameworks */,
-				B2DC501818C75D9500E69F36 /* HockeySDK-iOS */,
 				B22E88AC17C36789005D9094 /* libcore */,
 				B27CFAA71A84CA1800C410B8 /* SKKit */,
 				B22E88C117C3678A005D9094 /* SKCoreTests */,
@@ -1100,34 +1092,6 @@
 				B2C7A5471B21947E002DC60F /* SKJPassiveServerUploadTest.m */,
 			);
 			name = PortedFromJava;
-			sourceTree = "<group>";
-		};
-		B2DC501818C75D9500E69F36 /* HockeySDK-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				B2DC501918C75DA100E69F36 /* HockeySDK.embeddedframework */,
-			);
-			name = "HockeySDK-iOS";
-			path = "../HockeySDK-iOS";
-			sourceTree = "<group>";
-		};
-		B2DC501918C75DA100E69F36 /* HockeySDK.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				B2DC501A18C75DA100E69F36 /* HockeySDK.framework */,
-				B2DC501B18C75DA100E69F36 /* Resources */,
-			);
-			name = HockeySDK.embeddedframework;
-			path = "../HockeySDK-iOS/HockeySDK.embeddedframework";
-			sourceTree = "<group>";
-		};
-		B2DC501B18C75DA100E69F36 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B2DC501C18C75DA100E69F36 /* HockeySDK.xcconfig */,
-				B2DC501D18C75DA100E69F36 /* HockeySDKResources.bundle */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		B2FB02F819B75D09007AA3C2 /* UICore2 */ = {

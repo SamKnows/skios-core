@@ -1,6 +1,94 @@
+
+## Version 4.0.2
+
+- [BUGFIX] Add Bitcode marker back to simulator slices. This is necessary because otherwise `lipo` apparently strips the Bitcode sections from the merged library completely. As a side effect, this unfortunately breaks compatibility with Xcode 6. [#310](https://github.com/bitstadium/HockeySDK-iOS/pull/310)
+- [IMPROVEMENT] Improve error detection and logging during crash processing in case the app is sent to the background while crash processing hasn't finished.[#311](https://github.com/bitstadium/HockeySDK-iOS/pull/311)
+
+## Version 4.0.1
+
+- [BUGFIX] Fixes an issue where the whole app's Application Support directory was accidentally excluded from backups.
+This SDK release explicitly includes the Application Support directory into backups. If you want to opt-out of this fix and keep the Application Directory's backup flag untouched, add the following line above the SDK setup code:
+
+  - Objective-C:
+        ```objectivec
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"kBITExcludeApplicationSupportFromBackup"];
+        ```
+
+  - Swift:
+        ```swift
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "kBITExcludeApplicationSupportFromBackup")
+        ```
+
+- [BUGFIX] Fixes an issue that prevented preparedItemsForFeedbackManager: delegate method from working
+
+## Version 4.0.0
+
+- [NEW] Added official Carthage support
+- [NEW] Added `preparedItemsForFeedbackManager:` method in `BITFeedbackManagerDelegate` to allow to provide items with every possible method of showing the feedback compose dialog.
+- [UPDATE] Our CrashOnly binary now includes User Metrics which enables crash free users statistics
+- [UPDATE] Deprecate `feedbackComposerPreparedItems` property in favor of the new delegate method.
+- [IMPROVEMENT] Prefix GZIP category on NSData to prevent symbol collisions
+- [BUGFIX] Add minor UI bug when adding arrow annotation to feedback image
+
+## Version 4.0.0-beta.1
+
+- [NEW] User Metrics including users and sessions data is now in public beta! 
+
+## Version 4.0.0-alpha.2
+
+- [UPDATE] Include changes from HockeySDK 3.8.6
+
+## Version 4.0.0-alpha.1
+
+- [NEW] Added `BITMetricsManager` to track users and sessions
+- [UPDATE] Remove previously deprecated UpdateManagerDelegate method `-viewControllerForUpdateManager:`
+- [UPDATE] Remove previously deprecated CrashManagerDelegate methods `-userNameForCrashManager:` and `-userEmailForCrashManager:`
+- [UPDATE] Remove previously deprecated property `appStoreEnvironment`
+- [UPDATE] Remove previously deprecated misspelled `timeintervalCrashInLastSessionOccured` property
+- [UPDATE] Remove previously deprecated misspelled `BITFeedbackListViewCellPresentatationStyle` enum
+
+## Version 3.8.6
+
+- [UPDATE] Some minor refactorings
+- [BUGFIX] Fix crash in `BITCrashReportTextFormatter` in cases where processPath is unexpectedly nil
+- [BUGFIX] Fix bug where feedback image could only be added once
+- [BUGFIX] Fix URL encoding bug in BITUpdateManager
+- [BUGFIX] Include username, email, etc. in `appNotTerminatingCleanly` reports
+- [BUGFIX] Fix NSURLSession memory leak in Swift apps
+- [BUGFIX] Fix issue preventing attachment from being included when sending non-clean termination report
+- [IMPROVEMENT] Anonymize binary path in crash report
+- [IMPROVEMENT] Support escaping of additional characters (URL encoding)
+- [IMPROVEMENT] Support Bundle Identifiers which contain whitespaces
+
+## Version 3.8.5
+
+- [UPDATE] Some minor improvements to our documentation
+- [BUGFIX] Fix a crash where `appStoreReceiptURL` was accidentally accessed on iOS 6
+- [BUGFIX] Fix a warning when implementing `BITHockeyManagerDelegate`
+
+## Version 3.8.4
+
+- [BUGFIX] Fix a missing header in the `HockeySDK.h` umbrella
+- [BUGFIX] Fix several type comparison warnings
+
+## Version 3.8.3
+
+- [NEW] Adds new `appEnvironment` property to indicate the environment the app is running in. This replaces the old `isAppStoreEnvironment` which is now deprecated. We can now differentiate between apps installed via TestFlight or the AppStore
+- [NEW] Distributed zip file now also contains our documentation
+- [UPDATE] Prevent issues with duplicate symbols from PLCrashReporter
+- [UPDATE] Remove several typos in our documentation and improve instructions for use in extensions
+- [UPDATE] Add additional nil-checks before calling blocks
+- [UPDATE] Minor code readability improvements
+- [BUGFIX] `BITFeedbackManager`: Fix Feedback Annotations not working on iPhones running iOS 9
+- [BUGFIX] Switch back to using UIAlertView to prevent several issues. We will add a more robust solution which uses UIAlertController in a future update.
+- [BUGFIX] Fix several small issues in our CrashOnly builds
+- [BUGFIX] Minor fixes for memory leaks
+- [BUGFIX] Fix crashes because completion blocks were not properly dispatched on the main thread
+
 ## Version 3.8.2
 
 - [UPDATE] Added support for Xcode 6.x 
+- [UPDATE] Requires iOS 7 or later as base SDK, deployment target iOS 6 or later
 - [UPDATE] Updated PLCrashReporter build to exclude Bitcode in Simulator slices
 
 ## Version 3.8.1
