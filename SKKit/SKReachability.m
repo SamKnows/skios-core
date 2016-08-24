@@ -415,6 +415,18 @@ static BOOL sbLastKnownPingStatus = YES;
 // Simple test for Internet reachability!
 + (BOOL) sGetIsReachable { // Could also be called sGetIsConnected...?
   SKReachability *reachability = [[SKReachability newReachabilityForInternetConnection] autorelease];
+  if (reachability == nil) {
+    return NO;
+  }
+  BOOL test = [reachability isReachable];
+  return test;
+}
+
++ (BOOL) sGetIsReachableAndIsOnWiFi { // Could also be called sGetIsConnected...?
+  SKReachability *reachability = [[SKReachability newReachabilityForLocalWiFi] autorelease];
+  if (reachability == nil) {
+    return NO;
+  }
   BOOL test = [reachability isReachable];
   return test;
 }

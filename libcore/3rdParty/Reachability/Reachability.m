@@ -818,8 +818,21 @@ static const SCNetworkReachabilityFlags kOnDemandConnection = kSCNetworkReachabi
 // Simple test for Internet reachability!
 + (BOOL) sGetIsReachable { // Could also be called sGetIsConnected...?
   Reachability *reachability = [[Reachability newReachabilityForInternetConnection] autorelease];
+  if (reachability == nil) {
+    return NO;
+  }
   BOOL test = [reachability isReachable];
   return test;
 }
+
++ (BOOL) sGetIsReachableAndIsOnWiFi { // Could also be called sGetIsConnected...?
+  Reachability *reachability = [[Reachability newReachabilityForLocalWiFi] autorelease];
+  if (reachability == nil) {
+    return NO;
+  }
+  BOOL test = [reachability isReachable];
+  return test;
+}
+
 
 @end

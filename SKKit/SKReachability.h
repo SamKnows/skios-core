@@ -100,6 +100,7 @@
 + (NSString *) makeAddressKey: (in_addr_t) addr;
 
 + (BOOL) sGetIsReachable;
++ (BOOL) sGetIsReachableAndIsOnWiFi;
 
 @end
 
