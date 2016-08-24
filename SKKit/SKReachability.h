@@ -101,6 +101,7 @@
 
 + (BOOL) sGetIsReachable;
 + (BOOL) sGetIsReachableAndIsOnWiFi;
++ (BOOL) sGetIsReachableAndIsOnMobile;
 
 @end
 

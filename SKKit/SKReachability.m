@@ -427,8 +427,48 @@ static BOOL sbLastKnownPingStatus = YES;
   if (reachability == nil) {
     return NO;
   }
-  BOOL test = [reachability isReachable];
-  return test;
+  
+  NetworkStatus netStatus = [reachability currentReachabilityStatus];
+  
+  switch (netStatus)
+  {
+    case ReachableViaWiFi:
+      return YES;
+      
+    case ReachableViaWWAN:
+      return NO;
+
+    case NotReachable:
+      return NO;
+      
+    default:
+      return NO;
+  }
 }
+
++ (BOOL) sGetIsReachableAndIsOnMobile { // Could also be called sGetIsConnected...?
+  SKReachability *reachability = [[SKReachability newReachabilityForInternetConnection] autorelease];
+  if (reachability == nil) {
+    return NO;
+  }
+  
+  NetworkStatus netStatus = [reachability currentReachabilityStatus];
+  
+  switch (netStatus)
+  {
+    case ReachableViaWiFi:
+      return NO;
+      
+    case ReachableViaWWAN:
+      return YES;
+      
+    case NotReachable:
+      return NO;
+      
+    default:
+      return NO;
+  }
+}
+
 
 @end
