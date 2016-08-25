@@ -157,6 +157,10 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     // Nothing can be done here, as the test call is blocking...
   }
   
+  public func getTestType() -> SKKitTestType {
+    return SKKitTestType_Html
+  }
+  
   public func getTestResultsDictionary() -> [AnyHashable : Any]! {
     
     // Return dictionary of test results!

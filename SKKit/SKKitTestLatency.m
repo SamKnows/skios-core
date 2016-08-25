@@ -64,6 +64,10 @@
   [mpLatencyTest cancel];
 }
 
+-(SKKitTestType) getTestType {
+  return SKKitTestType_Latency;
+}
+
 -(NSDictionary*) getTestResultsDictionary {
   SK_ASSERT( mpLatencyTest.outputResultsDictionary != nil);
   return mpLatencyTest.outputResultsDictionary;

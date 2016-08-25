@@ -68,6 +68,10 @@
   [mpDownloadTest cancel];
 }
 
+-(SKKitTestType) getTestType {
+  return SKKitTestType_Download;
+}
+
 -(NSDictionary*) getTestResultsDictionary {
   SK_ASSERT(mpDownloadTest.outputResultsDictionary != nil);
   return mpDownloadTest.outputResultsDictionary;

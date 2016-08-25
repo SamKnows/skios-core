@@ -70,6 +70,10 @@
   [mpUploadTest cancel];
 }
 
+-(SKKitTestType) getTestType {
+  return SKKitTestType_Upload;
+}
+
 -(NSDictionary*) getTestResultsDictionary {
   SK_ASSERT( mpUploadTest.outputResultsDictionary != nil);
   return mpUploadTest.outputResultsDictionary;

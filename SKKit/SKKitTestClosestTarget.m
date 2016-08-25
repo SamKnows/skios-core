@@ -115,6 +115,10 @@
   return mfProgress0To1;
 }
 
+-(SKKitTestType) getTestType {
+  return SKKitTestType_Closest;
+}
+
 -(NSDictionary*) getTestResultsDictionary {
   // The underlying results are marked with the underlying "Latency Test" type.
   // We need to update this with the correct target type of "CLOSESTTARGET"
