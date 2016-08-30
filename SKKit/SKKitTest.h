@@ -75,6 +75,7 @@ typedef enum SKKitTestType_t {
 -(void) cancel;
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
+-(NSString*) getTestResultValueString; // e.g. 17.2 Mbps
 @end
 
 typedef void (^TSKClosestTargetTestProgressUpdate)(float progress0To100Percent, NSString *closestTarget);
@@ -92,6 +93,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 - (void) cancel;
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
+-(NSString*) getTestResultValueString; // e.g. ""
 @end
 
 @interface SKKitTestDownload : NSObject<SKKitTestProtocol>
@@ -103,6 +105,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 - (void) cancel;
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
+-(NSString*) getTestResultValueString; // e.g. "my target"
 @end
 
 
@@ -116,6 +119,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 - (void) cancel;
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
+-(NSString*) getTestResultValueString; // e.g. 17.2 Mbps
 @end
 
 
@@ -129,4 +133,5 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 - (void) cancel;
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
+-(NSString*) getTestResultValueString; // e.g. 5 ms
 @end

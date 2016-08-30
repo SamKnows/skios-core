@@ -23,12 +23,15 @@
 
 @interface SKKitTestUpload () <SKHttpTestDelegate>
 @property SKHttpTest *mpUploadTest;
+@property double mLatestBitrateMbps1024Based;
+
 @end
 
 @implementation SKKitTestUpload
 
 @synthesize mpUploadTest;
 @synthesize mProgressBlock;
+@synthesize mLatestBitrateMbps1024Based;
 
 - (instancetype)initWithUploadTestDescriptor:(SKKitTestDescriptor_Upload*)uploadTest {
   self = [super init];
@@ -79,6 +82,14 @@
   return mpUploadTest.outputResultsDictionary;
 }
 
+-(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
+  
+  if (mLatestBitrateMbps1024Based < 0) {
+    return @"Failed";
+  }
+  return [SKGlobalMethods bitrateMbps1024BasedToString:mLatestBitrateMbps1024Based];
+}
+
 // MARK: pragma SKHttpTestDelegate
 
 - (void)htdUpdateStatus:(TransferStatus)status
@@ -88,6 +99,7 @@
 #ifdef DEBUG
       NSLog(@"DEBUG: SKKitTestDownload - failed!");
 #endif // DEBUG
+      mLatestBitrateMbps1024Based = -1.0;
       mProgressBlock(100.0, -1.0);
       break;
     case CANCELLED:
@@ -115,13 +127,18 @@
     progress0To100Percent = 99.0;
   }
 
+  mLatestBitrateMbps1024Based = bitrateMbps1024Based;
+  
   mProgressBlock(progress0To100Percent, bitrateMbps1024Based);
 }
 
 - (void)htdDidCompleteHttpTest:(double)bitrateMbps1024Based
             ResultIsFromServer:(BOOL)resultIsFromServer
                TestDisplayName:(NSString *)testDisplayName
+
 {
+  mLatestBitrateMbps1024Based = bitrateMbps1024Based;
+
   mProgressBlock(100.0, bitrateMbps1024Based);
 }
 @end

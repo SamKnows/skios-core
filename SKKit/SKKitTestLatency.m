@@ -22,12 +22,14 @@
 //
 @interface SKKitTestLatency () <SKLatencyTestDelegate>
 @property SKLatencyTest *mpLatencyTest;
+@property float mLatestLatencyMs;
 @end
 
 @implementation SKKitTestLatency
 
 @synthesize mProgressBlock;
 @synthesize mpLatencyTest;
+@synthesize mLatestLatencyMs;
 
 - (instancetype)initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)latencyTest {
   self = [super init];
@@ -73,6 +75,15 @@
   return mpLatencyTest.outputResultsDictionary;
 }
 
+-(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
+  
+  if (mLatestLatencyMs < 0) {
+    return @"Failed";
+  }
+  
+  return [NSString stringWithFormat:@"%d ms", (int) mLatestLatencyMs];
+}
+
 
 // MARK: Pragma SKLatencyTestDelegate
 - (void)ltdTestDidFail {
@@ -100,6 +111,9 @@
   //double latency = mpLatencyTest.latency;
   double packetLoss = mpLatencyTest.packetLoss;
   double jitter = mpLatencyTest.jitter;
+  
+  mLatestLatencyMs = latency;
+  
   self.mProgressBlock(NO, progress, latency, packetLoss, jitter);
 }
 
@@ -109,6 +123,7 @@
 #ifdef DEBUG
       NSLog(@"DEBUG: SKKitTestLatency - failed!");
 #endif // DEBUG
+      mLatestLatencyMs = -1.0;
       self.mProgressBlock(YES, 100.0, -1.0, -1.0, -1.0);
       break;
   case IDLE_STATUS:

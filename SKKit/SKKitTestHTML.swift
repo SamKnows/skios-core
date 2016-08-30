@@ -30,7 +30,6 @@ public class SKHTMLTestResult {
 }
 
 public class SKKitTestHTML: NSObject, SKKitTestProtocol {
-  
   public var mSKHTMLTestResult = SKHTMLTestResult(success:false, timeToConnect:0.0, timeToFirstByte:0.0, timeToPageLoad:0.0)
   
   private var mHostName:String = ""
@@ -148,11 +147,20 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
         }
       }
     }
-    
-    //SK_ASSERT(false)
-    //return mSKHTMLTestResult
+
   }
   
+  public func getTestResultValueString() -> String! {
+    
+    if (mSKHTMLTestResult.mSuccess) {
+      return "Page Load \(Int(mSKHTMLTestResult.mTimeToPageLoad)) ms"
+    }
+    
+    return "Failed"
+  }
+  
+  //SK_ASSERT(false)
+  //return mSKHTMLTestResult
   public func cancel() {
     // Nothing can be done here, as the test call is blocking...
   }

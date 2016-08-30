@@ -22,12 +22,15 @@
 //
 @interface SKKitTestDownload () <SKHttpTestDelegate>
 @property SKHttpTest *mpDownloadTest;
+@property double mLatestBitrateMbps1024Based;
+
 @end
 
 @implementation SKKitTestDownload
 
 @synthesize mpDownloadTest;
 @synthesize mProgressBlock;
+@synthesize mLatestBitrateMbps1024Based;
 
 - (instancetype)initWithDownloadTestDescriptor:(SKKitTestDescriptor_Download*)downloadTest {
   self = [super init];
@@ -77,6 +80,15 @@
   return mpDownloadTest.outputResultsDictionary;
 }
 
+-(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
+  
+  if (mLatestBitrateMbps1024Based < 0) {
+    return @"Failed";
+  }
+  
+  return [SKGlobalMethods bitrateMbps1024BasedToString:mLatestBitrateMbps1024Based];
+}
+
 
 // TODO - capture data into a supplied JSON saver instance class, which must be extracted
 // as a class from SKAppBehaviourDelegate ... and exported as a public SKKit class.
@@ -94,6 +106,7 @@
 #ifdef DEBUG
   NSLog(@"DEBUG: SKKitTestDownload - failed!");
 #endif // DEBUG
+      mLatestBitrateMbps1024Based = -1.0;
       mProgressBlock(100.0, -1.0);
       break;
     case CANCELLED:
@@ -120,6 +133,9 @@
   if (progress0To100Percent >= 99) {
     progress0To100Percent = 99;
   }
+  
+  mLatestBitrateMbps1024Based = bitrateMbps1024Based;
+  
   mProgressBlock(progress0To100Percent, bitrateMbps1024Based);
 }
 
@@ -127,6 +143,8 @@
             ResultIsFromServer:(BOOL)resultIsFromServer
                TestDisplayName:(NSString *)testDisplayName
 {
+  mLatestBitrateMbps1024Based = bitrateMbps1024Based;
+
   mProgressBlock(100.0, bitrateMbps1024Based);
 }
 

@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSMutableArray * mTargetArray;
 @property int completedTargets;
 @property float mfProgress0To1;
+@property NSString *mSelectedTarget;
 //@property SKKitTestDescriptor_ClosestTarget *abc;
 @end
 
@@ -35,6 +36,7 @@
 @synthesize mTargetArray;
 @synthesize completedTargets;
 @synthesize mfProgress0To1;
+@synthesize mSelectedTarget;
 
 - (instancetype)initWithClosestTargetTestDescriptor:(SKKitTestDescriptor_ClosestTarget*)closestTarget {
   self = [super init];
@@ -46,6 +48,7 @@
     mProgressBlock = nil;
     completedTargets = 0;
     mfProgress0To1 = 0.0F;
+    mSelectedTarget = @"";
   }
   return self;
 }
@@ -125,6 +128,11 @@
   SK_ASSERT(mpClosestTargetTest.outputResultsDictionary != nil);
   mpClosestTargetTest.outputResultsDictionary[@"type"] = CLOSESTTARGET;
   return mpClosestTargetTest.outputResultsDictionary;
+}
+
+-(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
+  // Not much use for Closest Target - should probably never be called  
+  return mSelectedTarget;
 }
 
 @end
