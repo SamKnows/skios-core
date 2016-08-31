@@ -257,7 +257,12 @@ static void sAssertTestTypeValid(NSString* testType) {
     NSError *error = nil;
     if ([jsonString writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error])
     {
-      //NSLog(@"Wrote JSON Successfully");
+      
+#ifdef DEBUG
+      NSLog(@"DEBUG: Wrote JSON Successfully to (%@)", path);
+      BOOL bFileExists = [[NSFileManager defaultManager] fileExistsAtPath:path];
+      SK_ASSERT(bFileExists);
+#endif // DEBUG
     }
     else
     {
@@ -266,6 +271,7 @@ static void sAssertTestTypeValid(NSString* testType) {
       SK_ASSERT(false);
 #endif // DEBUG
     }
+
   }
   
   {
@@ -332,7 +338,11 @@ static void sAssertTestTypeValid(NSString* testType) {
     {
       NSURL *fileUrl = [NSURL fileURLWithPath:pathToFile];
       
-      NSData *json = [NSData dataWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
+      NSData *json = nil;
+      
+      @autoreleasepool {
+        json = [NSData dataWithContentsOfURL:fileUrl options:NSUTF8StringEncoding error:NULL];
+      }
       
       if (nil == json) {
         break;
@@ -342,6 +352,12 @@ static void sAssertTestTypeValid(NSString* testType) {
         break;
       }
       
+#if DEBUG
+      NSLog(@"DEBUG: loaded JSON file data from filePath=%@", pathToFile);
+      BOOL bFileExists = [[NSFileManager defaultManager] fileExistsAtPath:pathToFile];
+      SK_ASSERT(bFileExists);
+#endif // DEBUG
+      
       [self sPostResultsJsonToServer:json filePath:pathToFile];
     }
   }
@@ -350,6 +366,13 @@ static void sAssertTestTypeValid(NSString* testType) {
 + (void)sHandleUploadAsyncResponse:(NSURLResponse*)response data:(NSData *)data filePath:(NSString *)filePath testId:(NSNumber *)testId error:(NSError *)error
 {
   SK_ASSERT_NONSERROR(error);
+
+  BOOL bFileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+#ifdef DEBUG
+  if (bFileExists == false) {
+    NSLog(@"DEBUG: WARNING: JSON file no longer exists at %@", filePath);
+  }
+#endif // DEBUG
   
   if (error != nil)
   {
@@ -436,18 +459,29 @@ static void sAssertTestTypeValid(NSString* testType) {
           });
         }
         
-        // file upload successfully.. remove the uploaded file
-        if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL])
-        {
+        // file upload successfully.. remove the uploaded file ... if it exists!
+        if (bFileExists == YES) {
+          error = nil;
+          if (![[NSFileManager defaultManager] removeItemAtPath:filePath error:&error])
+          {
 #ifdef DEBUG
-          NSLog(@"DEBUG: Uploaded JSON file, but unable to remove JSON file from the file system!");
+            NSString *reason = @"Unknown";
+            if (error != nil) {
+              reason = error.localizedDescription;
+            }
+            NSLog(@"DEBUG: Uploaded JSON file, but unable to remove JSON file (%@) from the file system (reason=%@)", filePath, reason);
+            SK_ASSERT(false);
 #endif // DEBUG
-          SK_ASSERT(false);
-        }
-        else
-        {
+          }
+          else
+          {
 #ifdef DEBUG
-          NSLog(@"DEBUG: Uploaded JSON File, and removed from the file system!");
+            NSLog(@"DEBUG: Uploaded JSON File, and removed from the file system!");
+#endif // DEBUG
+          }
+        } else {
+#ifdef DEBUG
+          NSLog(@"DEBUG: Uploaded JSON File; did not remove from the file system as it no longer existed");
 #endif // DEBUG
         }
       }
