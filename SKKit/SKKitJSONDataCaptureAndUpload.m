@@ -469,8 +469,7 @@ static void sAssertTestTypeValid(NSString* testType) {
             if (error != nil) {
               reason = error.localizedDescription;
             }
-            NSLog(@"DEBUG: Uploaded JSON file, but unable to remove JSON file (%@) from the file system (reason=%@)", filePath, reason);
-            SK_ASSERT(false);
+            NSLog(@"DEBUG: WARNING: Uploaded JSON file, but unable to remove JSON file (%@) from the file system (reason=%@)", filePath, reason);
 #endif // DEBUG
           }
           else
