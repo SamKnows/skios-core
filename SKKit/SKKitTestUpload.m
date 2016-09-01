@@ -37,7 +37,10 @@
   self = [super init];
   
   if (self) {
+#ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestUpload - init");
+#endif // _DEBUG
+    
     mpUploadTest = [[SKHttpTest alloc]
                     initWithTarget:uploadTest.mTarget
                     port:(int)uploadTest.mPort

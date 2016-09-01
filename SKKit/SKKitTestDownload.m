@@ -36,7 +36,10 @@
   self = [super init];
   
   if (self) {
+#ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestDownload - init");
+#endif // _DEBUG
+    
     mpDownloadTest = [[SKHttpTest alloc]
                       initWithTarget:downloadTest.mTarget
                       port:(int)downloadTest.mPort

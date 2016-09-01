@@ -35,7 +35,9 @@
   self = [super init];
   
   if (self) {
+#ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestLatency - init");
+#endif // _DEBUG
     mpLatencyTest = [[SKLatencyTest alloc]
                      initWithTarget:latencyTest.mTarget
                      port:(int)latencyTest.mPort

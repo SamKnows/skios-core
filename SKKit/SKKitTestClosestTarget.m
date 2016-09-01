@@ -42,7 +42,9 @@
   self = [super init];
   
   if (self) {
+#ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestClosestTarget - init");
+#endif // _DEBUG
     mTargetArray = closestTarget.mTargetArray;
     mpClosestTargetTest = [[SKClosestTargetTest alloc] initWithTargets:mTargetArray ClosestTargetDelegate:self NumDatagrams:0];
     mProgressBlock = nil;
