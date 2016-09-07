@@ -470,5 +470,24 @@ static BOOL sbLastKnownPingStatus = YES;
   }
 }
 
+// http://stackoverflow.com/questions/7101206/know-if-ios-device-has-cellular-data-capabilities
++(BOOL) sDeviceHasCellularDataCapability {
+  bool found = false;
+
+  struct ifaddrs * addrs;
+  if (getifaddrs(&addrs) == 0) {
+    const struct ifaddrs *cursor = addrs;
+    while (cursor != NULL) {
+      NSString *name = [NSString stringWithUTF8String:cursor->ifa_name];
+      if ([name isEqualToString:@"pdp_ip0"]) {
+        found = true;
+        break;
+      }
+      cursor = cursor->ifa_next;
+    }
+    freeifaddrs(addrs);
+  }
+  return found;
+}
 
 @end

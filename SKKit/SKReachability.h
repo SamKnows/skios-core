@@ -97,12 +97,13 @@
 - (BOOL) isReachable;
 
 // Added by SamKnows...
-+ (NSString *) makeAddressKey: (in_addr_t) addr;
++(NSString *) makeAddressKey: (in_addr_t) addr;
 
-+ (BOOL) sGetIsReachable;
-+ (BOOL) sGetIsReachableAndIsOnWiFi;
-+ (BOOL) sGetIsReachableAndIsOnMobile;
++(BOOL) sGetIsReachable;
++(BOOL) sGetIsReachableAndIsOnWiFi;
++(BOOL) sGetIsReachableAndIsOnMobile;
 
++(BOOL) sDeviceHasCellularDataCapability;
 @end
 
 
