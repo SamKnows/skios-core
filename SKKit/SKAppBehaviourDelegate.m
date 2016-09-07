@@ -347,12 +347,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     [prefs setObject:@YES forKey:cPrefs_DataCapEnabled];
   }
   
-  if (![prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]])
-  {
-    int64_t theValue = 100L;
-    theValue *= CBytesInAMegabyte;
-    [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
-  }
+  [SKAppBehaviourDelegate sRegisterDataCapDefaults:[NSNumber numberWithLong:(100L * CBytesInAMegabyte)]];
  
   NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
   if (![prefs objectForKey:cPrefs_Agreed])
@@ -484,6 +479,34 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
       }
     }
   }
+}
+
+-(NSDate*) getDataCapDate {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSDate *date = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataDate]];
+  // This might be nil!
+  return date;
+}
+
++(void) sRegisterDataCapDefaults:(NSNumber*)bytes {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  
+  [prefs registerDefaults:@{
+    [SKAppBehaviourDelegate sGet_Prefs_DataUsage]:@0,
+    [SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]:bytes}
+   ];
+  
+  [prefs synchronize];
+}
+
+- (NSNumber*)getDataLimitBytes {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if (prefs == nil) {
+    return [NSNumber numberWithInteger:0];
+  }
+  
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  return [NSNumber numberWithLong:dataAllowed];
 }
 
 #pragma mark - Log File Methods

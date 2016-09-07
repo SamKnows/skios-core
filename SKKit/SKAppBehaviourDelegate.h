@@ -169,6 +169,9 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 -(void) setIsDataCapEnabled:(BOOL) value;
 -(BOOL) isDataCapEnabled;
 -(void) resetDataUsageToZero;
++(void) sRegisterDataCapDefaults:(NSNumber*)bytes;
+-(NSDate*) getDataCapDate;
+-(NSNumber*) getDataLimitBytes;
 -(void) checkDataUsageReset;
 -(void)resetDataCapStartDate:(NSDate*)baseOnStartDate;
 -(NSDate*) generateDataCapPeriodStartDate:(NSDate*)baseOnOptionalLastDate;
