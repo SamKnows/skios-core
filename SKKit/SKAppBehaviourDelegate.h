@@ -196,6 +196,9 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 // Returns YES if using WiFi...
 +(BOOL) getIsUsingWiFi;
 
+// Used for special debugging behaviours
++(void) sSetSimulatorThinksItIsOnMobile:(BOOL)value;
+
 -(BOOL) isTwitterExportSupported;
 -(BOOL) isFacebookExportSupported;
 -(BOOL) isSocialMediaExportSupported;

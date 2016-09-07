@@ -920,23 +920,28 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 
 #if (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) &&defined(DEBUG)
 static BOOL sbDebugWarningMessageShownYet = NO;
+static BOOL sbSimulatorThinksItIsOnMobile = NO;
 #endif // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) &&defined(DEBUG)
+
+// Used for special debugging behaviours
++(void) sSetSimulatorThinksItIsOnMobile:(BOOL)value {
+#if (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) &&defined(DEBUG)
+  NSLog(@"DEBUG: WARNING: sSetSimulatorThinksItIsOnMobile:%d", value);
+  sbSimulatorThinksItIsOnMobile = value;
+#endif // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) &&defined(DEBUG)
+}
 
 +(BOOL) getIsUsingWiFi {
 #if (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
-  if (sbDebugWarningMessageShownYet == NO) {
-    sbDebugWarningMessageShownYet = YES;
-    NSLog(@"DEBUG: warning - on simulator, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
+  if (sbSimulatorThinksItIsOnMobile == YES) {
+    if (sbDebugWarningMessageShownYet == NO) {
+      sbDebugWarningMessageShownYet = YES;
+      NSLog(@"DEBUG: warning - on simulator, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
+    }
+    return NO;
   }
-  return NO;
-#else // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
-  
-//#ifdef DEBUG
-//  NSLog(@"DEBUG: warning - on device, in DEBUG mode - pretending to be on 3G... (i.e. pretending we are NOT using WiFi!)");
-//  return NO;
-//#endif  // DEBUG
+#endif // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
 
-  
   Reachability *reachability = [Reachability newReachabilityForInternetConnection];
   //BOOL bReachableViaWWan =[reachability isReachableViaWWAN];
 #ifdef DEBUG
@@ -952,7 +957,6 @@ static BOOL sbDebugWarningMessageShownYet = NO;
 #endif // DEBUG
   
   return result;
-#endif // (defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR == 1) && defined(DEBUG)
 }
 
 
