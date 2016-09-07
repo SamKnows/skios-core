@@ -17,4 +17,8 @@
 
 - (instancetype)initWithParams:(NSDictionary*)params;
 
+-(NSUInteger) getBufferLength;
+-(NSMutableData*) getBufferDoNotRandomize;
+-(NSMutableData*) getBufferWithOptionalRandomize;
+
 @end

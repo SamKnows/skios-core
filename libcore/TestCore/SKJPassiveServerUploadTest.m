@@ -60,7 +60,7 @@ const int extMonitorUpdateInterval = 500000;
 #endif // DEBUG
         return YES;
       }
-      return [super isWarmupDone:(int)super.buff.length];
+      return [super isWarmupDone:(int)[super getBufferLength]];
     };
   } else {
     // If transmission mode is active
@@ -74,7 +74,7 @@ const int extMonitorUpdateInterval = 500000;
 #endif // DEBUG
         return YES;
       }
-      return [super isTransferDone:(int)super.buff.length];
+      return [super isTransferDone:(int)[super getBufferLength]];
     };
   }
   
@@ -103,9 +103,10 @@ const int extMonitorUpdateInterval = 500000;
 //      }
       
       // Write buffer to output socket
-      //NSLog(@"transmit() calling write() with %d bytes, threadIndex=%d", (int)super.buff.length, threadIndex);
-      ssize_t res = write(sockfd, super.buff.bytes, super.buff.length);
-      if (res != super.buff.length) {
+      //NSLog(@"transmit() calling write() with %d bytes, threadIndex=%d", (int)[super getBufferLength], threadIndex);
+      NSMutableData *theData = [super getBufferWithOptionalRandomize];
+      ssize_t res = write(sockfd, theData.bytes, theData.length);
+      if (res != theData.length) {
         bSuccess = NO;
         
 #ifdef _DEBUG
@@ -118,7 +119,7 @@ const int extMonitorUpdateInterval = 500000;
         break;
       }
       
-      //NSLog(@"transmit() called write() with %d bytes, threadIndex=%d", (int)super.buff.length, threadIndex);
+      //NSLog(@"transmit() called write() with %d bytes, threadIndex=%d", (int)[super getBufferLength], threadIndex);
       //connOut.flush();
       
       if (bytesPerSecond() >= 0) {
@@ -172,7 +173,7 @@ const int extMonitorUpdateInterval = 500000;
   //
   if (isWarmup == NO) {
     long btsTotal = [super getTotalTransferBytes];
-    if (btsTotal == self.buff.length) {
+    if (btsTotal == [super getBufferLength]) {
       // ONLY 1 BUFFER "SENT": TREAT THIS AS AN ERROR, AND SET BYTES TO 0!!!
       SK_ASSERT(false); // .e(this, "Only one buffer sent - treat this as an upload failure");
       [super resetTotalTransferBytesToZero];

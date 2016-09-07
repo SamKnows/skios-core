@@ -280,8 +280,10 @@ typedef void (^MyThreadBlock)(void);
     
     self.infoString = @"";
     self.ipAddress = @"";
+
+    // Upload buffer randomisation is required
+    self.randomEnabled = true;
     
-    self.randomEnabled = false;																			/* Upload buffer randomisation is required */
     //boolean warmUpDone = false;
     
     self.postDataLength = 0;

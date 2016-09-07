@@ -22,10 +22,40 @@
     bitrateMpbs1024Based = -1.0;
     buff = nil;
     
+    // Always enable data buffer randomization by default...
+    self.randomEnabled = YES;
+    
+    arc4random_stir();
+    
     [self doInit];
   }
   return self;
 }
+
+-(NSUInteger) getBufferLength {
+  return buff.length;
+}
+
+-(NSMutableData*) getBufferDoNotRandomize {
+  return buff;
+}
+
+-(NSMutableData*) getBufferWithOptionalRandomize {
+  if (self.randomEnabled == YES) {
+    // Randomize it!
+    void *theData = self.buff.mutableBytes;
+    
+    //int *theDataInt = (int*)theData;
+    //NSLog(@"PRE! theDataInt[0]=%d", theDataInt[0]);
+
+    int theLength = self.buff.length;
+    arc4random_buf(theData, theLength);
+    
+    //NSLog(@"POST theDataInt[0]=%d", theDataInt[0]);
+  }
+  return buff;
+}
+
 
 //private String[] formValuesArr()
 -(NSArray*) formValuesArr {
@@ -49,12 +79,6 @@
   else{
     buff = [[NSMutableData alloc] initWithLength:maxSendDataChunkSize];
     SK_ASSERT(false);
-  }
-  
-  if (self.randomEnabled){											/* randomEnabled comes from the parent (HTTPTest) class */
-    SK_ASSERT(false);
-    // TODO! sRandom = new Random();									/* Used for initialisation of upload array */
-    // TODO! sRandom.nextBytes(buff);
   }
 }
   
