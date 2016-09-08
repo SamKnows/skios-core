@@ -172,6 +172,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 +(void) sRegisterDataCapDefaults:(NSNumber*)bytes;
 -(NSDate*) getDataCapDate;
 -(NSNumber*) getDataLimitBytes;
+-(void)setDataLimitBytes:(NSNumber*)valueBytes;
 -(void) checkDataUsageReset;
 -(void)resetDataCapStartDate:(NSDate*)baseOnStartDate;
 -(NSDate*) generateDataCapPeriodStartDate:(NSDate*)baseOnOptionalLastDate;
@@ -242,7 +243,7 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 +(NSString*)sGet_Prefs_DateRange;
 +(NSString*)sGet_Prefs_DataUsage;
 +(NSString*)sGet_Prefs_DataDate;
-+(NSString*)sGet_Prefs_DataCapValueBytes;
++(NSString*)sGet_Prefs_DataCapLimitBytes;
 +(NSString*)sGet_Prefs_LastLocation;
 +(NSString*)sGet_Prefs_TargetServer;
 +(NSString*)sGetUpload_Url;

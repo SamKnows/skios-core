@@ -26,7 +26,7 @@
 //
 //FOUNDATION_EXPORT NSString *const Prefs_Activated;
 //FOUNDATION_EXPORT NSString *const Prefs_DataCapEnabled;
-//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes];
+//FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes];
 //FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DataDate];
 //FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_DateRange];
 //FOUNDATION_EXPORT NSString *const [SKAppBehaviourDelegate sGet_Prefs_LastLocation];
@@ -279,7 +279,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return self;
 }
 
-+(NSString*)sGet_Prefs_DataCapValueBytes {
++(NSString*)sGet_Prefs_DataCapLimitBytes {
   return cPrefs_DataCapValueBytes;
 }
 
@@ -493,7 +493,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   [prefs registerDefaults:@{
     [SKAppBehaviourDelegate sGet_Prefs_DataUsage]:@0,
-    [SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]:bytes}
+    [SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]:bytes}
    ];
   
   [prefs synchronize];
@@ -502,11 +502,23 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
 - (NSNumber*)getDataLimitBytes {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   if (prefs == nil) {
+    SK_ASSERT(false);
     return [NSNumber numberWithInteger:0];
   }
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
   return [NSNumber numberWithLong:dataAllowed];
+}
+
+-(void)setDataLimitBytes:(NSNumber*)valueBytes {
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if (prefs == nil) {
+    SK_ASSERT(false);
+    return;
+  }
+  
+  [prefs setValue:valueBytes forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]];
+  [prefs synchronize];
 }
 
 #pragma mark - Log File Methods

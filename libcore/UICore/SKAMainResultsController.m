@@ -901,7 +901,7 @@ static TestType GRunTheTestWithThisType;
   
   int64_t dataUsed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
   
   // For all selected tests, add-up the expected amount of data to use.
   // And if data consumed + expected data > dataAllowed, present a warning to the user!
@@ -1001,7 +1001,7 @@ static TestType GRunTheTestWithThisType;
   
   int64_t dataUsed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataUsage]] longLongValue];
   
-  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
   
   if (dataUsed > dataAllowed)
   {

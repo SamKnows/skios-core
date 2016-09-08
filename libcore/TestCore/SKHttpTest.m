@@ -399,7 +399,7 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
         
         SK_ASSERT(self.testTransferBytes == 0);
         self.testTransferBytes = totalBytes;
-        self.testTransferTimeMicroseconds = [mpNewStyleSKJUploadTest getWarmUpTimeMicro];
+        self.testTransferTimeMicroseconds = [mpNewStyleSKJUploadTest getTransferTimeMicro];
         
         self.testWarmupBytes = [mpNewStyleSKJUploadTest getTotalWarmUpBytes];
         self.testWarmupEndTime = [[NSDate date] timeIntervalSince1970];

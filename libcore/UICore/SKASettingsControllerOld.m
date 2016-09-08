@@ -196,7 +196,7 @@
 
 - (void)setDataAllowance
 {
-  int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
   
   mb = mb / CBytesInAMegabyte;
   
@@ -223,7 +223,7 @@
   NSLog(@"Sizeof int64_t = %d", (int)sizeof(int64_t));
   int64_t theValue = (int64_t)[self.txtDataCap.text longLongValue];
   theValue *= CBytesInAMegabyte;
-  [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]];
+  [prefs setObject:@(theValue) forKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]];
   [prefs synchronize];
 }
 
@@ -323,7 +323,7 @@ enum {
   // http://stackoverflow.com/questions/10307561/uikeyboardtypenumberpad-ipad
   textField.delegate = self;
   
-  int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapValueBytes]] longLongValue];
+  int64_t mb = [[[NSUserDefaults standardUserDefaults] objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
   
   mb = mb / CBytesInAMegabyte;
   
