@@ -21,6 +21,7 @@
 // Test: Closest Target - TODO - this has yet to be implemented fully.
 //
 @interface SKKitTestClosestTarget () <SKClosestTargetDelegate>
+@property SKKitTestResultStatus mStatus;
 @property SKClosestTargetTest *mpClosestTargetTest;
 @property (nonatomic, retain) NSMutableArray * mTargetArray;
 @property int completedTargets;
@@ -31,6 +32,7 @@
 
 @implementation SKKitTestClosestTarget
 
+@synthesize mStatus;
 @synthesize mpClosestTargetTest;
 @synthesize mProgressBlock;
 @synthesize mTargetArray;
@@ -45,6 +47,8 @@
 #ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestClosestTarget - init");
 #endif // _DEBUG
+    mStatus = SKKitTestResultStatus_Unknown;
+    
     mTargetArray = closestTarget.mTargetArray;
     mpClosestTargetTest = [[SKClosestTargetTest alloc] initWithTargets:mTargetArray ClosestTargetDelegate:self NumDatagrams:0];
     mProgressBlock = nil;
@@ -61,12 +65,19 @@
 }
 
 - (void)ctdDidCompleteClosestTargetTest:(NSString*)target latency:(double)latency {
-//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    mProgressBlock(100.0, target);
-//  });
+  if (target == nil || target.length == 0) {
+    SK_ASSERT(false);
+    mStatus = SKKitTestResultStatus_Failed_Red;
+  } else  {
+    mStatus = SKKitTestResultStatus_Passed_Green;
+  }
+  
+  mProgressBlock(100.0, target);
 }
 
 - (void)ctdTestDidFail {
+  mStatus = SKKitTestResultStatus_Failed_Red;
+
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     mProgressBlock(100.0, nil);
   });
@@ -114,6 +125,7 @@
 - (void) cancel {
   // TODO!
   SK_ASSERT(false);
+  mStatus = SKKitTestResultStatus_Warning_Yellow;
 }
 
 - (float) getProgress0To1 {
@@ -135,6 +147,10 @@
 -(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
   // Not much use for Closest Target - should probably never be called  
   return mSelectedTarget;
+}
+
+-(SKKitTestResultStatus) getTestResultStatus { // e.g. SKKitTestResultStatus_Passed_Green
+  return mStatus;
 }
 
 @end

@@ -30,6 +30,7 @@ public class SKHTMLTestResult {
 }
 
 public class SKKitTestHTML: NSObject, SKKitTestProtocol {
+
   public var mSKHTMLTestResult = SKHTMLTestResult(success:false, timeToConnect:0.0, timeToFirstByte:0.0, timeToPageLoad:0.0)
   
   private var mHostName:String = ""
@@ -157,6 +158,10 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     }
     
     return "Failed"
+  }
+  
+  public func getTestResultStatus() -> SKKitTestResultStatus {
+    return SKKitTestResultStatus_Passed_Green // TODO!
   }
   
   //SK_ASSERT(false)

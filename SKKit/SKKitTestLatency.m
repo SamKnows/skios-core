@@ -21,12 +21,14 @@
 // Test: Latency
 //
 @interface SKKitTestLatency () <SKLatencyTestDelegate>
+@property SKKitTestResultStatus mStatus;
 @property SKLatencyTest *mpLatencyTest;
 @property float mLatestLatencyMs;
 @end
 
 @implementation SKKitTestLatency
 
+@synthesize mStatus;
 @synthesize mProgressBlock;
 @synthesize mpLatencyTest;
 @synthesize mLatestLatencyMs;
@@ -38,6 +40,8 @@
 #ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestLatency - init");
 #endif // _DEBUG
+    mStatus = SKKitTestResultStatus_Unknown;
+    
     mpLatencyTest = [[SKLatencyTest alloc]
                      initWithTarget:latencyTest.mTarget
                      port:(int)latencyTest.mPort
@@ -86,27 +90,35 @@
   return [NSString stringWithFormat:@"%d ms", (int) mLatestLatencyMs];
 }
 
+-(SKKitTestResultStatus) getTestResultStatus { // e.g. SKKitTestResultStatus_Passed_Green
+  return mStatus;
+}
 
 // MARK: Pragma SKLatencyTestDelegate
 - (void)ltdTestDidFail {
-  
+  mStatus = SKKitTestResultStatus_Failed_Red;
 }
 
 - (void)ltdTestDidSucceed {
+  // TODO - mStatus = SKKitTestResultStatus_Warning_Yellow?
+  mStatus = SKKitTestResultStatus_Passed_Green;
   
   double latency = mpLatencyTest.latency;
   double packetLoss = mpLatencyTest.packetLoss;
   double jitter = mpLatencyTest.jitter;
   self.mProgressBlock(YES, 100.0, latency, packetLoss, jitter);
-  
 }
+
 - (void)ltdTestWasCancelled {
-  
+  mStatus = SKKitTestResultStatus_Warning_Yellow;
 }
 
 - (void)ltdUpdateProgress:(float)progress latency:(float)latency {
   
   if (progress > 100.0) {
+    if (mStatus == SKKitTestResultStatus_Unknown) {
+      mStatus = SKKitTestResultStatus_Passed_Green;
+    }
     progress = 100.0;
   }
   //SK_ASSERT(progress < 100.0);
@@ -121,23 +133,26 @@
 
 - (void)ltdUpdateStatus:(LatencyStatus)status {
   switch (status) {
-  case FAILED_STATUS:
+    case FAILED_STATUS:
 #ifdef DEBUG
       NSLog(@"DEBUG: SKKitTestLatency - failed!");
 #endif // DEBUG
+      mStatus = SKKitTestResultStatus_Failed_Red;
       mLatestLatencyMs = -1.0;
       self.mProgressBlock(YES, 100.0, -1.0, -1.0, -1.0);
       break;
-  case IDLE_STATUS:
-  case INITIALIZING_STATUS:
-  case RUNNING_STATUS:
-  case COMPLETE_STATUS:
-  case FINISHED_STATUS:
-  case CANCELLED_STATUS:
-  case TIMEOUT_STATUS:
-  case SEARCHING_STATUS:
-  default:
-    break;
+    case CANCELLED_STATUS:
+    case TIMEOUT_STATUS:
+      mStatus = SKKitTestResultStatus_Failed_Red;
+      break;
+    case IDLE_STATUS:
+    case INITIALIZING_STATUS:
+    case RUNNING_STATUS:
+    case COMPLETE_STATUS:
+    case FINISHED_STATUS:
+    case SEARCHING_STATUS:
+    default:
+      break;
   }
   
 }

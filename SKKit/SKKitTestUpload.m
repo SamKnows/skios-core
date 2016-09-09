@@ -22,6 +22,7 @@
 //
 
 @interface SKKitTestUpload () <SKHttpTestDelegate>
+@property SKKitTestResultStatus mStatus;
 @property SKHttpTest *mpUploadTest;
 @property double mLatestBitrateMbps1024Based;
 
@@ -29,6 +30,7 @@
 
 @implementation SKKitTestUpload
 
+@synthesize mStatus;
 @synthesize mpUploadTest;
 @synthesize mProgressBlock;
 @synthesize mLatestBitrateMbps1024Based;
@@ -40,6 +42,7 @@
 #ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestUpload - init");
 #endif // _DEBUG
+    mStatus = SKKitTestResultStatus_Unknown;
     
     mpUploadTest = [[SKHttpTest alloc]
                     initWithTarget:uploadTest.mTarget
@@ -93,6 +96,10 @@
   return [SKGlobalMethods bitrateMbps1024BasedToString:mLatestBitrateMbps1024Based];
 }
 
+-(SKKitTestResultStatus) getTestResultStatus { // e.g. SKKitTestResultStatus_Passed_Green
+  return mStatus;
+}
+
 // MARK: pragma SKHttpTestDelegate
 
 - (void)htdUpdateStatus:(TransferStatus)status
@@ -102,10 +109,13 @@
 #ifdef DEBUG
       NSLog(@"DEBUG: SKKitTestDownload - failed!");
 #endif // DEBUG
+      mStatus = SKKitTestResultStatus_Failed_Red;
       mLatestBitrateMbps1024Based = -1.0;
       mProgressBlock(100.0, -1.0);
       break;
     case CANCELLED:
+      mStatus = SKKitTestResultStatus_Warning_Yellow;
+      break;
     case INITIALIZING:
     case WARMING:
     case TRANSFERRING:
@@ -140,6 +150,11 @@
                TestDisplayName:(NSString *)testDisplayName
 
 {
+  if (mStatus == SKKitTestResultStatus_Unknown) {
+    // TODO - mStatus = SKKitTestResultStatus_Warning_Yellow?
+    mStatus = SKKitTestResultStatus_Passed_Green;
+  }
+  
   mLatestBitrateMbps1024Based = bitrateMbps1024Based;
 
   mProgressBlock(100.0, bitrateMbps1024Based);

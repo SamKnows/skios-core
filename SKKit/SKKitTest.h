@@ -16,6 +16,14 @@
 // Descriptors used to parse tests.
 
 @interface SKKitTestDescriptor : NSObject
+
+typedef enum SKKitTestResultStatus_ {
+  SKKitTestResultStatus_Unknown=0,
+  SKKitTestResultStatus_Passed_Green=1,
+  SKKitTestResultStatus_Failed_Red=2,
+  SKKitTestResultStatus_Warning_Yellow=3
+} SKKitTestResultStatus;
+
 typedef enum SKKitTestType_t {
   SKKitTestType_Closest=0,
   SKKitTestType_Download=1,
@@ -76,6 +84,7 @@ typedef enum SKKitTestType_t {
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. 17.2 Mbps
+-(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
 @end
 
 typedef void (^TSKClosestTargetTestProgressUpdate)(float progress0To100Percent, NSString *closestTarget);
@@ -94,6 +103,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. ""
+-(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
 @end
 
 @interface SKKitTestDownload : NSObject<SKKitTestProtocol>
@@ -106,6 +116,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. "my target"
+-(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
 @end
 
 
@@ -120,6 +131,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. 17.2 Mbps
+-(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
 @end
 
 
@@ -134,4 +146,5 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(SKKitTestType) getTestType;
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. 5 ms
+-(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
 @end

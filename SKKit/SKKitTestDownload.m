@@ -21,6 +21,7 @@
 // Test: Download
 //
 @interface SKKitTestDownload () <SKHttpTestDelegate>
+@property SKKitTestResultStatus mStatus;
 @property SKHttpTest *mpDownloadTest;
 @property double mLatestBitrateMbps1024Based;
 
@@ -28,6 +29,7 @@
 
 @implementation SKKitTestDownload
 
+@synthesize mStatus;
 @synthesize mpDownloadTest;
 @synthesize mProgressBlock;
 @synthesize mLatestBitrateMbps1024Based;
@@ -39,6 +41,8 @@
 #ifdef _DEBUG
     NSLog(@"DEBUG: SKKitTestDownload - init");
 #endif // _DEBUG
+    
+    mStatus = SKKitTestResultStatus_Unknown;
     
     mpDownloadTest = [[SKHttpTest alloc]
                       initWithTarget:downloadTest.mTarget
@@ -72,6 +76,7 @@
 
 - (void) cancel {
   [mpDownloadTest cancel];
+  mStatus = SKKitTestResultStatus_Warning_Yellow;
 }
 
 -(SKKitTestType) getTestType {
@@ -92,6 +97,10 @@
   return [SKGlobalMethods bitrateMbps1024BasedToString:mLatestBitrateMbps1024Based];
 }
 
+-(SKKitTestResultStatus) getTestResultStatus { // e.g. SKKitTestResultStatus_Passed_Green
+  return mStatus;
+}
+
 
 // TODO - capture data into a supplied JSON saver instance class, which must be extracted
 // as a class from SKAppBehaviourDelegate ... and exported as a public SKKit class.
@@ -107,12 +116,15 @@
   switch (status) {
     case FAILED:
 #ifdef DEBUG
-  NSLog(@"DEBUG: SKKitTestDownload - failed!");
+      NSLog(@"DEBUG: SKKitTestDownload - failed!");
 #endif // DEBUG
+      mStatus = SKKitTestResultStatus_Failed_Red;
       mLatestBitrateMbps1024Based = -1.0;
       mProgressBlock(100.0, -1.0);
       break;
     case CANCELLED:
+      mStatus = SKKitTestResultStatus_Warning_Yellow;
+      break;
     case INITIALIZING:
     case WARMING:
     case TRANSFERRING:
@@ -146,8 +158,11 @@
             ResultIsFromServer:(BOOL)resultIsFromServer
                TestDisplayName:(NSString *)testDisplayName
 {
+  // TODO - mStatus = SKKitTestResultStatus_Warning_Yellow?
+  mStatus = SKKitTestResultStatus_Passed_Green;
+  
   mLatestBitrateMbps1024Based = bitrateMbps1024Based;
-
+  
   mProgressBlock(100.0, bitrateMbps1024Based);
 }
 

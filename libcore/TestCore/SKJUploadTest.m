@@ -48,7 +48,7 @@
     //int *theDataInt = (int*)theData;
     //NSLog(@"PRE! theDataInt[0]=%d", theDataInt[0]);
 
-    int theLength = self.buff.length;
+    int theLength = (int)self.buff.length;
     arc4random_buf(theData, theLength);
     
     //NSLog(@"POST theDataInt[0]=%d", theDataInt[0]);
