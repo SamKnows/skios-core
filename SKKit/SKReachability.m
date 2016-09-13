@@ -470,8 +470,18 @@ static BOOL sbLastKnownPingStatus = YES;
   }
 }
 
+static BOOL sbCheckedYetForCellularDataCapability = NO;
+static BOOL sbHasCellularDataCapability = NO;
+
 // http://stackoverflow.com/questions/7101206/know-if-ios-device-has-cellular-data-capabilities
 +(BOOL) sDeviceHasCellularDataCapability {
+  
+  // We ONLY EVER NEED to do this check *once*
+  
+  if (sbCheckedYetForCellularDataCapability == YES) {
+    return sbHasCellularDataCapability;
+  }
+  
   bool found = false;
 
   struct ifaddrs * addrs;
@@ -487,7 +497,11 @@ static BOOL sbLastKnownPingStatus = YES;
     }
     freeifaddrs(addrs);
   }
-  return found;
+
+  sbHasCellularDataCapability = found;
+  sbCheckedYetForCellularDataCapability = YES;
+  
+  return sbHasCellularDataCapability;
 }
 
 @end
