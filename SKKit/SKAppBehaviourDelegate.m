@@ -347,7 +347,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
     [prefs setObject:@YES forKey:cPrefs_DataCapEnabled];
   }
   
-  [SKAppBehaviourDelegate sRegisterDataCapDefaults:[NSNumber numberWithLong:(100L * CBytesInAMegabyte)]];
+  [SKAppBehaviourDelegate sRegisterDataCapDefaultBytes:[NSNumber numberWithLong:(100L * CBytesInAMegabyte)]];
  
   NSString *cPrefs_Agreed = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getPrefsAgreedPropertyName];
   if (![prefs objectForKey:cPrefs_Agreed])
@@ -488,7 +488,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   return date;
 }
 
-+(void) sRegisterDataCapDefaults:(NSNumber*)bytes {
++(void) sRegisterDataCapDefaultBytes:(NSNumber*)bytes {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   
   [prefs registerDefaults:@{
@@ -499,7 +499,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   [prefs synchronize];
 }
 
-- (NSNumber*)getDataLimitBytes {
++(NSNumber*) sGetDataCapDefaultBytes {
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   if (prefs == nil) {
     SK_ASSERT(false);
@@ -508,6 +508,10 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   
   int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
   return [NSNumber numberWithLong:dataAllowed];
+}
+
+- (NSNumber*)getDataLimitBytes {
+  return [SKAppBehaviourDelegate sGetDataCapDefaultBytes];
 }
 
 -(void)setDataLimitBytes:(NSNumber*)valueBytes {
