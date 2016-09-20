@@ -536,7 +536,6 @@ void threadEntry(SKJHttpTest *pSelf) {
   
   //sendTestPing("TIMING_Stop");
   
-  [self output];
   [self finish];
 }
 
@@ -594,84 +593,6 @@ void threadEntry(SKJHttpTest *pSelf) {
   return sockfd;
 }
 
--(void) output {
-  //SKLogger.d(this, "HTTP TEST - output()");
-  
-  /*
-   !!! TODO TODO TODO !!! TODO TODO TODO !!!
-   ArrayList<String> o = new ArrayList<String>();
-   Map<String, Object> output = new HashMap<String, Object>();
-   // string id
-   o.add(getStringID());
-   output.put(JsonData.JSON_TYPE, getStringID());
-   // time
-   long time_stamp = unixTimeStamp();
-   o.add(time_stamp + "");
-   output.put(JsonData.JSON_TIMESTAMP, time_stamp);
-   output.put(JsonData.JSON_DATETIME, SKDateFormat.sGetDateAsIso8601String(new java.util.Date(time_stamp * 1000)));
-   
-   long transferBytes = getTotalTransferBytes();
-   //SKLogger.d(this, "HTTP TEST - output(), transferBytes=" + transferBytes);
-   if (transferBytes == 0) {
-   // 30/03/2015 - note that if transferBytes is ZERO, we must also tag this with "success": false
-   error.set(true);
-   }
-   
-   // status
-   if (error.get()) {
-   o.add("FAIL");
-   output.put(JsonData.JSON_SUCCESS, false);
-   } else {
-   o.add("OK");
-   output.put(JsonData.JSON_SUCCESS, true);
-   }
-   // target
-   o.add(target);
-   output.put(JsonData.JSON_TARGET, target);
-   // target ip address
-   o.add(ipAddress);
-   output.put(JsonData.JSON_TARGET_IPADDRESS, ipAddress);
-   // transfer time
-   o.add(Long.toString(getTransferTimeMicro()));//TODO check
-   output.put(JsonData.JSON_TRANFERTIME, getTransferTimeMicro());
-   // transfer bytes
-   o.add(Long.toString(getTotalTransferBytes()));
-   output.put(JsonData.JSON_TRANFERBYTES, totalTransferBytes);
-   // byets_sec
-   o.add(Integer.toString(Math.max(0, getTransferBytesPerSecond())));
-   output.put(JsonData.JSON_BYTES_SEC, Math.max(0, getTransferBytesPerSecond()));
-   // warmup time
-   o.add(Long.toString(getWarmUpTimeMicro()));  //TODO check
-   output.put(JsonData.JSON_WARMUPTIME, getWarmUpTimeMicro());
-   // warmup bytes
-   o.add(Long.toString(getTotalWarmUpBytes()));
-   output.put(JsonData.JSON_WARMUPBYTES, getTotalWarmUpBytes());
-   // number of threads
-   o.add(Integer.toString(nThreads));
-   output.put(JsonData.JSON_NUMBER_OF_THREADS, nThreads);
-   
-   //    // TODO: remove the following block in production?
-   //    if (OtherUtils.isDebuggable(SKApplication.getAppInstance())) {
-   //      StringBuilder sb = new StringBuilder();
-   //      Iterator<Entry<String, Object>> iter = output.entrySet().iterator();
-   //      while (iter.hasNext()) {
-   //        Entry<String, Object> entry = iter.next();
-   //        sb.append(entry.getKey());
-   //       sb.append('=').append('"');
-   //        sb.append(entry.getValue());
-   //        sb.append('"');
-   //        if (iter.hasNext()) {
-   //          sb.append(',').append(' ');
-   //        }
-   //      }
-   //
-   //      //SKLogger.d(TAG(this), "Output data: \n" + sb.toString());
-   //    }
-   
-   setOutput(o.toArray(new String[1]));
-   setJSONResult(output);
-   */
-}
 
 /* The following set of methods relates to a  communication with the external UI TODO move prototypes to test */
 

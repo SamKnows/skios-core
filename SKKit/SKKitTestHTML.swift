@@ -178,7 +178,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     
     // Return dictionary of test results!
     
-    let datetime = SKGlobalMethods.sGetDate(asIso8601String: Date())
+    let datetime = SKGlobalMethods.sGetDate(asIso8601String: Date())!
     
     let results:Dictionary<String,Any> = [
       "type":"WWW",

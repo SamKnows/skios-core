@@ -1790,6 +1790,39 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   return 2.0;
 }
 
+// This is overriden in apps using Swift!
+-(NSString*) exportDictionaryAsString:(NSDictionary*)dictionary {
+  NSError *error = nil;
+  NSData *jsonData;
+  
+  @try {
+    jsonData = [NSJSONSerialization
+                dataWithJSONObject:dictionary
+                options:NSJSONWritingPrettyPrinted
+                error:&error
+                ];
+  } @catch (NSException *e) {
+    SK_ASSERT(false);
+    //@throw e;
+    return @"";
+  }
+  
+  if (error != nil) {
+    SK_ASSERT(false);
+    return @"";
+  }
+  
+  NSString *jsonStr = @"";
+  @try {
+    jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  } @catch (NSException *e) {
+    SK_ASSERT(false);
+    //@throw e;
+    return @"";
+  }
+  return jsonStr;
+}
+
 @end
 
 NSString *skGetResourcePathFromBundleUsingClass(Class theClass, NSString *componentPath) {
@@ -1853,3 +1886,4 @@ NSData *skGetFileDataFromBundleWithComponentPath(Class theClass, NSString *compo
     
   return theData;
 }
+

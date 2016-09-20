@@ -23,6 +23,7 @@
 #if TARGET_OS_IPHONE
 // Note: You may need to add the CFNetwork Framework to your project
 #import <CFNetwork/CFNetwork.h>
+#import <UIKit/UIKit.h>
 #endif
 
 
@@ -725,6 +726,14 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 	return [self bindToAddress:nil port:port error:errPtr];
 }
 
+// http://stackoverflow.com/questions/7848766/how-can-we-programmatically-detect-which-ios-version-is-device-running-on
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+
 /**
  * Binds the underlying socket(s) to the given address and port.
  * The sockets(s) will be able to receive data only on the given interface.
@@ -813,30 +822,35 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 
 	
 	// Bind the sockets
-	
-	if(address4)
-	{
-		if(theSocket4)
-		{
-			CFSocketError error = CFSocketSetAddress(theSocket4, (__bridge CFDataRef)address4);
-			if(error != kCFSocketSuccess)
-			{
-				if(errPtr) *errPtr = [self getSocketError];
-				return NO;
-			}
-			
-			if(!address6)
-			{
-				// Using IPv4 only
-				[self closeSocket6];
-			}
-		}
-		else if(!address6)
-		{
-			if(errPtr) *errPtr = [self getIPv4UnavailableError];
-			return NO;
-		}
-	}
+  
+  if (SYSTEM_VERSION_LESS_THAN(@"10.0")) {
+    
+    if(address4)
+    {
+      if(theSocket4)
+      {
+        CFSocketError error = CFSocketSetAddress(theSocket4, (__bridge CFDataRef)address4);
+        if(error != kCFSocketSuccess) // 102!
+        {
+          SK_ASSERT(false);
+          if(errPtr) *errPtr = [self getSocketError];
+          return NO;
+        }
+        
+        if(!address6)
+        {
+          // Using IPv4 only
+          [self closeSocket6];
+        }
+      }
+      else if(!address6)
+      {
+        SK_ASSERT(false);
+        if(errPtr) *errPtr = [self getIPv4UnavailableError];
+        return NO;
+      }
+    }
+  }
 	
 	if(address6)
 	{
@@ -847,6 +861,8 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 			CFSocketError error = CFSocketSetAddress(theSocket6, (__bridge CFDataRef)address6);
 			if(error != kCFSocketSuccess)
 			{
+        SK_ASSERT(false);
+
 				if(errPtr) *errPtr = [self getSocketError];
 				return NO;
 			}
@@ -859,6 +875,8 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 		}
 		else if(!address4)
 		{
+      SK_ASSERT(false);
+
 			if(errPtr) *errPtr = [self getIPv6UnavailableError];
 			return NO;
 		}

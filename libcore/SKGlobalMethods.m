@@ -1115,16 +1115,9 @@ static NSString *sLastKnownIpAddress = @"";
 }
 
 + (NSString*) sExportDictionaryToJSONString:(NSDictionary*)dictionary {
-  NSError *error;
-  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary
-                                                     options:NSJSONWritingPrettyPrinted
-                                                       error:&error];
-  if (error != nil) {
-    SK_ASSERT(false);
-    return @"";
-  }
-  NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-  return jsonStr;
+  
+  NSString *result = [[SKAppBehaviourDelegate sGetAppBehaviourDelegate] exportDictionaryAsString:dictionary];
+  return result;
 }
 
 +(void) sPerformOnMainThread:(void (^)(void))closure {
