@@ -365,9 +365,9 @@
 		B2AE68B318842B1F00D87FAE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B2AF51EE17CF35FF00815146 /* SKTransferOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTransferOperationTests.m; sourceTree = "<group>"; };
 		B2AF51F017CF390200815146 /* SKSchedulerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSchedulerTests.m; sourceTree = "<group>"; };
-		B2AF51F317CF3F3000815146 /* SCHEDULE.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SCHEDULE.xml; sourceTree = "<group>"; };
-		B2AF51F417CF3F3000815146 /* SCHEDULE99.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SCHEDULE99.xml; sourceTree = "<group>"; };
-		B2AF51F517CF3F3000815146 /* SCHEDULE_BR.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SCHEDULE_BR.xml; sourceTree = "<group>"; };
+		B2AF51F317CF3F3000815146 /* SCHEDULE.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = SCHEDULE.xml; path = "SKCoreTests/Test XML/SCHEDULE.xml"; sourceTree = SOURCE_ROOT; };
+		B2AF51F417CF3F3000815146 /* SCHEDULE99.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = SCHEDULE99.xml; path = "SKCoreTests/Test XML/SCHEDULE99.xml"; sourceTree = SOURCE_ROOT; };
+		B2AF51F517CF3F3000815146 /* SCHEDULE_BR.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = SCHEDULE_BR.xml; path = "SKCoreTests/Test XML/SCHEDULE_BR.xml"; sourceTree = SOURCE_ROOT; };
 		B2B075E018D6F09100FFAE12 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		B2B0768318D6F62F00FFAE12 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		B2B0768518D6F62F00FFAE12 /* CorePlot-CocoaTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CorePlot-CocoaTouch.h"; sourceTree = "<group>"; };
