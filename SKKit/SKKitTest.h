@@ -117,6 +117,8 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. "my target"
 -(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
+// Following is used for mock testing only...
+-(void)setMockTestResultsDictionary:(NSDictionary*)mockResults;
 @end
 
 
@@ -132,6 +134,8 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. 17.2 Mbps
 -(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
+// Following is used for mock testing only...
+-(void)setMockTestResultsDictionary:(NSDictionary*)mockResults;
 @end
 
 
@@ -147,4 +151,6 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(NSDictionary*) getTestResultsDictionary;
 -(NSString*) getTestResultValueString; // e.g. 5 ms
 -(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
+// Following is used for mock testing only...
+-(void)setMockTestResultsDictionary:(NSDictionary*)mockResults;
 @end

@@ -88,6 +88,10 @@
   return mpDownloadTest.outputResultsDictionary;
 }
 
+-(void)setMockTestResultsDictionary:(NSDictionary*)mockResults {
+  mpDownloadTest.outputResultsDictionary = mockResults;
+}
+
 -(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
   
   if (mLatestBitrateMbps1024Based < 0) {

@@ -9,16 +9,20 @@
 import UIKit
 
 public class SKHTMLTestResult {
-  public let mSuccess:Bool
+  
+  public var mTimestamp = Int(Date().timeIntervalSince1970)
+  
+  // Set to var to allow mocking!
+  public var mSuccess:Bool = false
   
   // TCP connect time: The time taken to execute the "connect(...)" system call
-  public let mTimeToConnect:TimeInterval
+  public var mTimeToConnect:TimeInterval = 0
 
   // Time to first byte: Time taken from connect() to the end of the first recv() call
-  public let mTimeToFirstByte:TimeInterval
+  public var mTimeToFirstByte:TimeInterval = 0
   
   // HTML page load time: Time taken for the whole transaction (from connect() to the last byte being received)
-  public let mTimeToPageLoad:TimeInterval
+  public var mTimeToPageLoad:TimeInterval = 0
   
   public init(success:Bool, timeToConnect:TimeInterval, timeToFirstByte:TimeInterval, timeToPageLoad:TimeInterval) {
     mSuccess = success
@@ -37,6 +41,10 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
   private var mPort:Int = 0
   private var mTimeoutSeconds:Int = 0
   public  private(set) var mBytesRead:Int = 0
+  
+  public func getHostName() -> String {
+    return mHostName
+  }
 
   public init(hostname:String, port:Int, timeoutSeconds:Int) {
     super.init()
@@ -49,6 +57,8 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
   }
   
   public func testHTMLQuery() -> SKHTMLTestResult {
+    
+    mSKHTMLTestResult.mTimestamp = Int(Date().timeIntervalSince1970)
     
     print ("Test HTTP Query from \(mHostName), port=\(mPort)")
     let client:TCPClient = TCPClient(addr:mHostName, port:mPort)
@@ -183,7 +193,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     let results:Dictionary<String,Any> = [
       "type":"WWW",
       "datetime":datetime,
-      "timestamp":"\(Int(Date().timeIntervalSince1970))",
+      "timestamp":"\(mSKHTMLTestResult.mTimestamp)",
       "success":mSKHTMLTestResult.mSuccess,
       "hostname":mHostName,
       "port":mPort,

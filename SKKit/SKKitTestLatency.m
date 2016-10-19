@@ -81,6 +81,11 @@
   return mpLatencyTest.outputResultsDictionary;
 }
 
+-(void)setMockTestResultsDictionary:(NSDictionary*)mockResults {
+  mpLatencyTest.outputResultsDictionary = mockResults;
+}
+
+
 -(NSString*) getTestResultValueString { // e.g. 17.2 Mbps
   
   if (mLatestLatencyMs < 0) {
