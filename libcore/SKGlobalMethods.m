@@ -594,19 +594,31 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   return sSKCoreGetLocalisedString(theType);
 }
 
+static NSString *sNetworkTechnologyTypeNotAvailable = @"NA";
++(BOOL) sGetIsMobileNetworkSupportedByDevice {
+  NSString *networkTechnologyType = [self getNetworkType];
+  
+  if ([networkTechnologyType isEqualToString:sNetworkTechnologyTypeNotAvailable]) {
+    // We do NOT have mobile available...
+    return NO;
+  }
+  
+  return YES;
+}
+
 +(NSString*)getNetworkType {
   CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
   
   if (netinfo == nil)
   {
-    return @"NA";
+    return sNetworkTechnologyTypeNotAvailable;
   }
   
   NSString *result = [netinfo currentRadioAccessTechnology];
   
   if (result == nil)
   {
-    return @"NA";
+    return sNetworkTechnologyTypeNotAvailable;
   }
   
   return result;

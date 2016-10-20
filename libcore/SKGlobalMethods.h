@@ -58,6 +58,7 @@ typedef double SKTimeIntervalMicroseconds;
 + (void)printNSData:(NSData*)data;
 
 +(NSString*)getCarrierName;
++(BOOL)     sGetIsMobileNetworkSupportedByDevice;
 +(NSString*)getNetworkType;
 +(NSString*)getNetworkTypeLocalized:(NSString*)theType;
 +(NSString*)getCarrierMobileCountryCode;
