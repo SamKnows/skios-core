@@ -89,7 +89,7 @@
 }
 
 -(void)setMockTestResultsDictionary:(NSDictionary*)mockResults {
-  mpDownloadTest.outputResultsDictionary = mockResults;
+  mpDownloadTest.outputResultsDictionary = [NSMutableDictionary dictionaryWithDictionary:mockResults];
 }
 
 -(NSString*) getTestResultValueString { // e.g. 17.2 Mbps

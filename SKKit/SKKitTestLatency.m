@@ -82,7 +82,7 @@
 }
 
 -(void)setMockTestResultsDictionary:(NSDictionary*)mockResults {
-  mpLatencyTest.outputResultsDictionary = mockResults;
+  mpLatencyTest.outputResultsDictionary = [NSMutableDictionary dictionaryWithDictionary:mockResults];
 }
 
 
