@@ -40,18 +40,20 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
   private var mHostName:String = ""
   private var mPort:Int = 0
   private var mTimeoutSeconds:Int = 0
+  private var mUrlToGet = "/"
   public  private(set) var mBytesRead:Int = 0
   
   public func getHostName() -> String {
     return mHostName
   }
 
-  public init(hostname:String, port:Int, timeoutSeconds:Int) {
+  public init(hostname:String, port:Int, timeoutSeconds:Int, urlToGet:String? = "/") {
     super.init()
     
     mHostName = hostname
     mPort = port
     mTimeoutSeconds = timeoutSeconds
+    mUrlToGet = urlToGet!
     
     SK_ASSERT(mTimeoutSeconds >= 1)
   }
@@ -76,7 +78,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
       SK_ASSERT(Int(timeToConnect) < (mTimeoutSeconds + 3)) // Sometimes the timeout is ignored by iOS!
       print ("TCP connection time seconds = \(String(format:"%0.6f", timeToConnect))")
       
-      let (success,  _ /* errmsg*/ ) = client.send(str:"GET / HTTP/1.0\n\n" )
+      let (success,  _ /* errmsg*/ ) = client.send(str:"GET \(mUrlToGet) HTTP/1.0\n\n" )
       if (success == false) {
         //print("Error=\(errmsg)")
         SK_ASSERT(false)
