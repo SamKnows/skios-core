@@ -14,6 +14,9 @@
 
 @property (weak) SKAutotest* skAutotest;
 
+@property NSDate *mStartAt;
+@property NSDate *mEndAt;
+
 @end
 
 #pragma mark - Implementation
@@ -56,6 +59,10 @@
 @synthesize testIndex;
 
 @synthesize skAutotest;
+
+
+@synthesize mStartAt;
+@synthesize mEndAt;
 
 #pragma mark - Init
 
@@ -191,6 +198,8 @@
   [queue cancelAllOperations];
   [outputResultsDictionary removeAllObjects];
   
+  mStartAt = [NSDate date];
+  
   SKLatencyOperation *operation = [self.class createLatencyOperationWithTarget:target
                                                                           port:port 
                                                                   numDatagrams:numDatagrams 
@@ -219,6 +228,7 @@
     [queue cancelAllOperations];
   }
   isRunning = NO;
+  mEndAt = [NSDate date];
 }
 
 // This value isn't very accurate; an external timer gives a smoother value.
@@ -243,6 +253,8 @@
 {
   testOK = NO;
   isRunning = NO;
+  mEndAt = [NSDate date];
+
   [self.latencyTestDelegate ltdTestDidFail];
   
   NSLog(@"lodTestDidFail, threadId : %d", (int)threadId);
@@ -256,6 +268,7 @@
 {
   testOK = YES;
   isRunning = NO;
+  mEndAt = [NSDate date];
   
   jitter = jitter_;
   latency = latency_;
@@ -276,6 +289,8 @@
 {
   isRunning = NO;
   [self.latencyTestDelegate ltdTestWasCancelled];
+  mEndAt = [NSDate date];
+
 }
 
 - (void)lodUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId {
@@ -300,5 +315,10 @@
 -(void) setSKAutotest:(SKAutotest*)inSkAutotest {
   self.skAutotest = inSkAutotest;
 }
+
+-(NSTimeInterval) getDurationSeconds {
+  return [mEndAt timeIntervalSinceDate:mStartAt];
+}
+
 
 @end

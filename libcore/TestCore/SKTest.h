@@ -19,4 +19,7 @@
 @property (atomic, assign) double jitter;
 @property (atomic, assign) double stdDeviation;
 
+
+-(SKKitTestLatencyDetailedResults*) getDetailedLatencyResults;
+
 @end

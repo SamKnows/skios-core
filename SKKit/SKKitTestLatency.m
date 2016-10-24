@@ -17,6 +17,11 @@
 // Note that *only* swift code marked with @objc is put in this file...
 //#import <SKKit/SKKit-Swift.h>
 
+
+@implementation  SKKitTestLatencyDetailedResults
+@end
+
+
 //
 // Test: Latency
 //
@@ -24,6 +29,7 @@
 @property SKKitTestResultStatus mStatus;
 @property SKLatencyTest *mpLatencyTest;
 @property float mLatestLatencyMs;
+
 @end
 
 @implementation SKKitTestLatency
@@ -32,6 +38,7 @@
 @synthesize mProgressBlock;
 @synthesize mpLatencyTest;
 @synthesize mLatestLatencyMs;
+
 
 - (instancetype)initWithLatencyTestDescriptor:(SKKitTestDescriptor_Latency*)latencyTest {
   self = [super init];
@@ -63,6 +70,7 @@
 
 - (void) start:(TSKLatencyTestProgressUpdate)progressBlock {
   self.mProgressBlock = progressBlock;
+
   [mpLatencyTest startTest];
 }
 
@@ -169,5 +177,13 @@
 //- (double) getProgress0To100 {
 //  return [mpLatencyTest getProgress0To100];
 //}
+
+-(SKKitTestLatencyDetailedResults*) getDetailedLatencyResults {
+  return [self.mpLatencyTest getDetailedLatencyResults];
+}
+
+-(NSTimeInterval) getDurationSeconds {
+  return [mpLatencyTest getDurationSeconds];
+}
 
 @end

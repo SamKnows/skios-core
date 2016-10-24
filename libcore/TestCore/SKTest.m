@@ -7,6 +7,10 @@
 
 #import "SKTest.h"
 
+@interface SKTest()
+@property  SKKitTestLatencyDetailedResults *mpDetailedResults;
+@end
+
 @implementation SKTest
 
 @synthesize outputResultsDictionary;
@@ -16,5 +20,19 @@
 @synthesize packetLoss;
 @synthesize jitter;
 @synthesize stdDeviation;
+
+- (instancetype)init
+{
+  self = [super init];
+  if (self) {
+    self.mpDetailedResults = [[SKKitTestLatencyDetailedResults alloc] init];
+  }
+  return self;
+}
+
+-(SKKitTestLatencyDetailedResults*) getDetailedLatencyResults {
+  SK_ASSERT(self.mpDetailedResults != nil);
+  return self.mpDetailedResults;
+}
 
 @end

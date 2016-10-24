@@ -64,10 +64,10 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
     let client:TCPClient = TCPClient(addr:mHostName, port:mPort)
     
     let startConnect = Date()
-    let (success, _ /* errmsg*/ ) = client.connect(timeout: mTimeoutSeconds)
+    let (success, errmsg) = client.connect(timeout: mTimeoutSeconds)
     
     if (success == false) {
-      //print("Error=\(errmsg)")
+      print("Error=\(errmsg)")
       SK_ASSERT(false)
       return mSKHTMLTestResult
     } else {
@@ -164,7 +164,7 @@ public class SKKitTestHTML: NSObject, SKKitTestProtocol {
   public func getTestResultValueString() -> String! {
     
     if (mSKHTMLTestResult.mSuccess) {
-      return "Page Load \(Int(mSKHTMLTestResult.mTimeToPageLoad)) ms"
+      return "\(Int(mSKHTMLTestResult.mTimeToPageLoad * 1000.0)) ms"
     }
     
     return "Failed"

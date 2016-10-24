@@ -16,28 +16,28 @@
 
 @interface SKLatencyTest : SKTest <SKLatencyOperationDelegate>
 {
-    // Test Parameters
-    NSString *target;
-    int port;
-    int numDatagrams;
-    double delayTimeout;        // converted to seconds
-    double interPacketTime;     // microseconds
-    double maxExecutionTime;    // converted to seconds
-    double percentile;
-    
-    // Test status variables
-    BOOL isRunning;
-    BOOL testOK;
-    LatencyStatus status;
-    float progress;
-    
-    // Network type
-    NSString *networkType;
-    
-    // Optional, Display name
-    NSString *displayName;
-    
-    int testIndex;
+  // Test Parameters
+  NSString *target;
+  int port;
+  int numDatagrams;
+  double delayTimeout;        // converted to seconds
+  double interPacketTime;     // microseconds
+  double maxExecutionTime;    // converted to seconds
+  double percentile;
+  
+  // Test status variables
+  BOOL isRunning;
+  BOOL testOK;
+  LatencyStatus status;
+  float progress;
+  
+  // Network type
+  NSString *networkType;
+  
+  // Optional, Display name
+  NSString *displayName;
+  
+  int testIndex;
 }
 
 // Test Parameters - Properties, so we can set them if required
@@ -100,6 +100,8 @@
 
 -(void) setSKAutotest:(SKAutotest*)skAutotest;
 
+-(NSTimeInterval) getDurationSeconds;
+
 @end
 
 #pragma mark - SKLatencyTestDelegate
@@ -112,5 +114,6 @@
 - (void)ltdUpdateProgress:(float)progress latency:(float)latency;
 - (void)ltdUpdateStatus:(LatencyStatus)status;
 - (void)ltdTestDidSendPacket:(NSUInteger)bytes;
+
 
 @end

@@ -138,6 +138,14 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(void)setMockTestResultsDictionary:(NSDictionary*)mockResults;
 @end
 
+@interface SKKitTestLatencyDetailedResults : NSObject
+@property int mRttAvg;
+@property int mRttMin;
+@property int mRttMax;
+@property int mPacketsSent;
+@property int mPacketsReceived;
+@property int mJitter;
+@end
 
 @interface SKKitTestLatency : NSObject<SKKitTestProtocol>
 @property (copy) TSKLatencyTestProgressUpdate mProgressBlock;
@@ -153,4 +161,8 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 -(SKKitTestResultStatus) getTestResultStatus; // e.g. SKKitTestResultStatus_Passed_Green
 // Following is used for mock testing only...
 -(void)setMockTestResultsDictionary:(NSDictionary*)mockResults;
+
+-(SKKitTestLatencyDetailedResults*) getDetailedLatencyResults;
+-(NSTimeInterval) getDurationSeconds;
+
 @end

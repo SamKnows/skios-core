@@ -50,6 +50,9 @@ typedef enum {
 @end
 
 #pragma mark - Interface
+
+@class SKLatencyTest;
+
 @interface SKLatencyOperation : NSOperation <AsyncUdpSocketDelegate, GCDAsyncSocketDelegate>
 {    
   NSString *target;

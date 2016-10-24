@@ -83,7 +83,7 @@
 //- (void)udpUpdateProgress:(float)progress_ threadId:(NSUInteger)threadId_;
 //- (void)udpUpdateStatus:(LatencyStatus)status_ threadId:(NSUInteger)threadId_;
 
-@property SKTest *theTest;
+@property SKLatencyTest *theTest;
 @property NSMutableDictionary *outputResultsDictionary;
 
 @end
@@ -1192,6 +1192,15 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 
 - (void)outputResults
 {
+  SKKitTestLatencyDetailedResults *detailedResults = [theTest getDetailedLatencyResults];
+  
+  detailedResults.mRttAvg = averagePacketTime * ONE_MILLION;
+  detailedResults.mRttMin = minimumTripTime * ONE_MILLION;
+  detailedResults.mRttMax = maximumTripTime * ONE_MILLION;
+  detailedResults.mPacketsSent = totalPacketsReceived + totalPacketsLost;
+  detailedResults.mPacketsReceived = totalPacketsReceived;
+  detailedResults.mJitter = jitter;
+  
   [outputResultsDictionary removeAllObjects];
   
   //    "type": "JUDPLATENCY"
@@ -1208,27 +1217,16 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   //    "timestamp": "1359128167"
   
   outputResultsDictionary[@"type"] = UDPLATENCY;
-  
   outputResultsDictionary[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
-  
   outputResultsDictionary[@"lost_packets"] = [NSString stringWithFormat:@"%d", totalPacketsLost];
-  
   outputResultsDictionary[@"received_packets"] = [NSString stringWithFormat:@"%d", totalPacketsReceived];
-  
-  outputResultsDictionary[@"rtt_avg"] = [NSString stringWithFormat:@"%d", (int) (averagePacketTime * ONE_MILLION)];
-  
-  outputResultsDictionary[@"rtt_max"] = [NSString stringWithFormat:@"%d", (int) (maximumTripTime * ONE_MILLION)];
-  
-  outputResultsDictionary[@"rtt_min"] = [NSString stringWithFormat:@"%d", (int) (minimumTripTime * ONE_MILLION)];
-  
+  outputResultsDictionary[@"rtt_avg"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttAvg];
+  outputResultsDictionary[@"rtt_max"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttMax];
+  outputResultsDictionary[@"rtt_min"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttMin];
   outputResultsDictionary[@"rtt_stddev"] = [NSString stringWithFormat:@"%d", (int) (standardDeviation * ONE_MILLION)];
-  
   outputResultsDictionary[@"success"] = testOK ? @"true" : @"false";
-  
   outputResultsDictionary[@"target"] = target;
-  
   outputResultsDictionary[@"target_ipaddress"] = [SKIPHelper hostIPAddress:target];
-  
   outputResultsDictionary[@"timestamp"] = [NSString stringWithFormat:@"%d", (int) ([[SKCore getToday] timeIntervalSince1970])];
   
   theTest.outputResultsDictionary = outputResultsDictionary;
