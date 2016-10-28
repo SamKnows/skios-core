@@ -21,7 +21,8 @@ typedef enum SKKitTestResultStatus_ {
   SKKitTestResultStatus_Unknown=0,
   SKKitTestResultStatus_Passed_Green=1,
   SKKitTestResultStatus_Failed_Red=2,
-  SKKitTestResultStatus_Warning_Yellow=3
+  SKKitTestResultStatus_Warning_Yellow=3,
+  SKKitTestResultStatus_Clear=4
 } SKKitTestResultStatus;
 
 typedef enum SKKitTestType_t {
