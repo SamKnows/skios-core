@@ -163,7 +163,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
     [self initVariables];
     
     outputResultsDictionary = [[NSMutableDictionary alloc] init];
-    theTest = inTheTest;
+    theTest = (SKLatencyTest*)inTheTest;
     
     if (![inTheTest.class isSubclassOfClass:[SKTest class]]) {
       SK_ASSERT(false);
