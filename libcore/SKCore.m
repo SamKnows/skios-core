@@ -165,7 +165,7 @@ NSString*sSKCoreGetLocalisedString(NSString*theString)
   NSString *theResult = NSLocalizedString(theString, nil);
   //NSLog(@"DEBUG: theResult for (%@) = (%@)", theString, theResult);
   // If the app doesn't override, use the internal default!
-  if ([theResult isEqualToString:theString]) {
+  if (NSOrderedSame == [theResult caseInsensitiveCompare:theString]) {
     NSString *theResult2 = NSLocalizedStringFromTableInBundle(theString, @"libcore", getCurrentLanguageBundle(localeIdentifier), @"");
     //NSLog(@"theResult=%@", theResult3);
     //NSLog(@"DEBUG: theResult2 for (%@) = (%@)", theString, theResult2);
