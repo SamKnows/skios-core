@@ -1186,7 +1186,8 @@ public static String convertConnectivityType(int type) {
   bRes = [db close];
   SK_ASSERT(bRes);
   
-  if ([CLLocationManager locationServicesEnabled]) {
+  CLAuthorizationStatus appLocationPermission = [CLLocationManager authorizationStatus];
+  if (kCLAuthorizationStatusAuthorizedWhenInUse ==  appLocationPermission || kCLAuthorizationStatusAuthorizedAlways == appLocationPermission) {
     CLLocationManager *locationManager = [[CLLocationManager alloc] init];
     SK_ASSERT(locationManager != nil);
     SK_ASSERT(locationManager.location != nil);
