@@ -711,7 +711,9 @@ static void sAssertTestTypeValid(NSString* testType) {
     locationDictionary[@"datetime"] = results[@"datetime"];
   }
   
-  [accumulatedNetworkTypeLocationMetrics  addObject:locationDictionary];
+  if (locationDictionary != nil) {
+    [accumulatedNetworkTypeLocationMetrics  addObject:locationDictionary];
+  }
   
   NSMutableDictionary *networkTypeDictionary = [self sCreateNetworkTypeMetric:locationManager];
   if (results[@"timestamp"] != nil) {
@@ -804,21 +806,21 @@ static void sAssertTestTypeValid(NSString* testType) {
    
    */
   
-  NSMutableDictionary *location = [NSMutableDictionary dictionary];
+  NSMutableDictionary *location = nil;
+  CLAuthorizationStatus appLocationPermission = [CLLocationManager authorizationStatus];
   
-  location[@"type"] = @"location";
-  
-  location[@"accuracy"] = @"NA";
-  
-  location[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
-  
-  location[@"latitude"] = [NSString localizedStringWithFormat:@"%f", locationManager.locationLatitude];
-  
-  location[@"longitude"] = [NSString localizedStringWithFormat:@"%f", locationManager.locationLongitude];
-  
-  location[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
-  
-  location[@"timestamp"] = [SKGlobalMethods getTimeStampForTimeInteralSince1970:locationManager.locationDateAsTimeIntervalSince1970];
+  if (kCLAuthorizationStatusAuthorizedWhenInUse ==  appLocationPermission || kCLAuthorizationStatusAuthorizedAlways == appLocationPermission) {
+      
+      location = [NSMutableDictionary dictionary];
+      
+      location[@"type"] = @"location";
+      location[@"accuracy"] = @"NA";
+      location[@"datetime"] = [NSDate sGetDateAsIso8601String:[SKCore getToday]];
+      location[@"latitude"] = [NSString localizedStringWithFormat:@"%f", locationManager.locationLatitude];
+      location[@"longitude"] = [NSString localizedStringWithFormat:@"%f", locationManager.locationLongitude];
+      location[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
+      location[@"timestamp"] = [SKGlobalMethods getTimeStampForTimeInteralSince1970:locationManager.locationDateAsTimeIntervalSince1970];
+  }
   
   return location;
 }
@@ -892,29 +894,29 @@ static void sAssertTestTypeValid(NSString* testType) {
   
   // Last Known Location /////////////////////////////////////////////////////////////////////////////////////
   
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  double latitude = 0.0;
-  double longitude = 0.0;
-  //NSTimeInterval locationdate = 0;
-  NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
-  if (loc != nil) {
-    latitude = [loc[@"LATITUDE"] doubleValue];
-    longitude = [loc[@"LONGITUDE"] doubleValue];
-    //locationdate = [[loc objectForKey:@"LOCATIONDATE"] doubleValue];
-  }
-  
-  //  if (locationdate == 0) {
-  //    locationdate = [[SKCore getToday] timeIntervalSince1970];
-  //  }
-  
   NSMutableDictionary *lastLocation = [NSMutableDictionary dictionary];
-  lastLocation[@"type"] = @"last_known_location";
-  lastLocation[@"datetime"] = datetime;
-  lastLocation[@"timestamp"] = timestamp;
-  lastLocation[@"accuracy"] = @"NA";
-  lastLocation[@"latitude"] = [NSString localizedStringWithFormat:@"%f", latitude];
-  lastLocation[@"longitude"] = [NSString localizedStringWithFormat:@"%f", longitude];
-  lastLocation[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
+  CLAuthorizationStatus appLocationPermission = [CLLocationManager authorizationStatus];
+  BOOL locationAllowed = kCLAuthorizationStatusAuthorizedWhenInUse ==  appLocationPermission || kCLAuthorizationStatusAuthorizedAlways == appLocationPermission;
+  
+  if (locationAllowed) {
+      NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+      double latitude = 0.0;
+      double longitude = 0.0;
+      
+      NSDictionary *loc = [prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_LastLocation]];
+      if (loc != nil) {
+          latitude = [loc[@"LATITUDE"] doubleValue];
+          longitude = [loc[@"LONGITUDE"] doubleValue];
+      }
+      
+      lastLocation[@"type"] = @"last_known_location";
+      lastLocation[@"datetime"] = datetime;
+      lastLocation[@"timestamp"] = timestamp;
+      lastLocation[@"accuracy"] = @"NA";
+      lastLocation[@"latitude"] = [NSString localizedStringWithFormat:@"%f", latitude];
+      lastLocation[@"longitude"] = [NSString localizedStringWithFormat:@"%f", longitude];
+      lastLocation[@"location_type"] = [SKGlobalMethods getNetworkOrGps];
+  }
   
   // Network ////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -940,10 +942,16 @@ static void sAssertTestTypeValid(NSString* testType) {
   }
   
   [metrics addObject:phone];
-  [metrics addObject:location];
-  [metrics addObject:lastLocation];
   [metrics addObject:network];
- 
+  
+  if (locationAllowed) {
+      [metrics addObject:lastLocation];
+  }
+  
+  if (location != nil) {
+      [metrics addObject:location];
+  }
+
   // Accumulated location metrics are passive,
   // and therefore do NOT share timestamp values with any specific test.
   for (NSDictionary *accumulatedMetric in accumulatedNetworkTypeLocationMetrics) {

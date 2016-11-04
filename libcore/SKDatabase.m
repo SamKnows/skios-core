@@ -1186,7 +1186,8 @@ public static String convertConnectivityType(int type) {
   bRes = [db close];
   SK_ASSERT(bRes);
   
-  if ([CLLocationManager locationServicesEnabled]) {
+  CLAuthorizationStatus appLocationPermission = [CLLocationManager authorizationStatus];
+  if (kCLAuthorizationStatusAuthorizedWhenInUse ==  appLocationPermission || kCLAuthorizationStatusAuthorizedAlways == appLocationPermission) {
     CLLocationManager *locationManager = [[CLLocationManager alloc] init];
     SK_ASSERT(locationManager != nil);
     SK_ASSERT(locationManager.location != nil);
@@ -1244,6 +1245,10 @@ public static String convertConnectivityType(int type) {
          }
        }];
     }
+  } else {
+      NSString *unknownString = sSKCoreGetLocalisedString(@"Unknown");
+      CLLocation *noLocation = [[CLLocation alloc] initWithLatitude:SKB_TESTVALUERESULT_C_PM_NO_LOCATION longitude:SKB_TESTVALUERESULT_C_PM_NO_LOCATION];
+      [SKDatabase forTestId:testId WriteLocation:noLocation Municipality:unknownString AndCountryString:unknownString];
   }
   
   // Query for the wlan_carrier.
