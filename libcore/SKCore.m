@@ -126,69 +126,34 @@ NSBundle *getCurrentLanguageBundle(NSString *localeIdentifier) {
 
 NSString*sSKCoreGetLocalisedString(NSString*theString)
 {
-  // As iOS 8 mis re-reports the locale (e.g. returning en_GB when on a device configured
-  // to use zh-Hant), base the locale on the "first preferred language" instead - which
-  // always seems to return the correct value.
-  // This returns e.g. en-GB, zh-Hans, zh-Hant etc.
-  NSString *language = [NSLocale preferredLanguages][0];
-  //NSString *localisation =  [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
-  //NSLog(@"DEBUG: preferredLanguages=%@", language);
-  //NSLog(@"DEBUG: preferredLocalizations=%@", localisation);
-  // Oct 22 08:44:22 Pete-Coles-iPhone-6 EAQNewApp[784] <Warning>: DEBUG: preferredLanguages=pt-BR
-  // Oct 22 08:44:22 Pete-Coles-iPhone-6 EAQNewApp[784] <Warning>: DEBUG: preferredLocalizations=pt
-#ifdef DEBUG
-#endif // DEBUG
-  if ([language isEqualToString:@"zh-HK"]) {
-#ifdef DEBUG
-    //NSLog(@"DEBUG: warning: preferred language is HK! %@", language);
-#endif // DEBUG
-    language = @"zh-Hant";
-  }
-  
-  // Required by iOS 9!
-  // change e.g. pt-br to pt!
-  if ([language hasPrefix:@"pt-"]) {
-    language = @"pt";
-    //NSLog(@"DEBUG: preferredLanguage changed to =%@", language);
-  }
-  
-//#ifdef DEBUG
-//  NSString *localeIdentifierIgnore = [[NSLocale currentLocale] localeIdentifier];
-//  NSLog(@"DEBUG: localeIdentifierIgnore =%@", localeIdentifierIgnore);
-//#endif // DEBUG
-  NSString *localeIdentifier = language;
-#ifdef DEBUG
-  //NSLog(@"DEBUG: localeIdentifier=%@", localeIdentifier);
-#endif // DEBUG
-  
-  // Allow the string to be looked-up from the app.
-  NSString *theResult = NSLocalizedString(theString, nil);
-  //NSLog(@"DEBUG: theResult for (%@) = (%@)", theString, theResult);
-  // If the app doesn't override, use the internal default!
-  if ([theResult isEqualToString:theString]) {
-    NSString *theResult2 = NSLocalizedStringFromTableInBundle(theString, @"libcore", getCurrentLanguageBundle(localeIdentifier), @"");
-    //NSLog(@"theResult=%@", theResult3);
-    //NSLog(@"DEBUG: theResult2 for (%@) = (%@)", theString, theResult2);
-    if (theResult2 != nil) {
-      theResult = theResult2;
-    }
-  }
-  
-  if (theResult == nil) {
-    SK_ASSERT(false);
-    return @"";
-  }
-  
-  if (theResult == nil) {
-    // This must NEVER return nil, as it could result in a nil value being added to a dictionary!
-    if (theString == nil) {
-      SK_ASSERT(false);
-      return @"";
+    // Allow the string to be looked-up from the app.
+    NSString *theResult = NSLocalizedString(theString, nil);
+    //NSLog(@"DEBUG: theResult for (%@) = (%@)", theString, theResult);
+    // If the app doesn't override, use the internal default!
+    if ([theResult isEqualToString:theString]) {
+        NSString *theResult2 = NSLocalizedStringFromTable(theString, @"libcore", @"");
+        //NSLog(@"theResult=%@", theResult3);
+        //NSLog(@"DEBUG: theResult2 for (%@) = (%@)", theString, theResult2);
+        if (theResult2 != nil) {
+            theResult = theResult2;
+        }
     }
     
-    SK_ASSERT(false);
-    return theString;
-  }
-  
-  return theResult;
+    if (theResult == nil) {
+        SK_ASSERT(false);
+        return @"";
+    }
+    
+    if (theResult == nil) {
+        // This must NEVER return nil, as it could result in a nil value being added to a dictionary!
+        if (theString == nil) {
+            SK_ASSERT(false);
+            return @"";
+        }
+        
+        SK_ASSERT(false);
+        return theString;
+    }
+    
+    return theResult;
 }
