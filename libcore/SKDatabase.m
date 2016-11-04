@@ -1247,7 +1247,7 @@ public static String convertConnectivityType(int type) {
     }
   } else {
       NSString *unknownString = sSKCoreGetLocalisedString(@"Unknown");
-      CLLocation *noLocation = [[CLLocation alloc] initWithLatitude:CGFLOAT_MAX longitude:CGFLOAT_MAX];
+      CLLocation *noLocation = [[CLLocation alloc] initWithLatitude:SKB_TESTVALUERESULT_C_PM_NO_LOCATION longitude:SKB_TESTVALUERESULT_C_PM_NO_LOCATION];
       [SKDatabase forTestId:testId WriteLocation:noLocation Municipality:unknownString AndCountryString:unknownString];
   }
   
