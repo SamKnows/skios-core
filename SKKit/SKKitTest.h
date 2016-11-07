@@ -32,7 +32,8 @@ typedef enum SKKitTestType_t {
   SKKitTestType_Latency=3,
   SKKitTestType_Html=4,
   SKKitTestType_Netflix=5,
-  SKKitTestType_YouTube=6
+  SKKitTestType_YouTube=6,
+  SKKitTestType_Ping=7
 } SKKitTestType;
 
 -(NSString *)getId;
