@@ -88,6 +88,7 @@ typedef double SKTimeIntervalMicroseconds;
 +(double) convertBytesPerSecondToMbps1000Based:(double)bytesPerSecond;
 +(double) convertMpbs1024BasedToBytesPerSecond:(double)value1024Based;
 +(NSString*) bitrateMbps1000BasedToString:(double)bitrateMbps1000Based;
++(NSString*) bitrateMbps1000Based1DPToString:(double)bitrateMbps1000Based;
 +(NSString*) bitrateMbps1024BasedToString:(double)bitrateMbps1024Based;
 +(NSString*)sGet3DigitsNumber:(float)number_;
 +(double) convertLocalNumberStringToDouble:(NSString*)value;
