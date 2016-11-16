@@ -1224,7 +1224,14 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   outputResultsDictionary[@"rtt_max"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttMax];
   outputResultsDictionary[@"rtt_min"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttMin];
   outputResultsDictionary[@"rtt_stddev"] = [NSString stringWithFormat:@"%d", (int) (standardDeviation * ONE_MILLION)];
-  outputResultsDictionary[@"success"] = testOK ? @"true" : @"false";
+  
+  NSString *successString;
+  if (testOK && totalPacketsReceived > 0) {
+    successString = @"true";
+  } else {
+    successString = @"false";
+  }
+  outputResultsDictionary[@"success"] = successString;
   outputResultsDictionary[@"target"] = target;
   outputResultsDictionary[@"target_ipaddress"] = [SKIPHelper hostIPAddress:target];
   outputResultsDictionary[@"timestamp"] = [NSString stringWithFormat:@"%d", (int) ([[SKCore getToday] timeIntervalSince1970])];
