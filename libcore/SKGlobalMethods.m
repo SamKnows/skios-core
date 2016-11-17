@@ -276,9 +276,11 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 			result = [NSString stringWithFormat:@"%@ bps", [SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond]];
 		} else if(bitrateBitsPerSecond < 1000000) {
 			result = [NSString stringWithFormat:@"%@ Kbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000.0]];
-		} else {
+		} else if(bitrateBitsPerSecond < 1000000000) {
 			result = [NSString stringWithFormat:@"%@ Mbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000000.0]];
-		}
+    } else {
+      result = [NSString stringWithFormat:@"%@ Gbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000000000.0]];
+    }
     return result;
 }
 
@@ -291,8 +293,10 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
       result = [NSString stringWithFormat:@"%@ bps", [SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond]];
     } else if(bitrateBitsPerSecond < 1000000) {
       result = [NSString stringWithFormat:@"%@ Kbps",[SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond/1000.0]];
-    } else {
+    } else if(bitrateBitsPerSecond < 1000000000) {
       result = [NSString stringWithFormat:@"%@ Mbps",[SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond/1000000.0]];
+    } else {
+      result = [NSString stringWithFormat:@"%@ Gbps",[SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond/1000000000.0]];
     }
   return result;
 }
