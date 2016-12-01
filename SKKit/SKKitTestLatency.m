@@ -119,6 +119,8 @@
   double latency = mpLatencyTest.latency;
   double packetLoss = mpLatencyTest.packetLoss;
   double jitter = mpLatencyTest.jitter;
+  
+  mLatestLatencyMs = latency;
   self.mProgressBlock(YES, 100.0, latency, packetLoss, jitter);
 }
 
