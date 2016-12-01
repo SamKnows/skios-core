@@ -209,6 +209,8 @@ Keychain API expects as a validly constructed container class.
   keychainItemData[(id) kSecAttrLabel] = @"";
   keychainItemData[(id) kSecAttrDescription] = @"";
   
+  [keychainItemData setObject:kSecAttrAccessibleWhenUnlockedThisDeviceOnly forKey:kSecAttrAccessible];
+  
 	// Default data for keychain item.
   keychainItemData[(id) kSecValueData] = @"";
 }
