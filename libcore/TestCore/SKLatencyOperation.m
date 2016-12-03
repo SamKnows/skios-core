@@ -873,6 +873,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 #ifdef DEBUG
       NSLog(@"DEBUG: failure occurred calling [udpSocket sendData...]");
 #endif // DEBUG
+      SK_ASSERT(false);
       [self failure];
     }
     
@@ -1139,6 +1140,16 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 }
 
 #pragma mark delegate GCDAsyncSocketDelegate
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError *)error {
+  // If this happens, we failed to connect fundamentally at the socket level.
+  // The test must fail.
+  //mUDPSocketFailedToConnect = YES;
+  
+  self.testOK = NO;
+  [self failure];
+}
+
 //- (void)socket:(GCDAsyncSocket *)sender didConnectToHost:(NSString *)host port:(UInt16)port
 //{
 //  SK_ASSERT([self.keepAwakeSocket isConnected]);

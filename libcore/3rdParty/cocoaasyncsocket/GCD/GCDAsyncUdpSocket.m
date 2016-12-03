@@ -3098,17 +3098,21 @@ enum GCDAsyncUdpSocketConfig
 		result = YES;
 	}};
 	
-	if (dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey))
+  if (dispatch_get_specific(IsOnSocketQueueOrTargetQueueKey)) {
 		block();
-	else
+  } else {
 		dispatch_sync(socketQueue, block);
+  }
 	
-	if (err)
+  if (err) {
 		LogError(@"Error connecting to host/port: %@", err);
+    SK_ASSERT(false);
+  }
 	
-	if (errPtr)
+  if (errPtr) {
 		*errPtr = err;
-	
+  }
+  
 	return result;
 }
 
@@ -3211,6 +3215,9 @@ enum GCDAsyncUdpSocketConfig
 				// Perform connect
 				
 				BOOL result = NO;
+        
+        // DEBUG: if you enable this following line, you can force simulated socket connection failure
+        // addressFamily = AF_UNSPEC;
 				
 				switch (addressFamily) {
 				case AF_INET  :

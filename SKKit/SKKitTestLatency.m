@@ -110,6 +110,7 @@
 // MARK: Pragma SKLatencyTestDelegate
 - (void)ltdTestDidFail {
   mStatus = SKKitTestResultStatus_Failed_Red;
+  self.mProgressBlock(YES, 100.0, 0.0, 0.0, 0.0);
 }
 
 - (void)ltdTestDidSucceed {

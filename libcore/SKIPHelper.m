@@ -29,6 +29,7 @@
 {
     struct hostent *host = gethostbyname([[self hostname] UTF8String]);
     if (!host) {
+      SK_ASSERT(false);
       herror("resolv");
       return @"error";
     }
@@ -39,13 +40,19 @@
 // return IP Address
 + (NSString *)hostIPAddress:(NSString*)host_
 {
-    struct hostent *host = gethostbyname([host_ UTF8String]);
-    if (!host) {
-      herror("resolv");
-      return @"error";
-    }
-    struct in_addr **list = (struct in_addr **)host->h_addr_list;
-    return [NSString stringWithCString:inet_ntoa(*list[0]) encoding:NSUTF8StringEncoding];
+  if (host_ == nil) {
+    // Probably found that socket connection failed!
+    return @"error";
+  }
+  
+  struct hostent *host = gethostbyname([host_ UTF8String]);
+  if (!host) {
+    SK_ASSERT(false);
+    herror("resolv");
+    return @"error";
+  }
+  struct in_addr **list = (struct in_addr **)host->h_addr_list;
+  return [NSString stringWithCString:inet_ntoa(*list[0]) encoding:NSUTF8StringEncoding];
 }
 
 @end
