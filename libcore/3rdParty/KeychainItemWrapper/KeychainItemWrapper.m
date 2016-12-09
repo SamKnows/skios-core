@@ -208,8 +208,10 @@ Keychain API expects as a validly constructed container class.
   keychainItemData[(id) kSecAttrAccount] = @"";
   keychainItemData[(id) kSecAttrLabel] = @"";
   keychainItemData[(id) kSecAttrDescription] = @"";
-  
-  [keychainItemData setObject:kSecAttrAccessibleWhenUnlockedThisDeviceOnly forKey:kSecAttrAccessible];
+
+  NSString *theValue = (__bridge NSString *)kSecAttrAccessibleWhenUnlockedThisDeviceOnly;
+  NSString *theKey = (__bridge NSString *)kSecAttrAccessible;
+  [keychainItemData setObject:theValue forKey:theKey];
   
 	// Default data for keychain item.
   keychainItemData[(id) kSecValueData] = @"";

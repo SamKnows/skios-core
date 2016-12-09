@@ -507,7 +507,7 @@ static SKAppBehaviourDelegate* spAppBehaviourDelegate = nil;
   }
   
   int64_t dataAllowed = [[prefs objectForKey:[SKAppBehaviourDelegate sGet_Prefs_DataCapLimitBytes]] longLongValue];
-  return [NSNumber numberWithLong:dataAllowed];
+  return [NSNumber numberWithLong:(long)dataAllowed];
 }
 
 - (NSNumber*)getDataLimitBytes {
