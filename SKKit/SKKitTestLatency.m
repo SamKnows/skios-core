@@ -110,6 +110,7 @@
 // MARK: Pragma SKLatencyTestDelegate
 - (void)ltdTestDidFail {
   mStatus = SKKitTestResultStatus_Failed_Red;
+  self.mProgressBlock(YES, 100.0, 0.0, 0.0, 0.0);
 }
 
 - (void)ltdTestDidSucceed {
@@ -119,6 +120,8 @@
   double latency = mpLatencyTest.latency;
   double packetLoss = mpLatencyTest.packetLoss;
   double jitter = mpLatencyTest.jitter;
+  
+  mLatestLatencyMs = latency;
   self.mProgressBlock(YES, 100.0, latency, packetLoss, jitter);
 }
 

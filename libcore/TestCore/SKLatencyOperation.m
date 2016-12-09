@@ -873,6 +873,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 #ifdef DEBUG
       NSLog(@"DEBUG: failure occurred calling [udpSocket sendData...]");
 #endif // DEBUG
+      SK_ASSERT(false);
       [self failure];
     }
     
@@ -1139,6 +1140,16 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
 }
 
 #pragma mark delegate GCDAsyncSocketDelegate
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError *)error {
+  // If this happens, we failed to connect fundamentally at the socket level.
+  // The test must fail.
+  //mUDPSocketFailedToConnect = YES;
+  
+  self.testOK = NO;
+  [self failure];
+}
+
 //- (void)socket:(GCDAsyncSocket *)sender didConnectToHost:(NSString *)host port:(UInt16)port
 //{
 //  SK_ASSERT([self.keepAwakeSocket isConnected]);
@@ -1224,7 +1235,14 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   outputResultsDictionary[@"rtt_max"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttMax];
   outputResultsDictionary[@"rtt_min"] = [NSString stringWithFormat:@"%d", (int) detailedResults.mRttMin];
   outputResultsDictionary[@"rtt_stddev"] = [NSString stringWithFormat:@"%d", (int) (standardDeviation * ONE_MILLION)];
-  outputResultsDictionary[@"success"] = testOK ? @"true" : @"false";
+  
+  NSString *successString;
+  if (testOK && totalPacketsReceived > 0) {
+    successString = @"true";
+  } else {
+    successString = @"false";
+  }
+  outputResultsDictionary[@"success"] = successString;
   outputResultsDictionary[@"target"] = target;
   outputResultsDictionary[@"target_ipaddress"] = [SKIPHelper hostIPAddress:target];
   outputResultsDictionary[@"timestamp"] = [NSString stringWithFormat:@"%d", (int) ([[SKCore getToday] timeIntervalSince1970])];

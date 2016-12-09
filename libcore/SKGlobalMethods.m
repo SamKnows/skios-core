@@ -214,6 +214,16 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
   return result;
 }
 
++ (NSString *)format0DecimalPlaces:(double)number
+{
+  return [SKGlobalMethods formatDouble:number DecimalPlaces:0];
+}
+
++ (NSString *)format1DecimalPlace:(double)number
+{
+  return [SKGlobalMethods formatDouble:number DecimalPlaces:1];
+}
+
 + (NSString *)format2DecimalPlaces:(double)number
 {
   return [SKGlobalMethods formatDouble:number DecimalPlaces:2];
@@ -271,11 +281,50 @@ static NSString *GGraphTimeFormat  = @"HH:mm";
 			result = [NSString stringWithFormat:@"%@ bps", [SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond]];
 		} else if(bitrateBitsPerSecond < 1000000) {
 			result = [NSString stringWithFormat:@"%@ Kbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000.0]];
-		} else {
+		} else if(bitrateBitsPerSecond < 1000000000) {
 			result = [NSString stringWithFormat:@"%@ Mbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000000.0]];
-		}
+    } else {
+      result = [NSString stringWithFormat:@"%@ Gbps",[SKGlobalMethods format2DecimalPlaces:bitrateBitsPerSecond/1000000000.0]];
+    }
     return result;
 }
+
++(NSString*) bitrateMbps1000Based1DPToString:(double)bitrateMbps1000Based {
+  double bitrateBitsPerSecond = 1000000.0 * bitrateMbps1000Based;
+  
+  NSString *result;
+  
+		if (bitrateBitsPerSecond < 1000){
+      result = [NSString stringWithFormat:@"%@ bps", [SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond]];
+    } else if(bitrateBitsPerSecond < 1000000) {
+      result = [NSString stringWithFormat:@"%@ Kbps",[SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond/1000.0]];
+    } else if(bitrateBitsPerSecond < 1000000000) {
+      result = [NSString stringWithFormat:@"%@ Mbps",[SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond/1000000.0]];
+    } else {
+      result = [NSString stringWithFormat:@"%@ Gbps",[SKGlobalMethods format1DecimalPlace:bitrateBitsPerSecond/1000000000.0]];
+    }
+  return result;
+}
+
+
++(NSString*) bitrateMbps1000Based0DPToString:(double)bitrateMbps1000Based {
+  double bitrateBitsPerSecond = 1000000.0 * bitrateMbps1000Based;
+  
+  NSString *result;
+  
+		if (bitrateBitsPerSecond < 1000){
+      result = [NSString stringWithFormat:@"%@ bps", [SKGlobalMethods format0DecimalPlaces:bitrateBitsPerSecond]];
+    } else if(bitrateBitsPerSecond < 1000000) {
+      result = [NSString stringWithFormat:@"%@ Kbps",[SKGlobalMethods format0DecimalPlaces:bitrateBitsPerSecond/1000.0]];
+    } else if(bitrateBitsPerSecond < 1000000000) {
+      result = [NSString stringWithFormat:@"%@ Mbps",[SKGlobalMethods format0DecimalPlaces:bitrateBitsPerSecond/1000000.0]];
+    } else {
+      result = [NSString stringWithFormat:@"%@ Gbps",[SKGlobalMethods format0DecimalPlaces:bitrateBitsPerSecond/1000000000.0]];
+    }
+  return result;
+}
+
+
 
 +(NSString*) bitrateMbps1024BasedToString:(double)bitrateMbps1024Based {
   
