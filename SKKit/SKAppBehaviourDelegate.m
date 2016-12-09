@@ -1790,6 +1790,10 @@ CGFloat scaleWidthHeightTo(CGFloat value) {
   return 2.0;
 }
 
+-(BOOL) getShouldCoreJSONFilesBeSavedAndUploaded {
+  return YES;
+}
+
 // This is overriden in apps using Swift!
 -(NSString*) exportDictionaryAsString:(NSDictionary*)dictionary {
   NSError *error = nil;

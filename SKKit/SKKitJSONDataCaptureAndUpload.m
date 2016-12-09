@@ -185,6 +185,11 @@ static void sAssertTestTypeValid(NSString* testType) {
 #endif // DEBUG
 
 +(void) sWriteJSONDictionaryToFileAndUploadFilesToServer:(NSMutableDictionary*)jsonDictionary OptionalRequestedTestTypes:(NSArray*)optionalRequestedTestTypes {
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldCoreJSONFilesBeSavedAndUploaded] == NO) {
+    return;
+  }
+  
   //
   // Save the JSON data, and write for upload to the server!
   //
@@ -314,6 +319,11 @@ static void sAssertTestTypeValid(NSString* testType) {
 }
 
 +(void) sDoUploadAllJSONFiles {
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldCoreJSONFilesBeSavedAndUploaded] == NO) {
+    return;
+    
+  }
   
   NSString *jsonDirectory = [SKKitJSONDataCaptureAndUpload sGetJsonDirectory];
   
@@ -502,6 +512,10 @@ static void sAssertTestTypeValid(NSString* testType) {
 }
 
 + (void)sPostResultsJsonToServer:(NSData*)jsonData filePath:(NSString*)filePath {
+  
+  if ([[SKAppBehaviourDelegate sGetAppBehaviourDelegate] getShouldCoreJSONFilesBeSavedAndUploaded] == NO) {
+    return;
+  }
   
   if (jsonData == nil) {
     // Defend against terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'data parameter is nil'

@@ -288,6 +288,8 @@ typedef enum { DOWNLOAD_DATA, UPLOAD_DATA, LATENCY_DATA, LOSS_DATA, JITTER_DATA 
 
 // We require special handling for this to work with Swift objects!
 -(NSString*) exportDictionaryAsString:(NSDictionary*)dictionary;
+
+-(BOOL) getShouldCoreJSONFilesBeSavedAndUploaded;
 @end
 
 
