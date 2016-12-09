@@ -333,7 +333,7 @@ typedef void (^MyThreadBlock)(void);
     
     self.downstream = true;
     
-    mThreads = [NSMutableArray new];
+    self.mThreads = [NSMutableArray new];
     
     [self setDirection:direction];											/* Legacy. To be removed */
     [self.class sLatestSpeedReset:(self.downstream ? cReasonResetDownload : cReasonResetUpload)];
@@ -348,8 +348,8 @@ typedef void (^MyThreadBlock)(void);
 {
 //  for (NSThread *theThread in self.mThreads) {
 //  }
-  [mThreads removeAllObjects];
-  mThreads = nil;
+  [self.mThreads removeAllObjects];
+  self.mThreads = nil;
 }
 
 -(void) setParams:(NSDictionary*)params { // List<Param> params) /* Initialisation helper function */
@@ -469,6 +469,57 @@ void threadEntry(SKJHttpTest *pSelf) {
   return [self.testStatus isEqualToString:@"OK"];
 }		/* Returns test run result */
 
+-(void) createThreads {
+  
+  [self.mThreads removeAllObjects];
+  
+  for (int i = 0; i < self.nThreads; i++) {
+    MyThread *newThread = [[MyThread alloc] init];
+    newThread.mBlock = ^() {
+      [self myThreadEntry];
+    };
+    // Add the thread, but do  NOT start until we have accumulated all threads.
+    // That is in order to prevent __NSFastEnumerationMutationHandler ...!
+    [self.mThreads addObject:newThread];
+  }
+}
+
+-(void) startThreads {
+  // Now safe to start all the threads.
+  // This is in order to prevent __NSFastEnumerationMutationHandler ...!
+  NSArray *tempArray = [self.mThreads copy];
+  SK_ASSERT(tempArray.count == self.mThreads.count);
+  
+  for (NSThread *theThread in tempArray) {
+    [theThread start];
+  }
+}
+
+-(void) waitForThreads {
+  
+  @try {
+    // This is in order to prevent __NSFastEnumerationMutationHandler ...
+    NSArray *tempArray = [self.mThreads copy];
+    SK_ASSERT(tempArray.count == self.mThreads.count);
+
+    for (NSThread *theThread in tempArray) {
+      while ([theThread isFinished] == NO) {
+        usleep(1000);
+      }
+    }
+#ifdef DEBUG
+    //NSLog(@"**** DEBUG: THREAD JOINED!");
+#endif // DEBUG
+  } @catch (NSException *e) {
+    //[self setErrorIfEmpty:@"Thread join exception: ", e];
+#ifdef DEBUG
+    NSLog(@"DEBUG: Thread join exception()");
+#endif // DEBUG
+    SK_ASSERT(false);
+    self.testStatus = @"FAIL";
+  }
+}
+
 //	public int getSendBufferSize() 	  {	return sendBufferSize;		}
 //	public int getReceiveBufferSize() { return receiveBufferSize;	}
 //	public String getInfo() 		  {	return infoString; 			}
@@ -489,45 +540,14 @@ void threadEntry(SKJHttpTest *pSelf) {
   
   [self start];
   
-//  for (NSThread *theThread in self.mThreads) {
-//    //delete theThread;
-//  }
-  [mThreads removeAllObjects];
+  // Break-down the thread management into 3 separate methods,
+  // as it makes it easier to track-down issues in the crash logs.
+  [self createThreads];
   
-  for (int i = 0; i < self.nThreads; i++) {
-    MyThread *newThread = [[MyThread alloc] init];
-    newThread.mBlock = ^() {
-      [self myThreadEntry];
-    };
-    // Add the thread, but do  NOT start until we have accumulated all threads.
-    // That is in order to prevent __NSFastEnumerationMutationHandler ...!
-    [self.mThreads addObject:newThread];
-  }
+  [self startThreads];
   
-  // Now safe to start all the threads.
-  // This is in order to prevent __NSFastEnumerationMutationHandler ...!
-  for (NSThread *theThread in self.mThreads) {
-    [theThread start];
-  }
-  
-  @try {
-    for (NSThread *theThread in self.mThreads) {
-      while ([theThread isFinished] == NO) {
-        usleep(1000);
-      }
-#ifdef DEBUG
-      //NSLog(@"**** DEBUG: THREAD JOINED!");
-#endif // DEBUG
-    }
-  } @catch (NSException *e) {
-    //[self setErrorIfEmpty:@"Thread join exception: ", e];
-#ifdef DEBUG
-    NSLog(@"DEBUG: Thread join exception()");
-#endif // DEBUG
-    SK_ASSERT(false);
-    self.testStatus = @"FAIL";
-  }
-  
+  [self waitForThreads];
+
   if (self.downstream) {
     self.infoString = HTTPGETDONE;
   } else {
@@ -805,8 +825,13 @@ static NSString *sLatestSpeedForExternalMonitorTestId = @"";
     
     BOOL bFound = false;
     
+    // This is in order to prevent __NSFastEnumerationMutationHandler ...
+    NSArray *tempArray = [self.mThreads copy];
+    SK_ASSERT(tempArray.count == self.mThreads.count);
+    
     int i = 0;
-    for (NSThread *theThread in self.mThreads) {
+    
+    for (NSThread *theThread in tempArray) {
       if ([theThread isEqual:[NSThread currentThread]]) {
         threadIndex = i;
         bFound = true;
