@@ -42,6 +42,7 @@
 {
   if (host_ == nil) {
     // Probably found that socket connection failed!
+    SK_ASSERT(false);
     return @"error";
   }
   
