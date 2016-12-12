@@ -219,9 +219,8 @@
     return [NSNumber numberWithInt:0];
   }
   
-  
-  float jitterMicro = (float)(detailedResults.mRttAvg);
-  float jitterMilli = jitterMicro / 1000.0F;
+  float jitterMicro = (float)detailedResults.mJitterMicro;
+  float jitterMilli = jitterMicro / 1000.F;
   return [NSNumber numberWithFloat:jitterMilli];
 }
 

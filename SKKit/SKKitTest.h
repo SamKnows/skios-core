@@ -146,7 +146,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 @property int mRttMax;
 @property int mPacketsSent;
 @property int mPacketsReceived;
-@property int mJitter;
+@property int mJitterMicro;
 @end
 
 @interface SKKitTestLatency : NSObject<SKKitTestProtocol>

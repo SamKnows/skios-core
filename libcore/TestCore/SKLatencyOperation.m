@@ -1210,7 +1210,7 @@ LatencyOperationDelegate:(id<SKLatencyOperationDelegate>)_delegate
   detailedResults.mRttMax = maximumTripTime * ONE_MILLION;
   detailedResults.mPacketsSent = totalPacketsReceived + totalPacketsLost;
   detailedResults.mPacketsReceived = totalPacketsReceived;
-  detailedResults.mJitter = jitter;
+  detailedResults.mJitterMicro = jitter * ONE_MILLION;
   
   [outputResultsDictionary removeAllObjects];
   
