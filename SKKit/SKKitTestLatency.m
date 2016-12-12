@@ -189,4 +189,41 @@
   return [mpLatencyTest getDurationSeconds];
 }
 
+-(NSNumber*) getPacketLossPercent {
+  SKKitTestLatencyDetailedResults *detailedResults = [self getDetailedLatencyResults];
+  
+  if (detailedResults == nil) {
+    SK_ASSERT(false);
+    return [NSNumber numberWithInt:0];
+  }
+  
+  int failures = detailedResults.mPacketsSent - detailedResults.mPacketsReceived;
+  int successes = detailedResults.mPacketsReceived;
+  
+  int successesPlusFailures = successes + failures;
+  if (successesPlusFailures  == 0) {
+    SK_ASSERT(false);
+    return [NSNumber numberWithInt:0];
+  } else {
+    float packetLossPercent = 0.0;
+    packetLossPercent = 100.0F * ((float)failures) / ((float)(successes + failures));
+    return [NSNumber numberWithFloat:packetLossPercent];
+  }
+}
+
+-(NSNumber*) getJitterMilliseconds {
+  SKKitTestLatencyDetailedResults *detailedResults = [self getDetailedLatencyResults];
+  
+  if (detailedResults == nil) {
+    SK_ASSERT(false);
+    return [NSNumber numberWithInt:0];
+  }
+  
+  
+  float jitterMicro = (float)(detailedResults.mRttAvg);
+  float jitterMilli = jitterMicro / 1000.0F;
+  return [NSNumber numberWithFloat:jitterMilli];
+}
+
+
 @end

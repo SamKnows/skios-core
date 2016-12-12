@@ -166,5 +166,7 @@ typedef void (^TSKLatencyTestProgressUpdate)(BOOL finalResult, float progress, d
 
 -(SKKitTestLatencyDetailedResults*) getDetailedLatencyResults;
 -(NSTimeInterval) getDurationSeconds;
+-(NSNumber*) getPacketLossPercent;
+-(NSNumber*) getJitterMilliseconds;
 
 @end
