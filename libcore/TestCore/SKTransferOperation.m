@@ -620,7 +620,11 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   
   if (![target hasPrefix:@"http"])
   {
-    [urlString appendString:@"http://"];
+    if (port == 6443) {
+      [urlString appendString:@"https://"];
+    } else {
+      [urlString appendString:@"http://"];
+    }
   }
   [urlString appendString:target];
   [urlString appendString:@"/"];
