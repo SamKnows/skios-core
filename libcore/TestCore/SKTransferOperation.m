@@ -627,6 +627,9 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
     }
   }
   [urlString appendString:target];
+  if (port == 6443) {
+    [urlString appendString:@":6443"];
+  }
   [urlString appendString:@"/"];
   [urlString appendString:file];
   
