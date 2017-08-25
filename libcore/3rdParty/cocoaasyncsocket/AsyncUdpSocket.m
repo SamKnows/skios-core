@@ -309,9 +309,6 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 - (void) dealloc
 {
 	[self close];
-	
-	[NSObject cancelPreviousPerformRequestsWithTarget:theDelegate selector:@selector(onUdpSocketDidClose:) object:self];
-	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1319,6 +1316,9 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 	}
 	
 	theFlags |= kDidClose;
+
+    [NSObject cancelPreviousPerformRequestsWithTarget:theDelegate selector:@selector(onUdpSocketDidClose:) object:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 - (void)closeAfterSending
