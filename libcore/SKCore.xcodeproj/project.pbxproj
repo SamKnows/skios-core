@@ -324,7 +324,6 @@
 		B297CE7918E0541800964CD3 /* UIView+SKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SKView.m"; sourceTree = "<group>"; };
 		B2A006CC1B5F80F300587C9C /* SKGateway.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKGateway.h; sourceTree = "<group>"; };
 		B2A006CD1B5F80F300587C9C /* SKGateway.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKGateway.m; sourceTree = "<group>"; };
-		B2A006D71B5F8E1A00587C9C /* route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = route.h; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/include/net/route.h; sourceTree = DEVELOPER_DIR; };
 		B2AE67F31883DA4D00D87FAE /* SKAAboutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAAboutController.h; sourceTree = "<group>"; };
 		B2AE67F41883DA4D00D87FAE /* SKAAboutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAAboutController.m; sourceTree = "<group>"; };
 		B2AE67F51883DA4D00D87FAE /* SKAActivationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAActivationController.h; sourceTree = "<group>"; };
@@ -915,7 +914,6 @@
 				B2EC77DC1A88C791009B324A /* SKScheduleParser.m */,
 				B2EC77E11A88C838009B324A /* SKTestRunner.h */,
 				B2EC77E21A88C838009B324A /* SKTestRunner.m */,
-				B2A006D71B5F8E1A00587C9C /* route.h */,
 				B2A006CC1B5F80F300587C9C /* SKGateway.h */,
 				B2A006CD1B5F80F300587C9C /* SKGateway.m */,
 			);

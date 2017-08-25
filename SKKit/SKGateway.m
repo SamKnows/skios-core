@@ -18,16 +18,53 @@
 #include <stdlib.h>
 #include <sys/sysctl.h>
 // http://stackoverflow.com/questions/22162197/why-net-route-h-can-be-included-and-compiled-in-ios6-1-simulator-while-cannot
-#if TARGET_IPHONE_SIMULATOR
-#import <net/route.h>
-#else // TARGET_IPHONE_SIMULATOR
-#import "route.h"
-#endif // TARGET_IPHONE_SIMULATOR
 #include <net/if.h>
 #include <string.h>
 
 #define ROUNDUP(a) \
 ((a) > 0 ? (1 + (((a) - 1) | (sizeof(long) - 1))) : sizeof(long))
+
+#define RTF_GATEWAY 0x0002
+#define RTAX_DST 0
+#define RTAX_GATEWAY 1
+#define RTAX_MAX 8
+#define RTA_DST 0x1
+#define RTA_GATEWAY 0x2
+
+/*
+ * These numbers are used by reliable protocols for determining
+ * retransmission behavior and are included in the routing structure.
+ */
+struct rt_metrics {
+    u_long    rmx_locks;    /* Kernel must leave these values alone */
+    u_long    rmx_mtu;    /* MTU for this path */
+    u_long    rmx_hopcount;    /* max hops expected */
+    u_long    rmx_expire;    /* lifetime for route, e.g. redirect */
+    u_long    rmx_recvpipe;    /* inbound delay-bandwith product */
+    u_long    rmx_sendpipe;    /* outbound delay-bandwith product */
+    u_long    rmx_ssthresh;    /* outbound gateway buffer limit */
+    u_long    rmx_rtt;    /* estimated round trip time */
+    u_long    rmx_rttvar;    /* estimated rtt variance */
+    u_long    rmx_pksent;    /* packets sent using this route */
+};
+
+/*
+ * Structures for routing messages.
+ */
+struct rt_msghdr {
+    u_short    rtm_msglen;    /* to skip over non-understood messages */
+    u_char    rtm_version;    /* future binary compatability */
+    u_char    rtm_type;    /* message type */
+    u_short    rtm_index;    /* index for associated ifp */
+    int    rtm_flags;    /* flags, incl. kern & message, e.g. DONE */
+    int    rtm_addrs;    /* bitmask identifying sockaddrs in msg */
+    pid_t    rtm_pid;    /* identify sender */
+    int    rtm_seq;    /* for sender to identify action */
+    int    rtm_errno;    /* why failed */
+    int    rtm_use;    /* from rtentry */
+    u_long    rtm_inits;    /* which metrics we are initializing */
+    struct    rt_metrics rtm_rmx; /* metrics themselves */
+};
 
 /* getdefaultgateway() :
  * return value :
