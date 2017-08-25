@@ -15,9 +15,6 @@
 #import "UIViewController+SKSafeSegue.h"
 #import "SKAFooterCell.h"
 
-// For simulating crashes!
-#import <HockeySDK/HockeySDK.h>
-
 #define ACTION_RUN      1
 #define ACTION_RANGE    2
 #define ACTION_ALREADY_EXCEEDED_PRESS_OK_TO_CONTINUE   3
