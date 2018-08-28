@@ -314,13 +314,15 @@ const int cQueryCountPerServer = 3;
                [self.closestTargetDelegate ctdDidCompleteClosestTargetTest:target latency:lowestLatency];
              } else {
                // If this fails - ultimately - call this!
-               [self.closestTargetDelegate ctdTestDidFail];
+               NSString *target = targets[0];
+               
                // Do not assert here, as that would upset the mock tests which monitor for this!
                // SK_ASSERT(false);
 #ifdef DEBUG
                NSDate *now = [NSDate date];
                NSLog(@"DEBUG: warning - all http-based closest target tests failed, after %g seconds", [now timeIntervalSinceDate:timeStartOfHttpQuery]);
 #endif // DEBUG
+               [self.closestTargetDelegate ctdTestDidFail:target];
              }
            }
          }
