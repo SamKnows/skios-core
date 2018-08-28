@@ -202,11 +202,15 @@ static BOOL sbTestIsRunning = NO;
     [self.autotestObserverDelegate aodDidFinishAnotherTarget:targetId withLatency:latency withBest:bestId];
 }
 
-- (void)ctdTestDidFail
+- (void)ctdTestDidFail:(NSString*)target
 {
-  NSLog(@"Closest Target Test Did Fail");
+  self.selectedTarget = target; //###HG
   
+  NSLog(@"Closest Target Test Did Fail, defaulting to : %@", target);
+  
+  [self.autotestManagerDelegate amdSetClosestTarget:target];
   [self.autotestObserverDelegate aodClosestTargetTestDidFail];
+  [self runNextTest:self.targetTest.testIndex];
 }
 
 
@@ -1097,8 +1101,8 @@ static BOOL sbTestIsRunning = NO;
 #ifdef DEBUG
     NSLog(@"DEBUG: %s htdUpdateStatus:FAILED", __FUNCTION__);
 #endif // DEBUG
-    [self.autotestObserverDelegate aodTransferTestDidFail:self.httpTest.isDownstream];
-    [self runNextTest:self.httpTest.testIndex];
+    
+    return;
   }
 }
 
@@ -1129,7 +1133,17 @@ static BOOL sbTestIsRunning = NO;
     }
   }
   
-  [self.autotestObserverDelegate aodTransferTestDidCompleteTransfer:self.httpTest Bitrate1024Based:bitrateMbps1024Based];
+  if (bitrateMbps1024Based > 0)
+  {
+    [self.autotestObserverDelegate aodTransferTestDidCompleteTransfer:self.httpTest Bitrate1024Based:bitrateMbps1024Based];
+  }
+  else
+  {
+#ifdef DEBUG
+    NSLog(@"DEBUG: htdDidCompleteHttpTest (%@) Mbps <= 0, calling aodTransferTestDidFail", self.httpTest.displayName);
+#endif // DEBUG
+    [self.autotestObserverDelegate aodTransferTestDidFail:self.httpTest.isDownstream];
+  }
   
   [SKKitJSONDataCaptureAndUpload sAppendTestResultsDictionaryToJSONDictionary:[self getSKAHttpTest].outputResultsDictionary ToDictionary:self.jsonDictionary SKKitLocationManager:[self.autotestManagerDelegate amdGetSKKitLocationManager] AccumulateNetworkTypeLocationMetricsToHere:self.accumulatedNetworkTypeLocationMetrics];
   

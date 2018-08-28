@@ -83,8 +83,6 @@
 #endif // DEBUG
   [SKGlobalMethods sPerformOnMainThread:^{
 
-    [self cancelTestFromAlertResponse:NO];
-    testsComplete = YES;
     [self.lblClosest setText:sSKCoreGetLocalisedString(@"TEST_Label_Closest_Failed")];
     
     NSIndexPath *ixp = [self getIndexPathForTest:@"latency"];
@@ -318,9 +316,6 @@
     [self updateResultsArray:@NO key:@"HIDE_LABEL" testType:test];
     [self updateResultsArray:@YES key:@"HIDE_SPINNER" testType:test];
     [self updateResultsArray:[SKTransferOperation getStatusFailed] key:@"RESULT_1" testType:test];
-    
-    [self cancelTestFromAlertResponse:NO];
-    testsComplete = YES;
   });
 }
 

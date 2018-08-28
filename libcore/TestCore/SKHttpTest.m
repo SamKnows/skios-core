@@ -620,13 +620,31 @@ TransferMaxTimeMicroseconds:(SKTimeIntervalMicroseconds)_transferMaxTimeMicrosec
   {
     if (isRunning)
     {
+      // This block MUST be synchronized, otherwise the multiple callbacks can all interfere with each other!
+      @synchronized(self) {
+        BOOL bResultIsFromServer = NO;
+        
 #ifdef DEBUG
-      NSLog(@"DEBUG: todUpdateStatus %d (%@) - isRunning", (int)status, [self.class getStatusAsString:status]);
+        NSLog(@"DEBUG: todUpdateStatus %d (%@) - isRunning", (int)status, [self.class getStatusAsString:status]);
 #endif // DEBUG
-      [self setRunningStatus:status];
-      [self setWarmupDoneCounter:nThreads];
-      [self cancel];
-      [[self httpRequestDelegate] htdUpdateStatus:status threadId:threadId];
+        [self setRunningStatus:status];
+        [self setWarmupDoneCounter:nThreads];
+        [self cancel];
+        
+        [[self httpRequestDelegate] htdUpdateStatus:status threadId:threadId];
+        
+        // If Transfer Operation fails, set transfer speed to 0.0 and call htdDidFailHttpTest
+        double bitrateMbps1024Based = (double)0;
+        
+        // Avoids negative warmup_time values
+        self.testWarmupEndTime = [[SKCore getToday] timeIntervalSince1970];
+        self.testWarmupStartTime = self.testWarmupEndTime;
+        
+        [self storeOutputResults:bitrateMbps1024Based];
+        [[self httpRequestDelegate] htdDidCompleteHttpTest:bitrateMbps1024Based
+                                        ResultIsFromServer:bResultIsFromServer
+                                           TestDisplayName:self.displayName];
+      }
     }
     else if (status == FAILED)
     {

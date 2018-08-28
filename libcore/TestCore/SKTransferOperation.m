@@ -1305,8 +1305,15 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   // Failed!
   SK_ASSERT(false);
   
-  [self done];
-  [self doSendUpdateStatus:FAILED threadId:threadId];
+  if([self isCancelled])
+  {
+    [self cancelled];
+  }
+  else
+  {
+    [self done];
+    [self doSendUpdateStatus:FAILED threadId:threadId];
+  }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError*)error
@@ -1331,12 +1338,13 @@ const unsigned char spBlockData[cDefaultBlockDataLength];
   else
   {
     [self done];
+    [self doSendUpdateStatus:FAILED threadId:threadId];
   }
   
   testOK = NO;
   
   // Whether or not we've already cancelled - send a FAILED status update through.
-  [self doSendUpdateStatus:FAILED threadId:threadId];
+  //[self doSendUpdateStatus:FAILED threadId:threadId];
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData *)data
